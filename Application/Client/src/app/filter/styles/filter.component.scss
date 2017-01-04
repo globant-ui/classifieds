@@ -8,22 +8,15 @@
         color: $primary-text-color;
         font: 0.857em $arvo-regular;
         border-radius:15px;
-        padding: 5px 20px 5px 20px;
-        margin:40px 0 40px 0;
+        padding: 5px 20px;
+        /*margin:40px 0;*/
+        border: 2px solid transparent;
       }
-      a:focus{
+      a:focus, a:hover, a:active{
         border: 2px solid $green-color;
         color: $active-button-text-color;
         background-color: transparent;
-      }
-      a:hover{
-        /*border: 2px solid $green-color;
-        color: $active-button-text-color;*/
-        background-color: transparent;
-      }
-      a:active{
-        border: 2px solid $green-color;
-        color: $active-button-text-color;
+        padding: 5px 20px;
       }
       .open>a:hover, .open>a:focus, .open>a.active{
         background-color: transparent;

@@ -4,25 +4,22 @@
   .search-button{
     font-family: 'Open Sans';
     font-weight: 600;
-    margin:40px 0 40px 0;
     float:left;
     color: $white-color;
+    position: relative;
     input{
       border:none;
-        border-radius: 15px;
-        position: relative;
-        background: $green-color;
-        @include placeholder-color($white-color);
-        text-transform: uppercase;
-        padding: 5px 5px 5px 10px;
-    }
-    button{
-      background: transparent;
-      border: transparent;
       border-radius: 15px;
-      position: absolute;
-      top: 60px;
-      left: 170px;
+      background: $green-color;
+      @include placeholder-color($white-color);
+      text-transform: uppercase;
+      padding: 5px 5px 5px 10px;
+    }
+    span.icon-search-icon{
+      position:absolute;
+      right: 5%;
+      top: 5px;
+      cursor:pointer;
     }
   }
 }

@@ -1,16 +1,23 @@
 @import "../../_common/styles/sass/style";
 
-.searchFilterContainer{
-  background-color: $primary-background-color;
-  text-transform: uppercase;
-  padding: 15px 20px;
-  /*padding-top:15px;
-  padding-bottom:15px;*/
-  border-top: 2px solid $filter-shadow-color;
-  box-shadow: 0 0 15px 0 $filter-shadow-color;
+.searchFilterContainerWrapper{
+	position: relative;
+	min-height: 80px;
+	.searchFilterContainer{
+		position: absolute;
+		width:100%;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: $primary-background-color;
+		text-transform: uppercase;
+		padding: 25px 20px;
+		border-top: 2px solid $filter-shadow-color;
+		box-shadow: 0 0 15px 0 $filter-shadow-color;
+	}
 }
 @media (min-width: 320px) and (max-width: 460px){
-  .navbar{
+  .searchFilterContainerWrapper{
     display:none;
   }
 }
