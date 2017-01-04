@@ -40,6 +40,6 @@ namespace Classifieds.Listings.BusinessEntities
         public Int32 YearofMake { get; set; }
         public string Dimensions { get; set; }
         public string TypeofUse { get; set; }
-        public string Photos { get; set; }
+        public string[] Photos { get; set; }
     }
 }

@@ -16,10 +16,7 @@ namespace Classifieds.Search.Repository
         {
             get { return Database.GetCollection<Listing>(_classifiedsCollection); }
         }
-
-        public SearchRepository()
-        {
-        }
+    
 
         public List<Listing> FullTextSearch(string searchText)
         {

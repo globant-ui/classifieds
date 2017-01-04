@@ -68,7 +68,7 @@ namespace Classifieds.ListingsAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = "test"
+                Photos = new string[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg"}
             };
             return listObject;
 

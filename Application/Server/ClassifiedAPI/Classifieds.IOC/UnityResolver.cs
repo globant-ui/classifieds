@@ -1,10 +1,13 @@
-﻿using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;
+using Microsoft.Practices.Unity;
 
-namespace Classifieds.ListingsAPI.Resolver
+namespace Classifieds.IOC
 {
+    /// <summary>
+    /// UnityResolver class resolve the dependancy.
+    /// </summary>
     public class UnityResolver : IDependencyResolver
     {
         protected IUnityContainer container;
@@ -29,6 +32,7 @@ namespace Classifieds.ListingsAPI.Resolver
                 return null;
             }
         }
+
         public IEnumerable<object> GetServices(Type serviceType)
         {
             try
@@ -40,15 +44,16 @@ namespace Classifieds.ListingsAPI.Resolver
                 return new List<object>();
             }
         }
+
         public IDependencyScope BeginScope()
         {
             var child = container.CreateChildContainer();
             return new UnityResolver(child);
         }
+
         public void Dispose()
         {
             container.Dispose();
         }
-
     }
 }
