@@ -1,12 +1,5 @@
-﻿using Microsoft.Practices.Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using Classifieds.ListingsAPI.Resolver;
-using Classifieds.Listings.BusinessServices;
-using Classifieds.Listings.Repository;
-using Classifieds.Common;
+﻿using System.Web.Http;
+using Classifieds.IOC;
 
 namespace Classifieds.ListingsAPI
 {
@@ -15,13 +8,7 @@ namespace Classifieds.ListingsAPI
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            var container = new UnityContainer();
-            container.RegisterType<IListingService, ListingService>(new HierarchicalLifetimeManager());
-            container.RegisterType<IListingRepository, ListingRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<IDBRepository, DBRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<ILogger, Logger>(new HierarchicalLifetimeManager());
-            container.RegisterType<Classifieds.NLog.MongoDB.ILogger, Classifieds.NLog.MongoDB.Logger>(new HierarchicalLifetimeManager());
-            config.DependencyResolver = new UnityResolver(container);
+            UnityConfig.RegisterComponents(config);
             // Web API routes
             config.MapHttpAttributeRoutes();
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.Common", "Classifieds.Common\Classifieds.Common.csproj", "{B67F4456-5934-4AA2-A613-3F927DAD8DCA}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.Nlog.MongoDB", "Classifieds.Nlog.MongoDB\Classifieds.Nlog.MongoDB.csproj", "{22632564-3554-4398-AA25-480F89166F59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.NLog.MongoDB.Tests", "Classifieds.NLog.MongoDB.Tests\Classifieds.NLog.MongoDB.Tests.csproj", "{1B39448B-5189-48B2-88BF-D7ACD41D4DA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.IOC", "Classifieds.IOC\Classifieds.IOC.csproj", "{4165962B-5C05-4C93-B020-88515250788A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{1B39448B-5189-48B2-88BF-D7ACD41D4DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B39448B-5189-48B2-88BF-D7ACD41D4DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B39448B-5189-48B2-88BF-D7ACD41D4DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4165962B-5C05-4C93-B020-88515250788A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4165962B-5C05-4C93-B020-88515250788A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4165962B-5C05-4C93-B020-88515250788A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4165962B-5C05-4C93-B020-88515250788A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

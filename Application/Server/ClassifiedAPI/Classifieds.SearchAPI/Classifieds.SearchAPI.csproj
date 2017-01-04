@@ -34,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Classifieds.SearchAPI.XML</DocumentationFile>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,6 +43,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Classifieds.SearchAPI.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1011, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -141,7 +143,9 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
@@ -151,13 +155,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resolver\UnityResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\Amol.pubxml" />
+    <None Include="Properties\PublishProfiles\SeafchAPI.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -173,6 +178,10 @@
       <Project>{b67f4456-5934-4aa2-a613-3f927dad8dca}</Project>
       <Name>Classifieds.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Classifieds.IOC\Classifieds.IOC.csproj">
+      <Project>{4165962b-5c05-4c93-b020-88515250788a}</Project>
+      <Name>Classifieds.IOC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Classifieds.Listings.BusinessEntities\Classifieds.Listings.BusinessEntities.csproj">
       <Project>{1ff950d6-172e-4732-80d5-c192669f3e18}</Project>
       <Name>Classifieds.Listings.BusinessEntities</Name>
@@ -180,10 +189,6 @@
     <ProjectReference Include="..\Classifieds.Search.BusinessServices\Classifieds.Search.BusinessServices.csproj">
       <Project>{bc5d001d-6cda-4709-ba44-8cf000206cce}</Project>
       <Name>Classifieds.Search.BusinessServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Classifieds.Search.Repository\Classifieds.Search.Repository.csproj">
-      <Project>{9b4e84fd-6331-4b4f-a82d-6ad79d7a7c62}</Project>
-      <Name>Classifieds.Search.Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
