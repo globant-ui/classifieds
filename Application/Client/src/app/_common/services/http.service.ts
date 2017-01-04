@@ -18,7 +18,7 @@ export class CService {
 
   private getHeaders(): Headers {
     let headers = new Headers();
-    headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
+    // headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
     return headers;
   }
 

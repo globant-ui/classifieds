@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
+import { Observable }     from 'rxjs/Observable';
+import { Http, Response,RequestOptions } from '@angular/http';
+import {CService} from  '../../_common/services/http.service';
+import 'rxjs/Rx';
+
 
 let styles = require('../styles/home.component.scss').toString();
 let tpls = require('../tpls/home.component.html').toString();
@@ -8,25 +13,49 @@ let tpls = require('../tpls/home.component.html').toString();
 @Component({
   selector: 'home',
   styles : [ styles ],
-  providers:[SettingsService],
+  providers:[SettingsService, CService],
   template : tpls
 })
 
 export class HomeComponent {
   private settings : any ;
   private baseUrl : any ;
+  private  data : any;
+  private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
+  private bannerUrl = ''
   public intialCardData: any;
-  constructor(public appState: AppState,private _settingsService: SettingsService) {
+  constructor(public appState: AppState,private _settingsService: SettingsService, private _cservice:CService) {
   }
 
   ngOnInit() {
     this.baseUrl=this._settingsService.getBaseUrl();
-    this.intialCardData =this._settingsService.getInitialCards();
-    console.log("this.intialCardData",this.intialCardData);
+    this.getInitialCards();
+    this.getBannerListing();
   }
 
-  submitState(value: string) {
-    console.log('submitState', value);
-    this.appState.set('value', value);
+  getInitialCards (){
+    this._cservice.observableGetHttp(this.cardUrl,null,false,)
+      .subscribe((res:Response)=> {
+          this.intialCardData = res;
+        },
+        error => {
+          console.log("error in response");
+        },
+        ()=>{
+          console.log("Finally");
+        })
+  }
+
+  getBannerListing (){
+    this._cservice.observableGetHttp(this.bannerUrl,null,false,)
+      .subscribe((res:Response)=> {
+          this.intialCardData = res;
+        },
+        error => {
+          console.log("error in response");
+        },
+        ()=>{
+          console.log("Finally");
+        })
   }
 }
