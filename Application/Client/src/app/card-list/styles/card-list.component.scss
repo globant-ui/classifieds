@@ -98,10 +98,11 @@
 		.plain-card-container.create-container{
 			 background: url("../../../assets/img/icon.png") no-repeat $primary-background-color 45% 35%;
 			text-align: center;
+			min-height: 410px;
 			h2{
 				font-size:2.571em;
 				line-height: 46px;
-			    padding: 0 25%;
+			    padding: 0 5%;
 			    color: $darkblue-color;
 			}
 			button{
@@ -116,7 +117,7 @@
 			    letter-spacing: 3px;
 				border-radius: 15px;
 				padding: 10px 15px;
-				margin:45px 0;
+				margin:14px 0;
 				span{
 					color: $darkblue-color;
 					font-size: 1.285em;
