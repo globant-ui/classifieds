@@ -93,6 +93,14 @@
       <Project>{46cc0d61-079e-4375-b3a5-e1ef9cde7736}</Project>
       <Name>Classifieds.Listings.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Classifieds.MasterData.BusinessServices\Classifieds.MastersData.BusinessServices.csproj">
+      <Project>{dac4426d-54f6-4a51-9303-7f5374b68713}</Project>
+      <Name>Classifieds.MastersData.BusinessServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Classifieds.MasterData.Repository\Classifieds.MastersData.Repository.csproj">
+      <Project>{13a64e26-b245-486d-a261-f22241a72650}</Project>
+      <Name>Classifieds.MastersData.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Classifieds.Nlog.MongoDB\Classifieds.Nlog.MongoDB.csproj">
       <Project>{22632564-3554-4398-aa25-480f89166f59}</Project>
       <Name>Classifieds.Nlog.MongoDB</Name>
