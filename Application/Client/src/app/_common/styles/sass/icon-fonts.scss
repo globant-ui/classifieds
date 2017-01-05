@@ -13,6 +13,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-profile:before {
+  content: "\e905";
+}
 .icon-clock:before {
   content: "\e900";
 }

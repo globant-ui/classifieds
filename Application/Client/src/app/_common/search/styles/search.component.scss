@@ -3,23 +3,28 @@
 .navbar{
   .search-button{
     font-family: 'Open Sans';
-    font-weight: 600;
     float:left;
-    color: $white-color;
+    color: $primary-text-color;
     position: relative;
     input{
       border:none;
-      border-radius: 15px;
-      background: $green-color;
-      @include placeholder-color($white-color);
-      text-transform: uppercase;
-      padding: 5px 5px 5px 10px;
+      border-radius: 20px;
+      background: $white-color;
+      @include placeholder-color($primary-text-color);
+      text-transform: capitalize;
+      padding:18px;
+      vertical-align: top;
+      height: 24px;
     }
-    span.icon-search-icon{
-      position:absolute;
-      right: 5%;
-      top: 5px;
-      cursor:pointer;
+    button.icon-search-icon{
+      border: none;
+      background: $green-color;
+      border-radius: 17px;
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      padding: 9px;
+      color: $white-color;
     }
   }
 }
