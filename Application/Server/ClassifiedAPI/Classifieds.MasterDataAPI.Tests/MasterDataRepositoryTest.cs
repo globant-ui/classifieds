@@ -14,7 +14,7 @@ namespace Classifieds.MastersData.Repository.Test
         #region Class Variables
         private IMasterDataRepository _masterDataRepo;
         private IDBRepository _dbRepository;
-        private List<Category> classifiedCategory = new List<Category>();
+        private readonly List<Category> classifiedCategory = new List<Category>();
         #endregion
 
         #region Initialize

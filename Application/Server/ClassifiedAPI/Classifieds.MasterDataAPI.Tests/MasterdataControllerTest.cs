@@ -19,13 +19,36 @@ namespace Classifieds.MasterDataAPI.Tests
     {
         #region Unit Test Cases
 
+        #region Class Variables
+        private Mock<IMasterDataService> mockService;
+        private Mock<ILogger> logger;
+        private readonly List<Category> classifiedList = new List<Category>();
+        private const string urlLocation = "http://localhost/api/listings";
+        #endregion
+
+        #region Initialize
+        [TestInitialize]
+        public void Initialize()
+        {
+            mockService = new Mock<IMasterDataService>();
+            logger = new Mock<ILogger>();
+        }
+        #endregion
+
+        #region Setup Methods
+
+        private void SetUpClassifiedsListing()
+        {
+            var lstListing = GetDataObject();
+            classifiedList.Add(lstListing);
+        }
+
+        #endregion
+
         [TestMethod]
         public void GetAllCategoryTest()
         {
-            var mockService = new Mock<IMasterDataService>();
-            var logger = new Mock<ILogger>();
-
-            mockService.Setup(x => x.GetAllCategory())
+                      mockService.Setup(x => x.GetAllCategory())
                 .Returns(
                 new List<Category>
                 { new Category
@@ -50,12 +73,9 @@ namespace Classifieds.MasterDataAPI.Tests
         [TestMethod]
         public void GetAllCategory_EmptyCategoryTest()
         {
-            var mockService = new Mock<IMasterDataService>();
             mockService.Setup(x => x.GetAllCategory())
-             .Returns(new List<Category>() { new Category() });
-
-            var logger = new Mock<ILogger>();
-            var controller = new CategoryController(mockService.Object, logger.Object);
+            .Returns(new List<Category>() { new Category() });
+                                    var controller = new CategoryController(mockService.Object, logger.Object);
             var result = controller.GetAllCategory();
         }
 
@@ -63,13 +83,10 @@ namespace Classifieds.MasterDataAPI.Tests
         public void Controller_PostMasterDataTest()
         {
             // Arrange
-            var mockService = new Mock<IMasterDataService>();
-            var logger = new Mock<ILogger>();
             mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
-                .Returns(GetDataObject());
+            .Returns(GetDataObject());
             CategoryController controller = new CategoryController(mockService.Object, logger.Object);
-
-            controller.Request = new HttpRequestMessage
+                        controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
             };
@@ -97,10 +114,8 @@ namespace Classifieds.MasterDataAPI.Tests
         {
             // This version uses a mock UrlHelper.
             // Arrange
-            var mockService = new Mock<IMasterDataService>();
-            var logger = new Mock<ILogger>();
             mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
-                .Returns(GetDataObject());
+            .Returns(GetDataObject());
             CategoryController controller = new CategoryController(mockService.Object, logger.Object);
             controller.Request = new HttpRequestMessage();
             controller.Configuration = new HttpConfiguration();
@@ -139,9 +154,7 @@ namespace Classifieds.MasterDataAPI.Tests
         public void Controller_DeleteCategoryTest()
         {
             // Arrange
-            var mockService = new Mock<IMasterDataService>();
             Category dataObject = GetDataObject();
-            var logger = new Mock<ILogger>();
             mockService.Setup(x => x.DeleteCategory(It.IsAny<string>()));
             var controller = new CategoryController(mockService.Object, logger.Object);
             controller.Request = new HttpRequestMessage
@@ -161,8 +174,6 @@ namespace Classifieds.MasterDataAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_DeleteList_ThrowsException()
         {
-            var logger = new Mock<ILogger>();
-            var mockService = new Mock<IMasterDataService>();
             var controller = new CategoryController(mockService.Object, logger.Object);
             var result = controller.Delete(null);
         }
@@ -171,10 +182,8 @@ namespace Classifieds.MasterDataAPI.Tests
         public void Controller_UpdateMasterDataTest()
         {
             // Arrange
-            var mockService = new Mock<IMasterDataService>();
-            var logger = new Mock<ILogger>();
             mockService.Setup(x => x.UpdateCategory(It.IsAny<string>(), It.IsAny<Category>()))
-                .Returns(GetDataObject());
+            .Returns(GetDataObject());
             CategoryController controller = new CategoryController(mockService.Object, logger.Object);
 
             controller.Request = new HttpRequestMessage
@@ -199,13 +208,13 @@ namespace Classifieds.MasterDataAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_UpdateMasterData_ThrowsException()
         {
-            var logger = new Mock<ILogger>();
-            var mockService = new Mock<IMasterDataService>();
             var controller = new CategoryController(mockService.Object, logger.Object);
-            var updatedProduct = new Category() { ListingCategory = "test" };
+            var updatedProduct = new Category() { ListingCategory = "test", Image = "" };
             var result = controller.Put(null, updatedProduct);
         }
 
         #endregion
+
+
     }
 }

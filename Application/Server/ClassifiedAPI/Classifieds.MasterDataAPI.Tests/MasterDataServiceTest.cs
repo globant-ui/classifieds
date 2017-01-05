@@ -14,7 +14,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
         #region Class Variables
         private Mock<IMasterDataRepository> _moqAppManager;
         private IMasterDataService _service;
-        private List<Category> classifiedcategory = new List<Category>();
+        private readonly List<Category> classifiedcategory = new List<Category>();
         #endregion
 
         #region Initialize

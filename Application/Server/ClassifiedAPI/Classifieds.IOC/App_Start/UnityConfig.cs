@@ -33,12 +33,12 @@ namespace Classifieds.IOC
             container.RegisterType<IListingService, ListingService>(new HierarchicalLifetimeManager());
             container.RegisterType<IListingRepository, ListingRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<Listings.Repository.IDBRepository, Listings.Repository.DBRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<ILogger, Logger>(new HierarchicalLifetimeManager());
+            //container.RegisterType<ILogger, Logger>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IMasterDataService, MasterDataService>(new HierarchicalLifetimeManager());
             container.RegisterType<IMasterDataRepository, MasterDataRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<MastersData.Repository.IDBRepository, MastersData.Repository.DBRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<ILogger, Logger>(new HierarchicalLifetimeManager());
+            //container.RegisterType<ILogger, Logger>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(container);
         }
