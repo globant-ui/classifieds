@@ -1,0 +1,5 @@
+E:\Classifieds\ClassifiedAPI\Classifieds.Models\bin\Debug\Classifieds.Models.dll
+E:\Classifieds\ClassifiedAPI\Classifieds.Models\bin\Debug\Classifieds.Models.pdb
+E:\Classifieds\ClassifiedAPI\Classifieds.Models\obj\Debug\Classifieds.BusinessEntities.csprojResolveAssemblyReference.cache
+E:\Classifieds\ClassifiedAPI\Classifieds.Models\obj\Debug\Classifieds.Models.dll
+E:\Classifieds\ClassifiedAPI\Classifieds.Models\obj\Debug\Classifieds.Models.pdb

@@ -1,0 +1,4 @@
+E:\Classifieds\ClassifiedAPI\Classifieds.BusinessServices\bin\Debug\Classifieds.BusinessServices.dll
+E:\Classifieds\ClassifiedAPI\Classifieds.BusinessServices\bin\Debug\Classifieds.BusinessServices.pdb
+E:\Classifieds\ClassifiedAPI\Classifieds.BusinessServices\obj\Debug\Classifieds.BusinessServices.dll
+E:\Classifieds\ClassifiedAPI\Classifieds.BusinessServices\obj\Debug\Classifieds.BusinessServices.pdb
