@@ -40,9 +40,9 @@ nav{
           }
           a{
             padding: 0;
-            .textwishlist{
+            .textwishlist, .textProfile{
               text-transform: uppercase;
-              color:$white-color;
+              color: $white-color;
               font-family: 'Open Sans';
               font-size: 0.857em;
             }
@@ -51,10 +51,11 @@ nav{
               color: $red-color;
             }
           }
-          .menu-btn{
-            margin:5px 0 0 30px;
+          .profile-btn{
+            margin:5px 5px 0 30px;
             background: none;
             border: none;
+            color: $white-color;
           }
         }
       }
@@ -86,7 +87,8 @@ nav{
         background: none;
         border: none;
         color:$white-color;
-        margin: 10px 0 0 0;
+        margin: 5px 0 0 0;
+        padding: 5px;
       }
     }
     .navbar-collapse.collapse{
@@ -95,7 +97,7 @@ nav{
       ul.nav{
         display: inline-block;
         li{
-          .menu-btn{
+          .profile-btn{
             display: none;
           }
           button.green-button{

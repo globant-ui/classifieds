@@ -43,7 +43,7 @@
               font-size: 0.631em;
               text-transform: uppercase;
             }
-            span{
+            span.spriteimage{
               margin:15px auto 15px;
             }
             ul.hoverlistWrapper{
@@ -57,6 +57,9 @@
               letter-spacing: 1px;
               font-size: 0.631em;
               text-transform: uppercase;
+            }
+            a.expandListIcon{
+              display:none;
             }
           }
           li:hover{
@@ -92,7 +95,7 @@
                 }
               }
             }
-            span{
+            span.spriteimage{
               display: none;
             }
             .categoryTitle{
@@ -152,11 +155,15 @@
                 text-transform: uppercase;
                 font-size:0.857em;
               }
-              span{
+              span.spriteimage{
                 display: none;
               }
               ul.hoverlistWrapper, button{
                 display: none;
+              }
+              a.expandListIcon{
+                display:inline-block;
+                float: right;
               }
             }
             li:hover{
@@ -224,11 +231,15 @@
                 text-transform: uppercase;
                 font-size:0.857em;
               }
-              span{
+              span.spriteimage{
                 display: none;
               }
               ul.hoverlistWrapper, button{
                 display: none;
+              }
+              a.expandListIcon{
+                display:inline-block;
+                float: right;
               }
             }
             li:hover{

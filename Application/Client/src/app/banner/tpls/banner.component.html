@@ -12,14 +12,15 @@
                   <div class="img-icon">
                       <img src="../../../../assets/img/mobile-icon/{{item.listInfo.img}}" />
                   </div>
-                  <div class="categoryTitle">{{item.listName}}</div>
+                  <div class="categoryTitle">{{item.listName}} </div>
                   <span class="spriteimage {{item.listInfo.largeImgClassName}}"></span>
                   <ul class="hoverlistWrapper">
                       <li *ngFor="let d of item.listInfo.items"><a href="">{{d.name}}</a></li>
                   </ul>
                   <button>EXPLORE</button>
+                  <a href="#" class="expandListIcon"><span class="glyphicon glyphicon-chevron-down"></span></a>
               </li>
-          </ul>
+          </ul> 
         </div>
       </div>
     </nav>
