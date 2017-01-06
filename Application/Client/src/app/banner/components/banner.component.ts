@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 
@@ -17,6 +17,9 @@ export class BannerComponent {
   private listingsData : any ;
   localState = { value: '' };
   constructor(public appState: AppState,private _settingsService: SettingsService) {}
+
+  @Input()
+  categories;
 
   ngOnInit() {
     this.listingsData=this._settingsService.getBannerListingsData();

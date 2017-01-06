@@ -21,15 +21,16 @@ export class HomeComponent {
   private settings : any ;
   private baseUrl : any ;
   private  data : any;
-  private cardUrl = '	http://in-it0289/ListingAPI/api/Listings/GetTopListings';
-  private bannerUrl = '';
+  private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
+  private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
   public initialCardData: any;
+  public bannerData: any;
   constructor(public appState: AppState,private _settingsService: SettingsService, private _cservice:CService) {
   }
   ngOnInit() {
     this.baseUrl=this._settingsService.getBaseUrl();
     this.getInitialCards();
-  //  this.getBannerListing();
+    this.getBannerListing();
   }
 
   getInitialCards (){
@@ -45,16 +46,16 @@ export class HomeComponent {
         })
   }
 
-  // getBannerListing (){
-  //   this._cservice.observableGetHttp(this.bannerUrl,null,false)
-  //     .subscribe((res:Response)=> {
-  //         this.intialCardData = res;
-  //       },
-  //       error => {
-  //         console.log("error in response");
-  //       },
-  //       ()=>{
-  //         console.log("Finally");
-  //       })
-  // }
+   getBannerListing (){
+     this._cservice.observableGetHttp(this.bannerUrl,null,false)
+       .subscribe((res:Response)=> {
+           this.bannerData = res;
+         },
+         error => {
+           console.log("error in response");
+         },
+         ()=>{
+           console.log("Finally");
+         })
+   }
 }
