@@ -21,7 +21,7 @@ export class HomeComponent {
   private settings : any ;
   private baseUrl : any ;
   private  data : any;
-  private cardUrl = 'http://10.221.5.61/ListingsAPI/api/Listings/GetTopListings';
+  private cardUrl = '	http://in-it0289/ListingAPI/api/Listings/GetTopListings';
   private bannerUrl = '';
   public initialCardData: any;
   constructor(public appState: AppState,private _settingsService: SettingsService, private _cservice:CService) {

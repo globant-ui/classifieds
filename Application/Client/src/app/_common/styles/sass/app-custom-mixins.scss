@@ -3,7 +3,7 @@
     color: $color;
   }
 
-  &:-moz-placeholder{
+  &::-moz-placeholder{
     color: $color;
   }
 
@@ -11,7 +11,7 @@
     color: $color;
   }
 
-  &:-ms-input-placeholder{
+  &::-ms-input-placeholder{
     color: $color;
   }
 }

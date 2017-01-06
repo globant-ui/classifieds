@@ -7,14 +7,15 @@ import 'rxjs/Rx';
 var settingsJson = require("app/settings.json");
 
 var bannerListingsJson = require("app/banner/json/banner.json");
-var cardListingsJson = require("app/card-list/json/card-list.json");
+//var cardListingsJson = require("app/card-list/json/card-list.json");
+var filterListingJson = require("app/filter/json/filter.json");
 
 
 @Injectable()
 export class SettingsService{
   public  settings : any ;
   public  data: any;
-  private cardUrl = 'http://10.221.5.61/ListingsAPI/api/Listings/GetTopListings';
+  private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
 
   constructor(private _cservice:CService) {
   }
@@ -31,8 +32,16 @@ export class SettingsService{
       return bannerListingsJson.details;
   }
 
-  getCardListingsData(){
+  getCardListingsData() {
       return cardListingsJson;
+  }
+
+  getBannerListingsData(){
+      return bannerListingsJson.details;
+  }
+
+  getFilterListingData(){
+    return filterListingJson.details;
   }
 
 }

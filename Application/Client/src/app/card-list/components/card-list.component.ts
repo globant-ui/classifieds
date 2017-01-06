@@ -12,14 +12,14 @@ let tpls = require('../tpls/card-list.component.html').toString();
     template : tpls
 })
 export class CardListComponent{
-    private cardListings : any;
+  //  private cardListings : any;
     private initialCards:any;
     constructor(public appState: AppState,private _settingsService : SettingsService) {}
 
     @Input()
     cards;
 
-      ngOnInit()
-      {
-      }
+    mgOnInit(){
+
+    }
 }
