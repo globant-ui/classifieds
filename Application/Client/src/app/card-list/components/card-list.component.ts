@@ -16,12 +16,10 @@ export class CardListComponent{
     private initialCards:any;
     constructor(public appState: AppState,private _settingsService : SettingsService) {}
 
-    //@Input() initialCardData;
+    @Input()
+    cards;
 
       ngOnInit()
       {
-        this.cardListings = this._settingsService.getCardListingsData();
-
       }
 }
-

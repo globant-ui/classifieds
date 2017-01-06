@@ -24,7 +24,7 @@ export class CService {
 
   public getRequestOptions(): RequestOptions {
     let requestOptions = new RequestOptions();
-    requestOptions.withCredentials = true;
+    requestOptions.withCredentials = false;
     requestOptions.headers = this.getHeaders();
     return requestOptions;
   }

@@ -14,7 +14,7 @@ var cardListingsJson = require("app/card-list/json/card-list.json");
 export class SettingsService{
   public  settings : any ;
   public  data: any;
-  private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
+  private cardUrl = 'http://10.221.5.61/ListingsAPI/api/Listings/GetTopListings';
 
   constructor(private _cservice:CService) {
   }
@@ -26,12 +26,13 @@ export class SettingsService{
   getBaseUrl(){
     return settingsJson.services.main;
   }
-getBannerListingsData(){
+
+  getBannerListingsData(){
       return bannerListingsJson.details;
   }
 
   getCardListingsData(){
-      return cardListingsJson.categories;
+      return cardListingsJson;
   }
 
 }
