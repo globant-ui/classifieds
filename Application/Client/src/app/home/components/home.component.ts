@@ -21,7 +21,7 @@ export class HomeComponent {
   private settings : any ;
   private baseUrl : any ;
   private  data : any;
-  private cardUrl = 'http://10.221.5.244/ListingsAPI/api/Listings/GetTopListings';
+  private cardUrl = 'http://10.221.5.61/ListingsAPI/api/Listings/GetTopListings';
   private bannerUrl = ''
   public intialCardData: any;
   constructor(public appState: AppState,private _settingsService: SettingsService, private _cservice:CService) {
@@ -37,13 +37,13 @@ export class HomeComponent {
     this._cservice.observableGetHttp(this.cardUrl,null,false,)
       .subscribe((res:Response)=> {
           this.intialCardData = res;
-          console.log("this.intialCardData", this.intialCardData);
         },
         error => {
           console.log("error in response");
         },
         ()=>{
           console.log("Finally");
+          console.log("this.intialCardData", this.intialCardData);
         })
   }
 

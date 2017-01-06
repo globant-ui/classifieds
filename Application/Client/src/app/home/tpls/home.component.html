@@ -1,13 +1,14 @@
 
 <header></header>
 <banner></banner>
+{{initialCardData}}
 <nav class="navbar searchFilterContainerWrapper">
    <div class="searchFilterContainer">
         <search></search>
         <filter></filter>
    </div>
 </nav>
-<card-list> </card-list>
-<!--<card-list [initialCardData]='initialCardData'> </card-list>-->
+<!--<card-list> </card-list>-->
+<card-list [cardListings]="intialCardData"> </card-list>
 
 

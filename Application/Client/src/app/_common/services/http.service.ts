@@ -18,13 +18,13 @@ export class CService {
 
   private getHeaders(): Headers {
     let headers = new Headers();
-    // headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
+    headers.append( 'Content-Type', 'application/jsonp; charset=UTF-8' );
     return headers;
   }
 
   public getRequestOptions(): RequestOptions {
     let requestOptions = new RequestOptions();
-    requestOptions.withCredentials = true;
+    //requestOptions.withCredentials = false;
     requestOptions.headers = this.getHeaders();
     return requestOptions;
   }
