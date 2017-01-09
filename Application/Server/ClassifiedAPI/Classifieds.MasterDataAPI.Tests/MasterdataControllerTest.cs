@@ -23,6 +23,7 @@ namespace Classifieds.MasterDataAPI.Tests
         private Mock<IMasterDataService> mockService;
         private Mock<ILogger> logger;
         private readonly List<Category> classifiedList = new List<Category>();
+        private readonly List<string> categoryList = new List<string>();
         private const string urlLocation = "http://localhost/api/listings";
         #endregion
 
@@ -41,6 +42,7 @@ namespace Classifieds.MasterDataAPI.Tests
         {
             var lstListing = GetDataObject();
             classifiedList.Add(lstListing);
+            categoryList.Add("Automotive");
         }
 
         #endregion
@@ -48,7 +50,7 @@ namespace Classifieds.MasterDataAPI.Tests
         [TestMethod]
         public void GetAllCategoryTest()
         {
-                      mockService.Setup(x => x.GetAllCategory())
+                 mockService.Setup(x => x.GetAllCategory())
                 .Returns(
                 new List<Category>
                 { new Category
@@ -78,17 +80,17 @@ namespace Classifieds.MasterDataAPI.Tests
         {
             SetUpClassifiedsListing();
             mockService.Setup(x => x.GetCategorySuggetion(It.IsAny<string>()))
-              .Returns(classifiedList);
+              .Returns(categoryList);
             logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             var controller = new CategoryController(mockService.Object, logger.Object);
 
             //Act
-            List<Category> objList = new List<Category>();
+            List<string> objList = new List<string>();
             objList = controller.GetCategorySuggetion("Auto");
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].ListingCategory, "Automotive");
+            Assert.AreEqual(objList[0].ToString(), "Automotive");
         }
 
         /// <summary>

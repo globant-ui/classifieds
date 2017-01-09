@@ -15,6 +15,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
         private Mock<IMasterDataRepository> _moqAppManager;
         private IMasterDataService _service;
         private readonly List<Category> classifiedcategory = new List<Category>();
+        private readonly List<string> categoryList = new List<string>();
         #endregion
 
         #region Initialize
@@ -31,6 +32,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
         {
             var lstcategory = GetCategoryObject();
             classifiedcategory.Add(lstcategory);
+            categoryList.Add("Automotive");
         }
 
         private Category GetCategoryObject()
@@ -148,13 +150,23 @@ namespace Classifieds.MastersData.BusinessServices.Test
         {
             // Arrange
             SetUpClassifiedsMasterData();
-            _moqAppManager.Setup(x => x.GetCategorySuggetion(It.IsAny<string>())).Returns(classifiedcategory);
+            _moqAppManager.Setup(x => x.GetCategorySuggetion(It.IsAny<string>())).Returns(categoryList);
 
             //Act
             var result = _service.GetCategorySuggetion("Auto");
 
             //Assert
             Assert.AreEqual(result.Count, 1);
+        }
+
+        /// <summary>
+        /// test for null input giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetCategorySuggetion_ThrowsException()
+        {
+            var result = _service.GetCategorySuggetion(null);
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Classifieds.MasterDataAPI.Controllers
         /// </summary>
         /// <param name="categoryText">Category Text</param>
         /// <returns>Category List</returns>
-        public List<Category> GetCategorySuggetion(string categoryText)
+        public List<string> GetCategorySuggetion(string categoryText)
         {
             try
             {
