@@ -12,16 +12,11 @@ let tpls = require('../tpls/card-list.component.html').toString();
     template : tpls
 })
 export class CardListComponent{
-  //  private cardListings : any;
-    private initialCards:any;
     constructor(public appState: AppState,private _settingsService : SettingsService) {}
 
-    @Input() cardListings;
+    @Input() cards;
 
-      ngOnInit()
-      {
-        console.log('in the card list component',this.cardListings);
-      }
-
+    ngOnInit(){
+        console.log('all = ',this.cards);
+    }
 }
-

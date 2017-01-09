@@ -7,7 +7,7 @@ import 'rxjs/Rx';
 var settingsJson = require("app/settings.json");
 
 var bannerListingsJson = require("app/banner/json/banner.json");
-//var cardListingsJson = require("app/card-list/json/card-list.json");
+var cardListingsJson = require("app/card-list/json/card-list.json");
 var filterListingJson = require("app/filter/json/filter.json");
 
 
@@ -27,18 +27,18 @@ export class SettingsService{
   getBaseUrl(){
     return settingsJson.services.main;
   }
-   getBannerListingsData(){
+
+  getBannerListingsData(){
       return bannerListingsJson.details;
+  }
+
+  getCardListingsData() {
+      return cardListingsJson;
   }
 
   getFilterListingData(){
     return filterListingJson.details;
   }
-
-
-  // getCardListingsData(){
-  //     return cardListingsJson.categories;
-  // }
 
 }
 

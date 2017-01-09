@@ -21,42 +21,46 @@ export class HomeComponent {
   private settings : any ;
   private baseUrl : any ;
   private  data : any;
-  private cardUrl = 'http://10.221.5.61/ListingsAPI/api/Listings/GetTopListings';
-  private bannerUrl = ''
-  public intialCardData: any;
+  private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
+  private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
+  public initialCardData: any;
+  public bannerData: any;
+  public filterCat:any;
   constructor(public appState: AppState,private _settingsService: SettingsService, private _cservice:CService) {
   }
-
   ngOnInit() {
     this.baseUrl=this._settingsService.getBaseUrl();
     this.getInitialCards();
-  //  this.getBannerListing();
+    this.getBannerListing();
   }
 
   getInitialCards (){
-    this._cservice.observableGetHttp(this.cardUrl,null,false,)
+    this._cservice.observableGetHttp(this.cardUrl,null,false)
       .subscribe((res:Response)=> {
-          this.intialCardData = res;
+          this.initialCardData = res;
         },
         error => {
           console.log("error in response");
         },
         ()=>{
           console.log("Finally");
-          console.log("this.intialCardData", this.intialCardData);
         })
   }
 
-  // getBannerListing (){
-  //   this._cservice.observableGetHttp(this.bannerUrl,null,false,)
-  //     .subscribe((res:Response)=> {
-  //         this.intialCardData = res;
-  //       },
-  //       error => {
-  //         console.log("error in response");
-  //       },
-  //       ()=>{
-  //         console.log("Finally");
-  //       })
-  // }
+   getBannerListing (){
+     this._cservice.observableGetHttp(this.bannerUrl,null,false)
+       .subscribe((res:Response)=> {
+           this.bannerData = res;
+         },
+         error => {
+           console.log("error in response");
+         },
+         ()=>{
+           console.log("Finally");
+         })
+   }
+
+    onFilteredCategory(category){
+        this.initialCardData = category;
+    }
 }
