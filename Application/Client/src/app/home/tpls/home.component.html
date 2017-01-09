@@ -3,7 +3,8 @@
 <nav class="navbar searchFilterContainerWrapper">
    <div class="searchFilterContainer">
         <search (searchCategory)="showOutput($event)"></search>
-        <filter (filterCategory)="showOutput($event)"></filter>
+        <filter (filterCategory)="showOutput($event)"
+                (getInitialCards) = "getInitialCards($event)"></filter>
    </div>
 </nav>
 <card-list [cards]='initialCardData'></card-list>
