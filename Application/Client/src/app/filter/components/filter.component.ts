@@ -31,12 +31,8 @@ export class FilterComponent {
   ngOnInit()
   {
     this.filterData=this._settingsService.getFilterListingData();
-    console.log('filter',this.filterData);
   }
 
-/*  filterCards(category){
-      this.filterCategory.emit(category);
-  }*/
 
   showCards(category){
     this.categoryUrl = this.filterCategoryUrl+category;
