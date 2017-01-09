@@ -15,10 +15,8 @@ export class CardListComponent{
     constructor(public appState: AppState,private _settingsService : SettingsService) {}
 
     @Input() cards;
-    @Input() filterCategory;
 
     ngOnInit(){
         console.log('all = ',this.cards);
-        console.log('filter = ',this.filterCategory);
     }
 }

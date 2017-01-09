@@ -25,6 +25,7 @@ export class HomeComponent {
   private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
   public initialCardData: any;
   public bannerData: any;
+  public filterCat:any;
   constructor(public appState: AppState,private _settingsService: SettingsService, private _cservice:CService) {
   }
   ngOnInit() {
@@ -58,4 +59,8 @@ export class HomeComponent {
            console.log("Finally");
          })
    }
+
+    onFilteredCategory(category){
+        this.initialCardData = category;
+    }
 }

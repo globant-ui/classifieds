@@ -10,5 +10,7 @@ let tpls = require('../tpls/search.component.html').toString();
   template: tpls
 })
 export class SearchComponent{
-
+    searchCategory(str){
+        console.log('search cat by str=',str);
+    }
 }

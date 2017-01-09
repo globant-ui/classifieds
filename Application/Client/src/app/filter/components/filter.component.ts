@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Output,EventEmitter } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -23,6 +23,9 @@ export class FilterComponent {
   private categoryUrl:any;
   public filterCategoryData:any;
 
+
+  @Output() filterCategory: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(public appState: AppState,private _settingsService: SettingsService,private _cservice:CService) {}
 
   ngOnInit()
@@ -31,12 +34,17 @@ export class FilterComponent {
     console.log('filter',this.filterData);
   }
 
+/*  filterCards(category){
+      this.filterCategory.emit(category);
+  }*/
+
   showCards(category){
     this.categoryUrl = this.filterCategoryUrl+category;
     this._cservice.observableGetHttp(this.categoryUrl,null,false)
       .subscribe((res:Response)=> {
-        this.filterCategoryData = res;
-        console.log('filtered data =',this.filterCategoryData);
+            console.log('res = ',res);
+        //this.filterCategoryData = res;
+        this.filterCategory.emit(res);
       },
       error => {
         console.log("error in response");
