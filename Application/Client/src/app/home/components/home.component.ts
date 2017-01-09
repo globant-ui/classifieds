@@ -60,7 +60,7 @@ export class HomeComponent {
          })
    }
 
-    onFilteredCategory(category){
+    showOutput(category){
         this.initialCardData = category;
     }
 }

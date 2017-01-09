@@ -34,10 +34,6 @@ export class FilterComponent {
     console.log('filter',this.filterData);
   }
 
-/*  filterCards(category){
-      this.filterCategory.emit(category);
-  }*/
-
   showCards(category){
     this.categoryUrl = this.filterCategoryUrl+category;
     this._cservice.observableGetHttp(this.categoryUrl,null,false)
