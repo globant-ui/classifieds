@@ -48,7 +48,7 @@ namespace Classifieds.MastersData.BusinessServices
         /// <returns>Category List</returns>
         #region GetCategorySuggetion
 
-        public List<Category> GetCategorySuggetion(string categoryText)
+        public List<string> GetCategorySuggetion(string categoryText)
         {
             try
             {

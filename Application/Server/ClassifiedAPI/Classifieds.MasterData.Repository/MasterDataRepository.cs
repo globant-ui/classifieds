@@ -56,8 +56,9 @@ namespace Classifieds.MastersData.Repository
         /// </summary>
         /// <param name="catText">Category Text</param>
         /// <returns>Category List</returns>
-        public List<Category> GetCategorySuggetion(string categoryText)
+        public List<string> GetCategorySuggetion(string categoryText)
         {
+            List<string> myCategory = null;
             try
             {
                 var partialRresult = this.classifieds.FindAll()
@@ -65,7 +66,10 @@ namespace Classifieds.MastersData.Repository
                                     .ToList();
                 List<Category> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
-                return result;
+                if (result != null)
+                    myCategory = result.Select(l => l.ListingCategory).ToList();
+
+                return myCategory;
             }
             catch (Exception ex)
             {

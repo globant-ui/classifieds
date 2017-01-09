@@ -11,7 +11,7 @@ namespace Classifieds.MastersData.BusinessServices
         Category CreateCategory(Category listObject);
         Category UpdateCategory(string id, Category listObject);
         void DeleteCategory(string id);
-        List<Category> GetCategorySuggetion(string categoryText);
+        List<string> GetCategorySuggetion(string categoryText);
 
         #endregion
     }
