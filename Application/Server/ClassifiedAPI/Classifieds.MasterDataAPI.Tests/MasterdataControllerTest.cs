@@ -70,6 +70,38 @@ namespace Classifieds.MasterDataAPI.Tests
             Assert.AreEqual(objList[0].SubCategory[0], "Test1");
         }
 
+        /// <summary>
+        ///test positive scenario for Get Category list for maching input
+        /// </summary>
+        [TestMethod]
+        public void GetCategorySuggetionTest()
+        {
+            SetUpClassifiedsListing();
+            mockService.Setup(x => x.GetCategorySuggetion(It.IsAny<string>()))
+              .Returns(classifiedList);
+            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            var controller = new CategoryController(mockService.Object, logger.Object);
+
+            //Act
+            List<Category> objList = new List<Category>();
+            objList = controller.GetCategorySuggetion("Auto");
+
+            //Assert
+            Assert.AreEqual(objList.Count, 1);
+            Assert.AreEqual(objList[0].ListingCategory, "Automotive");
+        }
+
+        /// <summary>
+        /// test for null exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Controller_GetCategorySuggetion_ThrowsException()
+        {
+            var controller = new CategoryController(mockService.Object, logger.Object);
+            controller.GetCategorySuggetion(null);
+        }
+
         [TestMethod]
         public void GetAllCategory_EmptyCategoryTest()
         {
@@ -79,7 +111,7 @@ namespace Classifieds.MasterDataAPI.Tests
             var result = controller.GetAllCategory();
         }
 
-        [TestMethod]
+         [TestMethod]
         public void Controller_PostMasterDataTest()
         {
             // Arrange
@@ -142,9 +174,13 @@ namespace Classifieds.MasterDataAPI.Tests
             Category dataObject = new Category
             {
                 _id = "9",
-                ListingCategory = "test",
-                SubCategory = new String[] { "Test1", "Test2", "Test3" },
-                Image = "Automobile.png"
+                ListingCategory = "Automotive",
+                SubCategory = new String[] { "Car",
+                                            "Motor Cycle",
+                                            "Scooter",
+                                            "Bicycle",
+                                            "Accessories" },
+                Image = "Automotive.png"
 
             };
             return dataObject;

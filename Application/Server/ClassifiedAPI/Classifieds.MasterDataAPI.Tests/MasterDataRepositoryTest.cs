@@ -38,9 +38,13 @@ namespace Classifieds.MastersData.Repository.Test
         {
             Category dataObject = new Category
             {
-                ListingCategory = "Housing",
-                SubCategory = new String[] { "Test1", "Test2", "Test3" },
-                Image = "Automobile.png"
+                ListingCategory = "Automotive",
+                SubCategory = new String[] { "Car",
+                                            "Motor Cycle",
+                                            "Scooter",
+                                            "Bicycle",
+                                            "Accessories" },
+                Image = "Automotive.png"
             };
             return dataObject;
         }
@@ -58,6 +62,39 @@ namespace Classifieds.MastersData.Repository.Test
 
             //Assert
             Assert.IsNotNull(result[0]);
+        }
+
+        /// <summary>
+        /// test positive scenario for get category list for matching input
+        /// </summary>
+        [TestMethod]
+        public void GetCategorySuggetionTest()
+        {
+            //Act
+            var result = _masterDataRepo.GetCategorySuggetion("Aut");
+
+            //Assert
+            Assert.IsNotNull(result[0]);
+        }
+
+        /// <summary>
+        /// test for null input Category Text returns null result
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetCategorySuggetionTest_NullSubCategoryText()
+        {
+            var result = _masterDataRepo.GetCategorySuggetion(null);
+        }
+
+        /// <summary>
+        /// test for invalid input CategoryText returns null result
+        /// </summary>
+        [TestMethod]
+        public void GetCategorySuggetionTest_InvalidSubCategory()
+        {
+            var result = _masterDataRepo.GetCategorySuggetion("qwer");
+            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -80,9 +117,13 @@ namespace Classifieds.MastersData.Repository.Test
             //Arrange
             Category dataObject = new Category
             {
-                ListingCategory = "test",
-                SubCategory = new String[] { "Test1", "Test2", "Test3" },
-                Image = "Automobile.png"
+                ListingCategory = "Automotive",
+                SubCategory = new String[] { "Car",
+                                            "Motor Cycle",
+                                            "Scooter",
+                                            "Bicycle",
+                                            "Accessories" },
+                Image = "Automotive.png"
             };
 
             //Act
