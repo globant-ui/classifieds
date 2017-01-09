@@ -11,22 +11,23 @@ namespace Classifieds.Listings.Repository
 {
     public class ListingRepository : DBRepository,IListingRepository
     {
-        //private const string COLLECTION_Classifieds = "Listing";
-        private string COLLECTION_Classifieds = ConfigurationManager.AppSettings["ListingCollection"];
-        //MongoCollection<Listing> classifieds
-        //{
-        //    get { return Database.GetCollection<Listing>(COLLECTION_Classifieds); }
-        //}
-        private IDBRepository _dbRepository;
+        #region Private Variables
+        private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];        
+        private readonly IDBRepository _dbRepository;
+        MongoCollection<Listing> classifieds
+        {
+            get { return _dbRepository.GetCollection<Listing>(_collectionClassifieds); }
+        }
+        #endregion
+
+        #region Constructor
         public ListingRepository(IDBRepository DBRepository)
         {
             _dbRepository = DBRepository;
         }
+        #endregion
 
-        MongoCollection<Listing> classifieds
-        {
-            get { return _dbRepository.GetCollection<Listing>(COLLECTION_Classifieds); }
-        }
+        #region Public Methods
         /// <summary>
         /// Returns a listing based on listing id
         /// </summary>
@@ -89,7 +90,7 @@ namespace Classifieds.Listings.Repository
             }
             catch (MongoException ex)
             {
-                return null;
+                throw ex;
             }
         }
 
@@ -103,15 +104,12 @@ namespace Classifieds.Listings.Repository
             try
             {
                 var result = this.classifieds.Save(listing);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-                    //Trace.TraceError(result.LastErrorMessage);    
-                }
+                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage){ }
                 return listing;
             }
             catch (Exception ex)
             {
-                return null; //throw ex;
+                throw ex;
             }
         }
 
@@ -152,16 +150,12 @@ namespace Classifieds.Listings.Repository
 
 
                 var result = this.classifieds.Update(query, update);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-                    //Trace.TraceError(result.LastErrorMessage);
-                }
-
+                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage){ }
                 return listObj;
             }
             catch (Exception ex)
             {
-               return null; //throw ex;
+               throw ex;
             }
         }
 
@@ -175,10 +169,7 @@ namespace Classifieds.Listings.Repository
             try
             {                
                 var query = Query<Listing>.EQ(p => p._id, id.ToString());
-                var result = this.classifieds.Remove(query);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                { //Trace.TraceError(result.LastErrorMessage);
-                }
+                var result = this.classifieds.Remove(query);                
             }
             catch (Exception ex)
             {
@@ -186,14 +177,18 @@ namespace Classifieds.Listings.Repository
             }
         }
 
+        /// <summary>
+        /// Returns top listing object collection
+        /// </summary>
+        /// <param name="noOfRecords">integer value for retrieving number of records for listing collection</param>
+        /// <returns>Listing collection</returns>
         public List<Listing> GetTopListings(int noOfRecords)
         {
             try
-            {
-             
-                SortByBuilder sbb = new SortByBuilder();
-                sbb.Descending("_id");
-                var result = this.classifieds.FindAllAs<Listing>().SetSortOrder(sbb).SetLimit(noOfRecords);
+            {             
+                SortByBuilder sortBuilder = new SortByBuilder();
+                sortBuilder.Descending("_id");
+                var result = this.classifieds.FindAllAs<Listing>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
                 return result.ToList();
             }
             catch (Exception ex)
@@ -201,5 +196,7 @@ namespace Classifieds.Listings.Repository
                 throw ex;
             }
         }
+        #endregion
+
     }
 }

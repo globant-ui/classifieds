@@ -2,20 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Classifieds.Search.BusinessEntities;
+using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.Repository;
 #endregion  
 
 namespace Classifieds.Search.BusinessServices
 {
+    /// <summary>
+    /// This SearchService implements ISearchService
+    /// class name: SearchService 
+    /// Purpose : This class is used for Global Search in all categorys.
+    /// Created By : Amol Pawar
+    /// Created Date: 08/12/2016
+    /// Modified by :
+    /// Modified date:
+    /// </summary>
     public class SearchService : ISearchService
     {
         #region Private Variables
-
-            private ISearchRepository _searchRepository;
-
+        private readonly ISearchRepository _searchRepository;
         #endregion
 
         #region Constructor
@@ -29,11 +34,11 @@ namespace Classifieds.Search.BusinessServices
 
         #region Public Methods
         /// <summary>
-        /// 
+        /// Used for FullTextSearch()
         /// </summary>
         /// <param name="searchText"></param>
         /// <returns></returns>
-        public List<Classified> FullTextSearch(string searchText)
+        public List<Listing> FullTextSearch(string searchText)
         {
             try
             {

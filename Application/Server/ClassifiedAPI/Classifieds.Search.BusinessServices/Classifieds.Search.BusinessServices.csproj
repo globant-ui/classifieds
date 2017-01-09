@@ -45,9 +45,9 @@
     <Compile Include="SearchService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Classifieds.Search.BusinessEntities\Classifieds.Search.BusinessEntities.csproj">
-      <Project>{cefc4fa4-895d-435c-9aaa-8b4af4c3aadf}</Project>
-      <Name>Classifieds.Search.BusinessEntities</Name>
+    <ProjectReference Include="..\Classifieds.Listings.BusinessEntities\Classifieds.Listings.BusinessEntities.csproj">
+      <Project>{1ff950d6-172e-4732-80d5-c192669f3e18}</Project>
+      <Name>Classifieds.Listings.BusinessEntities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Classifieds.Search.Repository\Classifieds.Search.Repository.csproj">
       <Project>{9b4e84fd-6331-4b4f-a82d-6ad79d7a7c62}</Project>

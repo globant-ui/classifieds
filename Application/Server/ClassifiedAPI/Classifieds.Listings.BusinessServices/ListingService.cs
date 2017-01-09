@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Classifieds.Listings.BusinessEntities;
 using Classifieds.Listings.Repository;
 
@@ -10,14 +8,23 @@ namespace Classifieds.Listings.BusinessServices
 {
     public class ListingService : IListingService
     {
-        private IListingRepository _listingRepository;
+        #region Private Variables
+        private readonly IListingRepository _listingRepository;
+        #endregion
 
+        #region Constructor
         public ListingService(IListingRepository ListingRepository)
-        {
-            //_listingRepository = new ListingRepository();
+        {            
             _listingRepository = ListingRepository;
         }
+        #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Returns the collection of listing for given id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <returns></returns>
         public List<Listing> GetListingById(string id)
         {
             try
@@ -46,6 +53,7 @@ namespace Classifieds.Listings.BusinessServices
                 throw ex;
             }
         }
+       
         /// <summary>
         /// service method returns collection of listing
         /// </summary>
@@ -63,12 +71,16 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
-
-        public Listing CreateListing(Listing listObject)
+        /// <summary>
+        /// Create new listing item into the database
+        /// </summary>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public Listing CreateListing(Listing listing)
         {
             try
             {
-                return _listingRepository.Add(listObject);
+                return _listingRepository.Add(listing);
             }
             catch (Exception ex)
             {
@@ -76,11 +88,17 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
-        public Listing UpdateListing(string id, Listing listObject)
+        /// <summary>
+        /// Update listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public Listing UpdateListing(string id, Listing listing)
         {
             try
             {
-                return _listingRepository.Update(id, listObject);
+                return _listingRepository.Update(id.ToString(), listing);
             }
             catch (Exception ex)
             {
@@ -88,11 +106,15 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
+        /// <summary>
+        /// Delete listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
         public void DeleteListing(string id)
         {
             try
             {
-                _listingRepository.Delete(id);
+                _listingRepository.Delete(id.ToString());
             }
             catch (Exception ex)
             {
@@ -100,6 +122,11 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
+        /// <summary>
+        /// Returns top listings from database  
+        /// </summary>
+        /// <param name="noOfRecords">Number of listing collection to be return </param>
+        /// <returns></returns>
         public List<Listing> GetTopListings(int noOfRecords)
         {
             try
@@ -111,5 +138,6 @@ namespace Classifieds.Listings.BusinessServices
                 throw ex;
             }
         }
+        #endregion
     }
 }

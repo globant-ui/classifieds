@@ -32,12 +32,7 @@ namespace Classifieds.NLog.MongoDB
             set { _Database = value; }
         }
         private string _Database;
-
-        //internal void TestWrite(LogEventInfo logEvent)
-        //{
-        //	Write(logEvent);
-        //}
-
+       
         public void TestWrite(LogEventInfo logEvent)
         {
             Write(logEvent);

@@ -66,9 +66,6 @@
       <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Nlog.MongoDB">
-      <HintPath>..\Nlog.MongoDB\bin\Debug\Nlog.MongoDB.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -92,6 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Classifieds.Nlog.MongoDB\Classifieds.Nlog.MongoDB.csproj">
+      <Project>{22632564-3554-4398-aa25-480f89166f59}</Project>
+      <Name>Classifieds.Nlog.MongoDB</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

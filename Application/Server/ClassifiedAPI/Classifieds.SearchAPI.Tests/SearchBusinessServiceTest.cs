@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Moq;
-using Classifieds.Search.BusinessEntities;
+using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Search.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -44,12 +44,12 @@ namespace Classifieds.SearchAPI.Tests
         public void BusinessService_FreeTextSearch_EmptyResult_Test()
         {
             //Arrange
-            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(new List<Classified>() { new Classified() });
+            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(new List<Listing>() { new Listing() });
             //Act
             var result = _service.FullTextSearch("searchText");
             //Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(IList<Classified>));
+            Assert.IsInstanceOfType(result, typeof(IList<Listing>));
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace Classifieds.SearchAPI.Tests
         #region Private Methods
         private void SetUpClassifields()
         {
-            var classified = new Classified()
+            var classified = new Listing()
             {
                 ListingType = "test",
                 ListingCategory = "test",
@@ -89,10 +89,10 @@ namespace Classifieds.SearchAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = "test"
+                Photos = new string[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
 
-            var classifiedList = new List<Classified>();
+            var classifiedList = new List<Listing>();
             classifiedList.Add(classified);
             _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(classifiedList);
 

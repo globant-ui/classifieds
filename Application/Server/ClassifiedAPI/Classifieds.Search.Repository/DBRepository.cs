@@ -10,8 +10,8 @@ namespace Classifieds.Search.Repository
 {
     public class DBRepository
     {
-        private string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["SearchDBConnectionString"].ConnectionString;
-        private string DATABASE = ConfigurationManager.AppSettings["SearchDB"];
+        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["SearchDBConnectionString"].ConnectionString;
+        private readonly string _database = ConfigurationManager.AppSettings["SearchDB"];
 
         private MongoClient client = null;
         private MongoServer server = null;
@@ -19,14 +19,14 @@ namespace Classifieds.Search.Repository
 
         public DBRepository()
         {
-            client = new MongoClient(CONNECTION_STRING);
+            client = new MongoClient(_connectionString);
             server = client.GetServer();
-            db = server.GetDatabase(DATABASE);
+            db = server.GetDatabase(_database);
         }
 
         protected MongoDatabase Database
         {
-            get { return server.GetDatabase(DATABASE); }
+            get { return server.GetDatabase(_database); }
         }
     }
 }

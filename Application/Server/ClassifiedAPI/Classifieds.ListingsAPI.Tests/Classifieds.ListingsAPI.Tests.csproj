@@ -69,10 +69,16 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ListingBusinessServiceTest.cs" />
     <Compile Include="ListingControllerTest.cs" />
+    <Compile Include="ListingRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Classifieds.Common\Classifieds.Common.csproj">
+      <Project>{B67F4456-5934-4AA2-A613-3F927DAD8DCA}</Project>
+      <Name>Classifieds.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Classifieds.Listings.BusinessEntities\Classifieds.Listings.BusinessEntities.csproj">
       <Project>{1ff950d6-172e-4732-80d5-c192669f3e18}</Project>
       <Name>Classifieds.Listings.BusinessEntities</Name>
@@ -91,6 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

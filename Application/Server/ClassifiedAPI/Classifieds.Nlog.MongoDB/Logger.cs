@@ -13,7 +13,7 @@ namespace Classifieds.NLog.MongoDB
 
         NLog.MongoDB.MongoRepository objnlogmongo =
                new NLog.MongoDB.MongoRepository(MongoServerSettings.FromUrl(
-                   new MongoUrl(ConfigurationManager.ConnectionStrings["SearchDBConnectionString"].ConnectionString)), ConfigurationManager.AppSettings["Logging"]);
+                   new MongoUrl(ConfigurationManager.ConnectionStrings["LoggingDBConnectionString"].ConnectionString)), ConfigurationManager.AppSettings["Logging"]);
         void ILogger.Log(Exception ex,string userId)
         {
             string LoggerName = ConfigurationManager.AppSettings["Logging"].ToString();

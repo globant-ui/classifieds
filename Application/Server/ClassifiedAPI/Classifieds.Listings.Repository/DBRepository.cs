@@ -1,38 +1,47 @@
 ﻿using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Classifieds.Listings.Repository
 {
     public class DBRepository: IDBRepository
     {
+        #region Private Variables
+        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["ListingConnectionString"].ConnectionString;
+        private readonly string _database = ConfigurationManager.AppSettings["ListingDBName"];
 
-        private string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["ListingConnectionString"].ConnectionString;
-        private string DATABASE = ConfigurationManager.AppSettings["ListingDBName"];
+        private readonly MongoClient client = null;
+        private readonly MongoServer server = null;
+        private readonly MongoDatabase db = null;
+        #endregion
 
-        private MongoClient client = null;
-        private MongoServer server = null;
-        private MongoDatabase db = null;
-
+        #region Constructor
         public DBRepository()
         {
-            client = new MongoClient(CONNECTION_STRING);
+            client = new MongoClient(_connectionString);
             server = client.GetServer();
-            db = server.GetDatabase(DATABASE);
+            db = server.GetDatabase(_database);
         }
+        #endregion
 
+        /// <summary>
+        /// gets a mongodatabase instance representing a database on the server
+        /// </summary>
         protected MongoDatabase Database
         {
-            get { return server.GetDatabase(DATABASE); }
+            get { return server.GetDatabase(_database); }
         }
 
+        #region Public Methods
+        /// <summary>
+        /// This methods returns the mongo collection instance representing a collection on database
+        /// </summary>
+        /// <typeparam name="Listing">document type</typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public MongoCollection<Listing> GetCollection<Listing>(string name)
         {
             return db.GetCollection<Listing>(name);
         }
+        #endregion
     }
 }

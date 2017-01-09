@@ -1,4 +1,5 @@
-﻿using Classifieds.Listings.BusinessEntities;
+﻿using Classifieds.Common;
+using Classifieds.Listings.BusinessEntities;
 using Classifieds.Listings.BusinessServices;
 using System;
 using System.Collections.Generic;
@@ -6,23 +7,39 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
+    /// <summary>
+    /// This Service is used to perform CRUD operation on Listings
+    /// class name: ListingsController
+    /// Purpose : This class is used for to implement get/post/put/delete methods on listings
+    /// Created By : Suyash, Santosh
+    /// Created Date: 08/12/2016
+    /// Modified by :
+    /// Modified date: 
+    /// </summary>
+    [EnableCors("http://localhost:3000", "*", "*")]
     public class ListingsController : ApiController
     {
-        private IListingService _listingService;
+        #region Private Variable
+        private readonly IListingService _listingService;
+        private readonly ILogger _logger;
+        #endregion
 
-        public ListingsController(IListingService listingService)
+        #region Constructor
+        /// <summary>
+        /// The class constructor. 
+        /// </summary>
+        public ListingsController(IListingService listingService, ILogger logger)
         {
             _listingService = listingService;
+            _logger = logger;
         }
+        #endregion
 
-        public string Get()
-        {
-            return "Hi Classifieds";
-        }
-
+        #region Public Methods
         /// <summary>
         /// Returns the listing for given id
         /// </summary>
@@ -35,11 +52,9 @@ namespace Classifieds.ListingsAPI.Controllers
                 return _listingService.GetListingById(id).ToList();
             }
             catch (Exception ex)
-            {
-                //log exception
-                throw ex;
+            {               
+                throw _logger.Log(ex, "Globant/User");
             }
-
         }
 
         /// <summary>
@@ -54,8 +69,8 @@ namespace Classifieds.ListingsAPI.Controllers
                 return _listingService.GetListingsBySubCategory(subCategory).ToList();
             }
             catch (Exception ex)
-            {
-                throw ex;
+            {               
+                throw _logger.Log(ex, "Globant/User");
             }
         }
 
@@ -71,69 +86,64 @@ namespace Classifieds.ListingsAPI.Controllers
                 return _listingService.GetListingsByCategory(category).ToList();
             }
             catch (Exception ex)
-            {
-                //log exception
-                throw ex;
+            {               
+                throw _logger.Log(ex, "Globant/User");
             }
         }
 
-        public HttpResponseMessage Post(Listing listingObj)
+        /// <summary>
+        /// Insert new listing item into the database
+        /// </summary>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public HttpResponseMessage Post(Listing listing)
         {
             HttpResponseMessage result = null;
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var Classified = _listingService.CreateListing(listingObj);
-                    result = Request.CreateResponse<Listing>(HttpStatusCode.Created, Classified);
-                    string newItemURL = Url.Link("Listings", new { id = Classified._id });
-                    result.Headers.Location = new Uri(newItemURL);
-                }
-                catch (Exception ex)
-                {
-                    //log exception //Trace.TraceError(ex.Message, ex);
-                    result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                }
+                var classified = _listingService.CreateListing(listing);
+                result = Request.CreateResponse<Listing>(HttpStatusCode.Created, classified);
+                string newItemURL = Url.Link("Listings", new { id = classified._id });
+                result.Headers.Location = new Uri(newItemURL);
             }
-            else
+            catch (Exception ex)
             {
-                result = GetBadRequestResponse();
+                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
+                throw _logger.Log(ex, "Globant/User");
             }
-
             return result;
         }
 
-        public HttpResponseMessage Put(string id, Listing value)
+        /// <summary>
+        /// Update listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public HttpResponseMessage Put(string id, Listing listing)
         {
             HttpResponseMessage result = null;
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                   var Classified = _listingService.UpdateListing(id, value);
-                    result = Request.CreateResponse<Listing>(HttpStatusCode.Accepted, Classified);
-                    //result = Request.CreateResponse(HttpStatusCode.NoContent);
-                }
-                catch (Exception ex)
-                {
-                    //Trace.TraceError(ex.Message, ex);
-                    result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                }
+                var classified = _listingService.UpdateListing(id, listing);
+                result = Request.CreateResponse<Listing>(HttpStatusCode.Accepted, classified);
             }
-            else
+            catch (Exception ex)
             {
-                result = GetBadRequestResponse();
+                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
+                throw _logger.Log(ex, "Globant/User");
             }
-
             return result;
         }
 
+        /// <summary>
+        /// Delete listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <returns></returns>
         public HttpResponseMessage Delete(string id)
         {
             HttpResponseMessage result = null;
-
             try
             {
                 _listingService.DeleteListing(id);
@@ -141,29 +151,17 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {
-                //Trace.TraceError(ex.Message, ex);
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
+                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
+                throw _logger.Log(ex, "Globant/User");
             }
-
             return result;
         }
 
-        private HttpResponseMessage GetBadRequestResponse()
-        {
-            HttpResponseMessage response = null;
-            List<string> errors = new List<string>();
-            foreach (var modelSt in ModelState.Values)
-            {
-                foreach (var error in modelSt.Errors)
-                {
-                    errors.Add(error.ErrorMessage);
-                }
-            }
-
-            response = Request.CreateResponse<IEnumerable<string>>(HttpStatusCode.BadRequest, errors);
-            return response;
-        }
-
+        /// <summary>
+        /// Returns top listings from database  
+        /// </summary>
+        /// <param name="noOfRecords">Number of records to be return </param>
+        /// <returns></returns>
         public List<Listing> GetTopListings(int noOfRecords=10)
         {
             try
@@ -172,8 +170,9 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw _logger.Log(ex, "Globant/User");
             }
         }
+        #endregion
     }
 }
