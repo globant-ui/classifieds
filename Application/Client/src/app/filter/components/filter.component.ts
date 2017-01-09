@@ -32,8 +32,6 @@ export class FilterComponent {
   {
     this.filterData=this._settingsService.getFilterListingData();
   }
-
-
   showCards(category){
     this.categoryUrl = this.filterCategoryUrl+category;
     this._cservice.observableGetHttp(this.categoryUrl,null,false)
