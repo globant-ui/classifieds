@@ -37,9 +37,13 @@ namespace Classifieds.MastersData.BusinessServices.Test
         {
             Category dataObject = new Category
             {
-                ListingCategory = "test",
-                SubCategory = new String[] { "Test1", "Test2", "Test3" },
-                Image = "Automobile.png"
+                ListingCategory = "Automotive",
+                SubCategory = new String[] { "Car",
+                                            "Motor Cycle",
+                                            "Scooter",
+                                            "Bicycle",
+                                            "Accessories" },
+                Image = "Automotive.png"
 
             };
             return dataObject;
@@ -136,6 +140,21 @@ namespace Classifieds.MastersData.BusinessServices.Test
         }
         #endregion
 
+        /// <summary>
+        /// test positive scenario for GetListingsBySubCategory  
+        /// </summary>
+        [TestMethod]
+        public void GetCategorySuggetionTest()
+        {
+            // Arrange
+            SetUpClassifiedsMasterData();
+            _moqAppManager.Setup(x => x.GetCategorySuggetion(It.IsAny<string>())).Returns(classifiedcategory);
 
+            //Act
+            var result = _service.GetCategorySuggetion("Auto");
+
+            //Assert
+            Assert.AreEqual(result.Count, 1);
+        }
     }
 }

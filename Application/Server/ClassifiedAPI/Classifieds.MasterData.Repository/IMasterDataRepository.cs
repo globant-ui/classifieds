@@ -9,5 +9,6 @@ namespace Classifieds.MastersData.Repository
         Category AddCategory(Category listObject);
         Category UpdateCategory(string id, Category listObject);
         void DeleteCategory(string id);
+        List<Category> GetCategorySuggetion(string categoryText);
     }
 }

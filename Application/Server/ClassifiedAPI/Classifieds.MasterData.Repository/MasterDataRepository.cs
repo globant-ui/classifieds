@@ -49,6 +49,32 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
+
+        #region GetCategorySuggetion
+        /// <summary>
+        /// Returns All Categgries matching the imput text.
+        /// </summary>
+        /// <param name="catText">Category Text</param>
+        /// <returns>Category List</returns>
+        public List<Category> GetCategorySuggetion(string categoryText)
+        {
+            try
+            {
+                var partialRresult = this.classifieds.FindAll()
+                                    .Where(p => p.ListingCategory.StartsWith(categoryText))
+                                    .ToList();
+                List<Category> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
         #region AddCategory
 
         /// <summary>

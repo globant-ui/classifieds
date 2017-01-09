@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common;
+using System.Web.Http.Cors;
 
 namespace Classifieds.MasterDataAPI.Controllers
 {
@@ -19,6 +20,8 @@ namespace Classifieds.MasterDataAPI.Controllers
     /// Modified by :
     /// Modified date: 
     /// </summary>
+
+    [EnableCors("http://localhost:3000", "*", "*")]
     public class CategoryController : ApiController
     {
         #region Private Variable
@@ -52,6 +55,25 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 return _masterDataService.GetAllCategory().ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw _logger.Log(ex, "Globant/User");
+            }
+        }
+        #endregion
+        #region GetCategorySuggestion
+        /// <summary>
+        /// Returns All Categgries matching the imput text.
+        /// </summary>
+        /// <param name="categoryText">Category Text</param>
+        /// <returns>Category List</returns>
+        public List<Category> GetCategorySuggetion(string categoryText)
+        {
+            try
+            {
+                return _masterDataService.GetCategorySuggetion(categoryText).ToList();
 
             }
             catch (Exception ex)

@@ -40,6 +40,27 @@ namespace Classifieds.MastersData.BusinessServices
         }
 
         #endregion
+        
+        /// <summary>
+        /// Returns All Categgries matching the imput text.
+        /// </summary>
+        /// <param name="catText">Category Text</param>
+        /// <returns>Category List</returns>
+        #region GetCategorySuggetion
+
+        public List<Category> GetCategorySuggetion(string categoryText)
+        {
+            try
+            {
+                return _masterDataRepository.GetCategorySuggetion(categoryText).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
 
         #region CreateCategory
 
