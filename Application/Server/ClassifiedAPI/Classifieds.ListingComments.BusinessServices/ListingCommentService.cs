@@ -71,7 +71,7 @@ namespace Classifieds.ListingComments.BusinessServices
         {
             try
             {
-                return _listingCommentRepository.UpdateListingComment(id.ToString(), listObject);
+                return _listingCommentRepository.UpdateListingComment(id, listObject);
             }
             catch (Exception ex)
             {
@@ -91,7 +91,7 @@ namespace Classifieds.ListingComments.BusinessServices
         {
             try
             {
-                _listingCommentRepository.DeleteListingComment(id.ToString());
+                _listingCommentRepository.DeleteListingComment(id);
             }
             catch (Exception ex)
             {

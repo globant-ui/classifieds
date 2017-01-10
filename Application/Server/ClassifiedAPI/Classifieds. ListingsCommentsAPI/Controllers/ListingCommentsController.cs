@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Classifieds.ListingCommentsAPI.Controllers
 {
@@ -19,6 +20,7 @@ namespace Classifieds.ListingCommentsAPI.Controllers
     /// Modified by :
     /// Modified date: 
     /// </summary>
+    [TestClass]
     public class ListingCommentsController : ApiController
     {
         #region Private Variable
@@ -28,7 +30,7 @@ namespace Classifieds.ListingCommentsAPI.Controllers
 
         #endregion
 
-        #region MastersDataController
+        #region ListingCommentsController
         /// <summary>
         /// The class constructor. 
         /// </summary>
