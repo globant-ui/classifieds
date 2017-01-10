@@ -58,7 +58,7 @@
               font-size: 0.631em;
               text-transform: uppercase;
             }
-            a.expandListIcon{
+            .expandListIcon{
               display:none;
             }
           }
@@ -154,6 +154,7 @@
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
                 font-size:0.857em;
+                width: 80%;
               }
               span.spriteimage{
                 display: none;
@@ -161,9 +162,10 @@
               ul.hoverlistWrapper, button{
                 display: none;
               }
-              a.expandListIcon{
+              .expandListIcon{
                 display:inline-block;
                 float: right;
+                padding-top: 15px;
               }
             }
             li:hover{
@@ -187,6 +189,7 @@
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
                 font-size:0.857em;
+                width: 80%;
               }
             }
           }
@@ -230,6 +233,7 @@
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
                 font-size:0.857em;
+                width: 80%;
               }
               span.spriteimage{
                 display: none;
@@ -237,9 +241,10 @@
               ul.hoverlistWrapper, button{
                 display: none;
               }
-              a.expandListIcon{
+              .expandListIcon{
                 display:inline-block;
                 float: right;
+                padding-top: 15px;
               }
             }
             li:hover{
@@ -263,6 +268,7 @@
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
                 font-size:0.857em;
+                width: 80%;
               }
             }
           }
