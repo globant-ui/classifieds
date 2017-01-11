@@ -46,6 +46,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         #endregion
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for Get All ListingComments
+        /// </summary>
         public void GetAllListingCommentTest(string listingId)
         {
             SetUpClassifiedsListingComments();
@@ -65,22 +68,20 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
-        public void GetAllCategory_EmptyCategoryTest(string listingId)
+        /// <summary>
+        /// test negative scenario for empty category
+        /// </summary>
+        public void GetAllListingComment_EmptyCategoryTest(string listingId)
         {
             mockService.Setup(x => x.GetAllListingComment(listingId))
             .Returns(new List<ListingComment>() { new ListingComment() });
             var controller = new ListingCommentsController(mockService.Object, logger.Object);
-
-            ////Act
-            //List<ListingComment> objList = new List<ListingComment>();
-            //objList = controller.GetAllListingComment();
-
-            ////Assert
-            //Assert.AreEqual(objList.Count, 1);
-            //var result = controller.GetAllListingComment();
         }
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for Post category
+        /// </summary>
         public void Controller_PostListingCommentsTest()
         {
             // Arrange
@@ -112,6 +113,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for PostListingComments and verify response header location
+        /// </summary>
         public void Controller_PostListingCommentsTest_SetsLocationHeader_MockURLHelperVersion()
         {
             // This version uses a mock UrlHelper.
@@ -140,6 +144,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
             Assert.AreEqual(true, response.IsSuccessStatusCode);
         }
 
+        /// <summary>
+        /// for Get Data Object of ListingComments
+        /// </summary>
         private ListingComment GetlistingCommentsObject()
         {
             ListingComment dataObject = new ListingComment
@@ -157,6 +164,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for deleting ListingComments
+        /// </summary>
         public void Controller_DeleteListingCommentsTest()
         {
             // Arrange
@@ -178,6 +188,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        /// test for deleting listing comments object throws exception
+        /// </summary>
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_DeleteListingComments_ThrowsException()
         {
@@ -186,6 +199,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for updating listing Comments
+        /// </summary>
         public void Controller_UpdateListingCommentsTest()
         {
             // Arrange
@@ -213,6 +229,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        ///  test for updating listing with null listing id throws exception
+        /// </summary>
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_UpdateListingComments_ThrowsException()
         {

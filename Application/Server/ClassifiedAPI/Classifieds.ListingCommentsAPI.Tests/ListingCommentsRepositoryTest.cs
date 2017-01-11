@@ -50,6 +50,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region Unit Test Cases
         [TestMethod]
+        // <summary>
+        /// test positive scenario for Get Create listing comments  
+        /// </summary>
         public void Repo_CreateListingCommentTest()
         {
             //Arrange
@@ -64,7 +67,10 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
-        public void Repo_DeleteMasterDataTest()
+        /// <summary>
+        /// test positive scenario for Delete ListingComments by Id
+        /// </summary>
+        public void Repo_DeleteListingCommentsTest()
         {
             //Arrange
             ListingComment dataObject = GetListingCommentObject();
@@ -76,10 +82,12 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
             //Asserts
             Assert.IsTrue(true);
-
         }
 
         [TestMethod]
+        /// <summary>
+        /// test for incorrect id returns exception
+        /// </summary>
         [ExpectedException(typeof(FormatException))]
         public void Repo_DeleteListingCommentTest_InvalidId()
         {
@@ -88,6 +96,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        /// test for null id returns exception
+        /// </summary>
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_DeleteListCommentsTest_NUllId()
         {
@@ -96,7 +107,10 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
-        public void Repo_UpdateMasterDataTest()
+        /// <summary>
+        /// test positive scenario for updating Listing Comments object
+        /// </summary>
+        public void Repo_UpdateListingCommentsTest()
         {
             //Arrange
             ListingComment lstObject = GetListingCommentObject();

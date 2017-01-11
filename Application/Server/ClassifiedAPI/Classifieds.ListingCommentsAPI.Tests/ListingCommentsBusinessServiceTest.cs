@@ -53,6 +53,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         #region Unit Test Cases
 
         [TestMethod]
+        /// <summary>
+        /// test negative scenario for throw Exception
+        /// </summary>
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetAllListingComment_ThrowsException(string listingId)
         {
@@ -61,7 +64,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
 
         /// <summary>
-        /// tests the positive test criteria
+        /// tests the positive test criteria for Get All Listing Comments
         /// </summary>
         [TestMethod]
         public void GetAllListingCommentTest(string listingId)
@@ -79,6 +82,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for Post Listing Comments
+        /// </summary>
         public void PostListingCommentTest()
         {
             //Arrange
@@ -95,6 +101,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for Delete Listing Comments
+        /// </summary>
         public void DeleteListingCommentTest()
         {
             //Arrange
@@ -110,13 +119,16 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
-        public void DeleteCategoryTest_InvalidId()
+        public void DeleteListingCommentTest_InvalidId()
         {
             _service.DeleteListingComment(null);
             Assert.IsTrue(true);
         }
 
         [TestMethod]
+        /// <summary>
+        /// test positive scenario for Update Listing Comment
+        /// </summary>
         public void PutListingCommentTest()
         {
             //Arrange
@@ -132,6 +144,9 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
 
         [TestMethod]
+        /// <summary>
+        /// test negative scenario for invalid DeleteList
+        /// </summary>
         public void PutListingCommentTest_InvalidId()
         {
             var updatedData = new ListingComment() { UpdatedBy = "santosh.kale@globant.com", UpdatedDate = "10/01/2017", Comments= "is this available",ListingId= "5873490a48bd151ef5d67a29",SubmittedDate= "03/01/2017", SubmittedBy= "v.wadsamudrakar@globant.com" };
