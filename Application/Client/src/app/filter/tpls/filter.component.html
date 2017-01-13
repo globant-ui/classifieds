@@ -1,4 +1,3 @@
 
 <ul class="nav navbar-nav filter">
-  <li class="active" *ngFor="let item of filterData" (click)="showCards(item.listName)"><a>{{item.listName}}</a></li>
-</ul>
+  <li *ngFor="let item of filterData" (click)="showCards(item.listName)"><a class="active">{{item.listName}}</a></li>

@@ -12,7 +12,7 @@
         /*margin:40px 0;*/
         border: 2px solid transparent;
       }
-      a:focus, a:hover, a:active{
+      a:hover, a.active{
         border: 2px solid $green-color;
         color: $active-button-text-color;
         background-color: transparent;
