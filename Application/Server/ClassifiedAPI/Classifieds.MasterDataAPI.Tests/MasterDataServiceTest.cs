@@ -12,7 +12,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
     public class MasterDataServiceTest
     {
         #region Class Variables
-        private Mock<IMasterDataRepository> _moqAppManager;
+        private Mock<IMasterDataRepository<Category>> _moqAppManager;
         private IMasterDataService _service;
         private readonly List<Category> classifiedcategory = new List<Category>();
         private readonly List<string> categoryList = new List<string>();
@@ -22,7 +22,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
         [TestInitialize]
         public void Initialize()
         {
-            _moqAppManager = new Mock<IMasterDataRepository>();
+            _moqAppManager = new Mock<IMasterDataRepository<Category>>();
             _service = new MasterDataService(_moqAppManager.Object);
         }
         #endregion

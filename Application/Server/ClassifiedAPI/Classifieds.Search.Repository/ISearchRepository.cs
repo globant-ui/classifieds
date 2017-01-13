@@ -7,8 +7,8 @@ using Classifieds.Listings.BusinessEntities;
 
 namespace Classifieds.Search.Repository
 {
-    public interface ISearchRepository
+    public interface ISearchRepository<TEntity> where TEntity : Listing
     {
-        List<Listing> FullTextSearch(string searchText);
+        List<TEntity> FullTextSearch(string searchText);        
     }
 }

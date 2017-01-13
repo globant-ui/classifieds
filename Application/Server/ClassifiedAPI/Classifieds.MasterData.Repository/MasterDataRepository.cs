@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Classifieds.MastersData.Repository
 {
-    public class MasterDataRepository : DBRepository, IMasterDataRepository
+    public class MasterDataRepository<TEntity> : DBRepository, IMasterDataRepository<TEntity> where TEntity:Category
     {
         #region MasterDataRepository
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["MasterDataCollection"];
@@ -18,9 +18,9 @@ namespace Classifieds.MastersData.Repository
         {
             _dbRepository = DBRepository;
         }
-        MongoCollection<Category> classifieds
+        MongoCollection<TEntity> classifieds
         {
-            get { return _dbRepository.GetCollection<Category>(_collectionClassifieds); }
+            get { return _dbRepository.GetCollection<TEntity>(_collectionClassifieds); }
         }
 
         #endregion
@@ -30,13 +30,13 @@ namespace Classifieds.MastersData.Repository
         /// Returns a category 
         /// </summary>
         /// <returns>Category</returns>
-        public List<Category> GetAllCategory()
+        public List<TEntity> GetAllCategory()
         {
             try
             {
                 var partialRresult = this.classifieds.FindAll()
                                     .ToList();
-                List<Category> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
+                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
 
                 return result;
@@ -64,7 +64,7 @@ namespace Classifieds.MastersData.Repository
                 var partialRresult = this.classifieds.FindAll()
                                     .Where(p => p.ListingCategory.StartsWith(categoryText))
                                     .ToList();
-                List<Category> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
+                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
                 if (result != null)
                     myCategory = result.Select(l => l.ListingCategory).ToList();
@@ -86,7 +86,7 @@ namespace Classifieds.MastersData.Repository
         /// </summary>
         /// <param name="object">Category object</param>
         /// <returns>return newly added Category object</returns>
-        public Category AddCategory(Category category)
+        public TEntity AddCategory(TEntity category)
         {
             try
             {
@@ -114,12 +114,12 @@ namespace Classifieds.MastersData.Repository
         /// <returns>return updated category object</returns>
         /// 
 
-        public Category UpdateCategory(string id, Category dataObj)
+        public TEntity UpdateCategory(string id, TEntity dataObj)
         {
             try
             {
-                var query = Query<Category>.EQ(p => p._id, id);
-                var update = Update<Category>.Set(p => p.ListingCategory, dataObj.ListingCategory)
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var update = Update<TEntity>.Set(p => p.ListingCategory, dataObj.ListingCategory)
                                                .Set(p => p.SubCategory, dataObj.SubCategory)
                                                .Set(p => p.Image, dataObj.Image);
 
@@ -149,7 +149,7 @@ namespace Classifieds.MastersData.Repository
         {
             try
             {
-                var query = Query<Category>.EQ(p => p._id, id.ToString());
+                var query = Query<TEntity>.EQ(p => p._id, id.ToString());
                 var result = this.classifieds.Remove(query);
             }
             catch (Exception ex)

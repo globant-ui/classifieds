@@ -3,14 +3,14 @@ using Classifieds.Listings.BusinessEntities;
 
 namespace Classifieds.Listings.Repository
 {
-    public interface IListingRepository
+    public interface IListingRepository<TEntity> where TEntity : Listing
     {
-        List<Listing> GetListingById(string id);
-        List<Listing> GetListingsBySubCategory(string subCategory);
-        List<Listing> GetListingsByCategory(string category);
-        Listing Add(Listing listObject);
-        Listing Update(string id, Listing listObject);
+        List<TEntity> GetListingById(string id);
+        List<TEntity> GetListingsBySubCategory(string subCategory);
+        List<TEntity> GetListingsByCategory(string category);
+        TEntity Add(TEntity entity);
+        TEntity Update(string id, TEntity entity);
         void Delete(string id);
-        List<Listing> GetTopListings(int noOfRecords);
+        List<TEntity> GetTopListings(int noOfRecords);        
     }
 }
