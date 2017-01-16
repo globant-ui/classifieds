@@ -9,20 +9,20 @@ using System.Configuration;
 
 namespace Classifieds.Search.Repository
 {
-    public class SearchRepository : DBRepository, ISearchRepository
+    public class SearchRepository<TEntity> : DBRepository, ISearchRepository<TEntity> where TEntity:Listing
     {
         private readonly string _classifiedsCollection = ConfigurationManager.AppSettings["Collection"];
-        MongoCollection<Listing> classifieds
+        MongoCollection<TEntity> classifieds
         {
-            get { return Database.GetCollection<Listing>(_classifiedsCollection); }
+            get { return Database.GetCollection<TEntity>(typeof(TEntity).Name); }//_classifiedsCollection
         }
     
 
-        public List<Listing> FullTextSearch(string searchText)
+        public List<TEntity> FullTextSearch(string searchText)
         {
             try
             {
-                List<Listing> result = new List<Listing>();
+                List<TEntity> result = new List<TEntity>();
                 result = this.classifieds.Find(Query.Text(searchText)).ToList();
                 return result;
             }

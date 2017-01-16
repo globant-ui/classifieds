@@ -10,14 +10,14 @@ namespace Classifieds.SearchAPI.Tests
    public class SearchRepositoryServiceTest
     {
         #region Private Variables        
-        private ISearchRepository _searchRepo;
+        private ISearchRepository<Listing> _searchRepo;
         #endregion
 
         #region Initialization
         [TestInitialize]
         public void Initialize()
         { 
-            _searchRepo = new SearchRepository();
+            _searchRepo = new SearchRepository<Listing>();
         }
         #endregion
 
