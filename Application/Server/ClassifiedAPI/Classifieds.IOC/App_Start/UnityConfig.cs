@@ -8,7 +8,8 @@ using Classifieds.Listings.BusinessServices;
 using Classifieds.Listings.Repository;
 using Classifieds.MastersData.BusinessServices;
 using Classifieds.MastersData.Repository;
-
+using Classifieds.UserService.BusinessServices;
+using Classifieds.UserService.Repository;
 
 namespace Classifieds.IOC
 {
@@ -37,6 +38,11 @@ namespace Classifieds.IOC
             container.RegisterType<IMasterDataService, MasterDataService>(new HierarchicalLifetimeManager());
             container.RegisterType<IMasterDataRepository, MasterDataRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<MastersData.Repository.IDBRepository, MastersData.Repository.DBRepository>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IUserService, Classifieds.UserService.BusinessServices.UserService>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<UserService.Repository.IDBRepository, UserService.Repository.DBRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICommonDBRepository, CommonDBRepository>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(container);
         }

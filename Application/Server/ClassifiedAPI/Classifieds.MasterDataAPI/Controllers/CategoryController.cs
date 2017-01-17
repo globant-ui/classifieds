@@ -28,17 +28,19 @@ namespace Classifieds.MasterDataAPI.Controllers
 
         private readonly IMasterDataService _masterDataService;
         private readonly ILogger _logger;
-
+        private readonly ICommonDBRepository _commonRepository;
+        private string userEmail = string.Empty;
         #endregion
 
         #region MastersDataController
         /// <summary>
         /// The class constructor. 
         /// </summary>
-        public CategoryController(IMasterDataService masterdataService, ILogger logger)
+        public CategoryController(IMasterDataService masterdataService, ILogger logger, ICommonDBRepository commonRepository)
         {
             _masterDataService = masterdataService;
             _logger = logger;
+            _commonRepository = commonRepository;
         }
 
         #endregion
@@ -54,12 +56,17 @@ namespace Classifieds.MasterDataAPI.Controllers
         {
             try
             {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                userEmail = getUserEmail();
                 return _masterDataService.GetAllCategory().ToList();
-
             }
             catch (Exception ex)
             {
-                throw _logger.Log(ex, "Globant/User");
+                throw _logger.Log(ex, userEmail);
             }
         }
         #endregion
@@ -73,12 +80,18 @@ namespace Classifieds.MasterDataAPI.Controllers
         {
             try
             {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                userEmail = getUserEmail();
                 return _masterDataService.GetCategorySuggetion(categoryText).ToList();
 
             }
             catch (Exception ex)
             {
-                throw _logger.Log(ex, "Globant/User");
+                throw _logger.Log(ex, userEmail);
             }
         }
 
@@ -95,13 +108,19 @@ namespace Classifieds.MasterDataAPI.Controllers
             HttpResponseMessage result = null;
             try
             {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                userEmail = getUserEmail();
                 var classified = _masterDataService.CreateCategory(categoryObj);
                 result = Request.CreateResponse<Category>(HttpStatusCode.Created, classified);
             }
             catch (Exception ex)
             {
                 result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                throw _logger.Log(ex, "Globant/User");
+                throw _logger.Log(ex, userEmail);
             }
 
             return result;
@@ -121,13 +140,19 @@ namespace Classifieds.MasterDataAPI.Controllers
             HttpResponseMessage result = null;
             try
             {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                userEmail = getUserEmail();
                 var classified = _masterDataService.UpdateCategory(id, value);
                 result = Request.CreateResponse<Category>(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
                 result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                throw _logger.Log(ex, "Globant/User");
+                throw _logger.Log(ex, userEmail);
             }
             return result;
         }
@@ -146,18 +171,34 @@ namespace Classifieds.MasterDataAPI.Controllers
 
             try
             {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                userEmail = getUserEmail();
                 _masterDataService.DeleteCategory(id);
                 result = Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)
             {
                 result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                throw _logger.Log(ex, "Globant/User");
+                throw _logger.Log(ex, userEmail);
             }
 
             return result;
         }
 
+        #endregion
+
+        #region private methods
+        private string getUserEmail()
+        {
+            IEnumerable<string> headerValues;
+            HttpRequestMessage message = Request ?? new HttpRequestMessage();
+            bool found = message.Headers.TryGetValues("UserEmail", out headerValues);
+            return headerValues.FirstOrDefault();
+        }
         #endregion
     }
 }

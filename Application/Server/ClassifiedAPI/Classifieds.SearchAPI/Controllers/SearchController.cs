@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Net.Http;
 using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Common;
@@ -26,6 +27,8 @@ namespace Classifieds.SearchAPI.Controllers
         #region Private Variable
         private readonly ISearchService _searchService;
         private readonly ILogger _logger;
+        private readonly ICommonDBRepository _commonRepository;
+        private string userEmail = string.Empty;
         #endregion
 
         #region Constructor
@@ -34,10 +37,11 @@ namespace Classifieds.SearchAPI.Controllers
         /// </summary>
         /// <param name="searchService"></param>
         /// <param name="logger"></param>
-        public SearchController(ISearchService searchService,ILogger logger)
+        public SearchController(ISearchService searchService,ILogger logger, ICommonDBRepository commonRepository)
         {
             _searchService = searchService;
             _logger = logger;
+            _commonRepository = commonRepository;
         }
         #endregion
 
@@ -51,14 +55,29 @@ namespace Classifieds.SearchAPI.Controllers
         {
             try
             {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                userEmail = getUserEmail();
                 return _searchService.FullTextSearch(searchText).ToList();
             }
             catch (Exception ex)
             {
-                //ToDo UseName is hardcoded
-                throw _logger.Log(ex,"Globant/User");
+                throw _logger.Log(ex, userEmail);
             }
 
+        }
+        #endregion
+
+        #region private methods
+        private string getUserEmail()
+        {
+            IEnumerable<string> headerValues;
+            HttpRequestMessage message = Request ?? new HttpRequestMessage();
+            bool found = message.Headers.TryGetValues("UserEmail", out headerValues);
+            return headerValues.FirstOrDefault();
         }
         #endregion
     }
