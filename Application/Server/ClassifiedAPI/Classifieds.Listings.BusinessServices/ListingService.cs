@@ -9,11 +9,11 @@ namespace Classifieds.Listings.BusinessServices
     public class ListingService : IListingService
     {
         #region Private Variables
-        private readonly IListingRepository _listingRepository;
+        private readonly IListingRepository<Listing> _listingRepository;
         #endregion
 
         #region Constructor
-        public ListingService(IListingRepository ListingRepository)
+        public ListingService(IListingRepository<Listing> ListingRepository)
         {            
             _listingRepository = ListingRepository;
         }

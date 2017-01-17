@@ -12,7 +12,7 @@ namespace Classifieds.MastersData.Repository.Test
     public class MasterDataRepositoryTest
     {
         #region Class Variables
-        private IMasterDataRepository _masterDataRepo;
+        private IMasterDataRepository<Category> _masterDataRepo;
         private IDBRepository _dbRepository;
         private readonly List<Category> classifiedCategory = new List<Category>();
         #endregion
@@ -22,7 +22,7 @@ namespace Classifieds.MastersData.Repository.Test
         public void Initialize()
         {
             _dbRepository = new DBRepository();
-            _masterDataRepo = new MasterDataRepository(_dbRepository);
+            _masterDataRepo = new MasterDataRepository<Category>(_dbRepository);
 
         }
         #endregion

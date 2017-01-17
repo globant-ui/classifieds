@@ -12,7 +12,7 @@ namespace Classifieds.ListingsAPI.Tests
     public class ListingBusinessServiceTest
     {
         #region Class Variables
-        private Mock<IListingRepository> _moqAppManager;
+        private Mock<IListingRepository<Listing>> _moqAppManager;
         private IListingService _service;
         private readonly List<Listing> classifiedList = new List<Listing>();
         #endregion
@@ -21,7 +21,7 @@ namespace Classifieds.ListingsAPI.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _moqAppManager = new Mock<IListingRepository>();
+            _moqAppManager = new Mock<IListingRepository<Listing>>();
             _service = new ListingService(_moqAppManager.Object);
         }
         #endregion

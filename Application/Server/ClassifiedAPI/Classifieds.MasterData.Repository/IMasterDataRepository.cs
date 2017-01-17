@@ -3,11 +3,11 @@ using Classifieds.MastersData.BusinessEntities;
 
 namespace Classifieds.MastersData.Repository
 {
-    public interface IMasterDataRepository
+    public interface IMasterDataRepository<TEntity> where TEntity : Category
     {
-        List<Category> GetAllCategory();
-        Category AddCategory(Category listObject);
-        Category UpdateCategory(string id, Category listObject);
+        List<TEntity> GetAllCategory();
+        TEntity AddCategory(TEntity listObject);
+        TEntity UpdateCategory(string id, TEntity listObject);
         void DeleteCategory(string id);
         List<string> GetCategorySuggetion(string categoryText);
     }

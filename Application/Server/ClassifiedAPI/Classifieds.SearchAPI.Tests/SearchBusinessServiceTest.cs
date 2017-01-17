@@ -14,7 +14,7 @@ namespace Classifieds.SearchAPI.Tests
     public class SearchBusinessServiceTest
     {
         #region Private Variables
-            private Mock<ISearchRepository> _moqAppManager;
+            private Mock<ISearchRepository<Listing>> _moqAppManager;
             private ISearchService _service;
         #endregion
 
@@ -22,7 +22,7 @@ namespace Classifieds.SearchAPI.Tests
         [TestInitialize]
             public void Initialize()
             {
-                _moqAppManager = new Mock<ISearchRepository>();
+                _moqAppManager = new Mock<ISearchRepository<Listing>>();
                 _service = new SearchService(_moqAppManager.Object);
             }
         #endregion

@@ -85,6 +85,10 @@
       <Project>{b67f4456-5934-4aa2-a613-3f927dad8dca}</Project>
       <Name>Classifieds.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Classifieds.Listings.BusinessEntities\Classifieds.Listings.BusinessEntities.csproj">
+      <Project>{1FF950D6-172E-4732-80D5-C192669F3E18}</Project>
+      <Name>Classifieds.Listings.BusinessEntities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Classifieds.Listings.BusinessServices\Classifieds.Listings.BusinessServices.csproj">
       <Project>{8b29d5e3-0305-47d2-8a31-013a2badfcf2}</Project>
       <Name>Classifieds.Listings.BusinessServices</Name>
@@ -92,6 +96,10 @@
     <ProjectReference Include="..\Classifieds.Listings.Repository\Classifieds.Listings.Repository.csproj">
       <Project>{46cc0d61-079e-4375-b3a5-e1ef9cde7736}</Project>
       <Name>Classifieds.Listings.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Classifieds.MasterData.BusinessEntities\Classifieds.MastersData.BusinessEntities.csproj">
+      <Project>{187EC293-A3DB-4B4B-A8AE-7BF688E049F6}</Project>
+      <Name>Classifieds.MastersData.BusinessEntities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Classifieds.MasterData.BusinessServices\Classifieds.MastersData.BusinessServices.csproj">
       <Project>{dac4426d-54f6-4a51-9303-7f5374b68713}</Project>

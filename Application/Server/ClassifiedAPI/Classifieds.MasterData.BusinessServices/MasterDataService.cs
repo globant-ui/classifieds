@@ -11,11 +11,11 @@ namespace Classifieds.MastersData.BusinessServices
     {
         #region MasterDataService
 
-        private readonly IMasterDataRepository _masterDataRepository;
+        private readonly IMasterDataRepository<Category> _masterDataRepository;
         /// <summary>
         /// The class constructor. 
         /// </summary>
-        public MasterDataService(IMasterDataRepository MasterDataRepository)
+        public MasterDataService(IMasterDataRepository<Category> MasterDataRepository)
         {
             _masterDataRepository = MasterDataRepository;
         }

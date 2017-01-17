@@ -9,14 +9,15 @@ using System.Linq;
 
 namespace Classifieds.Listings.Repository
 {
-    public class ListingRepository : DBRepository,IListingRepository
+    public class ListingRepository<TEntity> : DBRepository, IListingRepository<TEntity> where TEntity:Listing
     {
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];        
         private readonly IDBRepository _dbRepository;
-        MongoCollection<Listing> classifieds
+        MongoCollection<TEntity> classifieds
         {
-            get { return _dbRepository.GetCollection<Listing>(_collectionClassifieds); }
+            get { return _dbRepository.GetCollection<TEntity>(_collectionClassifieds); }
+            //get { return _dbRepository.GetCollection<TEntity>(typeof(TEntity).Name); }
         }
         #endregion
 
@@ -33,7 +34,7 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="id">listing id</param>
         /// <returns>listing</returns>
-        public List<Listing> GetListingById(string id)
+        public List<TEntity> GetListingById(string id)
         {
             try
             {
@@ -41,7 +42,7 @@ namespace Classifieds.Listings.Repository
                                         .Where(p => p._id == id)
                                         .ToList();
 
-                List<Listing> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
+                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
                 return result;
             }
@@ -56,7 +57,7 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="subCategory">listing Sub Category</param>
         /// <returns>Collection of listings</returns>
-        public List<Listing> GetListingsBySubCategory(string subCategory)
+        public List<TEntity> GetListingsBySubCategory(string subCategory)
         {
             try
             {
@@ -64,7 +65,7 @@ namespace Classifieds.Listings.Repository
                                         .Where(p => p.SubCategory == subCategory)
                                         .ToList();
 
-                List<Listing> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
+                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
                 return result;
             }
@@ -79,11 +80,11 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="category">listing category</param>
         /// <returns>Collection of listings</returns>
-        public List<Listing> GetListingsByCategory(string category)
+        public List<TEntity> GetListingsByCategory(string category)
         {
             try
             {
-                List<Listing> result = this.classifieds.FindAll()
+                List<TEntity> result = this.classifieds.FindAll()
                                             .Where(p => p.ListingCategory == category)
                                             .ToList();
                 return result;
@@ -99,7 +100,7 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="object">listing object</param>
         /// <returns>return newly added listing object</returns>
-        public Listing Add(Listing listing)
+        public TEntity Add(TEntity listing)
         {
             try
             {
@@ -119,12 +120,12 @@ namespace Classifieds.Listings.Repository
         /// <param name="id">Listing Id</param>
         /// <param name="object">listing object </param>
         /// <returns>return updated listing object</returns>
-        public Listing Update(string id, Listing listObj)
+        public TEntity Update(string id, TEntity listObj)
         {
             try
             {
-                var query = Query<Listing>.EQ(p => p._id, id);
-                var update = Update<Listing>.Set(p => p.Title, listObj.Title)
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var update = Update<TEntity>.Set(p => p.Title, listObj.Title)
                                              .Set(p => p.ListingType, listObj.ListingType)
                                              .Set(p => p.ListingCategory, listObj.ListingCategory)
                                              .Set(p => p.Brand, listObj.Brand)
@@ -168,7 +169,7 @@ namespace Classifieds.Listings.Repository
         {
             try
             {                
-                var query = Query<Listing>.EQ(p => p._id, id.ToString());
+                var query = Query<TEntity>.EQ(p => p._id, id.ToString());
                 var result = this.classifieds.Remove(query);                
             }
             catch (Exception ex)
@@ -182,13 +183,13 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="noOfRecords">integer value for retrieving number of records for listing collection</param>
         /// <returns>Listing collection</returns>
-        public List<Listing> GetTopListings(int noOfRecords)
+        public List<TEntity> GetTopListings(int noOfRecords)
         {
             try
             {             
                 SortByBuilder sortBuilder = new SortByBuilder();
                 sortBuilder.Descending("_id");
-                var result = this.classifieds.FindAllAs<Listing>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
+                var result = this.classifieds.FindAllAs<TEntity>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
                 return result.ToList();
             }
             catch (Exception ex)

@@ -20,12 +20,12 @@ namespace Classifieds.Search.BusinessServices
     public class SearchService : ISearchService
     {
         #region Private Variables
-        private readonly ISearchRepository _searchRepository;
+        private readonly ISearchRepository<Listing> _searchRepository;
         #endregion
 
         #region Constructor
 
-        public SearchService(ISearchRepository searchRepository)
+        public SearchService(ISearchRepository<Listing> searchRepository)
         {
             _searchRepository = searchRepository;
         }

@@ -10,7 +10,7 @@ namespace Classifieds.ListingsAPI.Tests
     public class ListingRepositoryTest
     {
         #region Class Variables
-        private IListingRepository _listingRepo;
+        private IListingRepository<Listing> _listingRepo;
         private IDBRepository _dbRepository;
         private readonly List<Listing> classifiedList = new List<Listing>();
         #endregion
@@ -20,7 +20,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Initialize()
         {
             _dbRepository = new DBRepository();
-            _listingRepo = new ListingRepository(_dbRepository);
+            _listingRepo = new ListingRepository<Listing>(_dbRepository);
 
         }
         #endregion
