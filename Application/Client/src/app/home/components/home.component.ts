@@ -35,8 +35,8 @@ export class HomeComponent {
   }
 
   getInitialCards (){
-//    this.initialCardData = this._settingsService.getCardListingsData();
-    this._cservice.observableGetHttp(this.cardUrl,null,false)
+    this.initialCardData = this._settingsService.getCardListingsData();
+   /* this._cservice.observableGetHttp(this.cardUrl,null,false)
       .subscribe((res:Response)=> {
           this.initialCardData = res;
         },
@@ -45,7 +45,7 @@ export class HomeComponent {
         },
         ()=>{
           console.log("Finally");
-        })
+        })*/
   }
 
    getBannerListing (){
