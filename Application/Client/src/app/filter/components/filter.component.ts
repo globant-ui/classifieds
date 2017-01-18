@@ -22,6 +22,7 @@ export class FilterComponent {
   private filterCategoryUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=';
   private categoryUrl:any;
   public filterCategoryData:any;
+  public isActive:Boolean = false;
 
 
   @Output() filterCategory: EventEmitter<any> = new EventEmitter<any>()
@@ -34,7 +35,12 @@ export class FilterComponent {
     this.filterData=this._settingsService.getFilterListingData();
   }
 
-  showCards(category){
+  showCards(category,index){
+    let filterData = this.filterData;
+    for (let item of filterData) {
+        item.isActive = false;
+    }
+    filterData[index].isActive = true;
     if(category === 'All'){
         this.getInitialCards.emit();
     }else{
