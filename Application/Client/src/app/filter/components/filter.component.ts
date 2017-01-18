@@ -33,6 +33,10 @@ export class FilterComponent {
   ngOnInit()
   {
     this.filterData=this._settingsService.getFilterListingData();
+    let filterData = this.filterData;
+    for (let item of filterData) {
+        if(item.listName==='All'){item.isActive = true;}
+    }
   }
 
   showCards(category,index){
