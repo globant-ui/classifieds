@@ -21,6 +21,7 @@ export class SettingsService{
   }
 
   getSettings(){
+    this.settings = settingsJson;
     return settingsJson;
   }
 
