@@ -1,5 +1,9 @@
 @import "../../_common/styles/sass/style";
 
+header{
+	background-color: $darkblue-color;
+}
+
 .navbar.searchFilterContainerWrapper{
 	position: relative;
 	min-height: 84px;

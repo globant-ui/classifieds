@@ -5,10 +5,10 @@ nav{
     margin-bottom: 0;
   }
   &.navbar-inverse{
-    background-color: $darkblue-color;
     border:none;
     border-radius: 0;
     padding: 25px 42px;
+    width: calc(100% - 42px);
     .navbar-header{
       .navbar-brand{
         height:auto;
