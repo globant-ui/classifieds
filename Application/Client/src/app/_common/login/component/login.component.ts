@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { AppState } from '../../../app.service';
 import {AuthenticationWindowService} from '../../authentication/services/authentication.service';
 import {SettingsService} from '../../services/setting.service';
@@ -7,6 +7,7 @@ import {UserInformation} from '../../authentication/entity/userInformation.entit
 import {Session} from '../../authentication/entity/session.entity';
 import {Router} from '@angular/router';
 import {CookieService} from 'angular2-cookie/core';
+import { ModalDirective } from 'ng2-bootstrap';
 
 let styles = require('../styles/login.scss').toString();
 let tpls = require('../tpls/login.html').toString();
@@ -27,9 +28,9 @@ export class LoginComponent implements OnInit{
   private session : Session;
   private  code : any;
   private  validateUrl = 'http://in-it0289/UserApi/api/User/Register';
- private activeSession:boolean = false;
+  private activeSession:boolean = false;
 
-
+  @ViewChild('childModal') public childModal:ModalDirective;
   constructor(public _authenticationWindowService: AuthenticationWindowService,
               private _settingsService: SettingsService,
               private _http: Http,
@@ -48,7 +49,19 @@ export class LoginComponent implements OnInit{
     }
   }
 
-  doLogin(){
+    ngAfterViewInit(){
+        this.showChildModal();
+    }
+
+    public showChildModal():void {
+        this.childModal.show();
+    }
+
+    public hideChildModal():void {
+        this.childModal.hide();
+    }
+
+    doLogin(){
     console.log(this._settingsService.settings);
     let context = this;
     this.session =new Session({});

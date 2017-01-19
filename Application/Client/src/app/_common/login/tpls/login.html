@@ -1,4 +1,73 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="../../../../assets/img/logo.png" /></a>
+            <button class="icon-search-icon search-btn pull-right"></button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <button class="green-button">
+                <span class="icon-flag">
+                </span>
+                        <span>create</span>
+                    </button>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="textwishlist pull-right">my wishlist</span>
+                        <span class="icon-like-icon wishlist pull-right"></span>
+                    </a>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-info btn-lg" (click)="showChildModal()">Login</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </button>
+                <h5 class="modal-title text-center">Hey there, please login!</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="pwd" placeholder="Password">
+                    </div>
+                    <h6 class="text-center">OR</h6>
+                    <div class="form-group">
+                        <button class="google-signin"><img src="../../../../assets/img/google-plus-logo.png" width="40" height="40" /> Sign in with google</button>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" checked> Remember me</label>
+                        <a href="#" class="pull-right">Forgot password?</a>
+                    </div>
+                    <div class="btn-container">
+                        <a href="#" class="register-text">Don't have an account? Please Register</a>
+                        <button type="submit" class="btn btn-default pull-right login-btn" (click)="doLogin()">LOGIN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
 <button class="green-button">
   <span class="icon-flag"></span>
   <span (click)="doLogin()">Sign In</span>
-</button>
+</button>-->
