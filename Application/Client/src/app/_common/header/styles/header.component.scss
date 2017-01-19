@@ -43,6 +43,9 @@ nav{
           }
           a{
             padding: 0;
+            .textwishlist{
+              float: right;
+            }
             .textwishlist, .textProfile{
               text-transform: uppercase;
               color: $white-color;
@@ -52,10 +55,11 @@ nav{
             .wishlist{
               padding:5px 12px 0 0;
               color: $red-color;
+              float: right;
             }
           }
           .profile-btn{
-            margin:5px 5px 0 30px;
+            margin:5px 0 0 30px;
             background: none;
             border: none;
             color: $white-color;
@@ -106,9 +110,13 @@ nav{
       box-shadow: none;
       ul.nav{
         display: inline-block;
+        padding-left: 15px;
+        width: 100%;
         li{
+          margin-bottom: 15px;
           .profile-btn{
-            display: none;
+            margin: 0;
+            padding-right: 10px;
           }
           button.green-button{
             margin-top: 10px;
@@ -116,6 +124,11 @@ nav{
           a{
             .textwishlist, .wishlist{
               margin-top: 10px;
+              float: none;
+            }
+            .wishlist{
+              float: left;
+              margin-top:0;
             }
           }
         }
