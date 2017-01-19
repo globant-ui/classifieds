@@ -2,11 +2,13 @@
 
 .navbar{
   .nav.navbar-nav.filter{
+    font-family: 'Open Sans', sans-serif;
     float: right;
     li{
       a{
         color: $primary-text-color;
-        font: 0.857em $arvo-regular;
+        font: 0.857em 'Open Sans', sans-serif;
+        font-weight:600;
         border-radius:15px;
         padding: 5px 20px;
         /*margin:40px 0;*/

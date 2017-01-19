@@ -7,12 +7,14 @@
 	}
 	.card-wrapper{
 		margin:0;
+		font-family: $arvo-regular;
 		.plain-card-container, .wishlist-container, .create-container, .recommend-container{
 			background: $primary-background-color;
 			border-radius: 6px;
 			overflow: hidden;
 			margin:0 -10px 15px -5px;
 			letter-spacing: 1px;
+			font-family: 'Open Sans', sans-serif;
 			.img-block{
 				width:270px;
 				height:180px;
@@ -30,27 +32,30 @@
 					color: $heading-color;
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
-					height: $font-size26*$line-height*$lines-to-show2; /* Fallback for non-webkit */
-					margin: 0 auto;
-					font-size: $font-size26;
+					height: $font-size22*$line-height*$lines-to-show2; /* Fallback for non-webkit */
+					/*margin: 0 auto;*/
+					font-size: $font-size22;
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show2;
 					-webkit-box-orient: vertical;
 					overflow: hidden;
 					text-overflow: ellipsis;
+					font-family: 'Open Sans', sans-serif;
+					font-weight: 600;
 				}
 				p{
 					color: $primary-text-color;
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
 					height: $font-size12*$line-height*$lines-to-show3; /* Fallback for non-webkit */
-					margin: 0 auto;
+					/*margin: 15px auto 0;*/
 					font-size: $font-size12;
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show3;
 					-webkit-box-orient: vertical;
 					overflow: hidden;
 					text-overflow: ellipsis;
+					font-weight: normal;
 				}
 				ul{
 					color: $primary-text-color;
