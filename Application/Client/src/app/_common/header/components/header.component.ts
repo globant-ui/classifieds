@@ -10,5 +10,13 @@ let tpls = require('../tpls/header.component.html').toString();
   template: tpls
 })
 export class HeaderComponent{
+    public isCollapsed:boolean = true;
 
+    public collapsed(event:any):void {
+        console.log(event);
+    }
+
+    public expanded(event:any):void {
+        console.log(event);
+    }
 }

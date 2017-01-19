@@ -74,9 +74,16 @@ nav{
         margin: 0;
         float:left;
         border: none;
+        background-color: transparent;
+        &.open{
+          background-color: $collapsed-btn-bg-color;
+        }
       }
       button.navbar-toggle:hover{
         background-color: transparent;
+        &.open{
+          background-color: $collapsed-btn-bg-color;
+        }
       }
       a.navbar-brand{
         margin:8px 0 0 13%;
