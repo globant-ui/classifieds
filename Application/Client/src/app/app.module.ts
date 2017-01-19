@@ -21,6 +21,7 @@ import { SearchComponent } from './_common/search/components/search.component';
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap/modal';
+import { CollapseModule } from 'ng2-bootstrap/collapse';
 
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -53,7 +54,8 @@ type StoreType = {
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    CollapseModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

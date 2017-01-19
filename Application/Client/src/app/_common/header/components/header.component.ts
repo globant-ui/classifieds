@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit{
   private session : Session;
   private activeSession:boolean = false;
   private  validateUrl = 'http://in-it0289/UserApi/api/User/Register';
-
+  public isCollapsed:boolean = true;
 
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
@@ -52,6 +52,14 @@ export class HeaderComponent implements OnInit{
       this.doLogout();
     }
   }
+
+    public collapsed(event:any):void {
+        console.log(event);
+    }
+
+    public expanded(event:any):void {
+        console.log(event);
+    }
 
   doLogout(){
     this._authenticationWindowService.doLogOut();
