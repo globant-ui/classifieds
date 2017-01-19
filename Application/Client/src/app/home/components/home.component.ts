@@ -21,8 +21,8 @@ export class HomeComponent {
   private settings : any ;
   private baseUrl : any ;
   private  data : any;
-  private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
-  private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
+  private cardUrl = 'http://in-it0289/Listing_WAH/api/Listings/GetTopListings';
+  private bannerUrl = 'http://in-it0289/Master_WAH/api/category/GetAllCategory';
   public initialCardData: any;
   public bannerData: any;
   public filterCat:any;
@@ -35,8 +35,7 @@ export class HomeComponent {
   }
 
   getInitialCards (){
-    this.initialCardData = this._settingsService.getCardListingsData();
-   /* this._cservice.observableGetHttp(this.cardUrl,null,false)
+    this._cservice.observableGetHttp(this.cardUrl,null,false)
       .subscribe((res:Response)=> {
           this.initialCardData = res;
         },
@@ -45,7 +44,7 @@ export class HomeComponent {
         },
         ()=>{
           console.log("Finally");
-        })*/
+        })
   }
 
    getBannerListing (){

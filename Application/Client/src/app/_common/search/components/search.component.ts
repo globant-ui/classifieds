@@ -17,7 +17,7 @@ let tpls = require('../tpls/search.component.html').toString();
 })
 export class SearchComponent{
 
-    private searchUrl = 'http://in-it0289/SearchAPI/api/Search/GetFullTextSearch?searchText=';
+    private searchUrl = 'http://in-it0289/Search_WAH/api/Search/GetFullTextSearch?searchText=';
     private searchCategoryByStringUrl:any;
 
     @Output() searchCategory: EventEmitter<any> = new EventEmitter<any>();
