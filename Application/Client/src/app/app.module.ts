@@ -18,6 +18,10 @@ import {CService} from "./_common/services/http.service";
 import { SearchComponent } from './_common/search/components/search.component';
 import { FilterComponent } from './filter/components/filter.component';
 
+/*ng2-bootstrap*/
+import { ModalModule } from 'ng2-bootstrap/modal';
+import { CollapseModule } from 'ng2-bootstrap/collapse';
+
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
   AppState
@@ -47,7 +51,9 @@ type StoreType = {
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    ModalModule.forRoot(),
+    CollapseModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
