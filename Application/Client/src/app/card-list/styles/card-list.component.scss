@@ -172,6 +172,11 @@
 		.card-wrapper{
 			.plain-card-container, .wishlist-container, .create-container, .recommend-container{
 				margin: 0 0 15px;
+				.img-block{
+					img{
+						width: 53%;
+					}
+				}
 				.contentdetail{
 					padding: 15px;
 					min-height: auto;
@@ -179,6 +184,9 @@
 						display: none;
 					}
 					h3{
+						height: $font-size22*$line-height*$lines-to-show1;
+						-webkit-line-clamp: $lines-to-show1;
+						line-height: 2;
 						font-size: 1em;
 						padding-bottom:5px;
 					}
