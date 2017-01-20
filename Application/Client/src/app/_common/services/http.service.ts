@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Response, Http, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
+import {CookieService} from 'angular2-cookie/core';
 
 declare var $: any;
 
@@ -12,13 +13,19 @@ export class CService {
   public componentName: string;
   public token: string;
   public code: string;
+  private sessionObj;
 
-  constructor( public _http: Http) {
+  constructor( public _http: Http,private _cookieService:CookieService) {
   }
 
   private getHeaders(): Headers {
+
     let headers = new Headers();
+      this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
+      console.log('session obj = ',this.sessionObj);
     headers.append( 'Content-Type', 'application/jsonp; charset=UTF-8' );
+    headers.append('AccessToken',this.sessionObj.token);
+    headers.append('UserEmail',this.sessionObj.useremail);
     return headers;
   }
 

@@ -26,7 +26,10 @@ export class HomeComponent {
   public initialCardData: any;
   public bannerData: any;
   public filterCat:any;
-  constructor(public appState: AppState,private _settingsService: SettingsService, private _cservice:CService) {
+  constructor(
+      public appState: AppState,
+      private _settingsService: SettingsService,
+      private _cservice:CService) {
   }
   ngOnInit() {
     this.baseUrl=this._settingsService.getBaseUrl();
@@ -37,6 +40,7 @@ export class HomeComponent {
   getInitialCards (){
     this._cservice.observableGetHttp(this.cardUrl,null,false)
       .subscribe((res:Response)=> {
+            console.log('cards response = ',res);
           this.initialCardData = res;
         },
         error => {

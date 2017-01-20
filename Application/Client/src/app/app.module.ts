@@ -14,6 +14,7 @@ import { HomeComponent } from './home/components/home.component';
 import { HeaderComponent } from './_common/header/components/header.component';
 import { CardListComponent } from './card-list/components/card-list.component';
 import { BannerComponent } from './banner/components/banner.component';
+import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { FilterComponent } from './filter/components/filter.component';
@@ -60,7 +61,8 @@ type StoreType = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
-    CService
+    CService,
+    CookieService
   ]
 })
 export class AppModule {
