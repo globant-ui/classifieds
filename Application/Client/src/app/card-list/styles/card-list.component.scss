@@ -9,6 +9,7 @@
 		margin:0;
 		font-family: $arvo-regular;
 		.plain-card-container, .wishlist-container, .create-container, .recommend-container{
+			cursor:pointer;
 			background: $primary-background-color;
 			border-radius: 6px;
 			overflow: hidden;
