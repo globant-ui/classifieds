@@ -24,7 +24,7 @@ export class FilterComponent {
   public filterCategoryData:any;
 
 
-  @Output() filterCategory: EventEmitter<any> = new EventEmitter<any>()
+  @Output() filterCategory: EventEmitter<any> = new EventEmitter<any>();
   @Output() getInitialCards: EventEmitter<any> = new EventEmitter <any>();
 
   constructor(public appState: AppState,private _settingsService: SettingsService,private _cservice:CService) {}
