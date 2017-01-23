@@ -25,7 +25,7 @@ export class SearchComponent{
     constructor(public appState: AppState,private _settingsService: SettingsService,private _cservice:CService) {}
 
     searchCategoryByString(str){
-        if(str.length>3){
+        if(str.length>=3){
             this.searchCategoryByStringUrl = this.searchUrl+str;
             console.log('search cat by str=',this.searchCategoryByStringUrl);
             this._cservice.observableGetHttp(this.searchCategoryByStringUrl,null,false)
