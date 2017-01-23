@@ -1,0 +1,229 @@
+@import "../../_common/styles/sass/style";
+
+
+.container{
+	h2.category{
+		display: none;
+	}
+	.card-wrapper{
+		margin:0;
+		font-family: $arvo-regular;
+		.plain-card-container, .wishlist-container, .create-container, .recommend-container{
+			background: $primary-background-color;
+			border-radius: 6px;
+			overflow: hidden;
+			margin:0 -10px 15px -5px;
+			letter-spacing: 1px;
+			font-family: 'Open Sans', sans-serif;
+			.img-block{
+				width:270px;
+				height:180px;
+				img{
+					width: 100%;
+					height:100%;
+				}
+			}
+			.contentdetail{
+				padding: 25px;
+				min-height: 180px;
+				font-family:open sans;
+				h3{
+					padding: 0 0 15px 0;
+					margin: 0;
+					color: $heading-color;
+					display: block; /* Fallback for non-webkit */
+					display: -webkit-box;
+					height: $font-size22*$line-height*$lines-to-show2; /* Fallback for non-webkit */
+					/*margin: 0 auto;*/
+					font-size: $font-size22;
+					line-height: $line-height;
+					-webkit-line-clamp: $lines-to-show2;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					font-family: 'Open Sans', sans-serif;
+					font-weight: 600;
+				}
+				p{
+					color: $primary-text-color;
+					display: block; /* Fallback for non-webkit */
+					display: -webkit-box;
+					height: $font-size12*$line-height*$lines-to-show3; /* Fallback for non-webkit */
+					/*margin: 15px auto 0;*/
+					font-size: $font-size12;
+					line-height: $line-height;
+					-webkit-line-clamp: $lines-to-show3;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					font-weight: normal;
+				}
+				ul{
+					color: $primary-text-color;
+					list-style-type: none;
+					display: inline-block;
+					width: 100%;
+					margin:20px 0 0 0;
+					padding: 0;
+					li{
+						font-weight: bold;
+						text-transform: uppercase;
+						font-size: 0.857em;
+						span{
+							margin-right: 5px;
+						}
+						&:first-child{
+							float: left;
+						}
+						&:last-child{
+							float: right;
+						}
+					}
+				}
+			}
+		}
+		.plain-card-container.wishlist-container{
+			background: $darkblue-color;
+			.contentdetail{
+				h3{
+					color: $white-color;
+				}
+				ul{
+					li{
+						.icon-like-icon{
+							color: $red-color;
+						}
+					}
+				}
+			}
+		}
+		.plain-card-container.recommend-container{
+			background: $darkblue-color;
+			position: relative;
+			.recommendLabel{
+				position: absolute;
+				top:5%;
+				right: 5%;
+				background: $darkblue-color;
+				border-radius: 15px;
+				color: $white-color;
+			    padding:5px 15px;
+			    font-size: 0.714em;
+		        text-transform: uppercase;
+				span.icon-flag{
+					color: $green-color;
+					padding-right:5px;
+					font-size: 0.857em;
+				}
+				span.recommend{
+					/* display: block; */
+				}
+			}
+			.contentdetail{
+				h3{
+					color: $white-color;
+				}
+			}
+		}
+		.plain-card-container.create-container{
+			 background: url("../../../assets/img/icon.png") no-repeat $primary-background-color 45% 35%;
+			text-align: center;
+			min-height: 410px;
+			h2{
+				font-size:2.571em;
+				line-height: 46px;
+			    padding: 0 5%;
+			    color: $darkblue-color;
+			}
+			button{
+				color: $darkblue-color;
+				background: $green-color;
+				border:none;
+				text-transform: uppercase;
+				font-family: open sans;
+				font-size: 1.071em;
+				line-height:15px;
+				font-weight: bold;
+			    letter-spacing: 3px;
+				border-radius: 15px;
+				padding: 10px 15px;
+				margin:14px 0;
+				span{
+					color: $darkblue-color;
+					font-size: 1.285em;
+					padding-right: 5px;
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: 320px) and (max-width: 460px){
+	.container{
+		h2.category{
+			margin:15px 0;
+			padding: 0 0 0 15px;
+			text-transform: uppercase;
+			font-size: 0.875em;
+			font-weight: bold;
+			color: $heading-color;
+			display: block;
+		}
+		.card-wrapper{
+			.plain-card-container, .wishlist-container, .create-container, .recommend-container{
+				margin: 0 0 15px;
+				.img-block{
+					height: 116px;
+					img{
+						width: 100%;
+						height: 100%;					}
+				}
+				.contentdetail{
+					padding: 15px;
+					min-height: auto;
+					p{
+						display: none;
+					}
+					h3{
+						height: $font-size22*$line-height*$lines-to-show1;
+						-webkit-line-clamp: $lines-to-show1;
+						line-height: 2;
+						font-size: 1em;
+						padding-bottom:5px;
+					}
+					ul{
+						margin: 0;
+						li{
+							width: 100%;
+							&:first-child{
+								display: none;
+							}
+							&:last-child{
+								float: left;
+								font-size: 0.625em;
+								span{
+									float: right;
+								    font-size: 1.071em;
+		    						margin-top: -15px;
+								}
+							}
+						}
+					}
+				}
+			}
+			.plain-card-container.create-container{
+				display: none;
+			}
+			.plain-card-container.recommend-container{
+				.recommendLabel{
+					span.icon-flag{
+						padding-right:0;
+					}
+					span.recommend{
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}

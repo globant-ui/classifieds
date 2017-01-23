@@ -1,0 +1,31 @@
+{
+  "status": "success",
+  "message": null,
+  "details":
+  [
+    {
+      "listName":"All"
+    },
+    {
+      "listName":"Electronics"
+    },
+    {
+      "listName":"Housing"
+    },
+    {
+      "listName":"Automobile"
+    },
+    {
+      "listName":"Furniture"
+    },
+    {
+      "listName":"Assorted"
+    },
+    {
+      "listName":"Others"
+    },
+    {
+      "listName":"Recommended"
+    }
+  ]
+}

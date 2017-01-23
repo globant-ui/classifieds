@@ -1,0 +1,139 @@
+@import "../../styles/sass/style";
+
+nav{
+  &.navbar{
+    margin-bottom: 0;
+  }
+  &.navbar-inverse{
+    background-color: $darkblue-color;
+    border:none;
+    border-radius: 0;
+    padding: 25px 42px;
+    width: 100%;
+    .navbar-header{
+      .navbar-brand{
+        height:auto;
+        padding: 0;
+      }
+      .search-btn{
+        display: none;
+      }
+    }
+    #myNavbar{
+       padding:5px;
+    }
+    .collapse{
+      ul.nav{
+        li{
+          color:$white-color;
+          button.green-button{
+            background-color: $green-color;
+            color: $darkblue-color;
+            border-radius: 10px;
+            padding: 5px 15px 5px 10px;
+            font-family: 'Open Sans';
+            font-weight: bold;
+            font-size: 0.714em;
+            margin-right: 20px;
+            border:none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            span{
+              vertical-align: middle;
+            }
+          }
+          a{
+            padding: 0;
+            .textwishlist{
+              float: right;
+            }
+            .textwishlist, .textProfile{
+              text-transform: uppercase;
+              color: $white-color;
+              font-family: 'Open Sans';
+              font-size: 0.857em;
+            }
+            .wishlist{
+              padding:5px 12px 0 0;
+              color: $red-color;
+              float: right;
+            }
+          }
+          .profile-btn{
+            margin:5px 0 0 30px;
+            background: none;
+            border: none;
+            color: $white-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media (min-width: 320px) and (max-width: 460px){
+  nav.navbar-inverse{
+    .navbar-header{
+      button.navbar-toggle{
+        margin: 0;
+        float:left;
+        border: none;
+        background-color: transparent;
+        &.open{
+          background-color: $collapsed-btn-bg-color;
+        }
+      }
+      button.navbar-toggle:hover{
+        background-color: transparent;
+        &.open{
+          background-color: $collapsed-btn-bg-color;
+        }
+      }
+      a.navbar-brand{
+        margin:8px 0 0 13%;
+        width:50%;
+        img{
+          width:100%;
+        }
+      }
+      .search-btn{
+        display: block;
+        background: none;
+        border: none;
+        color:$white-color;
+        margin: 5px 0 0 0;
+        padding: 5px;
+      }
+    }
+    .navbar-collapse.collapse{
+      border: none;
+      box-shadow: none;
+      ul.nav{
+        display: inline-block;
+        padding-left: 15px;
+        width: 100%;
+        li{
+          margin-bottom: 15px;
+          .profile-btn{
+            margin: 0;
+            padding-right: 10px;
+          }
+          button.green-button{
+            margin-top: 10px;
+          }
+          a{
+            .textwishlist, .wishlist{
+              margin-top: 10px;
+              float: none;
+            }
+            .wishlist{
+              float: left;
+              margin-top:0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

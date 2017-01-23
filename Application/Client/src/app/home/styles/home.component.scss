@@ -1,0 +1,26 @@
+@import "../../_common/styles/sass/style";
+
+/*header{
+	background-color: $darkblue-color;
+}*/
+
+.navbar.searchFilterContainerWrapper{
+	position: relative;
+	min-height: 84px;
+	.searchFilterContainer{
+		position: absolute;
+		width:100%;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: $primary-background-color;
+		text-transform: uppercase;
+		padding: 22px 20px 20px;
+		box-shadow: 0 0 15px 0 $filter-shadow-color;
+	}
+}
+@media (min-width: 320px) and (max-width: 460px){
+  .searchFilterContainerWrapper{
+    display:none;
+  }
+}

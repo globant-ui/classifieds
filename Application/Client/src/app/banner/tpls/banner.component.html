@@ -1,0 +1,31 @@
+<div class="container banner-container">
+  <div class="row banner-row">
+    <h1>
+      Buy, sell or find anything,<br />
+      just for Globers!
+    </h1>
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="bannerwrapper">
+          <ul class="nav navbar-nav panel-group" id="accordion">
+              <li *ngFor="let category of categories" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#abc">
+                  <div class="img-icon">
+                      <img src="../../../../assets/img/mobile-icon/{{category.Image}}" />
+                  </div>
+                  <div class="categoryTitle">{{category.ListingCategory}} </div>
+                  <span class="spriteimage {{category.ListingCategory}}Icon"></span>
+                  <span class="glyphicon glyphicon-chevron-down expandListIcon"></span>
+                  <ul class="hoverlistWrapper">
+                      <li *ngFor="let sub of category.SubCategory"><a href="">{{sub}}</a></li>
+                  </ul>
+                  <button>EXPLORE</button>
+                  <ul id="abc" class="panel-collapse collapse">
+                      <li><a href="">abc pannel</a></li>
+                  </ul>
+              </li>
+          </ul> 
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

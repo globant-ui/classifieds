@@ -1,0 +1,37 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" [class.open]="!isCollapsed" (click)="isCollapsed = !isCollapsed">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><img src="../../../../assets/img/logo.png" /></a>
+      <button class="icon-search-icon search-btn pull-right"></button>
+    </div>
+    <div class="collapse navbar-collapse" (collapsed)="collapsed($event)"
+      (expanded)="expanded($event)"
+      [collapse]="isCollapsed">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <button class="green-button">
+                <span class="icon-flag"></span>
+            <span>create</span>
+          </button>
+        </li>
+        <li>
+          <a href="#">
+            <span class="textwishlist">my wishlist</span>
+            <span class="icon-like-icon wishlist"></span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="icon-profile profile-btn"></span>
+            <span class="textProfile">my profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
