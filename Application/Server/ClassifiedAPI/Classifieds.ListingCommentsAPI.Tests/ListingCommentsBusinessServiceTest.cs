@@ -62,7 +62,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetAllListingComment_ThrowsException()
         {
-            var result = _service.GetAllListingComment(null);
+            _service.GetAllListingComment(null);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void PostListingCommentTest()
         {
             //Arrange
-            ListingComment lstObject = GetListingCommentsObject();
+            var lstObject = GetListingCommentsObject();
             _moqAppManager.Setup(x => x.CreateListingComment(It.IsAny<ListingComment>())).Returns(lstObject);
 
             //Act
@@ -145,7 +145,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void PutListingCommentTest()
         {
             //Arrange
-            ListingComment lstObject = GetListingCommentsObject();
+            var lstObject = GetListingCommentsObject();
             _moqAppManager.Setup(x => x.UpdateListingComment(It.IsAny<string>(), It.IsAny<ListingComment>())).Returns(lstObject);
             var updatedList = new ListingComment() { UpdatedBy = lstObject.UpdatedBy, UpdatedDate = lstObject.UpdatedDate };
             //Act
@@ -164,10 +164,10 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void PutListingCommentTest_InvalidId_ThrowException()
         {
-            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            var updatedData = new ListingComment() { UpdatedBy = "santosh.kale@globant.com", UpdatedDate = "10/01/2017", Comments = "is this available", ListingId = "5873490a48bd151ef5d67a29", SubmittedDate = "03/01/2017", SubmittedBy = "v.wadsamudrakar@globant.com" };
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            var updatedData = GetListingCommentsObject();
             _moqAppManager.Setup(x => x.UpdateListingComment(It.IsAny<string>(), It.IsAny<ListingComment>())).Throws(ex);
-            var result = _service.UpdateListingComment(null, updatedData);
+            _service.UpdateListingComment(null, updatedData);
 
         }
 
@@ -183,7 +183,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void DeleteListingCommentTest()
         {
             //Arrange
-            ListingComment lstObject = GetListingCommentsObject();
+            var lstObject = GetListingCommentsObject();
             _moqAppManager.Setup(x => x.DeleteListingComment(It.IsAny<string>()));
 
             //Act
@@ -201,7 +201,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteListingComment_InvalidId_ThrowException()
         {
-            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
             _moqAppManager.Setup(x => x.DeleteListingComment(null)).Throws(ex);
             _service.DeleteListingComment(null);
         }

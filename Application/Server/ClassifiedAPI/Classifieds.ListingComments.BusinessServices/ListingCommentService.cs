@@ -25,7 +25,7 @@ namespace Classifieds.ListingComments.BusinessServices
         /// <summary>
         /// Returns All Listing Comment
         /// </summary>
-        /// <param name="listingId">Listing Id</param
+        /// <param name="listingId">Listing Id</param>
         /// <returns>All Listing Comments </returns>
         public List<ListingComment> GetAllListingComment(string listingId)
         {
@@ -66,7 +66,7 @@ namespace Classifieds.ListingComments.BusinessServices
         /// <summary>
         /// Update Listing Comment item for given Id
         /// </summary>
-        /// <param name="id">Id</param
+        /// <param name="id">Id</param>
         /// <param name="listObject">Listing Comment obj</param>
         /// <returns>Updated Listing Comment obj</returns>
         public ListingComment UpdateListingComment(string id, ListingComment listObject)

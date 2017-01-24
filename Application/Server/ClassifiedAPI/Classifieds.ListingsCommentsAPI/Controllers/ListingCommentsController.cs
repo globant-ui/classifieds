@@ -46,7 +46,7 @@ namespace Classifieds.ListingCommentsAPI.Controllers
         /// <summary>
         /// Returns the All Listing Comments 
         /// </summary>
-        /// <param name="listingId">All Listing Comments</param>
+        /// <param name="listingId">listing Id</param>
         /// <returns>All Listing Comments</returns>
         public List<ListingComment> GetAllListingComment(string listingId)
         {
@@ -58,31 +58,31 @@ namespace Classifieds.ListingCommentsAPI.Controllers
             catch (Exception ex)
             {
                 _logger.Log(ex, "Globant/User");
-                throw ex;
+                throw;
             }
         }
 
-        #endregion
+        #endregion GetAllListingComment
 
         #region PostListingComments
 
         /// <summary>
         /// Insert new Listing Comments item into the database
         /// </summary>
-        /// <param name="listingCommentsObj">Add Listing Comments</param>
+        /// <param name="listingCommentsObj">listing Comments Object</param>
         /// <returns>Newly added Listing Comment object</returns>
         public HttpResponseMessage Post(ListingComment listingCommentsObj)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 var classified = _listingCommentsService.CreateListingComment(listingCommentsObj);
-                result = Request.CreateResponse<ListingComment>(HttpStatusCode.Created, classified);
+                result = Request.CreateResponse(HttpStatusCode.Created, classified);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, "Globant/User");
-                throw ex;
+                throw;
             }
 
             return result;
@@ -99,16 +99,16 @@ namespace Classifieds.ListingCommentsAPI.Controllers
         /// <returns>Updated Listing Comment obj</returns>
         public HttpResponseMessage Put(string id, ListingComment listingcommentobj)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 var classified = _listingCommentsService.UpdateListingComment(id, listingcommentobj);
-                result = Request.CreateResponse<ListingComment>(HttpStatusCode.Accepted, classified);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, "Globant/User");
-                throw ex;
+                throw;
             }
             return result;
         }
@@ -123,7 +123,7 @@ namespace Classifieds.ListingCommentsAPI.Controllers
         /// <returns>Deleted id</returns>
         public HttpResponseMessage Delete(string id)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
 
             try
             {
@@ -133,7 +133,7 @@ namespace Classifieds.ListingCommentsAPI.Controllers
             catch (Exception ex)
             {
                 _logger.Log(ex, "Globant/User");
-                throw ex;
+                throw;
             }
 
             return result;

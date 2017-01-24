@@ -75,9 +75,15 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [TestMethod]
         public void GetAllListingComment_EmptyListingCommentsTest()
         {
+            // Arrange
             _mockService.Setup(x => x.GetAllListingComment(null))
             .Returns(new List<ListingComment>() { new ListingComment() });
-            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
+
+            //Act
+            _mockService.Setup(x => x.GetAllListingComment(ListingId));
+
+            //Assert
+            Assert.IsTrue(true);
         }
 
         /// <summary>
@@ -105,7 +111,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
             _mockService.Setup(x => x.CreateListingComment(It.IsAny<ListingComment>()))
             .Returns(GetlistingCommentsObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -121,7 +127,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
                 values: new HttpRouteValueDictionary { { "controller", "ListingComments" } });
 
             // Act
-            ListingComment listObj = GetlistingCommentsObject();
+            var listObj = GetlistingCommentsObject();
             var response = controller.Post(listObj);
 
             // Assert
@@ -140,11 +146,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
             _mockService.Setup(x => x.CreateListingComment(It.IsAny<ListingComment>()))
             .Returns(GetlistingCommentsObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             controller.Request = new HttpRequestMessage();
             controller.Configuration = new HttpConfiguration();
 
-            string locationUrl = "http://localhost/Classifieds.ListingCommentsAPI/api/ListingComments";
+            var locationUrl = "http://localhost/Classifieds.ListingCommentsAPI/api/ListingComments";
 
             // Create the mock and set up the Link method, which is used to create the Location header.
             // The mock version returns a fixed string.
@@ -153,7 +159,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
             controller.Url = mockUrlHelper.Object;
 
             // Act
-            ListingComment listObj = GetlistingCommentsObject();
+            var listObj = GetlistingCommentsObject();
             var response = controller.Post(listObj);
 
             // Assert
@@ -186,13 +192,15 @@ namespace Classifieds.ListingCommentsAPI.Tests
             _mockService.Setup(x => x.UpdateListingComment(It.IsAny<string>(), It.IsAny<ListingComment>()))
             .Returns(GetlistingCommentsObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
-
-            controller.Request = new HttpRequestMessage
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object)
             {
-                Method = HttpMethod.Put,
-                RequestUri = new Uri("http://localhost/api/listingComments")
+                Request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = new Uri("http://localhost/api/listingComments")
+                }
             };
+
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             // Act     
@@ -216,8 +224,8 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void Controller_UpdateListingComments_ThrowsException()
         {
             var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
-            var updatedProduct = new ListingComment() { UpdatedBy = "amol.pawar@globant.com", UpdatedDate = "10/01/2017", Comments = "is this available", ListingId = "5873490a48bd151ef5d67a29", SubmittedDate = "03/01/2017", SubmittedBy = "v.wadsamudrakar@globant.com" };
-            var result = controller.Put(null, updatedProduct);
+            var updatedProduct = GetlistingCommentsObject();
+            controller.Put(null, updatedProduct);
         }
 
 
@@ -226,7 +234,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         /// </summary>
         private ListingComment GetlistingCommentsObject()
         {
-            ListingComment dataObject = new ListingComment
+            var dataObject = new ListingComment
             {
                 _id = "58786bf761f1b82779e0c5b5",
                 ListingId = "5873490a48bd151ef5d67a29",
@@ -251,14 +259,16 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void Controller_DeleteListingCommentsTest()
         {
             // Arrange
-            ListingComment dataObject = GetlistingCommentsObject();
+            var dataObject = GetlistingCommentsObject();
             _mockService.Setup(x => x.DeleteListingComment(It.IsAny<string>()));
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
-            controller.Request = new HttpRequestMessage
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object)
             {
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri("http://localhost/api/listingComments")
+                Request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri("http://localhost/api/listingComments")
+                }
             };
             // Act                
             var response = controller.Delete(dataObject._id);
@@ -275,7 +285,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void Controller_DeleteListingComments_ThrowsException()
         {
             var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
-            var result = controller.Delete(null);
+            controller.Delete(null);
         }
 
         #endregion  DeleteListingCommentsTestCases        

@@ -35,7 +35,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
             _classifiedListingComments.Add(lstMasterData);
         }
 
-        private ListingComment GetListingCommentObject(string ListingId = "5873490a48bd151ef5d67a29")
+        private ListingComment GetListingCommentObject()
         {
             ListingComment dataObject = new ListingComment
             {
@@ -53,14 +53,15 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region GetAllListingCommentsTestCases
 
-        [TestMethod]
-        // <summary>
+
+        /// <summary>
         /// test positive scenario for Get listing comments By ListingId
         /// </summary>
+        [TestMethod]
         public void Repo_CreateListingCommentTest()
         {
             //Arrange
-            ListingComment dataObject = GetListingCommentObject(ListingId);
+            var dataObject = GetListingCommentObject();
 
             //Act
             var result = _listingCommmentsRepo.CreateListingComment(dataObject);
@@ -100,7 +101,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         {
             /*In this test case we add one post and pass recently added post's Id as a parameter to Repo_GetListingCommentsById() method instead of passing hard coded value*/
             //Arrange
-            ListingComment lstObject = GetListingCommentObject();
+            var lstObject = GetListingCommentObject();
 
             //Act
             var result = _listingCommmentsRepo.CreateListingComment(lstObject);
@@ -124,7 +125,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void Repo_CreateListCommentsTest()
         {
             //Arrange
-            ListingComment lstObject = GetListingCommentObject();
+            var lstObject = GetListingCommentObject();
 
             //Act
             var result = _listingCommmentsRepo.CreateListingComment(lstObject);
@@ -149,49 +150,52 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region UpdateListingCommentsTestCase
 
-        [TestMethod]
+
         /// <summary>
         /// test positive scenario for updating Listing Comments object
         /// </summary>
+        [TestMethod]
         public void Repo_UpdateListingCommentsTest()
         {
             //Arrange
-            ListingComment lstObject = GetListingCommentObject();
+            var lstObject = GetListingCommentObject();
             //Act
             var result = _listingCommmentsRepo.CreateListingComment(lstObject);
             Assert.IsNotNull(result._id);
             result.UpdatedBy = "santosh.kale@globant.com";
 
-            var Updatedresult = _listingCommmentsRepo.UpdateListingComment(result._id, result);
-            Assert.IsNotNull(Updatedresult);
+            var updatedresult = _listingCommmentsRepo.UpdateListingComment(result._id, result);
+            Assert.IsNotNull(updatedresult);
 
-            Assert.AreEqual(result.UpdatedBy, Updatedresult.UpdatedBy);
+            Assert.AreEqual(result.UpdatedBy, updatedresult.UpdatedBy);
             Assert.IsInstanceOfType(result, typeof(ListingComment));
         }
 
-        [TestMethod]
+
         /// <summary>
         /// test for Null id returns null result
         /// </summary>
+        [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_UpdateListingCommentsTest_NullId_ThrowException()
         {
-            ListingComment updatedListingComments = null;
-            var result = _listingCommmentsRepo.UpdateListingComment(null, updatedListingComments);
+            //ListingComment updatedListingComments = null;
+            var result = _listingCommmentsRepo.UpdateListingComment(null, null);
             Assert.IsNull(result);
         }
 
         #endregion UpdateListingCommentsTestCase
 
         #region DeleteListingCommentsTest
-        [TestMethod]
+
         /// <summary>
         /// test positive scenario for Delete ListingComments by Id
         /// </summary>
+        [TestMethod]
         public void Repo_DeleteListingCommentsTest()
         {
             // Arrange
-            ListingComment dataObject = GetListingCommentObject();
+            var dataObject = GetListingCommentObject();
 
             // Act
             var result = _listingCommmentsRepo.CreateListingComment(dataObject);
@@ -204,10 +208,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         }
 
-        [TestMethod]
+
         /// <summary>
         /// test for invalid id returns exception
         /// </summary>
+        [TestMethod]
         [ExpectedException(typeof(FormatException))]
         public void Repo_DeleteListingCommentTest_InvalidId()
         {
@@ -215,10 +220,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+
         /// <summary>
         /// test for null id returns exception
         /// </summary>
+        [TestMethod]
         [ExpectedException(typeof(AssertFailedException))]
         public void Repo_DeleteListCommentsTest_NUllId_ThrowException()
         {

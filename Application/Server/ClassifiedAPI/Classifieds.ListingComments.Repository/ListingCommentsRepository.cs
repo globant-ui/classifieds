@@ -13,11 +13,11 @@ namespace Classifieds.ListingComments.Repository
         #region ListingCommentsRepository
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCommentsCollection"];
         private readonly IDBRepository _dbRepository;
-        public ListingCommentsRepository(IDBRepository DBRepository)
+        public ListingCommentsRepository(IDBRepository dbRepository)
         {
-            _dbRepository = DBRepository;
+            _dbRepository = dbRepository;
         }
-        MongoCollection<TEntity> classifieds
+        MongoCollection<TEntity> Classifieds
         {
             get { return _dbRepository.GetCollection<TEntity>(_collectionClassifieds); }
         }
@@ -33,7 +33,7 @@ namespace Classifieds.ListingComments.Repository
         {
             try
             {
-                var partialRresult = this.classifieds.FindAll()
+                var partialRresult = Classifieds.FindAll()
                                      .Where(p => p.ListingId == listingId)
                                     .ToList();
                 List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
@@ -59,7 +59,7 @@ namespace Classifieds.ListingComments.Repository
         {
             try
             {
-                var partialRresult = this.classifieds.FindAll()
+                var partialRresult = Classifieds.FindAll()
                                         .Where(p => p._id == id)
                                         .ToList();
 
@@ -86,7 +86,7 @@ namespace Classifieds.ListingComments.Repository
         {
             try
             {
-                var result = this.classifieds.Save(listingComments);
+                var result = Classifieds.Save(listingComments);
                 if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
                 {
 
@@ -119,7 +119,7 @@ namespace Classifieds.ListingComments.Repository
                                                .Set(p => p.UpdatedBy, dataObj.UpdatedBy)
                                                .Set(p => p.Verified, dataObj.Verified)
                                                .Set(p => p.UpdatedDate, dataObj.UpdatedDate);
-                var result = this.classifieds.Update(query, update);
+                var result = Classifieds.Update(query, update);
                 if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
                 {
 
@@ -146,7 +146,7 @@ namespace Classifieds.ListingComments.Repository
             try
             {
                 var query = Query<TEntity>.EQ(p => p._id, id);
-                this.classifieds.Remove(query);
+                Classifieds.Remove(query);
             }
             catch (Exception ex)
             {
