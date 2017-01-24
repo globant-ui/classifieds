@@ -1,5 +1,7 @@
 ﻿using System.Web.Http;
 using Classifieds.IOC;
+using System.Web.Http.Cors;
+using System.Configuration;
 
 
 namespace Classifieds.ListingsCommentsAPI
@@ -8,6 +10,10 @@ namespace Classifieds.ListingsCommentsAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            //CORS enabled globaly need to configure server url environment
+            var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["CORSUrl"], "*", "*");
+            cors.SupportsCredentials = true;
+            config.EnableCors(cors);
             // Web API configuration and services
             UnityConfig.RegisterComponents(config);
             // Web API routes
