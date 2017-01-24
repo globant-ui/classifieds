@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit{
     private activeSession:boolean = false;
 
   @ViewChild('childModal') public childModal:ModalDirective;
+
     constructor(public _authenticationWindowService: AuthenticationWindowService,
                 private _settingsService: SettingsService,
                 private _http: Http,
@@ -38,9 +39,6 @@ export class LoginComponent implements OnInit{
                 private _cookieService:CookieService){}
 
     ngOnInit(){
-        console.log('here');
-        console.log(this._settingsService.getSettings());
-        console.log(this._settingsService.settings);
         this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
         this.activeSession = (this.session && this.session.isValid());
         console.log(this.activeSession);
@@ -62,7 +60,6 @@ export class LoginComponent implements OnInit{
     }
 
     doLogin(){
-        console.log(this._settingsService.settings);
         let context = this;
         this.session =new Session({});
         let params = '?client_id=' + encodeURIComponent( this._settingsService.settings.auth.client_id )
@@ -89,15 +86,12 @@ export class LoginComponent implements OnInit{
                     let re = /code=(.*)/;
                     let found = href.match(re);
                     if (found && found.length > 1) {
-                        console.log('Google callback URL: ', href);
                         context.windowHandle.close();
                         clearInterval(context.intervalId);
                         let unfilteredCode = found[1];
                         this.code = unfilteredCode.substring(0, unfilteredCode.length - +( unfilteredCode.lastIndexOf('#') == unfilteredCode.length - 1));
                         this.getAuthToken(this.code).then((res)=>{
                             this.getUserInfoGoogle(res['access_token']);
-                            console.log('token',res['access_token']);
-
                         });
                     }
                 }
@@ -119,7 +113,6 @@ export class LoginComponent implements OnInit{
                     .subscribe(
                     response => {
                         let userGoogle = new UserInformation( response.json() );
-                        console.log("user GOogle",userGoogle);
                         resolve(userGoogle);
                     },
                     error => {
@@ -140,14 +133,12 @@ export class LoginComponent implements OnInit{
                     .subscribe(
                     response => {
                         let userGoogle = new UserInformation( response.json() );
-                        console.log(userGoogle,'usergoogle');
                         let ClassifiedsUser ={
                             "UserName" : "",
                             "UserEmail" : ""
                         }
                         ClassifiedsUser.UserEmail =userGoogle['email'];
                         ClassifiedsUser.UserName = userGoogle['name'];
-                        console.log('check classifieds user = ',ClassifiedsUser);
                         this.validateUser(ClassifiedsUser);
                         /*this.session.set( 'authenticated', true );
                         this.session.set( 'token', token);
@@ -170,14 +161,9 @@ export class LoginComponent implements OnInit{
          this._http.post(this.validateUrl,data)
          .subscribe((res)=> {
               let validUser = res.json();
-              console.log('valid user response = ',validUser);
-              console.log('valid use AT = ',validUser.AccessToken);
-              console.log('valid use email = ',validUser.UserEmail);
               this.session.set( 'authenticated', true );
               this.session.set( 'token', validUser.AccessToken);
               this.session.set( 'useremail', validUser.UserEmail);
-              //this.session.set( 'username', userGoogle['name'] );
-              console.log("valid user session started",this.session);
               this._cookieService.putObject('SESSION_PORTAL',this.session);
               this._router.navigateByUrl('home');
          },
