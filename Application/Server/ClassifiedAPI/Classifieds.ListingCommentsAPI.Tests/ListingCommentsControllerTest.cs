@@ -20,11 +20,10 @@ namespace Classifieds.ListingCommentsAPI.Tests
         #region Unit Test Cases
 
         #region Class Variables
-        private Mock<IListingCommentService> mockService;
-        private Mock<ILogger> logger;
-        private readonly List<ListingComment> classifiedList = new List<ListingComment>();
-        private const string urlLocation = "http://localhost/api/ListingComments";
-        private const string listingId = "5873490a48bd151ef5d67a29";
+        private Mock<IListingCommentService> _mockService;
+        private Mock<ILogger> _logger;
+        private readonly List<ListingComment> _classifiedList = new List<ListingComment>();
+        private const string ListingId = "5873490a48bd151ef5d67a29";
 
         #endregion
 
@@ -32,8 +31,8 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [TestInitialize]
         public void Initialize()
         {
-            mockService = new Mock<IListingCommentService>();
-            logger = new Mock<ILogger>();
+            _mockService = new Mock<IListingCommentService>();
+            _logger = new Mock<ILogger>();
         }
         #endregion
 
@@ -42,43 +41,43 @@ namespace Classifieds.ListingCommentsAPI.Tests
         private void SetUpClassifiedsListingComments()
         {
             var lstListingcomments = GetlistingCommentsObject();
-            classifiedList.Add(lstListingcomments);
+            _classifiedList.Add(lstListingcomments);
         }
 
         #endregion
 
         #region GetAllListingCommentTest
 
-        [TestMethod]
         /// <summary>
         /// test positive scenario for Get All ListingComments
         /// </summary>
+        [TestMethod]
         public void GetAllListingCommentTest()
         {
             SetUpClassifiedsListingComments();
-            mockService.Setup(x => x.GetAllListingComment(listingId))
-                .Returns(classifiedList);
+            _mockService.Setup(x => x.GetAllListingComment(ListingId))
+                .Returns(_classifiedList);
 
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            var controller = new ListingCommentsController(mockService.Object, logger.Object);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
 
             //Act
-            var objList = controller.GetAllListingComment(listingId);
+            var objList = controller.GetAllListingComment(ListingId);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
             Assert.AreEqual(objList[0].SubmittedBy, "v.wadsamudrakar@globant.com");
         }
 
-        [TestMethod]
         /// <summary>
         /// test negative scenario for empty Listing Comment
         /// </summary>
+        [TestMethod]
         public void GetAllListingComment_EmptyListingCommentsTest()
         {
-            mockService.Setup(x => x.GetAllListingComment(null))
+            _mockService.Setup(x => x.GetAllListingComment(null))
             .Returns(new List<ListingComment>() { new ListingComment() });
-            var controller = new ListingCommentsController(mockService.Object, logger.Object);
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_GetListingComments_ThrowsException()
         {
-            var controller = new ListingCommentsController(mockService.Object, logger.Object);
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             controller.GetAllListingComment(null);
         }
 
@@ -96,17 +95,17 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region PostListingCommentsTestcases
 
-        [TestMethod]
         /// <summary>
         /// test positive scenario for Post Listing Comments
         /// </summary>
+        [TestMethod]
         public void Controller_PostListingCommentsTest()
         {
             // Arrange
-            mockService.Setup(x => x.CreateListingComment(It.IsAny<ListingComment>()))
+            _mockService.Setup(x => x.CreateListingComment(It.IsAny<ListingComment>()))
             .Returns(GetlistingCommentsObject());
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            ListingCommentsController controller = new ListingCommentsController(mockService.Object, logger.Object);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -130,18 +129,18 @@ namespace Classifieds.ListingCommentsAPI.Tests
             Assert.AreEqual(true, response.IsSuccessStatusCode);
         }
 
-        [TestMethod]
         /// <summary>
         /// test positive scenario for Post ListingComments and verify response header location
         /// </summary>
+        [TestMethod]
         public void Controller_PostListingCommentsTest_SetsLocationHeader_MockURLHelperVersion()
         {
             // This version uses a mock UrlHelper.
             // Arrange
-            mockService.Setup(x => x.CreateListingComment(It.IsAny<ListingComment>()))
+            _mockService.Setup(x => x.CreateListingComment(It.IsAny<ListingComment>()))
             .Returns(GetlistingCommentsObject());
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            ListingCommentsController controller = new ListingCommentsController(mockService.Object, logger.Object);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             controller.Request = new HttpRequestMessage();
             controller.Configuration = new HttpConfiguration();
 
@@ -169,7 +168,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_PostListingComment_ThrowsException()
         {
-            var controller = new ListingCommentsController(mockService.Object, logger.Object);
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             controller.Post(null);
         }
 
@@ -177,17 +176,17 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region UpdateListingCommentsTestCases
 
-        [TestMethod]
         /// <summary>
         /// test positive scenario for updating listing Comments
         /// </summary>
+        [TestMethod]
         public void Controller_UpdateListingCommentsTest()
         {
             // Arrange
-            mockService.Setup(x => x.UpdateListingComment(It.IsAny<string>(), It.IsAny<ListingComment>()))
+            _mockService.Setup(x => x.UpdateListingComment(It.IsAny<string>(), It.IsAny<ListingComment>()))
             .Returns(GetlistingCommentsObject());
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            ListingCommentsController controller = new ListingCommentsController(mockService.Object, logger.Object);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
 
             controller.Request = new HttpRequestMessage
             {
@@ -207,14 +206,16 @@ namespace Classifieds.ListingCommentsAPI.Tests
             Assert.IsNotNull(contentResult.Content);
         }
 
-        [TestMethod]
+
         /// <summary>
         ///  test for updating listing with null listing id throws exception
         /// </summary>
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_UpdateListingComments_ThrowsException()
         {
-            var controller = new ListingCommentsController(mockService.Object, logger.Object);
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             var updatedProduct = new ListingComment() { UpdatedBy = "amol.pawar@globant.com", UpdatedDate = "10/01/2017", Comments = "is this available", ListingId = "5873490a48bd151ef5d67a29", SubmittedDate = "03/01/2017", SubmittedBy = "v.wadsamudrakar@globant.com" };
             var result = controller.Put(null, updatedProduct);
         }
@@ -223,7 +224,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         /// <summary>
         /// for Get Data Object of ListingComments
         /// </summary>
-        private ListingComment GetlistingCommentsObject(string ListingId = "5873490a48bd151ef5d67a29")
+        private ListingComment GetlistingCommentsObject()
         {
             ListingComment dataObject = new ListingComment
             {
@@ -243,17 +244,17 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region DeleteListingCommentsTestCases
 
-        [TestMethod]
         /// <summary>
         /// test positive scenario for deleting ListingComments
         /// </summary>
+        [TestMethod]
         public void Controller_DeleteListingCommentsTest()
         {
             // Arrange
             ListingComment dataObject = GetlistingCommentsObject();
-            mockService.Setup(x => x.DeleteListingComment(It.IsAny<string>()));
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            var controller = new ListingCommentsController(mockService.Object, logger.Object);
+            _mockService.Setup(x => x.DeleteListingComment(It.IsAny<string>()));
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            ListingCommentsController controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -266,15 +267,14 @@ namespace Classifieds.ListingCommentsAPI.Tests
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
             Assert.AreEqual(true, response.IsSuccessStatusCode);
         }
-
-        [TestMethod]
         /// <summary>
         /// test for deleting listing comments object throws exception
         /// </summary>
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_DeleteListingComments_ThrowsException()
         {
-            var controller = new ListingCommentsController(mockService.Object, logger.Object);
+            var controller = new ListingCommentsController(_mockService.Object, _logger.Object);
             var result = controller.Delete(null);
         }
 

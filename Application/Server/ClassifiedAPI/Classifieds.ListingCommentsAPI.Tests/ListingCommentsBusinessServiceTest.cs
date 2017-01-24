@@ -11,11 +11,13 @@ namespace Classifieds.ListingCommentsAPI.Tests
     [TestClass]
     public class ListingCommentsBusinessServiceTest
     {
+        #region Unit Test Cases
+
         #region Class Variables
         private Mock<IListingCommentsRepository<ListingComment>> _moqAppManager;
         private IListingCommentService _service;
-        private readonly List<ListingComment> classifiedlistingcomments = new List<ListingComment>();
-        private const string listingId = "5873490a48bd151ef5d67a29";
+        private readonly List<ListingComment> _classifiedlistingcomments = new List<ListingComment>();
+        private const string ListingId = "5873490a48bd151ef5d67a29";
         #endregion
 
         #region Initialize
@@ -31,10 +33,10 @@ namespace Classifieds.ListingCommentsAPI.Tests
         private void SetUpClassifiedsListingComments()
         {
             var lstlistingcomments = GetListingCommentsObject();
-            classifiedlistingcomments.Add(lstlistingcomments);
+            _classifiedlistingcomments.Add(lstlistingcomments);
         }
 
-        private ListingComment GetListingCommentsObject(string ListingId = "5873490a48bd151ef5d67a29")
+        private ListingComment GetListingCommentsObject()
         {
             ListingComment dataObject = new ListingComment
             {
@@ -51,14 +53,12 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
         #endregion
 
-        #region Unit Test Cases
-
         #region GetAllListingCommentCases
 
-        [TestMethod]
         /// <summary>
         /// test negative scenario for throw Exception
         /// </summary>
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetAllListingComment_ThrowsException()
         {
@@ -73,10 +73,10 @@ namespace Classifieds.ListingCommentsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListingComments();
-            _moqAppManager.Setup(x => x.GetAllListingComment(It.IsAny<string>())).Returns(classifiedlistingcomments);
+            _moqAppManager.Setup(x => x.GetAllListingComment(It.IsAny<string>())).Returns(_classifiedlistingcomments);
 
             //Act
-            var result = _service.GetAllListingComment(listingId);
+            var result = _service.GetAllListingComment(ListingId);
 
             //Assert
             Assert.AreEqual(1, result.Count);
@@ -94,7 +94,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
             _moqAppManager.Setup(x => x.GetAllListingComment(It.IsAny<string>())).Returns(new List<ListingComment>() { new ListingComment() });
 
             //Act
-            var result = _service.GetAllListingComment(listingId);
+            var result = _service.GetAllListingComment(ListingId);
 
             //Assert
             Assert.AreEqual(1, result.Count);
@@ -104,10 +104,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
         #endregion GetAllListingCommentCases
 
         #region PostListingTestCases
-        [TestMethod]
+
         /// <summary>
         /// test positive scenario for Post Listing Comments
         /// </summary>
+        [TestMethod]
         public void PostListingCommentTest()
         {
             //Arrange
@@ -136,10 +137,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region UpdateListingCommentsTestCases
 
-        [TestMethod]
+
         /// <summary>
         /// test positive scenario for Update Listing Comment
         /// </summary>
+        [TestMethod]
         public void PutListingCommentTest()
         {
             //Arrange
@@ -154,10 +156,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
             Assert.IsInstanceOfType(result, typeof(ListingComment));
         }
 
-        [TestMethod]
+
         /// <summary>
         /// test Case for Exception
         /// </summary>
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PutListingCommentTest_InvalidId_ThrowException()
         {
@@ -172,10 +175,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
 
         #region DeleteListingTestCases
 
-        [TestMethod]
+
         /// <summary>
         /// test positive scenario for Delete Listing Comments
-        /// </summary>       
+        /// </summary>  
+        [TestMethod]
         public void DeleteListingCommentTest()
         {
             //Arrange
@@ -189,10 +193,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
             _moqAppManager.Verify(v => v.DeleteListingComment(lstObject._id), Times.Once());
         }
 
-        [TestMethod]
+
         /// <summary>
         /// test for null Exception
         /// </summary>
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteListingComment_InvalidId_ThrowException()
         {

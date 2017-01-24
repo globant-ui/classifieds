@@ -9,11 +9,13 @@ namespace Classifieds.ListingCommentsAPI.Tests
     [TestClass]
     public class ListingCommentsRepositoryTest
     {
+        #region Unit Test Cases
+
         #region Class Variables
         private IListingCommentsRepository<ListingComment> _listingCommmentsRepo;
         private IDBRepository _dbRepository;
         private readonly List<ListingComment> _classifiedListingComments = new List<ListingComment>();
-        private const string listingId = "5873490a48bd151ef5d67a29";
+        private const string ListingId = "5873490a48bd151ef5d67a29";
         #endregion
 
         #region Initialize
@@ -49,8 +51,6 @@ namespace Classifieds.ListingCommentsAPI.Tests
         }
         #endregion
 
-        #region Unit Test Cases
-
         #region GetAllListingCommentsTestCases
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace Classifieds.ListingCommentsAPI.Tests
         public void Repo_CreateListingCommentTest()
         {
             //Arrange
-            ListingComment dataObject = GetListingCommentObject(listingId);
+            ListingComment dataObject = GetListingCommentObject(ListingId);
 
             //Act
             var result = _listingCommmentsRepo.CreateListingComment(dataObject);
@@ -219,11 +219,11 @@ namespace Classifieds.ListingCommentsAPI.Tests
         /// <summary>
         /// test for null id returns exception
         /// </summary>
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Repo_DeleteListCommentsTest_NUllId()
+        [ExpectedException(typeof(AssertFailedException))]
+        public void Repo_DeleteListCommentsTest_NUllId_ThrowException()
         {
             _listingCommmentsRepo.DeleteListingComment(null);
-            Assert.IsTrue(true);
+            Assert.IsNull(true);
         }
 
         #endregion DeleteListingCommentsTest

@@ -145,8 +145,8 @@ namespace Classifieds.ListingComments.Repository
         {
             try
             {
-                var query = Query<TEntity>.EQ(p => p._id, id.ToString());
-                var result = this.classifieds.Remove(query);
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                this.classifieds.Remove(query);
             }
             catch (Exception ex)
             {

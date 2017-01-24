@@ -1,7 +1,5 @@
-﻿# region Imports
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System.Configuration;
-#endregion
 
 namespace Classifieds.ListingComments.Repository
 {
@@ -35,7 +33,7 @@ namespace Classifieds.ListingComments.Repository
         /// <summary>
         /// This methods returns the mongo collection instance representing a collection on database
         /// </summary>
-        /// <typeparam name="ListingComments">document type</typeparam>
+        /// <typeparam name="ListingComment">document type</typeparam>
         /// <param name="name"></param>
         /// <returns>Name of Collection</returns>
         public MongoCollection<ListingComment> GetCollection<ListingComment>(string name)
@@ -43,6 +41,6 @@ namespace Classifieds.ListingComments.Repository
             return _db.GetCollection<ListingComment>(name);
         }
 
-        #endregion
+        #endregion GetCollection
     }
 }

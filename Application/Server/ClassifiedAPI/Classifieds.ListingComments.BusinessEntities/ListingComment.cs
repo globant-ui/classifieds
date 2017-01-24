@@ -1,7 +1,5 @@
-﻿#region Imports
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-#endregion
 
 namespace Classifieds.ListingComments.BusinessEntities
 {
