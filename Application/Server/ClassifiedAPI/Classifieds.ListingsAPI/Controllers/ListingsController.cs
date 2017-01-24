@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 using Classifieds.Common.Repositories;
 
 namespace Classifieds.ListingsAPI.Controllers
@@ -21,7 +20,6 @@ namespace Classifieds.ListingsAPI.Controllers
     /// Modified by : Ashish
     /// Modified date: 12/01/2017
     /// </summary>
-    [EnableCors("http://localhost:3000", "*", "*")]
     public class ListingsController : ApiController
     {
         #region Private Variable

@@ -1,6 +1,7 @@
-﻿using System.Web.Http;
+﻿using System.Configuration;
+using System.Web.Http;
+using System.Web.Http.Cors;
 using Classifieds.IOC;
-using Classifieds.Common;
 
 namespace Classifieds.UserServiceAPI
 {
@@ -8,6 +9,10 @@ namespace Classifieds.UserServiceAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            //CORS enabled globaly need to configure server url environment
+            var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["CorsUrl"], "*", "*");
+            cors.SupportsCredentials = true;
+            config.EnableCors(cors);
             // Web API configuration and services
             //config.Filters.Add(new BasicAuthorization());
             UnityConfig.RegisterComponents(config);

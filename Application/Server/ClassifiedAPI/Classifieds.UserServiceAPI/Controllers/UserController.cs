@@ -6,7 +6,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace Classifieds.UserServiceAPI.Controllers
 {
@@ -19,7 +18,6 @@ namespace Classifieds.UserServiceAPI.Controllers
     /// Modified by :
     /// Modified date: 
     /// </summary>
-    [EnableCors("http://localhost:3000", "*", "*")]
     public class UserController : ApiController
     {
         #region Private Variable
