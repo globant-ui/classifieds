@@ -1,32 +1,29 @@
-﻿using MongoDB.Driver.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Configuration;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using Classifieds.Common.Entities;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 
 namespace Classifieds.Common.Repositories
 {
     public class CommonRepository : CommonDBRepository, ICommonRepository
     {
         #region Private variables
-        private readonly string COLLECTION_TOKENS = ConfigurationManager.AppSettings["UserTokensCollection"];
+        private readonly string _collectionTokens = ConfigurationManager.AppSettings["UserTokensCollection"];
         private readonly ICommonDBRepository _dbRepository;
         #endregion
-        MongoCollection<UserToken> userTokens
+        MongoCollection<UserToken> UserTokens
         {
-            get { return _dbRepository.GetCollection<UserToken>(COLLECTION_TOKENS); }
+            get { return _dbRepository.GetCollection<UserToken>(_collectionTokens); }
         }
 
         #region Constructor
-        public CommonRepository(ICommonDBRepository DBRepository)
+        public CommonRepository(ICommonDBRepository dbRepository)
         {
-            _dbRepository = DBRepository;
+            _dbRepository = dbRepository;
         }
         #endregion
 
@@ -63,13 +60,13 @@ namespace Classifieds.Common.Repositories
         /// <summary>
         /// Saves a new user token into the database
         /// </summary>
-        /// <param name="object">UserToken object</param>
+        /// <param name="userToken">UserToken object</param>
         /// <returns>return token</returns>
         public UserToken SaveToken(UserToken userToken)
         {
             try
             {
-                var result = this.userTokens.Save(userToken);
+                var result = this.UserTokens.Save(userToken);
                 if (result.DocumentsAffected == 0 && result.HasLastErrorMessage) { }
                 return userToken;
             }
@@ -86,12 +83,15 @@ namespace Classifieds.Common.Repositories
             try
             {
 
-                var tokens = this.userTokens.FindAll()
-                                .Where(p => p.AccessToken == accessToken && p.UserEmail == userEmail)
-                                .ToList();
+                var tokens = this.UserTokens.FindAll()
+                    .Where(p => p.AccessToken == accessToken && p.UserEmail == userEmail)
+                    .ToList();
                 return tokens.Count == 1 ? true : false;
             }
-            catch (Exception ex) { return false; }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
         #endregion
     }

@@ -1,5 +1,4 @@
-﻿using Classifieds.Common.Entities;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace Classifieds.Common.Repositories
 {
