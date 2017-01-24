@@ -121,6 +121,14 @@
       <Project>{9b4e84fd-6331-4b4f-a82d-6ad79d7a7c62}</Project>
       <Name>Classifieds.Search.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Classifieds.UserService.BusinessServices\Classifieds.UserService.BusinessServices.csproj">
+      <Project>{04264ee5-d1d8-4cbc-8b1b-84ece383c4d1}</Project>
+      <Name>Classifieds.UserService.BusinessServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Classifieds.UserService.Repository\Classifieds.UserService.Repository.csproj">
+      <Project>{cab66cad-d53b-4d85-b238-fb0df08cb564}</Project>
+      <Name>Classifieds.UserService.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

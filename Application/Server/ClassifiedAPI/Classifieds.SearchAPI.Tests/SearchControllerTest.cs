@@ -6,6 +6,8 @@ using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Classifieds.Common;
+using Classifieds.Common.Repositories;
+
 #endregion
 
 namespace Classifieds.SearchAPI.Tests
@@ -27,6 +29,7 @@ namespace Classifieds.SearchAPI.Tests
             //Arrange
             var mockService = new Mock<ISearchService>();
             var logger = new Mock<ILogger>();
+            var mockAuthRepo = new Mock<ICommonRepository>();
 
             mockService.Setup(x => x.FullTextSearch(It.IsAny<string>()))
                 .Returns(
@@ -46,7 +49,7 @@ namespace Classifieds.SearchAPI.Tests
 
             logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
 
-            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object);
+            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
 
             //Act
             List<Listing> list = new List<Listing>();
@@ -65,9 +68,10 @@ namespace Classifieds.SearchAPI.Tests
         public void Controller_FreeTextSearch_ThrowsException()
         {
             var mockService = new Mock<ISearchService>();
+            var mockAuthRepo = new Mock<ICommonRepository>();
             var logger = new Mock<ILogger>();
             logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
-            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object);
+            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
             var classified = controller.GetFullTextSearch(null);
         }
         #endregion
