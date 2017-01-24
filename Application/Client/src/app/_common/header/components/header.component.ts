@@ -22,21 +22,26 @@ let tpls = require('../tpls/header.component.html').toString();
   template: tpls
 })
 export class HeaderComponent implements OnInit{
-
   private session : Session;
   private activeSession:boolean = false;
   public isCollapsed:boolean = true;
 
 
-  constructor(public _authenticationWindowService: AuthenticationWindowService, private _cookieService:CookieService){}
+  constructor(public _authenticationWindowService: AuthenticationWindowService,
+              private _settingsService: SettingsService,
+              private _http: Http,
+              private _router:Router,
+              private _cookieService:CookieService){}
 
   ngOnInit(){
     this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
     this.activeSession = (this.session && this.session.isValid());
+    console.log(this.activeSession);
     if(!this.activeSession){
       this.doLogout();
     }
   }
+
     public collapsed(event:any):void {
         console.log(event);
     }
@@ -48,6 +53,7 @@ export class HeaderComponent implements OnInit{
   doLogout(){
     this._authenticationWindowService.doLogOut();
   }
+
 
 }
 
