@@ -35,7 +35,7 @@ export class FilterComponent {
     this.filterData=this._settingsService.getFilterListingData();
     let filterData = this.filterData;
     for (let item of filterData) {
-      if(item.listName==='All'){item.isActive = true;}
+      if(item.listName==='Top ten'){item.isActive = true;}
     }
   }
 
