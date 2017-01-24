@@ -1,7 +1,6 @@
 ﻿#region Imports
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 #endregion
 
 namespace Classifieds.UserService.BusinessEntities

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Classifieds.UserService.BusinessEntities;
 using Classifieds.UserService.Repository;
 
@@ -12,8 +11,7 @@ namespace Classifieds.UserServiceAPI.Tests
         #region Class Variables
         private IUserRepository _userRepo;
         private IDBRepository _dbRepository;
-        private ClassifiedsUser user;
-        private UserToken token;
+        private ClassifiedsUser _user;
         #endregion
 
         #region Initialize
@@ -22,8 +20,7 @@ namespace Classifieds.UserServiceAPI.Tests
         {
             _dbRepository = new DBRepository();
             _userRepo = new UserRepository(_dbRepository);
-            user = GetUserObject();
-            token = GetUserToken();
+            _user = GetUserObject();
         }
         #endregion
 
@@ -39,36 +36,15 @@ namespace Classifieds.UserServiceAPI.Tests
             return user;
         }
 
-        private UserToken GetUserToken()
-        {
-            UserToken token = new UserToken
-            {
-                //_id = 5.ToString(),
-                AccessToken = Guid.NewGuid().ToString(),
-                UserEmail = "ashish.kulkarni@globant.com"
-            };
-            return token;
-        }
         #endregion
         [TestMethod]
         public void RegisterUserTest()
         {
             //Act
-            var result = _userRepo.RegisterUser(user);
+            var result = _userRepo.RegisterUser(_user);
 
             //Assert
             Assert.IsNotNull(result);
-        }
-
-        [TestMethod]
-        public void SaveTokenTest()
-        {
-            //Act
-            var result = _userRepo.SaveToken(token);
-
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(UserToken));
         }
     }
 }

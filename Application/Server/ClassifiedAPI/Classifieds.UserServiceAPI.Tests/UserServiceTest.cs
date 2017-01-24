@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Classifieds.Common;
-using Classifieds.UserService;
 using Classifieds.UserService.Repository;
 using Classifieds.UserService.BusinessEntities;
 using Classifieds.UserService.BusinessServices;
@@ -16,9 +13,8 @@ namespace Classifieds.UserServiceAPI.Tests
         #region Class Variables
         private Mock<IUserRepository> _moqAppManager;
         private IUserService _service;
-        string returnString = string.Empty;
-        private UserToken userToken;
-        private ClassifiedsUser user;
+        string _returnString = string.Empty;
+        private ClassifiedsUser _user;
         #endregion
 
         #region Initialize
@@ -33,10 +29,8 @@ namespace Classifieds.UserServiceAPI.Tests
         #region Setup
         private void SetUpClassifiedsUsers()
         {
-            var user = GetUserObject();
-            returnString = "200 OK";
-            user = GetUserObject();
-            userToken = GetUserToken();
+            _user = GetUserObject();
+            _returnString = "200 OK";
         }
 
         private ClassifiedsUser GetUserObject()
@@ -50,26 +44,16 @@ namespace Classifieds.UserServiceAPI.Tests
             return user;
         }
 
-        private UserToken GetUserToken()
-        {
-            UserToken token = new UserToken
-            {
-                _id = 5.ToString(),
-                AccessToken = Guid.NewGuid().ToString(),
-                UserEmail = "ashish.kulkarni@globant.com"
-            };
-            return token;
-        }
         #endregion
         [TestMethod]
         public void RegisterUserTest()
         {
             SetUpClassifiedsUsers();
             //string returnString = "200 OK";
-            _moqAppManager.Setup(x => x.RegisterUser(this.user)).Returns(returnString);
+            _moqAppManager.Setup(x => x.RegisterUser(this._user)).Returns(_returnString);
 
             //Act
-            var result = _service.RegisterUser(user);
+            var result = _service.RegisterUser(_user);
 
             //Assert
             Assert.IsNotNull(result);
@@ -82,20 +66,5 @@ namespace Classifieds.UserServiceAPI.Tests
         {
             _service.RegisterUser(null);
         }
-
-        [TestMethod]
-        public void SaveTokenTest()
-        {
-            SetUpClassifiedsUsers();
-            _moqAppManager.Setup(x => x.SaveToken(this.userToken)).Returns(userToken);
-
-            //Act
-            var result = _service.SaveToken(userToken);
-
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(UserToken));
-        }
-
     }
 }

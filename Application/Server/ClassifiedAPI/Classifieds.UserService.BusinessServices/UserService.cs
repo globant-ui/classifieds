@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Classifieds.UserService.BusinessEntities;
 using Classifieds.UserService.Repository;
 
@@ -13,9 +11,9 @@ namespace Classifieds.UserService.BusinessServices
         #endregion
 
         #region Constructor
-        public UserService(IUserRepository UserRepository)
+        public UserService(IUserRepository userRepository)
         {
-            _userRepository = UserRepository;
+            _userRepository = userRepository;
         }
         #endregion
 
@@ -30,23 +28,6 @@ namespace Classifieds.UserService.BusinessServices
             try
             {
                 return _userRepository.RegisterUser(user);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Saves a user token into the database
-        /// </summary>
-        /// <param name="user">UserToken Object</param>
-        /// <returns></returns>
-        public UserToken SaveToken(UserToken userToken)
-        {
-            try
-            {
-                return _userRepository.SaveToken(userToken);
             }
             catch (Exception ex)
             {

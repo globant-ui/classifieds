@@ -8,6 +8,8 @@ using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Common;
 using System.Web.Http.Cors;
+using Classifieds.Common.Repositories;
+
 #endregion
 
 namespace Classifieds.SearchAPI.Controllers
@@ -27,8 +29,8 @@ namespace Classifieds.SearchAPI.Controllers
         #region Private Variable
         private readonly ISearchService _searchService;
         private readonly ILogger _logger;
-        private readonly ICommonDBRepository _commonRepository;
-        private string userEmail = string.Empty;
+        private readonly ICommonRepository _commonRepository;
+        private string _userEmail = string.Empty;
         #endregion
 
         #region Constructor
@@ -37,7 +39,8 @@ namespace Classifieds.SearchAPI.Controllers
         /// </summary>
         /// <param name="searchService"></param>
         /// <param name="logger"></param>
-        public SearchController(ISearchService searchService,ILogger logger, ICommonDBRepository commonRepository)
+        /// <param name="commonRepository"></param>
+        public SearchController(ISearchService searchService,ILogger logger, ICommonRepository commonRepository)
         {
             _searchService = searchService;
             _logger = logger;
@@ -56,16 +59,18 @@ namespace Classifieds.SearchAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = getUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-                userEmail = getUserEmail();
+                
                 return _searchService.FullTextSearch(searchText).ToList();
             }
             catch (Exception ex)
             {
-                throw _logger.Log(ex, userEmail);
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
 
         }

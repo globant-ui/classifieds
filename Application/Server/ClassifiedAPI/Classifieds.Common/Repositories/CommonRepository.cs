@@ -1,47 +1,36 @@
-﻿using System;
+﻿using MongoDB.Driver.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using Classifieds.Common.Entities;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Classifieds.Common.Entities;
 
-namespace Classifieds.Common
+namespace Classifieds.Common.Repositories
 {
-    public class CommonDBRepository : ICommonDBRepository
+    public class CommonRepository : CommonDBRepository, ICommonRepository
     {
-        private readonly string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["UserProfilesConnectionString"].ConnectionString;
-        private readonly string DATABASE = ConfigurationManager.AppSettings["UserProfilesDBName"];
+        #region Private variables
         private readonly string COLLECTION_TOKENS = ConfigurationManager.AppSettings["UserTokensCollection"];
-
-        private MongoClient client = null;
-        private MongoServer server = null;
-        private MongoDatabase db = null;
-        private MongoCollection<UserToken> userTokens = null;
-
-        public CommonDBRepository()
+        private readonly ICommonDBRepository _dbRepository;
+        #endregion
+        MongoCollection<UserToken> userTokens
         {
-            client = new MongoClient(CONNECTION_STRING);
-            server = client.GetServer();
-            db = server.GetDatabase(DATABASE);
-            userTokens = db.GetCollection<UserToken>(COLLECTION_TOKENS);
+            get { return _dbRepository.GetCollection<UserToken>(COLLECTION_TOKENS); }
         }
 
-        private bool validateRequest(string accessToken, string userEmail)
+        #region Constructor
+        public CommonRepository(ICommonDBRepository DBRepository)
         {
-            try
-            {
-
-                var tokens = this.userTokens.FindAll()
-                                .Where(p => p.AccessToken == accessToken && p.UserEmail == userEmail)
-                                .ToList();
-                return tokens.Count == 1 ? true : false;
-            }
-            catch (Exception ex) { return false; }
+            _dbRepository = DBRepository;
         }
+        #endregion
 
+        #region public methods
         public string IsAuthenticated(HttpRequestMessage request)
         {
             try
@@ -58,13 +47,17 @@ namespace Classifieds.Common
 
                 if (this.validateRequest(accesstoken, userEmail))
                 {
-                    return "200";// new HttpResponseMessage(HttpStatusCode.OK).ToString();
+                    return "200"; // new HttpResponseMessage(HttpStatusCode.OK).ToString();
                 }
                 else
-                { return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " access denied"; }
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " access denied";
+                }
             }
             catch (Exception ex)
-            { return new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + "Pls try some other time."; }
+            {
+                return new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + "Pls try after some time.";
+            }
         }
 
         /// <summary>
@@ -85,11 +78,21 @@ namespace Classifieds.Common
                 throw ex;
             }
         }
-    }
+        #endregion
 
-    public interface ICommonDBRepository
-    {
-        string IsAuthenticated(HttpRequestMessage request);
-        UserToken SaveToken(UserToken userToken);
+        #region private methods
+        private bool validateRequest(string accessToken, string userEmail)
+        {
+            try
+            {
+
+                var tokens = this.userTokens.FindAll()
+                                .Where(p => p.AccessToken == accessToken && p.UserEmail == userEmail)
+                                .ToList();
+                return tokens.Count == 1 ? true : false;
+            }
+            catch (Exception ex) { return false; }
+        }
+        #endregion
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Classifieds.Common;
+using Classifieds.Common.Repositories;
 using Classifieds.UserService.BusinessEntities;
 using Classifieds.UserService.BusinessServices;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -26,19 +25,14 @@ namespace Classifieds.UserServiceAPI.Controllers
         #region Private Variable
         private readonly IUserService _userService;
         private readonly ILogger _logger;
-        private readonly ICommonDBRepository _commonRepository;
+        private readonly ICommonRepository _commonRepository;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// The class constructor. 
+        /// Constructor with injected dependencies
         /// </summary>
-        /// 
-        public UserController()
-        {
-       
-        }
-        public UserController(IUserService userService, ILogger logger, ICommonDBRepository commonRepository)
+        public UserController(IUserService userService, ILogger logger, ICommonRepository commonRepository)
         {
             _userService = userService;
             _logger = logger;
@@ -47,15 +41,13 @@ namespace Classifieds.UserServiceAPI.Controllers
         #endregion
 
         #region Public Methods
-        //[BasicAuthorization(true), HttpGet]
-        public string Get()
-        {
-            return _commonRepository.IsAuthenticated(Request);
-            //return "hi classifieds";
-        }
-
+        /// <summary>
+        /// Registers the user if not present in Db
+        /// </summary>
+        /// <param name="user">User object</param>
+        /// <returns>Response containing access token</returns>
         [HttpPost]
-        public HttpResponseMessage Register(ClassifiedsUser user)
+        public HttpResponseMessage RegisterUser(ClassifiedsUser user)
         {
             try
             {
@@ -64,36 +56,51 @@ namespace Classifieds.UserServiceAPI.Controllers
                     throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid request");
                 else if(user.UserEmail == null || user.UserName == null)
                     throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid request");
+                else if(!(user.UserEmail.ToLowerInvariant().EndsWith("globant.com")))
+                    throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid domain");
 
                 var result = _userService.RegisterUser(user);
 
                 //saving auth token
                 if (result.Equals("Success") || result.Equals("Saved"))
                 {
-                    var TokenId = Guid.NewGuid().ToString("n");
-                    UserToken userToken = new UserToken();
-                    userToken.AccessToken = TokenId;
+                    var tokenId = Guid.NewGuid().ToString("n");
+                    Classifieds.Common.Entities.UserToken userToken = new Classifieds.Common.Entities.UserToken();
+                    userToken.AccessToken = tokenId;
                     userToken.UserEmail = user.UserEmail;
                     userToken.LoginDateTime = DateTime.Now.ToString();
-                    _userService.SaveToken(userToken);
-                    response = Request.CreateResponse<UserToken>(HttpStatusCode.Created, userToken);
+                    _commonRepository.SaveToken(userToken);
+                    response = Request.CreateResponse<Classifieds.Common.Entities.UserToken>(HttpStatusCode.Created, userToken);
                 }
                 return response;
             }
             catch (Exception ex)
             {
-                if (user != null)
-                {
-                    if (user.UserEmail != null)
-                        _logger.Log(ex, user.UserEmail);
-                    else
-                        _logger.Log(ex, string.Empty);
-                }
-                else
-                    _logger.Log(ex, string.Empty);
+                string email = getUserEmail(user);
+                _logger.Log(ex, email);
                 throw new Exception(HttpStatusCode.Conflict.ToString() + "Internal server error");
             }
          }
+        #endregion
+        #region private methods
+        /// <summary>
+        /// Returns user email string
+        /// </summary>
+        /// <param name="user">ClassifiedsUser object</param>
+        /// <returns>string</returns>
+        private string getUserEmail(ClassifiedsUser user)
+        {
+            if (user != null)
+            {
+                if (user.UserEmail != null)
+                    return user.UserEmail;
+                else
+                    return string.Empty;
+            }
+            else
+                return string.Empty;
+        }
+
         #endregion
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.Practices.Unity;
 using System.Web.Http;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Search.Repository;
+using Classifieds.Common.Repositories;
 using Classifieds.Common;
 using Mongo = Classifieds.NLog.MongoDB;
 using Classifieds.Listings.BusinessServices;
@@ -44,6 +45,7 @@ namespace Classifieds.IOC
             container.RegisterType<IUserService, Classifieds.UserService.BusinessServices.UserService>(new HierarchicalLifetimeManager());
             container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<UserService.Repository.IDBRepository, UserService.Repository.DBRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICommonRepository, CommonRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICommonDBRepository, CommonDBRepository>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(container);

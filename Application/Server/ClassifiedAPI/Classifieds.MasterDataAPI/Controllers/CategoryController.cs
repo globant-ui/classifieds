@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common;
 using System.Web.Http.Cors;
+using Classifieds.Common.Repositories;
 
 namespace Classifieds.MasterDataAPI.Controllers
 {
@@ -28,15 +29,15 @@ namespace Classifieds.MasterDataAPI.Controllers
 
         private readonly IMasterDataService _masterDataService;
         private readonly ILogger _logger;
-        private readonly ICommonDBRepository _commonRepository;
-        private string userEmail = string.Empty;
+        private readonly ICommonRepository _commonRepository;
+        private string _userEmail = string.Empty;
         #endregion
 
         #region MastersDataController
         /// <summary>
         /// The class constructor. 
         /// </summary>
-        public CategoryController(IMasterDataService masterdataService, ILogger logger, ICommonDBRepository commonRepository)
+        public CategoryController(IMasterDataService masterdataService, ILogger logger, ICommonRepository commonRepository)
         {
             _masterDataService = masterdataService;
             _logger = logger;
@@ -49,24 +50,25 @@ namespace Classifieds.MasterDataAPI.Controllers
         /// <summary>
         /// Returns the All Category 
         /// </summary>
-        /// <param name="category">All category</param>
-        /// <returns></returns>
+        /// <returns>Category Colletion</returns>
         [HttpGet]
         public List<Category> GetAllCategory()
         {
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = getUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-                userEmail = getUserEmail();
+                
                 return _masterDataService.GetAllCategory().ToList();
             }
             catch (Exception ex)
             {
-                throw _logger.Log(ex, userEmail);
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
         }
         #endregion
@@ -81,17 +83,19 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = getUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-                userEmail = getUserEmail();
+                
                 return _masterDataService.GetCategorySuggetion(categoryText).ToList();
 
             }
             catch (Exception ex)
             {
-                throw _logger.Log(ex, userEmail);
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
         }
 
@@ -109,18 +113,20 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = getUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-                userEmail = getUserEmail();
+                
                 var classified = _masterDataService.CreateCategory(categoryObj);
                 result = Request.CreateResponse<Category>(HttpStatusCode.Created, classified);
             }
             catch (Exception ex)
             {
                 result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                throw _logger.Log(ex, userEmail);
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
 
             return result;
@@ -133,7 +139,7 @@ namespace Classifieds.MasterDataAPI.Controllers
         /// Update Category item for given Id
         /// </summary>
         /// <param name="id">Id</param>
-        /// <param name="Category">Category Object</param>
+        /// <param name="value">Category Object</param>
         /// <returns></returns>
         public HttpResponseMessage Put(string id, Category value)
         {
@@ -141,18 +147,20 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = getUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-                userEmail = getUserEmail();
+                
                 var classified = _masterDataService.UpdateCategory(id, value);
                 result = Request.CreateResponse<Category>(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
                 result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                throw _logger.Log(ex, userEmail);
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
             return result;
         }
@@ -172,18 +180,20 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = getUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-                userEmail = getUserEmail();
+                
                 _masterDataService.DeleteCategory(id);
                 result = Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)
             {
                 result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
-                throw _logger.Log(ex, userEmail);
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
 
             return result;

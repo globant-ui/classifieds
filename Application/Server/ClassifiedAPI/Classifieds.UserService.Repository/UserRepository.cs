@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 
@@ -14,16 +13,16 @@ namespace Classifieds.UserService.Repository
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["UserCollection"];
         private readonly IDBRepository _dbRepository;
-        MongoCollection<ClassifiedsUser> classifieds
+        MongoCollection<ClassifiedsUser> _classifieds
         {
             get { return _dbRepository.GetCollection<ClassifiedsUser>(_collectionClassifieds); }
         }
         #endregion
 
         #region Constructor
-        public UserRepository(IDBRepository DBRepository)
+        public UserRepository(IDBRepository dBRepository)
         {
-            _dbRepository = DBRepository;
+            _dbRepository = dBRepository;
         }
         #endregion
 
@@ -31,18 +30,18 @@ namespace Classifieds.UserService.Repository
         /// <summary>
         /// Insert a new user object into the database
         /// </summary>
-        /// <param name="object">ClassifiedsUser object</param>
+        /// <param name="user">ClassifiedsUser object</param>
         /// <returns>return newly added listing object</returns>
         public string RegisterUser(ClassifiedsUser user)
         {
             try
             {
-                var result = this.classifieds.FindAll()
+                var result = this._classifieds.FindAll()
                                 .Where(p => p.UserEmail == user.UserEmail)
                                 .ToList();
                 if (result.Count == 0)
                 {
-                    var userResult = this.classifieds.Save(user);
+                    var userResult = this._classifieds.Save(user);
                     if (userResult.DocumentsAffected == 0 && userResult.HasLastErrorMessage) { }
                     return "Saved";
                 }
@@ -54,26 +53,6 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
-
-        /// <summary>
-        /// Saves a new user token into the database
-        /// </summary>
-        /// <param name="object">UserToken object</param>
-        /// <returns>return token</returns>
-        public UserToken SaveToken(UserToken userToken)
-        {
-            try
-            {
-                var result = this.classifieds.Save(userToken);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage) { }
-                return userToken;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         #endregion
     }
 }

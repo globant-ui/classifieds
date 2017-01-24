@@ -11,7 +11,6 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using Classifieds.Common;
-using Classifieds.Common.Repositories;
 
 namespace Classifieds.MasterDataAPI.Tests
 {
@@ -23,7 +22,7 @@ namespace Classifieds.MasterDataAPI.Tests
         #region Class Variables
         private Mock<IMasterDataService> mockService;
         private Mock<ILogger> logger;
-        private Mock<ICommonRepository> mockAuthRepo;
+        private Mock<ICommonDBRepository> mockAuthRepo;
         private readonly List<Category> classifiedList = new List<Category>();
         private readonly List<string> categoryList = new List<string>();
         private const string urlLocation = "http://localhost/api/listings";
@@ -36,7 +35,7 @@ namespace Classifieds.MasterDataAPI.Tests
         {
             mockService = new Mock<IMasterDataService>();
             logger = new Mock<ILogger>();
-            mockAuthRepo = new Mock<ICommonRepository>();
+            mockAuthRepo = new Mock<ICommonDBRepository>();
             controller = new CategoryController(mockService.Object, logger.Object, mockAuthRepo.Object);
         }
         #endregion
