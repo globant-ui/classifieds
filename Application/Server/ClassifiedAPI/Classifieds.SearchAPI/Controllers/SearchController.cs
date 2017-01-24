@@ -6,7 +6,6 @@ using System.Web.Http;
 using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Common;
-using System.Web.Http.Cors;
 #endregion
 
 namespace Classifieds.SearchAPI.Controllers
@@ -20,7 +19,6 @@ namespace Classifieds.SearchAPI.Controllers
     /// Modified by :
     /// Modified date:
     /// </summary>
-    [EnableCors("http://localhost:3000", "*", "*")]
     public class SearchController : ApiController
     {
         #region Private Variable
