@@ -1,4 +1,16 @@
 <div class="search-button">
-    <input type="text" placeholder="search" [(ngModel)]="searchCategoryByStr">
+    <input type="text" placeholder="search" #box 
+           (keyup) = "onKeyUp($event,box.value)" 
+           [(ngModel)]="searchCategoryByStr">
     <button class="icon-search-icon" (click)="searchCategoryByString(searchCategoryByStr)"></button>
+    <div class="autoSuggestion" *ngIf = "enabledDropdown">
+        <ul>
+            <li (click)="selectOption(res)" *ngFor="let res of searchResult">
+                {{ res }}
+            </li>
+        </ul>
+    </div>
 </div>
+
+    
+   
