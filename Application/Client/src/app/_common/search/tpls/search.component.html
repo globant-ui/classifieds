@@ -1,4 +1,14 @@
 <div class="search-button">
-    <input type="text" placeholder="str" [(ngModel)]="searchCategoryByStr">
+    <input type="text" placeholder="str" #box (keyup) = "onKey($event,box.value)" [(ngModel)]="searchCategoryByStr">
     <button class="icon-search-icon" (click)="searchCategoryByString(searchCategoryByStr)"></button>
+    <div>
+        <ul>
+            <li (click)="selectOption(res)" *ngFor="let res of searchResult">
+                {{ res }}
+            </li>
+        </ul>
+    </div>
 </div>
+
+    
+   

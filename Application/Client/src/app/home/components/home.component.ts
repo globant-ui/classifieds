@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ViewChildren,OnInit,AfterViewInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -26,6 +26,9 @@ export class HomeComponent {
   public initialCardData: any;
   public bannerData: any;
   public filterCat:any;
+
+  @ViewChildren("cheader") CHeader;
+
   constructor(
       public appState: AppState,
       private _settingsService: SettingsService,
@@ -35,8 +38,14 @@ export class HomeComponent {
     this.baseUrl=this._settingsService.getBaseUrl();
     this.getInitialCards();
     this.getBannerListing();
-  }
+   // console.log("=======>",this.CHeader.first.nativeElement)
 
+  }
+  ngAfterViewInit(){
+    let cheaderRef = this.CHeader.toArray();
+     console.log("=======>",this.CHeader.first.nativeElement);
+     console.log("toArrays=======>",cheaderRef[0].nativeElement.id);
+  }
   getInitialCards (){
     this._cservice.observableGetHttp(this.cardUrl,null,false)
       .subscribe((res:Response)=> {
