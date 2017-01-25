@@ -1,4 +1,4 @@
-import { Component,ViewChildren,OnInit,AfterViewInit } from '@angular/core';
+import { Component,ViewChildren,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -23,9 +23,11 @@ export class HomeComponent {
   private  data : any;
   private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
   private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
+  private selectedFilter: string = '';
   public initialCardData: any;
   public bannerData: any;
   public filterCat:any;
+
 
   @ViewChildren("cheader") CHeader;
 
@@ -38,13 +40,6 @@ export class HomeComponent {
     this.baseUrl=this._settingsService.getBaseUrl();
     this.getInitialCards();
     this.getBannerListing();
-   // console.log("=======>",this.CHeader.first.nativeElement)
-
-  }
-  ngAfterViewInit(){
-    let cheaderRef = this.CHeader.toArray();
-     console.log("=======>",this.CHeader.first.nativeElement);
-     console.log("toArrays=======>",cheaderRef[0].nativeElement.id);
   }
   getInitialCards (){
     this._cservice.observableGetHttp(this.cardUrl,null,false)
@@ -75,5 +70,8 @@ export class HomeComponent {
 
     showOutput(category){
         this.initialCardData = category;
+    }
+    getSelectedFilter(selectedOpt){
+      this.selectedFilter = selectedOpt;
     }
 }

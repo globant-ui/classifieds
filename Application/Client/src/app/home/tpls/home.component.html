@@ -2,8 +2,10 @@
 <banner [categories]='bannerData'></banner>
 <nav class="navbar searchFilterContainerWrapper" #cheader id="cheader1">
    <div class="searchFilterContainer">
-        <search (searchCategory)="showOutput($event)"></search>
-        <filter (filterCategory)="showOutput($event)"
+        <search (searchCategory)="showOutput($event)"
+                (getSelectedFilter)="getSelectedFilter($event)"></search>
+        <filter [selectedFilter]="selectedFilter"
+                (filterCategory)="showOutput($event)"
                 (getInitialCards) = "getInitialCards($event)"></filter>
    </div>
 </nav>

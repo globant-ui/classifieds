@@ -1,4 +1,4 @@
-import { Component,Output,EventEmitter,Input } from '@angular/core';
+import { Component,Output,EventEmitter,Input,OnChanges,SimpleChanges } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -24,6 +24,7 @@ export class FilterComponent {
   public filterCategoryData:any;
   public isActive:boolean = false;
 
+  @Input() selectedFilter;
 
   @Output() filterCategory: EventEmitter<any> = new EventEmitter<any>();
   @Output() getInitialCards: EventEmitter<any> = new EventEmitter <any>();
@@ -32,10 +33,28 @@ export class FilterComponent {
 
   ngOnInit()
   {
-    this.filterData=this._settingsService.getFilterListingData();
+    this.filterData = this._settingsService.getFilterListingData();
     let filterData = this.filterData;
     for (let item of filterData) {
       if(item.listName==='All'){item.isActive = true;}
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if( changes[ 'selectedFilter' ] ) {
+      this.updateSelectedFilter();
+    }
+  }
+
+  updateSelectedFilter() {
+    if( this.filterData ) {
+      for (let item of this.filterData ) {
+        if( item.listName.toLowerCase() == this.selectedFilter.toLowerCase() ) {
+          item.isActive = true;
+        } else {
+          item.isActive = false;
+        }
+      }
     }
   }
 

@@ -26,5 +26,29 @@
       padding: 9px;
       color: $white-color;
     }
+    .autoSuggestion{
+      position: absolute;
+      background-color: $white-color;
+      border-bottom-right-radius: 15px;
+      border-bottom-left-radius: 15px;
+      margin-top: -15px;
+      z-index: -1;
+      width: 100%;
+      ul{
+        margin: 0;
+        padding: 0;
+        li{
+          padding: 15px;
+          list-style-type: none;
+          border-bottom: 1px solid $light-grey-button-border;
+        }
+        li:first-child{
+          padding-top: 30px;
+        }
+        li:last-child{
+          border-bottom: none;
+        }
+      }
+    }
   }
 }
