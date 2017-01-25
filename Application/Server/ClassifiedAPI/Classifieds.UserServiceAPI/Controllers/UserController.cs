@@ -50,9 +50,7 @@ namespace Classifieds.UserServiceAPI.Controllers
             try
             {
                 HttpResponseMessage response = null;
-                if(user == null)
-                    throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid request");
-                else if(user.UserEmail == null || user.UserName == null)
+                if(user == null || user.UserEmail == null || user.UserName == null)
                     throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid request");
                 else if(!(user.UserEmail.ToLowerInvariant().EndsWith("globant.com")))
                     throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid domain");
@@ -76,7 +74,7 @@ namespace Classifieds.UserServiceAPI.Controllers
             {
                 string email = getUserEmail(user);
                 _logger.Log(ex, email);
-                throw new Exception(HttpStatusCode.Conflict.ToString() + "Internal server error");
+                throw new Exception(HttpStatusCode.Conflict.ToString() + " Internal server error");
             }
          }
         #endregion

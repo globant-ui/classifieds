@@ -14,6 +14,8 @@ namespace Classifieds.Common.Repositories
         #region Private variables
         private readonly string _collectionTokens = ConfigurationManager.AppSettings["UserTokensCollection"];
         private readonly ICommonDBRepository _dbRepository;
+        private readonly ILogger _logger;
+        private string _userEmail;
         #endregion
         MongoCollection<UserToken> UserTokens
         {
@@ -21,9 +23,10 @@ namespace Classifieds.Common.Repositories
         }
 
         #region Constructor
-        public CommonRepository(ICommonDBRepository dbRepository)
+        public CommonRepository(ICommonDBRepository dbRepository, ILogger logger)
         {
             _dbRepository = dbRepository;
+            _logger = logger;
         }
         #endregion
 
@@ -40,9 +43,9 @@ namespace Classifieds.Common.Repositories
 
                 if (!message.Headers.TryGetValues("UserEmail", out headerValues))
                     return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " Invalid Request";
-                string userEmail = headerValues.FirstOrDefault();
+                _userEmail = headerValues.FirstOrDefault();
 
-                if (this.validateRequest(accesstoken, userEmail))
+                if (validateRequest(accesstoken, _userEmail))
                 {
                     return "200"; // new HttpResponseMessage(HttpStatusCode.OK).ToString();
                 }
@@ -53,7 +56,8 @@ namespace Classifieds.Common.Repositories
             }
             catch (Exception ex)
             {
-                return new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + "Pls try after some time.";
+                _logger.Log(ex, _userEmail);
+                return new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + " Pls try after some time.";
             }
         }
 
@@ -72,12 +76,19 @@ namespace Classifieds.Common.Repositories
             }
             catch (Exception ex)
             {
+                _logger.Log(ex, userToken.UserEmail);
                 throw ex;
             }
         }
         #endregion
 
         #region private methods
+        /// <summary>
+        /// Validates the token and email against db values
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <param name="userEmail"></param>
+        /// <returns></returns>
         private bool validateRequest(string accessToken, string userEmail)
         {
             try
@@ -90,7 +101,8 @@ namespace Classifieds.Common.Repositories
             }
             catch (Exception ex)
             {
-                return false;
+                _logger.Log(ex, userEmail);
+                throw ex;
             }
         }
         #endregion
