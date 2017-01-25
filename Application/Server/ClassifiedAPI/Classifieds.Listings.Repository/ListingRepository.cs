@@ -38,8 +38,8 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                var partialRresult = this.classifieds.FindAll() 
-                                        .Where(p => p._id == id)
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var partialRresult = this.classifieds.Find(query)//.Where(p => p._id == id)
                                         .ToList();
 
                 List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
@@ -168,8 +168,8 @@ namespace Classifieds.Listings.Repository
         public void Delete(string id)
         {
             try
-            {                
-                var query = Query<TEntity>.EQ(p => p._id, id.ToString());
+            {                       
+                var query = Query<TEntity>.EQ(p => p._id, id);
                 var result = this.classifieds.Remove(query);                
             }
             catch (Exception ex)

@@ -71,15 +71,17 @@ namespace Classifieds.MasterDataAPI.Controllers
         /// <returns>Category List</returns>
         public List<string> GetCategorySuggetion(string categoryText)
         {
+            List<string> result = null;
             try
             {
-                return _masterDataService.GetCategorySuggetion(categoryText).ToList();
+                result= _masterDataService.GetCategorySuggetion(categoryText).ToList();
 
             }
             catch (Exception ex)
             {
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
             }
+            return result;
         }
 
         #endregion

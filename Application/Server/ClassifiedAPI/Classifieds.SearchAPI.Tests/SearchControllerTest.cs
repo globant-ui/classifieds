@@ -6,6 +6,7 @@ using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Classifieds.Common;
+using Classifieds.SearchAPI.Controllers;
 #endregion
 
 namespace Classifieds.SearchAPI.Tests
@@ -17,6 +18,22 @@ namespace Classifieds.SearchAPI.Tests
     [TestClass]
     public class SearchControllerTest
     {
+        #region Class Variables
+        private Mock<ISearchService> mockService;
+        private Mock<ILogger> logger;
+        private SearchController controller;
+        #endregion
+
+        #region Initialize
+        [TestInitialize]
+        public void Initialize()
+        {
+            mockService = new Mock<ISearchService>();
+            logger = new Mock<ILogger>();
+            controller = new SearchController(mockService.Object, logger.Object);
+        }
+        #endregion
+
         #region Test Methods
         /// <summary>
         /// Controller_FreeTextSearchTest Unit Test positive scenario by any string
@@ -24,10 +41,7 @@ namespace Classifieds.SearchAPI.Tests
         [TestMethod]
         public void Controller_FreeTextSearchTest()
         {
-            //Arrange
-            var mockService = new Mock<ISearchService>();
-            var logger = new Mock<ILogger>();
-
+            //Arrange           
             mockService.Setup(x => x.FullTextSearch(It.IsAny<string>()))
                 .Returns(
                 new List<Listing>
@@ -45,9 +59,7 @@ namespace Classifieds.SearchAPI.Tests
                 });
 
             logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
-
-            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object);
-
+            
             //Act
             List<Listing> list = new List<Listing>();
             list = controller.GetFullTextSearch("searchText");
@@ -64,10 +76,9 @@ namespace Classifieds.SearchAPI.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void Controller_FreeTextSearch_ThrowsException()
         {
-            var mockService = new Mock<ISearchService>();
-            var logger = new Mock<ILogger>();
-            logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
-            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object);
+            NullReferenceException ex = new NullReferenceException("ArgumentNullException", new NullReferenceException());
+            mockService.Setup(x => x.FullTextSearch(It.IsAny<string>())).Throws(ex);
+            logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));            
             var classified = controller.GetFullTextSearch(null);
         }
         #endregion

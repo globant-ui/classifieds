@@ -20,46 +20,12 @@ namespace Classifieds.SearchAPI.Tests
 
         #region Initialization
         [TestInitialize]
-            public void Initialize()
-            {
-                _moqAppManager = new Mock<ISearchRepository<Listing>>();
-                _service = new SearchService(_moqAppManager.Object);
-            }
+        public void Initialize()
+        {
+            _moqAppManager = new Mock<ISearchRepository<Listing>>();
+            _service = new SearchService(_moqAppManager.Object);
+        }
         #endregion
-
-        #region Test Methods
-        [TestMethod]
-        public void BusinessService_FreeTextSearchTest()
-        {
-            //Arrange
-            SetUpClassifields();
-            //Act
-            var classifieds = _service.FullTextSearch("searchText");
-            //Assert
-            Assert.AreEqual(classifieds.Count, 1);
-
-        }
-
-        [TestMethod]
-        public void BusinessService_FreeTextSearch_EmptyResult_Test()
-        {
-            //Arrange
-            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(new List<Listing>() { new Listing() });
-            //Act
-            var result = _service.FullTextSearch("searchText");
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(IList<Listing>));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void BusinessService_FreeTextSearch_ThrowsException()
-        {
-            var result = _service.FullTextSearch(null);
-        }
-
-        #endregion 
 
         #region Private Methods
         private void SetUpClassifields()
@@ -97,6 +63,54 @@ namespace Classifieds.SearchAPI.Tests
             _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(classifiedList);
 
         }
+        #endregion
+         
+        #region Test Methods
+        /// <summary>
+        /// Test positive scenario for FreeTextSearchTest by any string
+        /// </summary>
+        [TestMethod]
+        public void BusinessService_FreeTextSearchTest()
+        {
+            //Arrange
+            SetUpClassifields();
+            //Act
+            var classifieds = _service.FullTextSearch("searchText");
+            //Assert
+            Assert.AreEqual(classifieds.Count, 1);
+
+        }
+
+        /// <summary>
+        /// Test FreeTextSearchTest by any string return empty result
+        /// </summary>
+        [TestMethod]
+        public void BusinessService_FreeTextSearch_EmptyResult_Test()
+        {
+            //Arrange
+            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(new List<Listing>());
+            //Act
+            var result = _service.FullTextSearch("searchText");
+            //Assert
+            Assert.AreEqual(result.Count, 0);
+            Assert.IsInstanceOfType(result, typeof(IList<Listing>));
+        }
+
+        /// <summary>
+        /// Test FreeTextSearch by null input throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void BusinessService_FreeTextSearch_ThrowsException()
+        {
+            //Arrange
+            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Throws(ex);
+            _service.FullTextSearch(null);
+        }
+
         #endregion 
+
+        
     }
 }
