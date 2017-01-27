@@ -18,20 +18,20 @@ namespace Classifieds.ListingsAPI.Tests
     public class ListingControllerTest
     {
         #region Class Variables
-        private Mock<IListingService> mockService;
-        private Mock<ILogger> logger;
-        private readonly List<Listing> classifiedList = new List<Listing>();
-        private const string urlLocation = "http://localhost/api/listings";
-        private ListingsController controller;
+        private Mock<IListingService> _mockService;
+        private Mock<ILogger> _logger;
+        private readonly List<Listing> _classifiedList = new List<Listing>();
+        private const string UrlLocation = "http://localhost/api/listings";
+        private ListingsController _controller;
         #endregion
 
         #region Initialize
         [TestInitialize]
         public void Initialize()
         {
-            mockService = new Mock<IListingService>();
-            logger = new Mock<ILogger>();
-            controller = new ListingsController(mockService.Object, logger.Object);
+            _mockService = new Mock<IListingService>();
+            _logger = new Mock<ILogger>();
+            _controller = new ListingsController(_mockService.Object, _logger.Object);
         }
         #endregion
 
@@ -39,12 +39,12 @@ namespace Classifieds.ListingsAPI.Tests
         private void SetUpClassifiedsListing()
         {
             var lstListing = GetListObject();
-            classifiedList.Add(lstListing);
+            _classifiedList.Add(lstListing);
         }
 
         private Listing GetListObject()
         {
-            Listing listObject = new Listing
+            var listObject = new Listing
             {
                 _id = "9",
                 ListingType = "test",
@@ -70,7 +70,7 @@ namespace Classifieds.ListingsAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = new string[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg"}
+                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg"}
             };
             return listObject;
 
@@ -86,18 +86,18 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingByIdTest()
         {
             SetUpClassifiedsListing();
-            mockService.Setup(x => x.GetListingById(It.IsAny<string>()))
-                .Returns(classifiedList);
+            _mockService.Setup(x => x.GetListingById(It.IsAny<string>()))
+                .Returns(_classifiedList);
 
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             //var controller = new ListingsController(mockService.Object, logger.Object);
 
             //Act           
-            var objList = controller.GetListingById(classifiedList[0]._id);
+            var objList = _controller.GetListingById(_classifiedList[0]._id);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].Title, classifiedList[0].Title);
+            Assert.AreEqual(objList[0].Title, _classifiedList[0].Title);
         }
 
         /// <summary>
@@ -108,13 +108,13 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingById_ThrowsException()
         {
             //Arrange
-            NullReferenceException ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
-            mockService.Setup(x => x.GetListingById(It.IsAny<string>())).Throws(ex);
+            var ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
+            _mockService.Setup(x => x.GetListingById(It.IsAny<string>())).Throws(ex);
 
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-            controller.GetListingById(null);
+            _controller.GetListingById(null);
         }
 
         /// <summary>
@@ -125,15 +125,15 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             SetUpClassifiedsListing();
-            mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(classifiedList);
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));             
+            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(_classifiedList);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));             
 
             //Act            
-            var objList = controller.GetListingsBySubCategory(classifiedList[0].SubCategory);
+            var objList = _controller.GetListingsBySubCategory(_classifiedList[0].SubCategory);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].SubCategory, classifiedList[0].SubCategory);
+            Assert.AreEqual(objList[0].SubCategory, _classifiedList[0].SubCategory);
         }
        
         /// <summary>
@@ -144,11 +144,11 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingsBySubCategory_ThrowsException()
         {
             //Arrange
-            NullReferenceException ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
-            mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Throws(ex);
+            var ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
+            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Throws(ex);
 
             //Act
-            controller.GetListingsBySubCategory(null);
+            _controller.GetListingsBySubCategory(null);
         }
 
         /// <summary>
@@ -161,13 +161,13 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>())).Returns(classifiedList);
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));            
-            var values = controller.GetListingsByCategory(classifiedList[0].ListingCategory);
+            _mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>())).Returns(_classifiedList);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));            
+            var values = _controller.GetListingsByCategory(_classifiedList[0].ListingCategory);
 
             //Assert
             Assert.AreEqual(values.Count, 1);
-            Assert.AreEqual(values[0], classifiedList[0]);
+            Assert.AreEqual(values[0], _classifiedList[0]);
         }
 
         /// <summary>
@@ -178,11 +178,11 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingByCategory_ThrowsException()
         {
             //Arrange
-            NullReferenceException ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
-            mockService.Setup(x => x.GetListingsByCategory(It.IsAny<string>())).Throws(ex);
+            var ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
+            _mockService.Setup(x => x.GetListingsByCategory(It.IsAny<string>())).Throws(ex);
 
             //Act
-            controller.GetListingsByCategory(null);
+            _controller.GetListingsByCategory(null);
         }
 
         /// <summary>
@@ -192,32 +192,32 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_PostListTest_SetsLocationHeader()
         {
             // Arrange
-            mockService.Setup(x => x.CreateListing(It.IsAny<Listing>())).Returns(GetListObject());
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>())).Returns(GetListObject());
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             
-            controller.Request = new HttpRequestMessage
+            _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri(urlLocation)
+                RequestUri = new Uri(UrlLocation)
             };
-            controller.Configuration = new HttpConfiguration();
-            controller.Configuration.Routes.MapHttpRoute(
+            _controller.Configuration = new HttpConfiguration();
+            _controller.Configuration.Routes.MapHttpRoute(
                 name: "Listings",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
 
-            controller.RequestContext.RouteData = new HttpRouteData(
+            _controller.RequestContext.RouteData = new HttpRouteData(
                 route: new HttpRoute(),
                 values: new HttpRouteValueDictionary { { "controller", "listings" } });
 
             // Act
             Listing listObj = GetListObject();
-            var response = controller.Post(listObj);
+            var response = _controller.Post(listObj);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.AreEqual(true, response.IsSuccessStatusCode);
-            Assert.AreEqual(urlLocation + "/"+ listObj._id, response.Headers.Location.AbsoluteUri);
+            Assert.AreEqual(UrlLocation + "/"+ listObj._id, response.Headers.Location.AbsoluteUri);
         }
 
         /// <summary>
@@ -228,11 +228,11 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // This version uses a mock UrlHelper.
             // Arrange           
-            mockService.Setup(x => x.CreateListing(It.IsAny<Listing>())).Returns(GetListObject());
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>())).Returns(GetListObject());
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
            
-            controller.Request = new HttpRequestMessage();
-            controller.Configuration = new HttpConfiguration();
+            _controller.Request = new HttpRequestMessage();
+            _controller.Configuration = new HttpConfiguration();
 
             string locationUrl = "http://localhost/ListingsAPI/api/listings";
 
@@ -240,11 +240,11 @@ namespace Classifieds.ListingsAPI.Tests
             // The mock version returns a fixed string.
             var mockUrlHelper = new Mock<UrlHelper>();
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
-            controller.Url = mockUrlHelper.Object;
+            _controller.Url = mockUrlHelper.Object;
 
             // Act
             Listing listObj = GetListObject();
-            var response = controller.Post(listObj);
+            var response = _controller.Post(listObj);
 
             // Assert
             Assert.AreEqual(locationUrl, response.Headers.Location.AbsoluteUri);
@@ -260,11 +260,11 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_PostList_ThrowsException()
         {
             //Arrange
-            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            mockService.Setup(x => x.CreateListing(It.IsAny<Listing>())).Throws(ex);
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>())).Throws(ex);
 
             //Act
-            controller.Post(null);
+            _controller.Post(null);
         }
 
         /// <summary>
@@ -274,17 +274,17 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_DeleteListTest()
         {
             // Arrange
-            Listing listObject = GetListObject();
-            mockService.Setup(x => x.DeleteListing(It.IsAny<string>()));
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            var listObject = GetListObject();
+            _mockService.Setup(x => x.DeleteListing(It.IsAny<string>()));
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             
-            controller.Request = new HttpRequestMessage
+            _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri(urlLocation)
+                RequestUri = new Uri(UrlLocation)
             };
             // Act                
-            var response = controller.Delete(listObject._id);
+            var response = _controller.Delete(listObject._id);
 
             //Assert
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
@@ -299,11 +299,11 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_DeleteList_ThrowsException()
         {
             //Arrange
-            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            mockService.Setup(x => x.DeleteListing(It.IsAny<string>())).Throws(ex);
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _mockService.Setup(x => x.DeleteListing(It.IsAny<string>())).Throws(ex);
 
             //Act
-            controller.Delete(null);
+            _controller.Delete(null);
         }
 
         /// <summary>
@@ -313,20 +313,20 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_UpdateListTest()
         {
             // Arrange
-            mockService.Setup(x => x.UpdateListing(It.IsAny<string>(), It.IsAny<Listing>())).Returns(GetListObject());
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockService.Setup(x => x.UpdateListing(It.IsAny<string>(), It.IsAny<Listing>())).Returns(GetListObject());
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             
-            controller.Request = new HttpRequestMessage
+            _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
-                RequestUri = new Uri(urlLocation)
+                RequestUri = new Uri(UrlLocation)
             };
-            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+            _controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             // Act     
             var listObject = GetListObject();
             var updatedProduct = new Listing() { Title = listObject.Title, ListingType = listObject.ListingType };
-            var contentResult = controller.Put(listObject._id, updatedProduct);
+            var contentResult = _controller.Put(listObject._id, updatedProduct);
 
             //Assert
             Assert.IsNotNull(contentResult);
@@ -342,12 +342,12 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_UpdateList_ThrowsException()
         {
             //Arrange
-            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            mockService.Setup(x => x.UpdateListing(It.IsAny<string>(),It.IsAny<Listing>())).Throws(ex);
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _mockService.Setup(x => x.UpdateListing(It.IsAny<string>(),It.IsAny<Listing>())).Throws(ex);
 
             //Act
             var updatedProduct = new Listing() { Title = "test", ListingType = "test" };
-            var result = controller.Put(null, updatedProduct);
+            _controller.Put(null, updatedProduct);
         }
 
         /// <summary>
@@ -362,11 +362,11 @@ namespace Classifieds.ListingsAPI.Tests
             {
                 list.Add(GetListObject());
             }
-            mockService.Setup(x => x.GetTopListings(It.IsAny<int>())).Returns(list);
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));           
+            _mockService.Setup(x => x.GetTopListings(It.IsAny<int>())).Returns(list);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));           
 
             //Act            
-            var objList = controller.GetTopListings(5);
+            var objList = _controller.GetTopListings(5);
 
             //Assert
             Assert.AreEqual(objList.Count, 5);
@@ -384,11 +384,11 @@ namespace Classifieds.ListingsAPI.Tests
             {
                 list.Add(GetListObject());
             }
-            mockService.Setup(x => x.GetTopListings(It.IsAny<int>())).Returns(list);
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockService.Setup(x => x.GetTopListings(It.IsAny<int>())).Returns(list);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-            var objList = controller.GetTopListings();
+            var objList = _controller.GetTopListings();
 
             //Assert
             Assert.AreEqual(objList.Count, 10);
@@ -402,11 +402,11 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetTopListings_ThrowsException()
         {
             //Arrange
-            NullReferenceException ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
-            mockService.Setup(x => x.GetTopListings(It.IsAny<int>())).Throws(ex);
+            var ex = new NullReferenceException("NullReferenceException", new NullReferenceException());
+            _mockService.Setup(x => x.GetTopListings(It.IsAny<int>())).Throws(ex);
 
             //Act             
-            var result = controller.GetTopListings();
+            _controller.GetTopListings();
         }
         #endregion
     }
