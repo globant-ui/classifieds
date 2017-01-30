@@ -85,6 +85,18 @@
       <Project>{b67f4456-5934-4aa2-a613-3f927dad8dca}</Project>
       <Name>Classifieds.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Classifieds.ListingComments.BusinessEntities\Classifieds.ListingComments.BusinessEntities.csproj">
+      <Project>{155cfb76-541d-43db-b944-c318cee0e308}</Project>
+      <Name>Classifieds.ListingComments.BusinessEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Classifieds.ListingComments.BusinessServices\Classifieds.ListingComments.BusinessServices.csproj">
+      <Project>{3a7cefe4-2bd4-42b4-8732-f31b46a66789}</Project>
+      <Name>Classifieds.ListingComments.BusinessServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Classifieds.ListingComments.Repository\Classifieds.ListingComments.Repository.csproj">
+      <Project>{501fe740-3e2e-42ae-afbb-0d7ae167ea14}</Project>
+      <Name>Classifieds.ListingComments.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Classifieds.Listings.BusinessEntities\Classifieds.Listings.BusinessEntities.csproj">
       <Project>{1FF950D6-172E-4732-80D5-C192669F3E18}</Project>
       <Name>Classifieds.Listings.BusinessEntities</Name>
@@ -120,14 +132,6 @@
     <ProjectReference Include="..\Classifieds.Search.Repository\Classifieds.Search.Repository.csproj">
       <Project>{9b4e84fd-6331-4b4f-a82d-6ad79d7a7c62}</Project>
       <Name>Classifieds.Search.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Classifieds.UserService.BusinessServices\Classifieds.UserService.BusinessServices.csproj">
-      <Project>{04264ee5-d1d8-4cbc-8b1b-84ece383c4d1}</Project>
-      <Name>Classifieds.UserService.BusinessServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Classifieds.UserService.Repository\Classifieds.UserService.Repository.csproj">
-      <Project>{cab66cad-d53b-4d85-b238-fb0df08cb564}</Project>
-      <Name>Classifieds.UserService.Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

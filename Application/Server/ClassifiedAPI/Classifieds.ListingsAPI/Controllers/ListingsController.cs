@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Classifieds.Common.Repositories;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -17,27 +16,24 @@ namespace Classifieds.ListingsAPI.Controllers
     /// Purpose : This class is used for to implement get/post/put/delete methods on listings
     /// Created By : Suyash, Santosh
     /// Created Date: 08/12/2016
-    /// Modified by : Ashish
-    /// Modified date: 12/01/2017
+    /// Modified by :
+    /// Modified date: 
     /// </summary>
     public class ListingsController : ApiController
     {
         #region Private Variable
         private readonly IListingService _listingService;
         private readonly ILogger _logger;
-        private readonly ICommonRepository _commonRepository;
-        private string _userEmail = string.Empty;
         #endregion
 
         #region Constructor
         /// <summary>
         /// The class constructor. 
         /// </summary>
-        public ListingsController(IListingService listingService, ILogger logger, ICommonRepository commonRepository)
+        public ListingsController(IListingService listingService, ILogger logger)
         {
             _listingService = listingService;
             _logger = logger;
-            _commonRepository = commonRepository;
         }
         #endregion
 
@@ -51,19 +47,11 @@ namespace Classifieds.ListingsAPI.Controllers
         {
             try
             {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
                 return _listingService.GetListingById(id).ToList();
             }
             catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+            {               
+                throw _logger.Log(ex, "Globant/User");
             }
         }
 
@@ -76,19 +64,11 @@ namespace Classifieds.ListingsAPI.Controllers
         {
             try
             {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
                 return _listingService.GetListingsBySubCategory(subCategory).ToList();
             }
             catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+            {               
+                throw _logger.Log(ex, "Globant/User");
             }
         }
 
@@ -101,19 +81,11 @@ namespace Classifieds.ListingsAPI.Controllers
         {
             try
             {
-                _userEmail = GetUserEmail();
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
                 return _listingService.GetListingsByCategory(category).ToList();
             }
             catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+            {               
+                throw _logger.Log(ex, "Globant/User");
             }
         }
 
@@ -127,22 +99,15 @@ namespace Classifieds.ListingsAPI.Controllers
             HttpResponseMessage result = null;
             try
             {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse<Listing>(HttpStatusCode.Created, classified);
-                string newItemUrl = Url.Link("Listings", new { id = classified._id });
-                result.Headers.Location = new Uri(newItemUrl);
+                string newItemURL = Url.Link("Listings", new { id = classified._id });
+                result.Headers.Location = new Uri(newItemURL);
             }
             catch (Exception ex)
             {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
+                throw _logger.Log(ex, "Globant/User");
             }
             return result;
         }
@@ -158,20 +123,13 @@ namespace Classifieds.ListingsAPI.Controllers
             HttpResponseMessage result = null;
             try
             {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
                 var classified = _listingService.UpdateListing(id, listing);
                 result = Request.CreateResponse<Listing>(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
+                throw _logger.Log(ex, "Globant/User");
             }
             return result;
         }
@@ -186,20 +144,13 @@ namespace Classifieds.ListingsAPI.Controllers
             HttpResponseMessage result = null;
             try
             {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
                 _listingService.DeleteListing(id);
                 result = Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)
             {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
+                throw _logger.Log(ex, "Globant/User");
             }
             return result;
         }
@@ -213,35 +164,12 @@ namespace Classifieds.ListingsAPI.Controllers
         {
             try
             {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
                 return _listingService.GetTopListings(noOfRecords);
             }
             catch (Exception ex)
             {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+                throw _logger.Log(ex, "Globant/User");
             }
-        }
-        #endregion
-
-        #region private methods
-        /// <summary>
-        /// Returns user email string
-        /// </summary>
-        /// <returns>string</returns>
-        private string GetUserEmail()
-        {
-            IEnumerable<string> headerValues;
-            HttpRequestMessage message = Request ?? new HttpRequestMessage();
-            message.Headers.TryGetValues("UserEmail", out headerValues);
-            string hearderVal = headerValues == null ? string.Empty: headerValues.FirstOrDefault();
-            return hearderVal;
         }
         #endregion
     }

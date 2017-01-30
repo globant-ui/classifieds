@@ -2,17 +2,18 @@ using Microsoft.Practices.Unity;
 using System.Web.Http;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Search.Repository;
-using Classifieds.Common.Repositories;
 using Classifieds.Common;
 using Mongo = Classifieds.NLog.MongoDB;
 using Classifieds.Listings.BusinessServices;
 using Classifieds.Listings.Repository;
+using Classifieds.Listings.BusinessEntities;
 using Classifieds.MastersData.BusinessServices;
 using Classifieds.MastersData.Repository;
-using Classifieds.Listings.BusinessEntities;
 using Classifieds.MastersData.BusinessEntities;
-using Classifieds.UserService.BusinessServices;
-using Classifieds.UserService.Repository;
+using Classifieds.ListingComments.BusinessServices;
+using Classifieds.ListingComments.BusinessEntities;
+using Classifieds.ListingComments.Repository;
+
 
 namespace Classifieds.IOC
 {
@@ -42,11 +43,9 @@ namespace Classifieds.IOC
             container.RegisterType<IMasterDataRepository<Category>, MasterDataRepository<Category>>(new HierarchicalLifetimeManager());
             container.RegisterType<MastersData.Repository.IDBRepository, MastersData.Repository.DBRepository>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<IUserService, Classifieds.UserService.BusinessServices.UserService>(new HierarchicalLifetimeManager());
-            container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<UserService.Repository.IDBRepository, UserService.Repository.DBRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<ICommonRepository, CommonRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<ICommonDBRepository, CommonDBRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IListingCommentService, ListingCommentService>(new HierarchicalLifetimeManager());
+            container.RegisterType<IListingCommentsRepository<ListingComment>, ListingCommentsRepository<ListingComment>>(new HierarchicalLifetimeManager());
+            container.RegisterType<ListingComments.Repository.IDBRepository, ListingComments.Repository.DBRepository>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(container);
         }
