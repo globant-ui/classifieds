@@ -173,6 +173,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\MasterData.pubxml" />
+    <None Include="Properties\PublishProfiles\MasterPublish.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -217,7 +218,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55266</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Classifieds.MasterDataAPI</IISUrl>
+          <IISUrl>http://localhost/MasterDataAPI</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost/Classifieds.MasterDataAPI</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

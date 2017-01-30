@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Net.Http;
 using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Common;
+using Classifieds.Common.Repositories;
+
 #endregion
 
 namespace Classifieds.SearchAPI.Controllers
@@ -24,6 +27,8 @@ namespace Classifieds.SearchAPI.Controllers
         #region Private Variable
         private readonly ISearchService _searchService;
         private readonly ILogger _logger;
+        private readonly ICommonRepository _commonRepository;
+        private string _userEmail = string.Empty;
         #endregion
 
         #region Constructor
@@ -32,10 +37,12 @@ namespace Classifieds.SearchAPI.Controllers
         /// </summary>
         /// <param name="searchService"></param>
         /// <param name="logger"></param>
-        public SearchController(ISearchService searchService,ILogger logger)
+        /// <param name="commonRepository"></param>
+        public SearchController(ISearchService searchService,ILogger logger, ICommonRepository commonRepository)
         {
             _searchService = searchService;
             _logger = logger;
+            _commonRepository = commonRepository;
         }
         #endregion
 
@@ -49,14 +56,31 @@ namespace Classifieds.SearchAPI.Controllers
         {
             try
             {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = getUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                
                 return _searchService.FullTextSearch(searchText).ToList();
             }
             catch (Exception ex)
             {
-                //ToDo UseName is hardcoded
-                throw _logger.Log(ex,"Globant/User");
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
 
+        }
+        #endregion
+
+        #region private methods
+        private string getUserEmail()
+        {
+            IEnumerable<string> headerValues;
+            HttpRequestMessage message = Request ?? new HttpRequestMessage();
+            bool found = message.Headers.TryGetValues("UserEmail", out headerValues);
+            return headerValues.FirstOrDefault();
         }
         #endregion
     }
