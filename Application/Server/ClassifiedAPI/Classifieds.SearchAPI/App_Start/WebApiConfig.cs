@@ -10,7 +10,7 @@ namespace Classifieds.SearchAPI
         public static void Register(HttpConfiguration config)
         {
             //CORS enabled globaly need to configure server url environment
-            var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["CORSUrl"], "*", "*");
+            var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["CorsUrl"], "*", "*");
             cors.SupportsCredentials = true;
             config.EnableCors(cors);
             // Web API configuration and services
