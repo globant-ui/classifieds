@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.UserServiceAPI"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.UserServiceAPI.Tests", "Classifieds.UserServiceAPI.Tests\Classifieds.UserServiceAPI.Tests.csproj", "{4061E501-D6FA-4380-A348-49ABA4A7CA57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.Common.Tests", "Classifieds.Common.Tests\Classifieds.Common.Tests.csproj", "{B4AD5519-D1B5-4DFF-9781-D9FFFE616503}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{4061E501-D6FA-4380-A348-49ABA4A7CA57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4061E501-D6FA-4380-A348-49ABA4A7CA57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4061E501-D6FA-4380-A348-49ABA4A7CA57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4AD5519-D1B5-4DFF-9781-D9FFFE616503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4AD5519-D1B5-4DFF-9781-D9FFFE616503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4AD5519-D1B5-4DFF-9781-D9FFFE616503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4AD5519-D1B5-4DFF-9781-D9FFFE616503}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

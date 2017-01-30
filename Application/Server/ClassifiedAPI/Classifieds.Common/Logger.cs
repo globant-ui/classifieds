@@ -12,7 +12,6 @@ namespace Classifieds.Common
         public Logger(Classifieds.NLog.MongoDB.ILogger logger)
         {
             _logger = logger;
-            //_logger = new Classifieds.NLog.MongoDB.Logger();
         }
         #endregion
 
@@ -23,10 +22,9 @@ namespace Classifieds.Common
         /// <param name="ex">Exception object</param>
         /// <param name="userId">Logged in user's Id</param>
         /// <returns></returns>
-        public Exception Log(Exception ex, string userId)
+        public void Log(Exception ex, string userId)
         {
             _logger.Log(ex, userId);
-            return ex;
         }
         #endregion
     }

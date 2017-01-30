@@ -72,7 +72,7 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
             catch (Exception ex)
             {
-                string email = getUserEmail(user);
+                string email = GetUserEmail(user);
                 _logger.Log(ex, email);
                 throw new Exception(HttpStatusCode.Conflict.ToString() + " Internal server error");
             }
@@ -84,17 +84,15 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// </summary>
         /// <param name="user">ClassifiedsUser object</param>
         /// <returns>string</returns>
-        private string getUserEmail(ClassifiedsUser user)
+        private string GetUserEmail(ClassifiedsUser user)
         {
+            string result = string.Empty;
             if (user != null)
             {
                 if (user.UserEmail != null)
-                    return user.UserEmail;
-                else
-                    return string.Empty;
+                    result = user.UserEmail;
             }
-            else
-                return string.Empty;
+            return result;
         }
 
         #endregion

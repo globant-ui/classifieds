@@ -61,9 +61,11 @@ namespace Classifieds.UserServiceAPI.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(Exception))]
         public void RegisterUserTest_ThrowsException()
         {
+            Exception ex = new Exception();
+            _moqAppManager.Setup(x => x.RegisterUser(It.IsAny<ClassifiedsUser>())).Throws(ex);
             _service.RegisterUser(null);
         }
     }

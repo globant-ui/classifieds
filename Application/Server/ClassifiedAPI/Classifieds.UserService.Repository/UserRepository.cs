@@ -1,10 +1,9 @@
 ﻿using Classifieds.UserService.BusinessEntities;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.Linq;
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 
 namespace Classifieds.UserService.Repository
 {
@@ -13,9 +12,12 @@ namespace Classifieds.UserService.Repository
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["UserCollection"];
         private readonly IDBRepository _dbRepository;
-        MongoCollection<ClassifiedsUser> _classifieds
+        MongoCollection<ClassifiedsUser> Classifieds
         {
-            get { return _dbRepository.GetCollection<ClassifiedsUser>(_collectionClassifieds); }
+            get
+            {
+                return _dbRepository.GetCollection<ClassifiedsUser>(_collectionClassifieds);
+            }
         }
         #endregion
 
@@ -34,24 +36,29 @@ namespace Classifieds.UserService.Repository
         /// <returns>return newly added listing object</returns>
         public string RegisterUser(ClassifiedsUser user)
         {
+            string returnStr = string.Empty;
             try
             {
-                var result = this._classifieds.FindAll()
+                var result = this.Classifieds.FindAll()
                                 .Where(p => p.UserEmail == user.UserEmail)
                                 .ToList();
                 if (result.Count == 0)
                 {
-                    var userResult = this._classifieds.Save(user);
-                    if (userResult.DocumentsAffected == 0 && userResult.HasLastErrorMessage) { }
-                    return "Saved";
+                    var userResult = this.Classifieds.Save(user);
+                    if (userResult.DocumentsAffected == 0 && userResult.HasLastErrorMessage)
+                    {
+                        throw new Exception("Registrtion failed");
+                    }
+                    returnStr = "Saved";
                 }
                 
-                return "Success";
+                returnStr = "Success";
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            return returnStr;
         }
         #endregion
     }

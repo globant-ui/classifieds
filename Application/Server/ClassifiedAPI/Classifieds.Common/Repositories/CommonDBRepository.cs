@@ -10,17 +10,17 @@ namespace Classifieds.Common.Repositories
             ConfigurationManager.ConnectionStrings["UserProfilesConnectionString"].ConnectionString;
         private readonly string _database = ConfigurationManager.AppSettings["UserProfilesDBName"];
 
-        private MongoClient client = null;
-        private MongoServer server = null;
-        private MongoDatabase db = null;
+        private MongoClient _client = null;
+        private MongoServer _server = null;
+        private MongoDatabase _db = null;
         #endregion
 
         #region Constructor
         public CommonDBRepository()
         {
-            client = new MongoClient(_connectionString);
-            server = client.GetServer();
-            db = server.GetDatabase(_database);
+            _client = new MongoClient(_connectionString);
+            _server = _client.GetServer();
+            _db = _server.GetDatabase(_database);
         }
         #endregion
 
@@ -31,7 +31,7 @@ namespace Classifieds.Common.Repositories
         {
             get
             {
-                return server.GetDatabase(_database);
+                return _server.GetDatabase(_database);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Classifieds.Common.Repositories
         /// <returns></returns>
         public MongoCollection<UserToken> GetCollection<UserToken>(string name)
         {
-            return db.GetCollection<UserToken>(name);
+            return _db.GetCollection<UserToken>(name);
         }
         #endregion
 

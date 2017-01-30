@@ -21,7 +21,6 @@ namespace Classifieds.UserServiceAPI.Tests
         private Mock<IUserService> _mockService;
         private Mock<ILogger> _logger;
         private Mock<ICommonRepository> _mockAuthRepo;
-        private Mock<HttpRequestMessage> mockRequest;
         private UserController _controller;
         private ClassifiedsUser _user;
         private UserToken _token;
@@ -69,11 +68,11 @@ namespace Classifieds.UserServiceAPI.Tests
             return token;
         }
         #endregion
+
         /// <summary>
         /// Test for successful user registration
         /// </summary>
-        [TestMethod]
-        public void RegisterTest()
+        [TestMethod] public void RegisterUserTest_ValidInput()
         {
             SetUpClassifiedsUsers();
             _mockService.Setup(x => x.RegisterUser(_user)).Returns("Success");
@@ -92,8 +91,8 @@ namespace Classifieds.UserServiceAPI.Tests
         /// Test for exception management in Register
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void RegisterTest_ThrowsException()
+        [ExpectedException(typeof(Exception))]
+        public void RegisterUserTest_ThrowsException()
         {
             _controller.RegisterUser(null);
         }

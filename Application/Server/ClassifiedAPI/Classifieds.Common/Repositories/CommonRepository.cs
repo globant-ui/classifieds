@@ -15,7 +15,7 @@ namespace Classifieds.Common.Repositories
         private readonly string _collectionTokens = ConfigurationManager.AppSettings["UserTokensCollection"];
         private readonly ICommonDBRepository _dbRepository;
         private readonly ILogger _logger;
-        private string _userEmail;
+        private string _userEmail = string.Empty;
         #endregion
         MongoCollection<UserToken> UserTokens
         {
@@ -33,32 +33,34 @@ namespace Classifieds.Common.Repositories
         #region public methods
         public string IsAuthenticated(HttpRequestMessage request)
         {
+            string result = string.Empty;
             try
             {
                 IEnumerable<string> headerValues;
                 HttpRequestMessage message = request ?? new HttpRequestMessage();
                 if (!message.Headers.TryGetValues("AccessToken", out headerValues))
-                    return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " Invalid Request";
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " Invalid Request";
                 string accesstoken = headerValues.FirstOrDefault();
 
                 if (!message.Headers.TryGetValues("UserEmail", out headerValues))
-                    return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " Invalid Request";
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " Invalid Request";
                 _userEmail = headerValues.FirstOrDefault();
 
-                if (validateRequest(accesstoken, _userEmail))
+                if (ValidateRequest(accesstoken, _userEmail))
                 {
-                    return "200"; // new HttpResponseMessage(HttpStatusCode.OK).ToString();
+                    result = "200"; // new HttpResponseMessage(HttpStatusCode.OK).ToString();
                 }
                 else
                 {
-                    return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " access denied";
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString() + " access denied";
                 }
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, _userEmail);
-                return new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + " Pls try after some time.";
+                result = new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + " Pls try after some time.";
             }
+            return result;
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace Classifieds.Common.Repositories
         /// <param name="accessToken"></param>
         /// <param name="userEmail"></param>
         /// <returns></returns>
-        private bool validateRequest(string accessToken, string userEmail)
+        private bool ValidateRequest(string accessToken, string userEmail)
         {
             try
             {

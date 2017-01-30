@@ -20,7 +20,7 @@ namespace Classifieds.UserServiceAPI.Tests
         {
             _dbRepository = new DBRepository();
             _userRepo = new UserRepository(_dbRepository);
-            _user = GetUserObject();
+            
         }
         #endregion
 
@@ -29,7 +29,6 @@ namespace Classifieds.UserServiceAPI.Tests
         {
             ClassifiedsUser user = new ClassifiedsUser
             {
-                _id = "7",
                 UserEmail = "ashish.kulkarni@globant.com",
                 UserName = "Ashish Kulkarni"
             };
@@ -38,13 +37,23 @@ namespace Classifieds.UserServiceAPI.Tests
 
         #endregion
         [TestMethod]
-        public void RegisterUserTest()
+        public void RegisterUserTest_ValidInput()
         {
+            //Arrange
+            _user = GetUserObject();
             //Act
             var result = _userRepo.RegisterUser(_user);
 
             //Assert
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void RegisterUserTest_InValidInput_ThrowsException()
+        {
+            //Act
+            var result = _userRepo.RegisterUser(null);
         }
     }
 }
