@@ -1,0 +1,192 @@
+$white-color: #ffffff;
+$darkblue-color: #495574;
+$green-color: #c1d72f;
+$primary-background-color: #f7f8f9; //navCardbg
+$primary-text-color: #9fa3a7; //card text
+$primary-button-text-color: #525252;
+$primary-button-border-color: #d8d8d8;
+$active-button-border-color: #c1d731;
+$active-button-text-color: #242424;
+$light-grey-border: #f4f4f4;
+$light-grey-button-border: #d8d8d8;
+$heading-color:#212121;
+$red-color:#f9593a;
+
+h2.category{
+	display: none;
+}
+.plain-card-container, .wishlist-container, .create-container, .recommend-container{
+	background: $primary-background-color;
+	border-radius: 6px;
+	overflow: hidden;
+	margin:0 -10px 15px -5px;
+	letter-spacing: 1px;
+	.img-block{ 
+		img{width: 100%;}
+	}
+	.contentdetail{
+		padding: 25px;
+		min-height: 180px;
+		font-family:open sans;
+		h3{
+			padding: 0 0 15px 0;
+			margin: 0;
+			color: $heading-color;
+		}
+		p{
+			color: $primary-text-color;
+			line-height: 24px;
+		}
+		ul{
+			color: $primary-text-color;
+			list-style-type: none;
+			display: inline-block;
+			width: 100%;
+			margin:20px 0 0 0;
+			padding: 0;
+			li{
+				font-weight: bold;
+				text-transform: uppercase;
+				font-size: 12px;
+				span{
+					margin-right: 5px;
+				}
+				&:first-child{
+					float: left;
+				}
+				&:last-child{
+					float: right;
+				}
+			}
+		}
+	}
+}
+.wishlist-container{
+	background: $darkblue-color;
+	.contentdetail{
+		h3{
+			color: $white-color;
+		}
+		ul{
+			li{
+				.icon-like-icon{
+					color: $red-color;
+				}
+			}
+		}
+	}
+}
+.recommend-container{
+	background: $darkblue-color;
+	position: relative;
+	.recommendLabel{
+		position: absolute;
+		top:5%;
+		right: 5%;
+		background: $darkblue-color;
+		border-radius: 15px;
+		color: $white-color;
+	    padding:5px 15px;
+	    font-size: 10px;
+        line-height: 13px;
+        text-transform: uppercase;
+		span.icon-flag{
+			color: $green-color;
+			padding-right:8px;
+			font-size: 12px;
+		}
+		span.recommend{
+			display: block;
+		}
+	}
+	.contentdetail{
+		h3{
+			color: $white-color;
+		}
+	}
+}
+.create-container{
+	/* background: url("images/icon.png") no-repeat $primary-background-color 45% 35%; */
+	text-align: center;
+	h2{
+		font-size:2.25em;
+		line-height: 46px;
+	    padding: 0 25%;
+	    color: $darkblue-color;
+	}
+	button{
+		color: $darkblue-color;
+		background: $green-color;
+		border:none;
+		text-transform: uppercase;
+		font-family: open sans;
+		font-size: 15px;
+		line-height:15px;
+		font-weight: bold;
+	    letter-spacing: 3px;
+		border-radius: 15px;
+		padding: 10px 15px;
+		margin:45px 0;
+		span{
+			color: $darkblue-color;
+			font-size: 18px;
+			padding-right: 5px;
+		}
+	}
+}
+
+@media (min-width: 320px) and (max-width: 460px){
+	h2.category{
+		margin:15px 0;
+		padding: 0;
+		text-transform: uppercase;
+		font-size: 0.875em;
+		font-weight: bold;
+		color: $heading-color;
+		display: block;
+	}
+	.plain-card-container, .wishlist-container, .create-container, .recommend-container{
+		.contentdetail{
+			padding: 15px;
+			min-height: auto;
+			p{
+				display: none;
+			}
+			h3{
+				font-size: 0.875em;
+				padding-bottom:5px;
+			}
+			ul{
+				margin: 0;
+				li{
+					width: 100%;
+					&:first-child{
+						display: none;
+					}
+					&:last-child{
+						float: left;
+						font-size: 0.625em;
+						span{
+							float: right;
+						    font-size: 15px;
+    						margin-top: -15px;
+						}
+					}
+				}
+			}
+		}
+	}
+	.create-container{
+		display: none;
+	}
+	.recommend-container{
+		.recommendLabel{
+			span.icon-flag{
+				padding-right:0;
+			}
+			span.recommend{
+				display: none;
+			}
+		}
+	}
+}
