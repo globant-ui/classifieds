@@ -64,7 +64,7 @@ export class FilterComponent {
           item.isActive = false;
       }
       filterData[index].isActive = true;
-    if(category === 'All'){
+    if(category === 'Top ten'){
         this.getInitialCards.emit();
     }else{
      this.getCardsByCategory(category);
