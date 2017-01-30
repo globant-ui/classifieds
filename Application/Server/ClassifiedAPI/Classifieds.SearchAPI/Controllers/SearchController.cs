@@ -57,7 +57,7 @@ namespace Classifieds.SearchAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -75,11 +75,11 @@ namespace Classifieds.SearchAPI.Controllers
         #endregion
 
         #region private methods
-        private string getUserEmail()
+        private string GetUserEmail()
         {
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
-            bool found = message.Headers.TryGetValues("UserEmail", out headerValues);
+            message.Headers.TryGetValues("UserEmail", out headerValues);
             return headerValues.FirstOrDefault();
         }
         #endregion

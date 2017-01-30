@@ -1,7 +1,7 @@
-﻿using Classifieds.Common.Entities;
+﻿using System;
+using Classifieds.Common.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Classifieds.Common.Repositories;
-using Classifieds.NLog.MongoDB;
 using System.Net;
 using System.Net.Http;
 
@@ -13,7 +13,6 @@ namespace Classifieds.Common.Tests
         #region Class Variables
         private ICommonRepository _commonRepo;
         private ICommonDBRepository _dbRepository;
-        private UserToken _userToken;
         private ILogger _logger;
 
         #endregion
@@ -58,26 +57,14 @@ namespace Classifieds.Common.Tests
         {
             //Arrange
             HttpRequestMessage request = new HttpRequestMessage();
-
+            string expectedMsg = new HttpResponseMessage(HttpStatusCode.Conflict).ToString() +
+                                 " Pls try after some time.";
             //Act
             var result = _commonRepo.IsAuthenticated(request);
 
             //Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + " Pls try after some time.", result);
-        }
-
-        [TestMethod]
-        public void IsAuthenticatedTest_ThrowsException()
-        {
-            //Arrange
-            HttpRequestMessage request = new HttpRequestMessage();
-
-            //Act
-            var result = _commonRepo.IsAuthenticated(request);
-
-            //Assert
-            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedMsg, result);
         }
     }
 }

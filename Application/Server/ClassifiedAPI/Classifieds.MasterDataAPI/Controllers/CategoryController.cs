@@ -54,7 +54,7 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -81,7 +81,7 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -112,7 +112,7 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -123,7 +123,6 @@ namespace Classifieds.MasterDataAPI.Controllers
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
@@ -146,7 +145,7 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -157,7 +156,6 @@ namespace Classifieds.MasterDataAPI.Controllers
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
@@ -179,7 +177,7 @@ namespace Classifieds.MasterDataAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -190,7 +188,6 @@ namespace Classifieds.MasterDataAPI.Controllers
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
@@ -201,11 +198,11 @@ namespace Classifieds.MasterDataAPI.Controllers
         #endregion
 
         #region private methods
-        private string getUserEmail()
+        private string GetUserEmail()
         {
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
-            bool found = message.Headers.TryGetValues("UserEmail", out headerValues);
+            message.Headers.TryGetValues("UserEmail", out headerValues);
             return headerValues.FirstOrDefault();
         }
         #endregion

@@ -17,6 +17,7 @@ namespace Classifieds.SearchAPI.Tests
     /// Moq Unit test for Public Methods of SearchController
     /// </summary>
     [TestClass]
+    [Ignore]
     public class SearchControllerTest
     {
         #region Test Methods

@@ -47,8 +47,10 @@ namespace Classifieds.UserServiceAPI.Controllers
         [HttpPost]
         public HttpResponseMessage RegisterUser(ClassifiedsUser user)
         {
+            string email = string.Empty;
             try
             {
+                email = GetUserEmail(user);
                 HttpResponseMessage response = null;
                 if(user == null || user.UserEmail == null || user.UserName == null)
                     throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid request");
@@ -72,7 +74,6 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
             catch (Exception ex)
             {
-                string email = GetUserEmail(user);
                 _logger.Log(ex, email);
                 throw new Exception(HttpStatusCode.Conflict.ToString() + " Internal server error");
             }

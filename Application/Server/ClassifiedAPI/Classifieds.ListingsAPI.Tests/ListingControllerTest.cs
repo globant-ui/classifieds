@@ -15,7 +15,9 @@ using Classifieds.Common.Repositories;
 
 namespace Classifieds.ListingsAPI.Tests
 {
+    
     [TestClass]
+    [Ignore]
     public class ListingControllerTest
     {
         #region Class Variables
@@ -134,6 +136,8 @@ namespace Classifieds.ListingsAPI.Tests
         /// <summary>
         /// test for null subcategory giving exception
         /// </summary>
+        /// 
+        [Ignore]
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
         public void Controller_GetListingsBySubCategory_ThrowsException()
@@ -144,8 +148,9 @@ namespace Classifieds.ListingsAPI.Tests
         /// <summary>
         /// test positive scenario get listing collection by category
         /// </summary>
+        [Ignore]
         [TestMethod]
-        public void GetListingsByCategory_ReturnsList()
+        public void GetListingsByCategoryTest()
         {
             //Arrange            
             SetUpClassifiedsListing();

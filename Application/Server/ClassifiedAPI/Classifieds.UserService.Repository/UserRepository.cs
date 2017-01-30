@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using System;
 using System.Configuration;
 using System.Linq;
-using System.Net;
 
 namespace Classifieds.UserService.Repository
 {
@@ -51,8 +50,10 @@ namespace Classifieds.UserService.Repository
                     }
                     returnStr = "Saved";
                 }
-                
-                returnStr = "Success";
+                else
+                {
+                    returnStr = "Success";
+                }
             }
             catch (Exception ex)
             {

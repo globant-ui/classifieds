@@ -52,7 +52,7 @@ namespace Classifieds.ListingsAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -77,7 +77,7 @@ namespace Classifieds.ListingsAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -101,8 +101,8 @@ namespace Classifieds.ListingsAPI.Controllers
         {
             try
             {
+                _userEmail = GetUserEmail();
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -128,7 +128,7 @@ namespace Classifieds.ListingsAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -141,7 +141,6 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
@@ -160,7 +159,7 @@ namespace Classifieds.ListingsAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -171,7 +170,6 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
@@ -189,7 +187,7 @@ namespace Classifieds.ListingsAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -200,7 +198,6 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
@@ -217,7 +214,7 @@ namespace Classifieds.ListingsAPI.Controllers
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = getUserEmail();
+                _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
@@ -238,12 +235,13 @@ namespace Classifieds.ListingsAPI.Controllers
         /// Returns user email string
         /// </summary>
         /// <returns>string</returns>
-        private string getUserEmail()
+        private string GetUserEmail()
         {
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
-            bool found = message.Headers.TryGetValues("UserEmail", out headerValues);
-            return headerValues.FirstOrDefault();
+            message.Headers.TryGetValues("UserEmail", out headerValues);
+            string hearderVal = headerValues == null ? string.Empty: headerValues.FirstOrDefault();
+            return hearderVal;
         }
         #endregion
     }

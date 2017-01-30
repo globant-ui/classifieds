@@ -31,6 +31,11 @@ namespace Classifieds.Common.Repositories
         #endregion
 
         #region public methods
+        /// <summary>
+        /// Checks whether the request is valid using token info in request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public string IsAuthenticated(HttpRequestMessage request)
         {
             string result = string.Empty;
@@ -48,7 +53,7 @@ namespace Classifieds.Common.Repositories
 
                 if (ValidateRequest(accesstoken, _userEmail))
                 {
-                    result = "200"; // new HttpResponseMessage(HttpStatusCode.OK).ToString();
+                    result = "200"; 
                 }
                 else
                 {

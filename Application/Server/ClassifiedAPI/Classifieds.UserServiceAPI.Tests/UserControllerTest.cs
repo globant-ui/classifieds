@@ -72,7 +72,8 @@ namespace Classifieds.UserServiceAPI.Tests
         /// <summary>
         /// Test for successful user registration
         /// </summary>
-        [TestMethod] public void RegisterUserTest_ValidInput()
+        [TestMethod]
+        public void RegisterUserTest_ValidInput()
         {
             SetUpClassifiedsUsers();
             _mockService.Setup(x => x.RegisterUser(_user)).Returns("Success");

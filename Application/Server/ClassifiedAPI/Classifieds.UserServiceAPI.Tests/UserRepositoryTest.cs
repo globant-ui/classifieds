@@ -53,7 +53,7 @@ namespace Classifieds.UserServiceAPI.Tests
         public void RegisterUserTest_InValidInput_ThrowsException()
         {
             //Act
-            var result = _userRepo.RegisterUser(null);
+            _userRepo.RegisterUser(null);
         }
     }
 }

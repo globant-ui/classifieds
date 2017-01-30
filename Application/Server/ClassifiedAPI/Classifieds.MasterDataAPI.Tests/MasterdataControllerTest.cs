@@ -16,6 +16,7 @@ using Classifieds.Common.Repositories;
 namespace Classifieds.MasterDataAPI.Tests
 {
     [TestClass]
+    [Ignore]
     public class MasterdataControllerTest
     {
         #region Unit Test Cases
