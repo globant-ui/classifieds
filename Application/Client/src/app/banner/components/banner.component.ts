@@ -23,11 +23,11 @@ export class BannerComponent {
 
   ngOnInit() {
     this.listingsData=this._settingsService.getBannerListingsData();
-    console.log('dsf = ',this.listingsData);
+    //console.log('dsf = ',this.listingsData);
   }
 
   submitState(value: string) {
-    console.log('submitState', value);
+    //console.log('submitState', value);
     this.appState.set('value', value);
     this.localState.value = '';
   }
