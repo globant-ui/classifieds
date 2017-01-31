@@ -4,6 +4,6 @@ namespace Classifieds.Common
 {
     public interface ILogger
     {
-        Exception Log(Exception ex, string userId);
+        void Log(Exception ex, string userId);
     }
 }
