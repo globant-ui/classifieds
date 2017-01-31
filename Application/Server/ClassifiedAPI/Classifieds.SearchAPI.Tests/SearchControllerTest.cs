@@ -25,7 +25,7 @@ namespace Classifieds.SearchAPI.Tests
         private Mock<ISearchService> _mockService;
         private Mock<ILogger> _logger;
         private SearchController _controller;
-        private Mock<ICommonRepository> _mockAuthRepo
+        private Mock<ICommonRepository> _mockAuthRepo;
         #endregion
 
         #region Initialize
