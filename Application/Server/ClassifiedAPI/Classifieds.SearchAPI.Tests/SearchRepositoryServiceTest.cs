@@ -22,49 +22,13 @@ namespace Classifieds.SearchAPI.Tests
         #endregion
 
         #region Private Methods
-        private void SetUpClassifields()
-        {
-            var classified = new Listing()
-            {
-                ListingType = "ListingType",
-                ListingCategory = "ListingCategory",
-                SubCategory = "SubCategory",
-                Title = "Title",
-                Address = "Address",
-                ContactNo = "1111",
-                ContactName = "AAA AAA",
-                Configuration = "NA",
-                Details = "for rupees 20,000,000,000",
-                Brand = "Brand",
-                Price = 123,
-                YearOfPurchase = 123,
-                ExpiryDate = "ExpiryDate",
-                Status = "Status",
-                Submittedby = "Submittedby",
-                SubmittedDate = "20-DEC-2016",
-                IdealFor = "IdealFor",
-                Furnished = "Furnished",
-                FuelType = "FuelType",
-                KmDriven = 123,
-                YearofMake = 123,
-                Dimensions = "Dimensions",
-                TypeofUse = "TypeofUse",
-                Photos = new string[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
-            };
-
-            var classifiedList = new List<Listing>();
-            classifiedList.Add(classified);
-            //_moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(classifiedList);
-
-        }
+     
         #endregion
 
         #region Test Methods
         [TestMethod]
         public void Repo_FreeTextSearch_Test()
         {
-            //Arrange
-            SetUpClassifields();
             //Act
             var classifieds = _searchRepo.FullTextSearch("Automobile");
             //Assert
@@ -89,7 +53,7 @@ namespace Classifieds.SearchAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repo_FreeTextSearch_ThrowsException()
         {
-            var result = _searchRepo.FullTextSearch(null);
+            _searchRepo.FullTextSearch(null);
         }
         #endregion
     }
