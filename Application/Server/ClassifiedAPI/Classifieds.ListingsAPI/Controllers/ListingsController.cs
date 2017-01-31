@@ -53,7 +53,8 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {               
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
+                throw ex;
             }
         }
 
@@ -70,7 +71,8 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {               
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
+                throw ex;
             }
         }
 
@@ -87,7 +89,8 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {               
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
+                throw ex;
             }
         }
 
@@ -98,18 +101,18 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <returns></returns>
         public HttpResponseMessage Post(Listing listing)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 var classified = _listingService.CreateListing(listing);
-                result = Request.CreateResponse<Listing>(HttpStatusCode.Created, classified);
-                string newItemURL = Url.Link("Listings", new { id = classified._id });
-                result.Headers.Location = new Uri(newItemURL);
+                result = Request.CreateResponse(HttpStatusCode.Created, classified);
+                var newItemUrl = Url.Link("Listings", new { id = classified._id });
+                result.Headers.Location = new Uri(newItemUrl);
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
+                throw ex;
             }
             return result;
         }
@@ -122,16 +125,16 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <returns></returns>
         public HttpResponseMessage Put(string id, Listing listing)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 var classified = _listingService.UpdateListing(id, listing);
-                result = Request.CreateResponse<Listing>(HttpStatusCode.Accepted, classified);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
+                throw ex;
             }
             return result;
         }
@@ -143,7 +146,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <returns></returns>
         public HttpResponseMessage Delete(string id)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 _listingService.DeleteListing(id);
@@ -151,8 +154,8 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {
-                result = Request.CreateResponse<string>(HttpStatusCode.InternalServerError, ex.Message);                
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
+                throw ex;
             }
             return result;
         }
@@ -170,7 +173,8 @@ namespace Classifieds.ListingsAPI.Controllers
             }
             catch (Exception ex)
             {
-                throw _logger.Log(ex, "Globant/User");
+                _logger.Log(ex, "Globant/User");
+                throw ex;
             }
         }
         #endregion

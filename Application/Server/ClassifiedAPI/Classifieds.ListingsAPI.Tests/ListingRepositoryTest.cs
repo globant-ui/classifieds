@@ -170,7 +170,7 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repo_AddListTest_EmptyList_ThrowException()
         {
-            _listingRepo.Add(null);           
+            _listingRepo.Add(null);
         }
 
         /// <summary>

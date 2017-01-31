@@ -13,9 +13,9 @@ namespace Classifieds.Listings.BusinessServices
         #endregion
 
         #region Constructor
-        public ListingService(IListingRepository<Listing> ListingRepository)
+        public ListingService(IListingRepository<Listing> listingRepository)
         {            
-            _listingRepository = ListingRepository;
+            _listingRepository = listingRepository;
         }
         #endregion
 
@@ -41,7 +41,7 @@ namespace Classifieds.Listings.BusinessServices
         /// Returns the listings for given sub category
         /// </summary>
         /// <param name="subCategory">listing Sub Category</param>
-        /// <returns>List<Listing></returns>
+        /// <returns>List of Listing</returns>
         public List<Listing> GetListingsBySubCategory(string subCategory)
         {
             try

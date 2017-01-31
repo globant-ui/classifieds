@@ -56,7 +56,8 @@ namespace Classifieds.SearchAPI.Controllers
             catch (Exception ex)
             {
                 //ToDo UseName is hardcoded
-                throw _logger.Log(ex,"Globant/User");
+                _logger.Log(ex,"Globant/User");
+                throw ex;
             }
 
         }
