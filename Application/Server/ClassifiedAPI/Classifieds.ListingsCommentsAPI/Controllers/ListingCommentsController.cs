@@ -21,7 +21,6 @@ namespace Classifieds.ListingCommentsAPI.Controllers
     /// Modified by :
     /// Modified date: 
     /// </summary>
-    [TestClass]
     public class ListingCommentsController : ApiController
     {
         #region Private Variable
