@@ -1,5 +1,5 @@
-﻿using Classifieds.MastersData.BusinessEntities;
-using Classifieds.MastersData.BusinessServices;
+﻿using Classifieds.ListingComments.BusinessEntities;
+using Classifieds.ListingComments.BusinessServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,49 +7,50 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Classifieds.Common.Repositories;
 
-namespace Classifieds.MasterDataAPI.Controllers
+namespace Classifieds.ListingCommentsAPI.Controllers
 {
     /// <summary>
-    /// This Service is used to perform CRUD operation on MasterData Called Category
-    /// class name: CategoryController
-    /// Purpose : This class is used for to implement get/post/put/delete methods on category
+    /// This Service is used to perform CRUD operation on ListingComments
+    /// class name: ListingCommentsController
+    /// Purpose : This class is used for to implement get/post/put/delete methods on Listing Comments
     /// Created By : Varun Wadsamudrakar
-    /// Created Date: 30/12/2016
+    /// Created Date: 16/01/2017
     /// Modified by :
     /// Modified date: 
     /// </summary>
-    public class CategoryController : ApiController
+    public class ListingCommentsController : ApiController
     {
         #region Private Variable
 
-        private readonly IMasterDataService _masterDataService;
+        private readonly IListingCommentService _listingCommentsService;
         private readonly ILogger _logger;
         private readonly ICommonRepository _commonRepository;
         private string _userEmail = string.Empty;
         #endregion
 
-        #region MastersDataController
+        #region ListingCommentsController
         /// <summary>
         /// The class constructor. 
         /// </summary>
-        public CategoryController(IMasterDataService masterdataService, ILogger logger, ICommonRepository commonRepository)
+        public ListingCommentsController(IListingCommentService listingCommentService, ILogger logger, ICommonRepository commonRepository)
         {
-            _masterDataService = masterdataService;
+            _listingCommentsService = listingCommentService;
             _logger = logger;
             _commonRepository = commonRepository;
         }
 
         #endregion
 
-        #region GetAllCategory
+        #region GetAllListingComment
         /// <summary>
-        /// Returns the All Category 
+        /// Returns the All Listing Comments 
         /// </summary>
-        /// <returns>Category Colletion</returns>
-        [HttpGet]
-        public List<Category> GetAllCategory()
+        /// <param name="listingId">listing Id</param>
+        /// <returns>All Listing Comments</returns>
+        public List<ListingComment> GetAllListingComment(string listingId)
         {
             try
             {
@@ -59,25 +60,28 @@ namespace Classifieds.MasterDataAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
+                return _listingCommentsService.GetAllListingComment(listingId).ToList();
 
-                return _masterDataService.GetAllCategory().ToList();
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, _userEmail);
-                throw ex;
+                throw;
             }
         }
-        #endregion
-        #region GetCategorySuggestion
+
+        #endregion GetAllListingComment
+
+        #region PostListingComments
+
         /// <summary>
-        /// Returns All Categgries matching the imput text.
+        /// Insert new Listing Comments item into the database
         /// </summary>
-        /// <param name="categoryText">Category Text</param>
-        /// <returns>Category List</returns>
-        public List<string> GetCategorySuggetion(string categoryText)
+        /// <param name="listingCommentsObj">listing Comments Object</param>
+        /// <returns>Newly added Listing Comment object</returns>
+        public HttpResponseMessage Post(ListingComment listingCommentsObj)
         {
-            List<string> result = null;
+            HttpResponseMessage result;
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -86,45 +90,13 @@ namespace Classifieds.MasterDataAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-
-                result = _masterDataService.GetCategorySuggetion(categoryText).ToList();
-
+                var classified = _listingCommentsService.CreateListingComment(listingCommentsObj);
+                result = Request.CreateResponse(HttpStatusCode.Created, classified);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-            return result;
-        }
-
-        #endregion
-
-        #region PostCategory
-
-        /// <summary>
-        /// Insert new Category item into the database
-        /// </summary>
-        /// <returns></returns>
-        public HttpResponseMessage Post(Category categoryObj)
-        {
-            HttpResponseMessage result = null;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                
-                var classified = _masterDataService.CreateCategory(categoryObj);
-                result = Request.CreateResponse<Category>(HttpStatusCode.Created, classified);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
+                throw;
             }
 
             return result;
@@ -132,16 +104,16 @@ namespace Classifieds.MasterDataAPI.Controllers
 
         #endregion
 
-        #region UpdateCategory
+        #region UpdateListingComments
         /// <summary>
-        /// Update Category item for given Id
+        /// Update Listing Comments item for given Id
         /// </summary>
         /// <param name="id">Id</param>
-        /// <param name="value">Category Object</param>
-        /// <returns></returns>
-        public HttpResponseMessage Put(string id, Category value)
+        /// <param name="listingcommentobj">Listing Comments Object</param>
+        /// <returns>Updated Listing Comment obj</returns>
+        public HttpResponseMessage Put(string id, ListingComment listingcommentobj)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -150,29 +122,29 @@ namespace Classifieds.MasterDataAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
-                var classified = _masterDataService.UpdateCategory(id, value);
-                result = Request.CreateResponse<Category>(HttpStatusCode.Accepted, classified);
+
+                var classified = _listingCommentsService.UpdateListingComment(id, listingcommentobj);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, _userEmail);
-                throw ex;
+                throw;
             }
             return result;
         }
 
         #endregion
 
-        #region DeleteCategory
+        #region DeleteListingComments
         /// <summary>
-        /// Delete category item for given Id
+        /// Delete Listing Comments item for given Id
         /// </summary>
-        /// <param name="id">Category Id</param>
-        /// <returns></returns>
+        /// <param name="id">Id</param>
+        /// <returns>Deleted id</returns>
         public HttpResponseMessage Delete(string id)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
 
             try
             {
@@ -182,14 +154,13 @@ namespace Classifieds.MasterDataAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
-                _masterDataService.DeleteCategory(id);
+                _listingCommentsService.DeleteListingComment(id);
                 result = Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, _userEmail);
-                throw ex;
+                throw;
             }
 
             return result;
@@ -198,12 +169,17 @@ namespace Classifieds.MasterDataAPI.Controllers
         #endregion
 
         #region private methods
+        /// <summary>
+        /// Returns user email string
+        /// </summary>
+        /// <returns>string</returns>
         private string GetUserEmail()
         {
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
             message.Headers.TryGetValues("UserEmail", out headerValues);
-            return headerValues.FirstOrDefault();
+            string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
+            return hearderVal;
         }
         #endregion
     }
