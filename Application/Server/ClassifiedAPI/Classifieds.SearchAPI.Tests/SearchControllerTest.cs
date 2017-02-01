@@ -63,8 +63,8 @@ namespace Classifieds.SearchAPI.Tests
                     }
                 });
 
-            logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
-            mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             
 
             //Act
@@ -82,7 +82,7 @@ namespace Classifieds.SearchAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_FreeTextSearch_ThrowsException()
         {
-            NullReferenceException ex = new NullReferenceException("ArgumentNullException", new NullReferenceException());
+            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
             _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>())).Throws(ex);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
