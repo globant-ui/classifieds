@@ -1,7 +1,6 @@
 ﻿using Classifieds.Listings.BusinessEntities;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,17 +13,16 @@ namespace Classifieds.Listings.Repository
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];        
         private readonly IDBRepository _dbRepository;
-        MongoCollection<TEntity> classifieds
+        private MongoCollection<TEntity> Classifieds
         {
             get { return _dbRepository.GetCollection<TEntity>(_collectionClassifieds); }
-            //get { return _dbRepository.GetCollection<TEntity>(typeof(TEntity).Name); }
         }
         #endregion
 
         #region Constructor
-        public ListingRepository(IDBRepository DBRepository)
+        public ListingRepository(IDBRepository dbRepository)
         {
-            _dbRepository = DBRepository;
+            _dbRepository = dbRepository;
         }
         #endregion
 
@@ -38,8 +36,8 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                var partialRresult = this.classifieds.FindAll() 
-                                        .Where(p => p._id == id)
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var partialRresult = Classifieds.Find(query)//.Where(p => p._id == id)
                                         .ToList();
 
                 List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
@@ -61,7 +59,7 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                var partialRresult = this.classifieds.FindAll()
+                var partialRresult = Classifieds.FindAll()
                                         .Where(p => p.SubCategory == subCategory)
                                         .ToList();
 
@@ -84,7 +82,7 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                List<TEntity> result = this.classifieds.FindAll()
+                List<TEntity> result = Classifieds.FindAll()
                                             .Where(p => p.ListingCategory == category)
                                             .ToList();
                 return result;
@@ -98,13 +96,13 @@ namespace Classifieds.Listings.Repository
         /// <summary>
         /// Insert a new listing object into the database
         /// </summary>
-        /// <param name="object">listing object</param>
+        /// <param name="listing">listing object</param>
         /// <returns>return newly added listing object</returns>
         public TEntity Add(TEntity listing)
         {
             try
             {
-                var result = this.classifieds.Save(listing);
+                var result = Classifieds.Save(listing);
                 if (result.DocumentsAffected == 0 && result.HasLastErrorMessage){ }
                 return listing;
             }
@@ -118,7 +116,7 @@ namespace Classifieds.Listings.Repository
         /// Update existing listing object based on id from the database
         /// </summary>
         /// <param name="id">Listing Id</param>
-        /// <param name="object">listing object </param>
+        /// <param name="listObj">listing object </param>
         /// <returns>return updated listing object</returns>
         public TEntity Update(string id, TEntity listObj)
         {
@@ -150,7 +148,7 @@ namespace Classifieds.Listings.Repository
                                              .Set(p => p.Configuration, listObj.Configuration);
 
 
-                var result = this.classifieds.Update(query, update);
+                var result = Classifieds.Update(query, update);
                 if (result.DocumentsAffected == 0 && result.HasLastErrorMessage){ }
                 return listObj;
             }
@@ -168,9 +166,9 @@ namespace Classifieds.Listings.Repository
         public void Delete(string id)
         {
             try
-            {                
-                var query = Query<TEntity>.EQ(p => p._id, id.ToString());
-                var result = this.classifieds.Remove(query);                
+            {
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                Classifieds.Remove(query);
             }
             catch (Exception ex)
             {
@@ -189,7 +187,7 @@ namespace Classifieds.Listings.Repository
             {             
                 SortByBuilder sortBuilder = new SortByBuilder();
                 sortBuilder.Descending("_id");
-                var result = this.classifieds.FindAllAs<TEntity>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
+                var result = Classifieds.FindAllAs<TEntity>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
                 return result.ToList();
             }
             catch (Exception ex)

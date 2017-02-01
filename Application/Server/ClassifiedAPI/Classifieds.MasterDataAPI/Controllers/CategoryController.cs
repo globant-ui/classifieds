@@ -59,7 +59,7 @@ namespace Classifieds.MasterDataAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
+
                 return _masterDataService.GetAllCategory().ToList();
             }
             catch (Exception ex)

@@ -13,9 +13,9 @@ namespace Classifieds.Listings.BusinessServices
         #endregion
 
         #region Constructor
-        public ListingService(IListingRepository<Listing> ListingRepository)
+        public ListingService(IListingRepository<Listing> listingRepository)
         {            
-            _listingRepository = ListingRepository;
+            _listingRepository = listingRepository;
         }
         #endregion
 
@@ -41,7 +41,7 @@ namespace Classifieds.Listings.BusinessServices
         /// Returns the listings for given sub category
         /// </summary>
         /// <param name="subCategory">listing Sub Category</param>
-        /// <returns>List<Listing></returns>
+        /// <returns>List of Listing</returns>
         public List<Listing> GetListingsBySubCategory(string subCategory)
         {
             try
@@ -67,7 +67,7 @@ namespace Classifieds.Listings.BusinessServices
             }
             catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
 
@@ -98,7 +98,7 @@ namespace Classifieds.Listings.BusinessServices
         {
             try
             {
-                return _listingRepository.Update(id.ToString(), listing);
+                return _listingRepository.Update(id, listing);
             }
             catch (Exception ex)
             {
@@ -114,7 +114,7 @@ namespace Classifieds.Listings.BusinessServices
         {
             try
             {
-                _listingRepository.Delete(id.ToString());
+                _listingRepository.Delete(id);
             }
             catch (Exception ex)
             {

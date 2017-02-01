@@ -85,6 +85,18 @@
       <Project>{b67f4456-5934-4aa2-a613-3f927dad8dca}</Project>
       <Name>Classifieds.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Classifieds.ListingComments.BusinessEntities\Classifieds.ListingComments.BusinessEntities.csproj">
+      <Project>{155cfb76-541d-43db-b944-c318cee0e308}</Project>
+      <Name>Classifieds.ListingComments.BusinessEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Classifieds.ListingComments.BusinessServices\Classifieds.ListingComments.BusinessServices.csproj">
+      <Project>{3a7cefe4-2bd4-42b4-8732-f31b46a66789}</Project>
+      <Name>Classifieds.ListingComments.BusinessServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Classifieds.ListingComments.Repository\Classifieds.ListingComments.Repository.csproj">
+      <Project>{501fe740-3e2e-42ae-afbb-0d7ae167ea14}</Project>
+      <Name>Classifieds.ListingComments.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Classifieds.Listings.BusinessEntities\Classifieds.Listings.BusinessEntities.csproj">
       <Project>{1FF950D6-172E-4732-80D5-C192669F3E18}</Project>
       <Name>Classifieds.Listings.BusinessEntities</Name>

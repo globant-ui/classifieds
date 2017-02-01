@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Classifieds.Common;
 using Classifieds.Common.Repositories;
 
+using Classifieds.SearchAPI.Controllers;
 #endregion
 
 namespace Classifieds.SearchAPI.Tests
@@ -20,19 +21,33 @@ namespace Classifieds.SearchAPI.Tests
     [TestClass]
     public class SearchControllerTest
     {
+        #region Class Variables
+        private Mock<ISearchService> _mockService;
+        private Mock<ILogger> _logger;
+        private SearchController _controller;
+        private Mock<ICommonRepository> _mockAuthRepo;
+        #endregion
+
+        #region Initialize
+        [TestInitialize]
+        public void Initialize()
+        {
+            _mockService = new Mock<ISearchService>();
+            _logger = new Mock<ILogger>();
+            _mockAuthRepo = new Mock<ICommonRepository>();
+            _controller = new SearchController(_mockService.Object, _logger.Object, _mockAuthRepo.Object);
+        }
+        #endregion
+
         #region Test Methods
         /// <summary>
         /// Controller_FreeTextSearchTest Unit Test positive scenario by any string
         /// </summary>
         [TestMethod]
         public void Controller_FreeTextSearchTest()
-        {
-            //Arrange
-            var mockService = new Mock<ISearchService>();
-            var logger = new Mock<ILogger>();
-            var mockAuthRepo = new Mock<ICommonRepository>();
-
-            mockService.Setup(x => x.FullTextSearch(It.IsAny<string>()))
+        {            
+            //Arrange           
+            _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>()))
                 .Returns(
                 new List<Listing>
                 { new Listing
@@ -50,10 +65,10 @@ namespace Classifieds.SearchAPI.Tests
 
             logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
             mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            var controller = new Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
+            
 
             //Act
-            List<Listing> list = controller.GetFullTextSearch("searchText");
+            List<Listing> list = _controller.GetFullTextSearch("searchText");
 
             //Assert
             Assert.AreEqual(list.Count, 1);
@@ -67,13 +82,11 @@ namespace Classifieds.SearchAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_FreeTextSearch_ThrowsException()
         {
-            var mockService = new Mock<ISearchService>();
-            var mockAuthRepo = new Mock<ICommonRepository>();
-            var logger = new Mock<ILogger>();
-            logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
-            mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            var controller = new Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
-            controller.GetFullTextSearch(null);
+            NullReferenceException ex = new NullReferenceException("ArgumentNullException", new NullReferenceException());
+            _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>())).Throws(ex);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetFullTextSearch(null);
         }
         #endregion
     }
