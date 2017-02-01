@@ -16,29 +16,26 @@ using Classifieds.Common.Repositories;
 namespace Classifieds.MasterDataAPI.Tests
 {
     [TestClass]
-    [Ignore]
     public class MasterdataControllerTest
     {
         #region Unit Test Cases
 
         #region Class Variables
-        private Mock<IMasterDataService> mockService;
-        private Mock<ILogger> logger;
-        private Mock<ICommonRepository> mockAuthRepo;
-        private readonly List<Category> classifiedList = new List<Category>();
-        private readonly List<string> categoryList = new List<string>();
-        private const string urlLocation = "http://localhost/api/listings";
-        private CategoryController controller;
+        private Mock<IMasterDataService> _mockService;
+        private Mock<ILogger> _logger;
+        private Mock<ICommonRepository> _mockAuthRepo;
+        private readonly List<string> _categoryList = new List<string>();
+        private CategoryController _controller;
         #endregion
 
         #region Initialize
         [TestInitialize]
         public void Initialize()
         {
-            mockService = new Mock<IMasterDataService>();
-            logger = new Mock<ILogger>();
-            mockAuthRepo = new Mock<ICommonRepository>();
-            controller = new CategoryController(mockService.Object, logger.Object, mockAuthRepo.Object);
+            _mockService = new Mock<IMasterDataService>();
+            _logger = new Mock<ILogger>();
+            _mockAuthRepo = new Mock<ICommonRepository>();
+            _controller = new CategoryController(_mockService.Object, _logger.Object, _mockAuthRepo.Object);
         }
         #endregion
 
@@ -46,9 +43,7 @@ namespace Classifieds.MasterDataAPI.Tests
 
         private void SetUpClassifiedsListing()
         {
-            var lstListing = GetDataObject();
-            classifiedList.Add(lstListing);
-            categoryList.Add("Automotive");
+            _categoryList.Add("Automotive");
         }
 
         #endregion
@@ -56,20 +51,20 @@ namespace Classifieds.MasterDataAPI.Tests
         [TestMethod]
         public void GetAllCategoryTest()
         {
-                 mockService.Setup(x => x.GetAllCategory())
+                 _mockService.Setup(x => x.GetAllCategory())
                 .Returns(
                 new List<Category>
                 { new Category
                    {
                          ListingCategory = "test",
-                         SubCategory = new String[] { "Test1", "Test2", "Test3" },
+                         SubCategory = new [] { "Test1", "Test2", "Test3" },
                          Image="Automobile.png"
                     }
            });
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
 
             //Act
-            List<Category> objList = new List<Category>();
-            objList = controller.GetAllCategory();
+            List<Category> objList = _controller.GetAllCategory();
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
@@ -83,60 +78,63 @@ namespace Classifieds.MasterDataAPI.Tests
         public void GetCategorySuggetionTest()
         {
             SetUpClassifiedsListing();
-            mockService.Setup(x => x.GetCategorySuggetion(It.IsAny<string>()))
-              .Returns(categoryList);
-            logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockService.Setup(x => x.GetCategorySuggetion(It.IsAny<string>()))
+              .Returns(_categoryList);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
 
             //Act
-            List<string> objList = new List<string>();
-            objList = controller.GetCategorySuggetion("Auto");
+            List<string> objList = _controller.GetCategorySuggetion("Auto");
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].ToString(), "Automotive");
+            Assert.AreEqual(objList[0], "Automotive");
         }
 
         /// <summary>
         /// test for null exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_GetCategorySuggetion_ThrowsException()
         {
-            controller.GetCategorySuggetion(null);
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetCategorySuggetion(null);
         }
 
         [TestMethod]
         public void GetAllCategory_EmptyCategoryTest()
         {
-            mockService.Setup(x => x.GetAllCategory())
+            _mockService.Setup(x => x.GetAllCategory())
             .Returns(new List<Category>() { new Category() });
-            var result = controller.GetAllCategory();
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetAllCategory();
         }
 
          [TestMethod]
         public void Controller_PostMasterDataTest()
         {
             // Arrange
-            mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
+            _mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
             .Returns(GetDataObject());
-            controller.Request = new HttpRequestMessage
+            _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
             };
-            controller.Configuration = new HttpConfiguration();
-            controller.Configuration.Routes.MapHttpRoute(
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Configuration = new HttpConfiguration();
+            _controller.Configuration.Routes.MapHttpRoute(
                 name: "Category",
                 routeTemplate: "api/{controller}/{method}/{id}",
                 defaults: new { id = RouteParameter.Optional });
 
-            controller.RequestContext.RouteData = new HttpRouteData(
+            _controller.RequestContext.RouteData = new HttpRouteData(
                 route: new HttpRoute(),
                 values: new HttpRouteValueDictionary { { "controller", "Category" } });
 
             // Act
             Category listObj = GetDataObject();
-            var response = controller.Post(listObj);
+            var response = _controller.Post(listObj);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
@@ -148,10 +146,11 @@ namespace Classifieds.MasterDataAPI.Tests
         {
             // This version uses a mock UrlHelper.
             // Arrange
-            mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
+            _mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
             .Returns(GetDataObject());
-            controller.Request = new HttpRequestMessage();
-            controller.Configuration = new HttpConfiguration();
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Request = new HttpRequestMessage();
+            _controller.Configuration = new HttpConfiguration();
 
             string locationUrl = "http://localhost/Classifieds.MasterDataAPI/api/Category";
 
@@ -159,32 +158,15 @@ namespace Classifieds.MasterDataAPI.Tests
             // The mock version returns a fixed string.
             var mockUrlHelper = new Mock<UrlHelper>();
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
-            controller.Url = mockUrlHelper.Object;
+            _controller.Url = mockUrlHelper.Object;
 
             // Act
             Category listObj = GetDataObject();
-            var response = controller.Post(listObj);
+            var response = _controller.Post(listObj);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.AreEqual(true, response.IsSuccessStatusCode);
-        }
-
-        private Category GetDataObject()
-        {
-            Category dataObject = new Category
-            {
-                _id = "9",
-                ListingCategory = "Automotive",
-                SubCategory = new String[] { "Car",
-                                            "Motor Cycle",
-                                            "Scooter",
-                                            "Bicycle",
-                                            "Accessories" },
-                Image = "Automotive.png"
-
-            };
-            return dataObject;
         }
 
         [TestMethod]
@@ -192,14 +174,15 @@ namespace Classifieds.MasterDataAPI.Tests
         {
             // Arrange
             Category dataObject = GetDataObject();
-            mockService.Setup(x => x.DeleteCategory(It.IsAny<string>()));
-            controller.Request = new HttpRequestMessage
+            _mockService.Setup(x => x.DeleteCategory(It.IsAny<string>()));
+            _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
                 RequestUri = new Uri("http://localhost/api/Category")
             };
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             // Act                
-            var response = controller.Delete(dataObject._id);
+            var response = _controller.Delete(dataObject._id);
 
             //Assert
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
@@ -210,27 +193,28 @@ namespace Classifieds.MasterDataAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_DeleteList_ThrowsException()
         {
-            var result = controller.Delete(null);
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Delete(null);
         }
 
         [TestMethod]
         public void Controller_UpdateMasterDataTest()
         {
             // Arrange
-            mockService.Setup(x => x.UpdateCategory(It.IsAny<string>(), It.IsAny<Category>()))
+            _mockService.Setup(x => x.UpdateCategory(It.IsAny<string>(), It.IsAny<Category>()))
             .Returns(GetDataObject());
-
-            controller.Request = new HttpRequestMessage
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
                 RequestUri = new Uri("http://localhost/api/Category")
             };
-            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+            _controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             // Act     
             var dataObject = GetDataObject();
             var updatedProduct = new Category() { ListingCategory = dataObject.ListingCategory };
-            var contentResult = controller.Put(dataObject._id, updatedProduct);
+            var contentResult = _controller.Put(dataObject._id, updatedProduct);
 
             //Assert
             Assert.IsNotNull(contentResult);
@@ -243,11 +227,29 @@ namespace Classifieds.MasterDataAPI.Tests
         public void Controller_UpdateMasterData_ThrowsException()
         {
             var updatedProduct = new Category() { ListingCategory = "test", Image = "" };
-            var result = controller.Put(null, updatedProduct);
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Put(null, updatedProduct);
         }
 
         #endregion
 
+        #region private methods
+        private Category GetDataObject()
+        {
+            Category dataObject = new Category
+            {
+                _id = "9",
+                ListingCategory = "Automotive",
+                SubCategory = new [] { "Car",
+                                            "Motor Cycle",
+                                            "Scooter",
+                                            "Bicycle",
+                                            "Accessories" },
+                Image = "Automotive.png"
 
+            };
+            return dataObject;
+        }
+        #endregion
     }
 }

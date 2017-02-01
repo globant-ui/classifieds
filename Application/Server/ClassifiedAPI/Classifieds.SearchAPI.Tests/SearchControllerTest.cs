@@ -1,6 +1,7 @@
 ﻿#region Imports
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using Moq;
 using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
@@ -17,7 +18,6 @@ namespace Classifieds.SearchAPI.Tests
     /// Moq Unit test for Public Methods of SearchController
     /// </summary>
     [TestClass]
-    [Ignore]
     public class SearchControllerTest
     {
         #region Test Methods
@@ -49,12 +49,11 @@ namespace Classifieds.SearchAPI.Tests
                 });
 
             logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
-
-            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
+            mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            var controller = new Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
 
             //Act
-            List<Listing> list = new List<Listing>();
-            list = controller.GetFullTextSearch("searchText");
+            List<Listing> list = controller.GetFullTextSearch("searchText");
 
             //Assert
             Assert.AreEqual(list.Count, 1);
@@ -65,15 +64,16 @@ namespace Classifieds.SearchAPI.Tests
         /// Controller_FreeTextSearch_ThrowsException Test Exception.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_FreeTextSearch_ThrowsException()
         {
             var mockService = new Mock<ISearchService>();
             var mockAuthRepo = new Mock<ICommonRepository>();
             var logger = new Mock<ILogger>();
             logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
-            var controller = new SearchAPI.Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
-            var classified = controller.GetFullTextSearch(null);
+            mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            var controller = new Controllers.SearchController(mockService.Object, logger.Object, mockAuthRepo.Object);
+            controller.GetFullTextSearch(null);
         }
         #endregion
     }
