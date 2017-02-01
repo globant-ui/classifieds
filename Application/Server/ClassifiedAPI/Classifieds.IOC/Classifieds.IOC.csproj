@@ -109,15 +109,15 @@
       <Project>{46cc0d61-079e-4375-b3a5-e1ef9cde7736}</Project>
       <Name>Classifieds.Listings.Repository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Classifieds.MasterData.BusinessEntities\Classifieds.MastersData.BusinessEntities.csproj">
-      <Project>{187EC293-A3DB-4B4B-A8AE-7BF688E049F6}</Project>
+    <ProjectReference Include="..\Classifieds.MastersData.BusinessEntities\Classifieds.MastersData.BusinessEntities.csproj">
+      <Project>{187ec293-a3db-4b4b-a8ae-7bf688e049f6}</Project>
       <Name>Classifieds.MastersData.BusinessEntities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Classifieds.MasterData.BusinessServices\Classifieds.MastersData.BusinessServices.csproj">
+    <ProjectReference Include="..\Classifieds.MastersData.BusinessServices\Classifieds.MastersData.BusinessServices.csproj">
       <Project>{dac4426d-54f6-4a51-9303-7f5374b68713}</Project>
       <Name>Classifieds.MastersData.BusinessServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Classifieds.MasterData.Repository\Classifieds.MastersData.Repository.csproj">
+    <ProjectReference Include="..\Classifieds.MastersData.Repository\Classifieds.MastersData.Repository.csproj">
       <Project>{13a64e26-b245-486d-a261-f22241a72650}</Project>
       <Name>Classifieds.MastersData.Repository</Name>
     </ProjectReference>
