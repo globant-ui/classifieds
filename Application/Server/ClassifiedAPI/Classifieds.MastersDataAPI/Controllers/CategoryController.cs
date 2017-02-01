@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common;
-using System.Web.Http.Cors;
 using Classifieds.Common.Repositories;
 
 namespace Classifieds.MastersDataAPI.Controllers
@@ -22,7 +21,6 @@ namespace Classifieds.MastersDataAPI.Controllers
     /// Modified date: 
     /// </summary>
 
-    [EnableCors("http://localhost:3000", "*", "*")]
     public class CategoryController : ApiController
     {
         #region Private Variable
