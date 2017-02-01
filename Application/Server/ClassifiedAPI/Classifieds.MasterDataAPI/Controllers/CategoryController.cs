@@ -203,7 +203,8 @@ namespace Classifieds.MasterDataAPI.Controllers
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
             message.Headers.TryGetValues("UserEmail", out headerValues);
-            return headerValues.FirstOrDefault();
+            string headerVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
+            return headerVal;
         }
         #endregion
     }

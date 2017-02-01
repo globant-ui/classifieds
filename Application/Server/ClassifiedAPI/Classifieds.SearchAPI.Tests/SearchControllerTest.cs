@@ -1,6 +1,7 @@
 ﻿#region Imports
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using Moq;
 using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
@@ -18,7 +19,6 @@ namespace Classifieds.SearchAPI.Tests
     /// Moq Unit test for Public Methods of SearchController
     /// </summary>
     [TestClass]
-    [Ignore]
     public class SearchControllerTest
     {
         #region Class Variables
@@ -64,7 +64,9 @@ namespace Classifieds.SearchAPI.Tests
                 });
 
             _logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             
+
             //Act
             List<Listing> list = _controller.GetFullTextSearch("searchText");
 
@@ -77,12 +79,13 @@ namespace Classifieds.SearchAPI.Tests
         /// Controller_FreeTextSearch_ThrowsException Test Exception.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_FreeTextSearch_ThrowsException()
         {
-            NullReferenceException ex = new NullReferenceException("ArgumentNullException", new NullReferenceException());
+            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
             _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>())).Throws(ex);
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));            
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetFullTextSearch(null);
         }
         #endregion
