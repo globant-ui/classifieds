@@ -12,7 +12,7 @@ namespace Classifieds.ListingsAPI.Tests
         #region Class Variables
         private IListingRepository<Listing> _listingRepo;
         private IDBRepository _dbRepository;
-        private readonly List<Listing> classifiedList = new List<Listing>();
+        private readonly List<Listing> _classifiedList = new List<Listing>();
         #endregion
 
         #region Initialize
@@ -29,12 +29,12 @@ namespace Classifieds.ListingsAPI.Tests
         private void SetUpClassifiedsListing()
         {
             var lstListing = GetListObject();
-            classifiedList.Add(lstListing);
+            _classifiedList.Add(lstListing);
         }
 
         private Listing GetListObject()
         {
-            Listing listObject = new Listing
+            var listObject = new Listing
             {               
                 ListingType = "sale",
                 ListingCategory = "Housing",
@@ -59,7 +59,7 @@ namespace Classifieds.ListingsAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = new string[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;
         }
@@ -74,7 +74,7 @@ namespace Classifieds.ListingsAPI.Tests
         {
             /*In this test case we add one post and pass recently added post's Id as a parameter to GetListingById() method instead of passing hard coded value*/
             //Arrange
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
 
             //Act
             var result = _listingRepo.Add(lstObject);
@@ -91,13 +91,23 @@ namespace Classifieds.ListingsAPI.Tests
         /// test for incorrect id return null;
         /// </summary>
         [TestMethod]
-        public void Repo_GetListingByIdTest_InvalidId()
+        public void Repo_GetListingByIdTest_NullId()
         {
             //Act
             var result = _listingRepo.GetListingById(null);
 
             //Assert
             Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// test for incorrect id throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormatException))]
+        public void Repo_GetListingByIdTest_InvalidId_ThrowException()
+        {
+            _listingRepo.GetListingById("qwer");
         }
 
         /// <summary>
@@ -110,21 +120,28 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            var result = _listingRepo.GetListingsByCategory("Housing");
+            var result = _listingRepo.GetListingsByCategory(_classifiedList[0].ListingCategory);
 
             //Assert            
             Assert.IsNotNull(result[0]);
         }
 
         /// <summary>
-        /// test for incorrect or null category returns empty result
+        /// test for invalid category returns empty result
         /// </summary>
         [TestMethod]
-        public void Repo_GetListingByCategory_Invalid_OR_Null_Category()
+        public void Repo_GetListingByCategoryTest_InvalidCategory()
         {
             var result = _listingRepo.GetListingsByCategory("qazxsw");
             Assert.AreEqual(0, result.Count);
+        }
 
+        /// <summary>
+        /// test for null category returns empty result
+        /// </summary>
+        [TestMethod]        
+        public void Repo_GetListingByCategoryTest_NullCategory()
+        {   
             var nullResult = _listingRepo.GetListingsByCategory(null);
             Assert.AreEqual(0, nullResult.Count);
         }
@@ -136,7 +153,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_AddListTest()
         {
             //Arrange
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
             
             //Act
             var result = _listingRepo.Add(lstObject);
@@ -147,14 +164,13 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         /// <summary>
-        /// test for adding empty listing object returns null result
+        /// test for adding empty listing object throws exception
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repo_AddListTest_EmptyList_ThrowException()
         {
-            var result = _listingRepo.Add(null);
-            Assert.IsNull(result, null);
+            _listingRepo.Add(null);
         }
 
         /// <summary>
@@ -164,15 +180,17 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_DeleteListTest()
         {
             //Arrange
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
 
             //Act
             var result = _listingRepo.Add(lstObject);
             Assert.IsNotNull(result._id);
             _listingRepo.Delete(result._id);
 
+            var newresult = _listingRepo.GetListingById(result._id);
+            
             //Assert
-            Assert.IsTrue(true);
+            Assert.IsNull(newresult);
 
         }
 
@@ -181,23 +199,11 @@ namespace Classifieds.ListingsAPI.Tests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void Repo_DeleteListTest_InvalidId()
+        public void Repo_DeleteListTest_InvalidId_ThrowException()
         {
             _listingRepo.Delete("qwer");
-            Assert.IsTrue(true);
         }
-
-        /// <summary>
-        /// test for null id returns exception
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Repo_DeleteListTest_NullId_ThrowException()
-        {
-            _listingRepo.Delete(null);
-            Assert.IsTrue(true);
-        }
-
+       
         /// <summary>
         /// test positive scenario for updating listing object
         /// </summary>
@@ -205,7 +211,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_UpdateListTest()
         {
             //Arrange
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
 
 
             //Act
@@ -214,22 +220,21 @@ namespace Classifieds.ListingsAPI.Tests
             result.Title = "UpdatedTest";
             result.ListingCategory = "UpdatedHousing";
 
-            var Updatedresult = _listingRepo.Update(result._id, result);
-            Assert.IsNotNull(Updatedresult);
+            var updatedresult = _listingRepo.Update(result._id, result);
+            Assert.IsNotNull(updatedresult);
 
-            Assert.AreEqual(result.Title, Updatedresult.Title);
+            Assert.AreEqual(result.Title, updatedresult.Title);
             Assert.IsInstanceOfType(result, typeof(Listing));
         }
 
         /// <summary>
-        /// test for incorrect listing id returns null result
+        /// test for updating listing object with null listing id throws exception
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_UpdateListTest_NullId_ThrowException()
         {
-            Listing updatedList = null;
-            var result = _listingRepo.Update(null, updatedList);
+            var result = _listingRepo.Update(null, null);
             Assert.IsNull(result);
         }
 
@@ -239,7 +244,7 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]
         public void Repo_GetListingsBySubCategoryTest()
         {
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
 
             //Act
             var result = _listingRepo.Add(lstObject);
@@ -260,7 +265,6 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_GetListingsBySubCategoryTest_NullSubCategory()
         {
             var result = _listingRepo.GetListingsBySubCategory(null);
-            Assert.IsTrue(true);
             Assert.IsNull(result);
         }
 
@@ -284,8 +288,20 @@ namespace Classifieds.ListingsAPI.Tests
             var result = _listingRepo.GetTopListings(2);
 
             //Assert
-            Assert.IsNotNull(result, null);
+            Assert.IsNotNull(result);
             Assert.AreEqual(result.Count, 2);
+        }
+
+        /// <summary>
+        /// test GetTopListing throws exception whenever.
+        /// to pass this test case database server must be down.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TimeoutException))]
+        public void Repo_GetTopListingTest_ThrowException()
+        {
+            //Act
+            _listingRepo.GetTopListings(2);            
         }
         #endregion
 

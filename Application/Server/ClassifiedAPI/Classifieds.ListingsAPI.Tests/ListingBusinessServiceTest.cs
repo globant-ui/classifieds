@@ -14,7 +14,7 @@ namespace Classifieds.ListingsAPI.Tests
         #region Class Variables
         private Mock<IListingRepository<Listing>> _moqAppManager;
         private IListingService _service;
-        private readonly List<Listing> classifiedList = new List<Listing>();
+        private readonly List<Listing> _classifiedList = new List<Listing>();
         #endregion
 
         #region Initialize
@@ -30,12 +30,12 @@ namespace Classifieds.ListingsAPI.Tests
         private void SetUpClassifiedsListing()
         {
             var lstListing = GetListObject();
-            classifiedList.Add(lstListing);            
+            _classifiedList.Add(lstListing);            
         }
 
         private Listing GetListObject()
         {
-            Listing listObject = new Listing
+            var listObject = new Listing
             {
                 _id = "9",
                 ListingType = "test",
@@ -61,7 +61,7 @@ namespace Classifieds.ListingsAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = new string[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;
         }
@@ -76,30 +76,30 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(classifiedList);
+            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(_classifiedList);
 
             //Act
-            var result = _service.GetListingById("123");
+            var result = _service.GetListingById(_classifiedList[0]._id);
 
             //Assert
             Assert.AreEqual(result.Count, 1);
         }
 
         /// <summary>
-        /// test for incorrect input giving empty result
+        /// test for empty result  i.e. no match found
         /// </summary>
         [TestMethod]
         public void GetListingById_EmptyResult_Test()
         {
-            // Arrange
-            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(new List<Listing>() { new Listing() });
+            //Arrange
+            var lstObject = GetListObject();
+            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(new List<Listing>() );
 
             //Act
-            var result = _service.GetListingById("123");
+            var result = _service.GetListingById(lstObject._id);
 
             //Assert
-            Assert.IsNotNull(result[0], null);
-            Assert.IsInstanceOfType(result, typeof(IList<Listing>));
+            Assert.AreEqual(result.Count,0);           
         }
 
         /// <summary>
@@ -109,7 +109,9 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetListingById_ThrowsException()
         {
-            var result = _service.GetListingById(null);
+            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetListingById(null)).Throws(ex);
+            _service.GetListingById(null);
         }
 
         /// <summary>
@@ -120,10 +122,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(classifiedList);
+            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(_classifiedList);
 
             //Act
-            var result = _service.GetListingsBySubCategory("test");
+            var result = _service.GetListingsBySubCategory(_classifiedList[0].SubCategory);
 
             //Assert
             Assert.AreEqual(result.Count, 1);
@@ -136,23 +138,26 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetListingsBySubCategory_ThrowsException()
         {
-            var result = _service.GetListingsBySubCategory(null);
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetListingsBySubCategory(null)).Throws(ex);
+            _service.GetListingsBySubCategory(null);
         }
 
         /// <summary>
-        /// test for incorrect input giving empty result
+        /// test for empty result i.e. no match found
         /// </summary>
         [TestMethod]
         public void GetListingsBySubCategory_EmptyResult_Test()
         {
             // Arrange
-            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(new List<Listing>() { new Listing() });
+            var lstObject = GetListObject();
+            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(new List<Listing>());
 
             //Act
-            var result = _service.GetListingsBySubCategory("123");
+            var result = _service.GetListingsBySubCategory(lstObject.SubCategory);
 
             //Assert
-            Assert.IsNotNull(result[0], null);
+            Assert.AreEqual(result.Count,0);
             Assert.IsInstanceOfType(result, typeof(IList<Listing>));
         }
         
@@ -164,10 +169,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsByCategory("Housing")).Returns(classifiedList);
+            _moqAppManager.Setup(x => x.GetListingsByCategory(It.IsAny<string>())).Returns(_classifiedList);
 
             //Act
-            var result = _service.GetListingsByCategory("Housing");
+            var result = _service.GetListingsByCategory(_classifiedList[0].ListingCategory);
 
             //Assert
             Assert.AreEqual(1, result.Count);
@@ -175,31 +180,32 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         /// <summary>
-        /// tests for incorrect input giving empty result
+        /// tests for giving empty result  i.e. no match found
         /// </summary>
         [TestMethod]
         public void GetListingByCategory_EmptyResultTest()
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsByCategory("Housing")).Returns(new List<Listing>() { new Listing() });
+            _moqAppManager.Setup(x => x.GetListingsByCategory(It.IsAny<string>())).Returns(new List<Listing>());
 
             //Act
-            var result = _service.GetListingsByCategory("Housing");
+            var result = _service.GetListingsByCategory(_classifiedList[0].ListingCategory);
 
             //Assert
-            Assert.AreEqual(1, result.Count);
-            Assert.IsInstanceOfType(result[0], typeof(Listing));
+            Assert.AreEqual(result.Count,0);
         }
 
         /// <summary>
-        /// tests for null output if input is null
+        /// tests for null category input throws exception
         /// </summary>
         [TestMethod]
-        public void GetListingByCategory_ReturnsNull()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetListingByCategory_ThrowException()
         {
-            var result = _service.GetListingsByCategory(null);
-            Assert.IsNull(result);
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetListingsByCategory(null)).Throws(ex);            
+            _service.GetListingsByCategory(null);
         }
 
         /// <summary>
@@ -209,7 +215,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void PostListTest()
         {
             //Arrange
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
             _moqAppManager.Setup(x => x.Add(It.IsAny<Listing>())).Returns(lstObject);
 
             //Act
@@ -226,7 +232,28 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]
         public void PostListTest_EmptyList()
         {
+            //Arrange
+            var list = new Listing();
+            _moqAppManager.Setup(x => x.Add(It.IsAny<Listing>())).Returns((new Listing()));
+            //Act
+            var result = _service.CreateListing(list);
+            //Assert
+            Assert.AreEqual(result.Title, null);
+        }
+
+        /// <summary>
+        /// test for inserting null listing object throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PostListTest_ThrowException()
+        {
+            //Arrange
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.Add(null)).Throws(ex);
+            //Act
             var result = _service.CreateListing(null);
+            //Assert
             Assert.IsNull(result, null);
         }
 
@@ -237,7 +264,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void DeleteListTest()
         {
             //Arrange
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
             _moqAppManager.Setup(x => x.Delete(It.IsAny<string>()));
 
             //Act
@@ -249,14 +276,15 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         /// <summary>
-        /// test for null listing id
+        /// test for delete listing with null id throws exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteListTest_InvalidId_ThrowException()
         {
-            _moqAppManager.Setup(x => x.Delete(It.IsAny<string>()));
-            _service.DeleteListing(null);            
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.Delete(null)).Throws(ex);
+            _service.DeleteListing(null);
         }
 
         /// <summary>
@@ -266,7 +294,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void PutListTest()
         {
             //Arrange
-            Listing lstObject = GetListObject();
+            var lstObject = GetListObject();
             _moqAppManager.Setup(x => x.Update(It.IsAny<string>(), It.IsAny<Listing>())).Returns(lstObject);
             var updatedList = new Listing() { Title = lstObject.Title, ListingType = lstObject.ListingType };
             //Act
@@ -278,14 +306,18 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         /// <summary>
-        /// test for updating listing with incorrect id returns null result
+        /// test for updating listing with null id throws exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void PutListTest_InvalidId_ThrowException()
         {
-            var updatedList = new Listing() { Title = "testupdated", ListingType = "testupdated" };
-            _service.UpdateListing(null, updatedList);          
+            //Arrange
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.Update(It.IsAny<string>(), It.IsAny<Listing>())).Throws(ex);
+
+            //Act
+            _service.UpdateListing(null, null);
         }
 
         /// <summary>
@@ -295,9 +327,8 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetTopListing_5RecordsTest()
         {
             // Arrange
-            //SetUpClassifiedsListing();
             List<Listing> list = new List<Listing>();
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
                 list.Add(GetListObject());
             }
@@ -308,8 +339,22 @@ namespace Classifieds.ListingsAPI.Tests
 
             //Assert
             Assert.AreEqual(result.Count, 5);
-        }       
+        }
 
+        /// <summary>
+        /// test for throwing exception in GetTopListing
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetTopListing_ThrowException()
+        {
+            // Arrange
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());           
+            _moqAppManager.Setup(x => x.GetTopListings(It.IsAny<int>())).Throws(ex);
+
+            //Act
+            _service.GetTopListings(5);           
+        }
         #endregion
     }
 }

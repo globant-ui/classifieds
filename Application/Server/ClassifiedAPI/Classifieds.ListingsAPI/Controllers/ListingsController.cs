@@ -124,7 +124,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <returns></returns>
         public HttpResponseMessage Post(Listing listing)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -135,8 +135,8 @@ namespace Classifieds.ListingsAPI.Controllers
                 }
                 
                 var classified = _listingService.CreateListing(listing);
-                result = Request.CreateResponse<Listing>(HttpStatusCode.Created, classified);
-                string newItemUrl = Url.Link("Listings", new { id = classified._id });
+                result = Request.CreateResponse(HttpStatusCode.Created, classified);
+                var newItemUrl = Url.Link("Listings", new { id = classified._id });
                 result.Headers.Location = new Uri(newItemUrl);
             }
             catch (Exception ex)
@@ -155,7 +155,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <returns></returns>
         public HttpResponseMessage Put(string id, Listing listing)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -166,7 +166,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 }
                 
                 var classified = _listingService.UpdateListing(id, listing);
-                result = Request.CreateResponse<Listing>(HttpStatusCode.Accepted, classified);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
@@ -183,7 +183,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <returns></returns>
         public HttpResponseMessage Delete(string id)
         {
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
