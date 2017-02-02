@@ -1,5 +1,4 @@
 import { Component,ViewChildren,OnInit, HostListener, Inject, ElementRef } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -39,8 +38,7 @@ export class HomeComponent implements OnInit {
       public appState: AppState,
       private _settingsService: SettingsService,
       private _cservice:CService,
-      private el:ElementRef,
-      @Inject(DOCUMENT) private document: Document) {
+      private el:ElementRef) {
   }
   ngOnInit() {
     this.baseUrl=this._settingsService.getBaseUrl();
@@ -50,7 +48,6 @@ export class HomeComponent implements OnInit {
     this.getAffixElOffsetTop();
   }
   getAffixElOffsetTop(){
-    this.topNavbar = this.el.nativeElement.querySelector('#top-navbar');
     this.affixEl = this.el.nativeElement.querySelector('#cheader1');
     this.affixElOffsetTop = this.affixEl.offsetTop;
     //console.log('off = ',this.affixElOffsetTop);
@@ -88,9 +85,9 @@ export class HomeComponent implements OnInit {
       this.selectedFilter = selectedOpt;
     }
 
-    @HostListener("window:scroll", [])
-    onWindowScroll() {
-        let number = this.document.body.scrollTop+125;
+    @HostListener("window:scroll", ['$event'])
+    onWindowScroll(e) {
+        let number = e.target.body.scrollTop+125;
         if (number > this.affixElOffsetTop) {
             this.navIsFixed = true;
         } else if (this.navIsFixed && number < this.affixElOffsetTop) {
