@@ -6,6 +6,13 @@
     float:left;
     color: $primary-text-color;
     position: relative;
+    .popup-loader {
+      background: url('../../../../assets/img/spinner.gif') center center no-repeat;
+        height: 25px;
+        width: auto;
+        min-width: 25px;
+        padding:50px;
+    }
     input{
       border:none;
       border-radius: 20px;

@@ -41,6 +41,7 @@ export class FilterComponent {
   }
 
   ngOnChanges(changes: SimpleChanges){
+   
     if( changes[ 'selectedFilter' ] ) {
       this.updateSelectedFilter();
     }
@@ -59,11 +60,12 @@ export class FilterComponent {
   }
 
   showCards(category,index){
-      let filterData = this.filterData;
-      for (let item of filterData) {
-          item.isActive = false;
-      }
-      filterData[index].isActive = true;
+    let filterData = this.filterData;
+    for (let item of filterData) {
+      item.isActive = false;
+    }
+    filterData[index].isActive = true;
+
     if(category === 'Top ten'){
         this.getInitialCards.emit();
     }else{
@@ -71,13 +73,13 @@ export class FilterComponent {
     }
   }
 
-  getCardsByCategory(category)
-  {
+  getCardsByCategory(category) {
     this.categoryUrl = this.filterCategoryUrl+category;
     this._cservice.observableGetHttp(this.categoryUrl,null,false)
       .subscribe((res:Response)=> {
           console.log('res = ',res);
-          this.filterCategory.emit(res);
+          let obj = { 'categoryName': category, 'result': res };
+          this.filterCategory.emit(obj);
         },   error => {
           console.log("error in response");
         },

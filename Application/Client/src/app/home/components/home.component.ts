@@ -1,9 +1,10 @@
-import { Component,ViewChildren,OnInit } from '@angular/core';
+import { Component,ViewChildren,ViewChild ,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../_common/services/http.service';
+import { SearchComponent } from '../../_common/search/components/search.component';
 import 'rxjs/Rx';
 
 
@@ -30,6 +31,8 @@ export class HomeComponent {
 
 
   @ViewChildren("cheader") CHeader;
+  @ViewChild(SearchComponent) searchComponent;
+
 
   constructor(
       public appState: AppState,
@@ -41,11 +44,12 @@ export class HomeComponent {
     this.getInitialCards();
     this.getBannerListing();
   }
-  getInitialCards (){
+
+  getInitialCards () {
     this._cservice.observableGetHttp(this.cardUrl,null,false)
       .subscribe((res:Response)=> {
-            console.log('cards response = ',res);
-          this.initialCardData = res;
+            this.searchComponent.setFilter( 'TOP TEN' );
+            this.initialCardData = res;
         },
         error => {
           console.log("error in response");
@@ -68,8 +72,9 @@ export class HomeComponent {
          })
    }
 
-    showOutput(category){
-        this.initialCardData = category;
+    showOutput(obj){
+        this.initialCardData = obj.result;
+        this.searchComponent.setFilter( obj.categoryName );
     }
     getSelectedFilter(selectedOpt){
       this.selectedFilter = selectedOpt;

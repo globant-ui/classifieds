@@ -29,6 +29,7 @@ export class SearchComponent {
     private values:any = '';
     private searchCategoryByStr: string = '';
     private enabledDropdown:boolean = false; 
+    private isLoading : boolean = false;
 
     constructor( public appState: AppState,
                  private _settingsService: SettingsService,
@@ -49,8 +50,10 @@ export class SearchComponent {
     }
 
     fetchSearchedData( text: string ) {
+         this.isLoading = true;  ;
         this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
             .subscribe((res: Response) => {
+                this.isLoading = false;
                 if (res && res[ 'length' ] > 0) {
                     this.searchResult = res;
                     this.enabledDropdown = true;
@@ -81,5 +84,9 @@ export class SearchComponent {
         this.enabledDropdown = false;
         this.searchCategoryByString(selectedOpt);
         this.getSelectedFilter.emit(selectedOpt);
+    }
+
+    setFilter(filterData) {
+        this.searchCategoryByStr = filterData;
     }
 }
