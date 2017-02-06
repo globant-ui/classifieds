@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Classifieds.ListingsAPI.Tests
 {
@@ -122,10 +123,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(_classifiedList);
+            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(_classifiedList);
 
             //Act
-            var result = _service.GetListingsBySubCategory(_classifiedList[0].SubCategory);
+            var result = _service.GetListingsBySubCategory(_classifiedList[0].SubCategory, 1, 5);
 
             //Assert
             Assert.AreEqual(result.Count, 1);
@@ -139,8 +140,8 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingsBySubCategory_ThrowsException()
         {
             var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.GetListingsBySubCategory(null)).Throws(ex);
-            _service.GetListingsBySubCategory(null);
+            _moqAppManager.Setup(x => x.GetListingsBySubCategory(null, It.IsAny<int>(), It.IsAny<int>())).Throws(ex);
+            _service.GetListingsBySubCategory(null, 1, 5);
         }
 
         /// <summary>
@@ -151,10 +152,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             var lstObject = GetListObject();
-            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>())).Returns(new List<Listing>());
+            _moqAppManager.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(new List<Listing>());
 
             //Act
-            var result = _service.GetListingsBySubCategory(lstObject.SubCategory);
+            var result = _service.GetListingsBySubCategory(lstObject.SubCategory, 1, 5);
 
             //Assert
             Assert.AreEqual(result.Count,0);
@@ -169,10 +170,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsByCategory(It.IsAny<string>())).Returns(_classifiedList);
+            _moqAppManager.Setup(x => x.GetListingsByCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(_classifiedList);
 
             //Act
-            var result = _service.GetListingsByCategory(_classifiedList[0].ListingCategory);
+            var result = _service.GetListingsByCategory(_classifiedList[0].ListingCategory, 1, 5);
 
             //Assert
             Assert.AreEqual(1, result.Count);
@@ -187,10 +188,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsByCategory(It.IsAny<string>())).Returns(new List<Listing>());
+            _moqAppManager.Setup(x => x.GetListingsByCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(new List<Listing>());
 
             //Act
-            var result = _service.GetListingsByCategory(_classifiedList[0].ListingCategory);
+            var result = _service.GetListingsByCategory(_classifiedList[0].ListingCategory, 1, 5);
 
             //Assert
             Assert.AreEqual(result.Count,0);
@@ -204,8 +205,8 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingByCategory_ThrowException()
         {
             var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.GetListingsByCategory(null)).Throws(ex);            
-            _service.GetListingsByCategory(null);
+            _moqAppManager.Setup(x => x.GetListingsByCategory(null, It.IsAny<int>(), It.IsAny<int>())).Throws(ex);            
+            _service.GetListingsByCategory(null, 1, 5);
         }
 
         /// <summary>

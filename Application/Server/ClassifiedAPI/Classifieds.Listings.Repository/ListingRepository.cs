@@ -54,17 +54,22 @@ namespace Classifieds.Listings.Repository
         /// Returns a collection of listings based on sub category
         /// </summary>
         /// <param name="subCategory">listing Sub Category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
         /// <returns>Collection of listings</returns>
-        public List<TEntity> GetListingsBySubCategory(string subCategory)
+        public List<TEntity> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount)
         {
             try
             {
-                var partialRresult = Classifieds.FindAll()
-                                        .Where(p => p.SubCategory == subCategory)
-                                        .ToList();
-
-                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
-
+                var skip = startIndex - 1;
+                List<TEntity> listings = Classifieds.FindAll()
+                                            .Where(p => p.SubCategory == subCategory)
+                                            .ToList();
+                List<TEntity> result = listings.Select(p => p)
+                                                 .Skip(skip)
+                                                 .Take(pageCount)
+                                                 .ToList();
+                result = result.Count > 0 ? result.ToList() : null;
                 return result;
             }
             catch (Exception ex)
@@ -77,14 +82,21 @@ namespace Classifieds.Listings.Repository
         /// Returns a collection of listings based on category
         /// </summary>
         /// <param name="category">listing category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
         /// <returns>Collection of listings</returns>
-        public List<TEntity> GetListingsByCategory(string category)
+        public List<TEntity> GetListingsByCategory(string category, int startIndex, int pageCount)
         {
             try
             {
-                List<TEntity> result = Classifieds.FindAll()
+                var skip = startIndex - 1;
+                List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.ListingCategory == category)
                                             .ToList();
+                List<TEntity> result = listings.Select(p => p)
+                                                 .Skip(skip)
+                                                 .Take(pageCount)
+                                                 .ToList();
                 return result;
             }
             catch (MongoException ex)

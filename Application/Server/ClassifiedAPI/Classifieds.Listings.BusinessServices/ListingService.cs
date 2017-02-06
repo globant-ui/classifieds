@@ -42,11 +42,11 @@ namespace Classifieds.Listings.BusinessServices
         /// </summary>
         /// <param name="subCategory">listing Sub Category</param>
         /// <returns>List of Listing</returns>
-        public List<Listing> GetListingsBySubCategory(string subCategory)
+        public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount)
         {
             try
             {
-                return _listingRepository.GetListingsBySubCategory(subCategory).ToList();
+                return _listingRepository.GetListingsBySubCategory(subCategory, startIndex, pageCount).ToList();
             }
             catch (Exception ex)
             {
@@ -59,11 +59,11 @@ namespace Classifieds.Listings.BusinessServices
         /// </summary>
         /// <param name="category">listing category</param>
         /// <returns>collection(listing)</returns>
-        public List<Listing> GetListingsByCategory(string category)
+        public List<Listing> GetListingsByCategory(string category, int startIndex, int pageCount)
         {
             try
             {
-                return _listingRepository.GetListingsByCategory(category);
+                return _listingRepository.GetListingsByCategory(category, startIndex, pageCount);
             }
             catch (Exception ex)
             {

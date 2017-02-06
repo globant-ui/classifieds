@@ -50,9 +50,11 @@ namespace Classifieds.SearchAPI.Controllers
         /// <summary>
         /// GetFulltext search on title, description and category
         /// </summary>
-        /// <param name="searchText"></param>
-        /// <returns>SearchResult</returns>
-        public List<Listing> GetFullTextSearch(string searchText)
+        /// <param name="searchText">Search text</param>
+        /// <param name="startIndex">Start Page no</param>
+        /// <param name="pageCount">No of results included</param>
+        /// <returns>Collection of listings</returns>
+        public List<Listing> GetFullTextSearch(string searchText, int startIndex, int pageCount)
         {
             try
             {
@@ -62,8 +64,12 @@ namespace Classifieds.SearchAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
-                return _searchService.FullTextSearch(searchText).ToList();
+                if (startIndex < 0 || pageCount <= 0)
+                {
+                    string param = startIndex < 0 ? "Start Index" : "Page Count";
+                    throw new Exception(param + "passed cannot be negative!");
+                }
+                return _searchService.FullTextSearch(searchText, startIndex, pageCount).ToList();
             }
             catch (Exception ex)
             {

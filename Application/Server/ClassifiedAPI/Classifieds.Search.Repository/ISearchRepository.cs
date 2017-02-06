@@ -9,6 +9,6 @@ namespace Classifieds.Search.Repository
 {
     public interface ISearchRepository<TEntity> where TEntity : Listing
     {
-        List<TEntity> FullTextSearch(string searchText);        
+        List<TEntity> FullTextSearch(string searchText, int startIndex, int pageCount);        
     }
 }
