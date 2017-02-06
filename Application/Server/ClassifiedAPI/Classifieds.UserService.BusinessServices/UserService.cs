@@ -34,6 +34,40 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        /// <summary>
+        /// Get all user profile details
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>user detail object</returns>
+        public ClassifiedsUser GetUserProfile(string userEmail)
+        {
+            try
+            {
+                return _userRepository.GetUserProfile(userEmail);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Updates user profile.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userProfile"></param>
+        /// <returns>user profile object</returns>
+        public ClassifiedsUser UpdateUserProfile(string id, ClassifiedsUser userProfile)
+        {
+            try
+            {
+                return _userRepository.UpdateUserProfile(id, userProfile);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         #endregion
     }
 }
