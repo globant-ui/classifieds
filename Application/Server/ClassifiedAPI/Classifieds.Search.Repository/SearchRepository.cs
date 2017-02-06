@@ -4,27 +4,31 @@ using System.Linq;
 using Classifieds.Listings.BusinessEntities;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using MongoDB.Driver.Linq;
-using System.Configuration;
 
 namespace Classifieds.Search.Repository
 {
     public class SearchRepository<TEntity> : DBRepository, ISearchRepository<TEntity> where TEntity:Listing
     {
-        private readonly string _classifiedsCollection = ConfigurationManager.AppSettings["Collection"];
-        MongoCollection<TEntity> classifieds
+        MongoCollection<TEntity> Classifieds
         {
-            get { return Database.GetCollection<TEntity>(typeof(TEntity).Name); }//_classifiedsCollection
+            get
+            {
+                return Database.GetCollection<TEntity>(typeof(TEntity).Name);
+            }
         }
     
 
-        public List<TEntity> FullTextSearch(string searchText)
+        public List<TEntity> FullTextSearch(string searchText, int startIndex, int pageCount)
         {
             try
             {
-                List<TEntity> result = new List<TEntity>();
-                result = this.classifieds.Find(Query.Text(searchText)).ToList();
-                return result;
+                var skip = startIndex - 1;
+                List<TEntity> result = Classifieds.Find(Query.Text(searchText)).ToList();
+                List<TEntity> searchResult = result.Select(p => p)
+                                                 .Skip(skip)
+                                                 .Take(pageCount)
+                                                 .ToList();
+                return searchResult;
             }
             catch (Exception ex)
             {

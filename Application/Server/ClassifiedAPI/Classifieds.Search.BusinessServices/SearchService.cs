@@ -38,11 +38,11 @@ namespace Classifieds.Search.BusinessServices
         /// </summary>
         /// <param name="searchText"></param>
         /// <returns></returns>
-        public List<Listing> FullTextSearch(string searchText)
+        public List<Listing> FullTextSearch(string searchText, int startIndex, int pageCount)
         {
             try
             {
-                return _searchRepository.FullTextSearch(searchText).ToList();
+                return _searchRepository.FullTextSearch(searchText, startIndex, pageCount).ToList();
             }
             catch (Exception ex)
             {
