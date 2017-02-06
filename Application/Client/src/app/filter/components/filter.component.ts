@@ -56,7 +56,7 @@ export class FilterComponent {
     }
   }
 
-  showCards(category, index) {
+  selectedOption(category, index) {
     let filterData = this.filterData;
     
     for (let item of filterData) {
