@@ -16,7 +16,13 @@ export class CardListComponent{
 
     @Input() cards;
 
-    ngOnInit(){
+    private isLoading:boolean = false;
+
+    ngOnInit() {
         console.log('all = ',this.cards);
+    }
+        
+    loading( flag ) {
+        this.isLoading = flag;
     }
 }

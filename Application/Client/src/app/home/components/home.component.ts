@@ -1,10 +1,11 @@
-import { Component,ViewChildren,ViewChild ,OnInit } from '@angular/core';
+import { Component,ViewChildren,ViewChild ,Input,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../_common/services/http.service';
 import { SearchComponent } from '../../_common/search/components/search.component';
+import { CardListComponent } from '../../card-list/components/card-list.component';
 import 'rxjs/Rx';
 
 
@@ -24,6 +25,7 @@ export class HomeComponent {
   private  data : any;
   private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
   private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
+  private cardsByCategoryUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=';
   private selectedFilter: string = '';
   public initialCardData: any;
   public bannerData: any;
@@ -32,6 +34,8 @@ export class HomeComponent {
 
   @ViewChildren("cheader") CHeader;
   @ViewChild(SearchComponent) searchComponent;
+  @ViewChild( CardListComponent) cardListComponent
+
 
 
   constructor(
@@ -59,6 +63,34 @@ export class HomeComponent {
         })
   }
 
+  getSelectedFilterOption( selectedFilter ) {
+    this.getCards( selectedFilter );
+  }
+
+  getCards( categoryName ) {
+    this.cardListComponent.loading( true );
+    let url;
+    if( categoryName == 'Top ten') {
+      url = this.cardUrl;
+      this.searchComponent.setFilter( 'TOP TEN' );
+    } else {
+      url = this.cardsByCategoryUrl + categoryName;
+      this.searchComponent.setFilter( categoryName );
+    }
+
+    this._cservice.observableGetHttp(url, null, false)
+    .subscribe((res:Response)=> {
+          this.cardListComponent.loading( false );
+          this.initialCardData = res;
+      },
+      error => {
+        console.log("error in response");
+      },
+      ()=>{
+        console.log("Finally");
+      })
+  }
+
    getBannerListing (){
      this._cservice.observableGetHttp(this.bannerUrl,null,false)
        .subscribe((res:Response)=> {
@@ -72,10 +104,6 @@ export class HomeComponent {
          })
    }
 
-    showOutput(obj){
-        this.initialCardData = obj.result;
-        this.searchComponent.setFilter( obj.categoryName );
-    }
     getSelectedFilter(selectedOpt){
       this.selectedFilter = selectedOpt;
     }

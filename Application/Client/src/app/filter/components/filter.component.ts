@@ -25,9 +25,7 @@ export class FilterComponent {
   public isActive:boolean = false;
 
   @Input() selectedFilter;
-
-  @Output() filterCategory: EventEmitter<any> = new EventEmitter<any>();
-  @Output() getInitialCards: EventEmitter<any> = new EventEmitter <any>();
+  @Output() getSelectedFilterOption: EventEmitter<any> = new EventEmitter <any>();
 
   constructor(public appState: AppState,private _settingsService: SettingsService,private _cservice:CService) {}
 
@@ -40,8 +38,7 @@ export class FilterComponent {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges){
-   
+  ngOnChanges(changes: SimpleChanges) { 
     if( changes[ 'selectedFilter' ] ) {
       this.updateSelectedFilter();
     }
@@ -59,31 +56,14 @@ export class FilterComponent {
     }
   }
 
-  showCards(category,index){
+  showCards(category, index) {
     let filterData = this.filterData;
+    
     for (let item of filterData) {
       item.isActive = false;
     }
+
     filterData[index].isActive = true;
-
-    if(category === 'Top ten'){
-        this.getInitialCards.emit();
-    }else{
-     this.getCardsByCategory(category);
-    }
+    this.getSelectedFilterOption.emit( category );
   }
-
-  getCardsByCategory(category) {
-    this.categoryUrl = this.filterCategoryUrl+category;
-    this._cservice.observableGetHttp(this.categoryUrl,null,false)
-      .subscribe((res:Response)=> {
-          console.log('res = ',res);
-          let obj = { 'categoryName': category, 'result': res };
-          this.filterCategory.emit(obj);
-        },   error => {
-          console.log("error in response");
-        },
-        ()=>{
-          console.log("Finally");
-        })
-  }}
+}

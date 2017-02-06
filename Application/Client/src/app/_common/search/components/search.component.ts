@@ -50,7 +50,7 @@ export class SearchComponent {
     }
 
     fetchSearchedData( text: string ) {
-         this.isLoading = true;  ;
+        this.isLoading = true;  ;
         this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
             .subscribe((res: Response) => {
                 this.isLoading = false;
@@ -71,7 +71,8 @@ export class SearchComponent {
             this.searchCategoryByStringUrl = this.searchUrl + str;
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
                 .subscribe((res: Response) => {
-                    this.searchCategory.emit(res);
+                    let obj = { 'categoryName': str, 'result': res };
+                    this.searchCategory.emit(obj);
                 },
                 error => {
                     console.log("error in response");

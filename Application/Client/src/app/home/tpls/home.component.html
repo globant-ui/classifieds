@@ -5,8 +5,8 @@
         <search (searchCategory)="showOutput($event)"
                 (getSelectedFilter)="getSelectedFilter($event)"></search>
         <filter [selectedFilter]="selectedFilter"
-                (filterCategory)="showOutput($event)"
-                (getInitialCards) = "getInitialCards($event)"></filter>
+                (getSelectedFilterOption)="getSelectedFilterOption($event)">
+        </filter>
    </div>
 </nav>
 <card-list [cards]='initialCardData'></card-list>
