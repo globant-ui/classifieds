@@ -40,8 +40,10 @@ namespace Classifieds.Listings.BusinessServices
         /// <summary>
         /// Returns the listings for given sub category
         /// </summary>
-        /// <param name="subCategory">listing Sub Category</param>
-        /// <returns>List of Listing</returns>
+        /// <param name="subCategory">Sub category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <returns>Collection of listings</returns>
         public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount)
         {
             try
@@ -53,12 +55,14 @@ namespace Classifieds.Listings.BusinessServices
                 throw ex;
             }
         }
-       
+
         /// <summary>
-        /// service method returns collection of listing
+        /// service method returns collection of listings based on category
         /// </summary>
-        /// <param name="category">listing category</param>
-        /// <returns>collection(listing)</returns>
+        /// <param name="category">Cateogry</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <returns>Collection of listings</returns>
         public List<Listing> GetListingsByCategory(string category, int startIndex, int pageCount)
         {
             try

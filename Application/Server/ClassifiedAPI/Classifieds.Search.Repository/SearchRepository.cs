@@ -16,18 +16,24 @@ namespace Classifieds.Search.Repository
                 return Database.GetCollection<TEntity>(typeof(TEntity).Name);
             }
         }
-    
 
-        public List<TEntity> FullTextSearch(string searchText, int startIndex, int pageCount)
+        /// <summary>
+        /// Performs search operation based on search text
+        /// </summary>
+        /// <param name="searchText">search query</param>
+        /// <param name="startIndex">Start Page no</param>
+        /// <param name="pageCount">No of results included</param>
+        /// <returns>Collection of listings</returns>
+        public List<TEntity> FullTextSearch(string searchText, int startIndex = 1, int pageCount = 10)
         {
             try
             {
                 var skip = startIndex - 1;
-                List<TEntity> result = Classifieds.Find(Query.Text(searchText)).ToList();
-                List<TEntity> searchResult = result.Select(p => p)
-                                                 .Skip(skip)
-                                                 .Take(pageCount)
-                                                 .ToList();
+                List<TEntity> searchResult = Classifieds.Find(Query.Text(searchText))
+                                                        .Select(p => p)
+                                                        .Skip(skip)
+                                                        .Take(pageCount)
+                                                        .ToList();
                 return searchResult;
             }
             catch (Exception ex)

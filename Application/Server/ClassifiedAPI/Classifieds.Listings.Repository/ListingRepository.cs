@@ -64,13 +64,12 @@ namespace Classifieds.Listings.Repository
                 var skip = startIndex - 1;
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.SubCategory == subCategory)
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
                                             .ToList();
-                List<TEntity> result = listings.Select(p => p)
-                                                 .Skip(skip)
-                                                 .Take(pageCount)
-                                                 .ToList();
-                result = result.Count > 0 ? result.ToList() : null;
-                return result;
+                listings = listings.Count > 0 ? listings.ToList() : null;
+                return listings;
             }
             catch (Exception ex)
             {
@@ -92,12 +91,11 @@ namespace Classifieds.Listings.Repository
                 var skip = startIndex - 1;
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.ListingCategory == category)
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
                                             .ToList();
-                List<TEntity> result = listings.Select(p => p)
-                                                 .Skip(skip)
-                                                 .Take(pageCount)
-                                                 .ToList();
-                return result;
+                return listings;
             }
             catch (MongoException ex)
             {

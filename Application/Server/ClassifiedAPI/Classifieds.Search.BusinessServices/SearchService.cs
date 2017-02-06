@@ -34,9 +34,11 @@ namespace Classifieds.Search.BusinessServices
 
         #region Public Methods
         /// <summary>
-        /// Used for FullTextSearch()
+        /// Used for FullTextSearch
         /// </summary>
         /// <param name="searchText"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="pageCount"></param>
         /// <returns></returns>
         public List<Listing> FullTextSearch(string searchText, int startIndex, int pageCount)
         {

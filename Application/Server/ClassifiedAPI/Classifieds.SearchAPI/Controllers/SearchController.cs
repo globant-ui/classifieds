@@ -54,7 +54,7 @@ namespace Classifieds.SearchAPI.Controllers
         /// <param name="startIndex">Start Page no</param>
         /// <param name="pageCount">No of results included</param>
         /// <returns>Collection of listings</returns>
-        public List<Listing> GetFullTextSearch(string searchText, int startIndex, int pageCount)
+        public List<Listing> GetFullTextSearch(string searchText, int startIndex = 1, int pageCount = 10)
         {
             try
             {

@@ -74,7 +74,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="startIndex">start index for page</param>
         /// <param name="pageCount">No of listings to include in result</param>
         /// <returns>Collection of filtered listings</returns>
-        public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount)
+        public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex = 1, int pageCount = 10)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="startIndex">start index for page</param>
         /// <param name="pageCount">No of listings to include in result</param>
         /// <returns>Collection of listings</returns>
-        public List<Listing> GetListingsByCategory(string category, int startIndex, int pageCount)
+        public List<Listing> GetListingsByCategory(string category, int startIndex = 1, int pageCount = 10)
         {
             try
             {
