@@ -1,6 +1,8 @@
 <div class="container" >
-     <div *ngIf = "isLoading" class = "popup-loader">loading..</div>
-    <h2 class="category">All categories</h2>
+    
+    <loader [isLoading] = "isLoading"></loader>
+     
+     <h2 class="category">All categories</h2>
     <div class="row card-wrapper"  *ngIf = "!isLoading">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" *ngFor="let card of cards">
         <div class="plain-card-container">

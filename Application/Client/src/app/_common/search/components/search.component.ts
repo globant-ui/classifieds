@@ -72,7 +72,7 @@ export class SearchComponent {
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
                 .subscribe((res: Response) => {
                     let obj = { 'categoryName': str, 'result': res };
-                    this.searchCategory.emit(obj);
+                    this.searchCategory.emit(obj.categoryName);
                 },
                 error => {
                     console.log("error in response");
