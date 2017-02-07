@@ -120,7 +120,24 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            var result = _listingRepo.GetListingsByCategory(_classifiedList[0].ListingCategory);
+            var result = _listingRepo.GetListingsByCategory(_classifiedList[0].ListingCategory, 1, 5, false);
+
+            //Assert            
+            Assert.IsNotNull(result[0]);
+            Assert.AreEqual(5, result.Count);
+        }
+
+        /// <summary>
+        /// test positive scenario for get listing by category result last page
+        /// </summary>
+        [TestMethod]
+        public void Repo_GetListingByCategoryTest_LastPage()
+        {
+            // Arrange
+            SetUpClassifiedsListing();
+
+            //Act
+            var result = _listingRepo.GetListingsByCategory(_classifiedList[0].ListingCategory, 1, 5, true);
 
             //Assert            
             Assert.IsNotNull(result[0]);
@@ -132,7 +149,7 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]
         public void Repo_GetListingByCategoryTest_InvalidCategory()
         {
-            var result = _listingRepo.GetListingsByCategory("qazxsw");
+            var result = _listingRepo.GetListingsByCategory("qazxsw", 1, 5, false);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -142,7 +159,7 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]        
         public void Repo_GetListingByCategoryTest_NullCategory()
         {   
-            var nullResult = _listingRepo.GetListingsByCategory(null);
+            var nullResult = _listingRepo.GetListingsByCategory(null, 1, 5, false);
             Assert.AreEqual(0, nullResult.Count);
         }
 
@@ -248,11 +265,30 @@ namespace Classifieds.ListingsAPI.Tests
 
             //Act
             var result = _listingRepo.Add(lstObject);
+            Assert.IsNotNull(result, null);
+
+            //Act
+             var newResult = _listingRepo.GetListingsBySubCategory(result.SubCategory, 1, 5, false);
+
+            //Assert
+            Assert.IsNotNull(newResult[0]);
+        }
+
+        /// <summary>
+        /// test positive scenario for get listing by sub category
+        /// </summary>
+        [TestMethod]
+        public void Repo_GetListingsBySubCategoryTest_LastPage()
+        {
+            var lstObject = GetListObject();
+
+            //Act
+            var result = _listingRepo.Add(lstObject);
 
             Assert.IsNotNull(result, null);
 
             //Act
-             var newResult = _listingRepo.GetListingsBySubCategory(result.SubCategory);
+            var newResult = _listingRepo.GetListingsBySubCategory(result.SubCategory, 1, 5, true);
 
             //Assert
             Assert.IsNotNull(newResult[0]);
@@ -264,7 +300,7 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]
         public void Repo_GetListingsBySubCategoryTest_NullSubCategory()
         {
-            var result = _listingRepo.GetListingsBySubCategory(null);
+            var result = _listingRepo.GetListingsBySubCategory(null, 1, 5, false);
             Assert.IsNull(result);
         }
 
@@ -274,7 +310,7 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]
         public void Repo_GetListingsBySubCategoryTest_InvalidSubCategory()
         {
-            var result = _listingRepo.GetListingsBySubCategory("qwer");
+            var result = _listingRepo.GetListingsBySubCategory("qwer", 1, 5, false);
             Assert.IsNull(result);
         }
 

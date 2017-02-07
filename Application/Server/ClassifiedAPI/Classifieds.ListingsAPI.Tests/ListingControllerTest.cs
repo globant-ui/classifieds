@@ -109,13 +109,13 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingsBySubCategoryTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>()))
+            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(_classifiedList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
 
             //Act            
-            var objList = _controller.GetListingsBySubCategory("test");
+            var objList = _controller.GetListingsBySubCategory("test", 1, 5);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
@@ -141,9 +141,19 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingsBySubCategory_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsBySubCategory(null);
+            _controller.GetListingsBySubCategory(null, 1 , 5);
         }
 
+        /// <summary>
+        /// test for negative start index and page count giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void Controller_GetListingsBySubCategory_ThrowsExceptionWithNegativeParams()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetListingsBySubCategory("test", -2, 5);
+        }
         /// <summary>
         /// test positive scenario get listing collection by category
         /// </summary>
@@ -154,10 +164,10 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            _mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>())).Returns(_classifiedList);
+            _mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(_classifiedList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            var values = _controller.GetListingsByCategory("Housing");
+            var values = _controller.GetListingsByCategory("Housing", 1, 5);
 
             //Assert
             Assert.AreEqual(values.Count, 1);
@@ -172,9 +182,19 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingByCategory_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsByCategory(null);
+            _controller.GetListingsByCategory(null, 1, 5);
         }
 
+        /// <summary>
+        ///  test for negative category giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void GetListingByCategory_ThrowsExceptionWithNegativeParams()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetListingsByCategory("Housing", 1, -5);
+        }
         /// <summary>
         /// test positive scenario for PostList and verify response header location
         /// </summary>

@@ -40,30 +40,36 @@ namespace Classifieds.Listings.BusinessServices
         /// <summary>
         /// Returns the listings for given sub category
         /// </summary>
-        /// <param name="subCategory">listing Sub Category</param>
-        /// <returns>List of Listing</returns>
-        public List<Listing> GetListingsBySubCategory(string subCategory)
+        /// <param name="subCategory">Sub category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        //// <param name="isLast">Whether last page</param>
+        /// <returns>Collection of listings</returns>
+        public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                return _listingRepository.GetListingsBySubCategory(subCategory).ToList();
+                return _listingRepository.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-       
+
         /// <summary>
-        /// service method returns collection of listing
+        /// service method returns collection of listings based on category
         /// </summary>
-        /// <param name="category">listing category</param>
-        /// <returns>collection(listing)</returns>
-        public List<Listing> GetListingsByCategory(string category)
+        /// <param name="category">Cateogry</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
+        /// <returns>Collection of listings</returns>
+        public List<Listing> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                return _listingRepository.GetListingsByCategory(category);
+                return _listingRepository.GetListingsByCategory(category, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {

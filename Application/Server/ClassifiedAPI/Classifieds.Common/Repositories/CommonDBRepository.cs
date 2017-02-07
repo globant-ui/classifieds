@@ -6,13 +6,11 @@ namespace Classifieds.Common.Repositories
     public class CommonDBRepository : ICommonDBRepository
     {
         #region Private variables
-        private readonly string _connectionString =
-            ConfigurationManager.ConnectionStrings["UserProfilesConnectionString"].ConnectionString;
+        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["UserProfilesConnectionString"].ConnectionString;
         private readonly string _database = ConfigurationManager.AppSettings["UserProfilesDBName"];
-
-        private MongoClient _client = null;
-        private MongoServer _server = null;
-        private MongoDatabase _db = null;
+        private readonly MongoClient _client = null;
+        private readonly MongoServer _server = null;
+        private readonly MongoDatabase _db = null;
         #endregion
 
         #region Constructor
