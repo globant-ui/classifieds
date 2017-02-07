@@ -59,6 +59,10 @@ namespace Classifieds.ListingsAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
+                Type = "2 BHK",
+                IsPublished = true,
+                Negotiable = true,
+                Model = "NA",
                 Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;
