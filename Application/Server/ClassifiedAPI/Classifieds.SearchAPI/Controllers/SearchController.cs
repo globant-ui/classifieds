@@ -53,8 +53,9 @@ namespace Classifieds.SearchAPI.Controllers
         /// <param name="searchText">Search text</param>
         /// <param name="startIndex">Start Page no</param>
         /// <param name="pageCount">No of results included</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<Listing> GetFullTextSearch(string searchText, int startIndex = 1, int pageCount = 10)
+        public List<Listing> GetFullTextSearch(string searchText, int startIndex = 1, int pageCount = 10, bool isLast = false)
         {
             try
             {
@@ -69,7 +70,7 @@ namespace Classifieds.SearchAPI.Controllers
                     string param = startIndex < 0 ? "Start Index" : "Page Count";
                     throw new Exception(param + "passed cannot be negative!");
                 }
-                return _searchService.FullTextSearch(searchText, startIndex, pageCount).ToList();
+                return _searchService.FullTextSearch(searchText, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {

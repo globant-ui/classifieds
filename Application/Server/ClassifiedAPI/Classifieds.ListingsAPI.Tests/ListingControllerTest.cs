@@ -109,7 +109,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingsBySubCategoryTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(_classifiedList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
@@ -164,7 +164,7 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            _mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(_classifiedList);
+            _mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(_classifiedList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             var values = _controller.GetListingsByCategory("Housing", 1, 5);

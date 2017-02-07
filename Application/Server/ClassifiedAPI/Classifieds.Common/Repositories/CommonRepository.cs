@@ -77,8 +77,7 @@ namespace Classifieds.Common.Repositories
         {
             try
             {
-                var result = this.UserTokens.Save(userToken);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage) { }
+                UserTokens.Save(userToken);
                 return userToken;
             }
             catch (Exception ex)

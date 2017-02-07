@@ -40,11 +40,11 @@ namespace Classifieds.Search.BusinessServices
         /// <param name="startIndex"></param>
         /// <param name="pageCount"></param>
         /// <returns></returns>
-        public List<Listing> FullTextSearch(string searchText, int startIndex, int pageCount)
+        public List<Listing> FullTextSearch(string searchText, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                return _searchRepository.FullTextSearch(searchText, startIndex, pageCount).ToList();
+                return _searchRepository.FullTextSearch(searchText, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {

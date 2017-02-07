@@ -7,6 +7,6 @@ namespace Classifieds.Search.BusinessServices
 {
     public interface ISearchService
     {
-        List<Listing> FullTextSearch(string searchText, int startIndex, int pageCount);
+        List<Listing> FullTextSearch(string searchText, int startIndex, int pageCount, bool isLast);
     }
 }

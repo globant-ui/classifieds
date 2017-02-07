@@ -56,12 +56,25 @@ namespace Classifieds.Listings.Repository
         /// <param name="subCategory">listing Sub Category</param>
         /// <param name="startIndex">start index for page</param>
         /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<TEntity> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount)
+        public List<TEntity> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                var skip = startIndex - 1;
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds.FindAll()
+                    .Where(p => p.SubCategory == subCategory)
+                    .Count();
+                    skip = GetLastPageSkipValue(pageCount, count);
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+                
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.SubCategory == subCategory)
                                             .Select(p => p)
@@ -83,12 +96,24 @@ namespace Classifieds.Listings.Repository
         /// <param name="category">listing category</param>
         /// <param name="startIndex">start index for page</param>
         /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<TEntity> GetListingsByCategory(string category, int startIndex, int pageCount)
+        public List<TEntity> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                var skip = startIndex - 1;
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds.FindAll()
+                    .Where(p => p.ListingCategory == category)
+                    .Count();
+                    skip = GetLastPageSkipValue(pageCount, count);
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.ListingCategory == category)
                                             .Select(p => p)
@@ -207,5 +232,26 @@ namespace Classifieds.Listings.Repository
         }
         #endregion
 
+        #region private methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageCount"></param>
+        /// <param name="rowCount"></param>
+        /// <returns></returns>
+        private int GetLastPageSkipValue(int pageCount, int rowCount)
+        {
+            int temp;
+            if (rowCount % pageCount == 0)
+            {
+                temp = rowCount / pageCount - 1;
+            }
+            else
+            {
+                temp = rowCount / pageCount;
+            }
+            return temp * pageCount;
+        }
+        #endregion
     }
 }

@@ -23,12 +23,22 @@ namespace Classifieds.Search.Repository
         /// <param name="searchText">search query</param>
         /// <param name="startIndex">Start Page no</param>
         /// <param name="pageCount">No of results included</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<TEntity> FullTextSearch(string searchText, int startIndex = 1, int pageCount = 10)
+        public List<TEntity> FullTextSearch(string searchText, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                var skip = startIndex - 1;
+                int skip;
+                if (isLast)
+                {
+                    int count = Convert.ToInt32(Classifieds.Find(Query.Text(searchText)).Count());
+                    skip = GetLastPageSkipValue(pageCount, count);
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
                 List<TEntity> searchResult = Classifieds.Find(Query.Text(searchText))
                                                         .Select(p => p)
                                                         .Skip(skip)
@@ -41,5 +51,27 @@ namespace Classifieds.Search.Repository
                 throw ex;
             }
         }
+
+        #region private methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageCount"></param>
+        /// <param name="rowCount"></param>
+        /// <returns></returns>
+        private int GetLastPageSkipValue(int pageCount, int rowCount)
+        {
+            int temp;
+            if (rowCount % pageCount == 0)
+            {
+                temp = rowCount / pageCount - 1;
+            }
+            else
+            {
+                temp = rowCount / pageCount;
+            }
+            return temp * pageCount;
+        }
+        #endregion  
     }
 }

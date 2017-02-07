@@ -73,8 +73,9 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="subCategory">listing sub category</param>
         /// <param name="startIndex">start index for page</param>
         /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of filtered listings</returns>
-        public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex = 1, int pageCount = 10)
+        public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex = 1, int pageCount = 10, bool isLast = false)
         {
             try
             {
@@ -89,7 +90,8 @@ namespace Classifieds.ListingsAPI.Controllers
                     string param = startIndex < 0 ? "Start Index" : "Page Count";
                     throw new Exception(param + "passed cannot be negative!");
                 }
-                return _listingService.GetListingsBySubCategory(subCategory, startIndex, pageCount).ToList();
+
+                return _listingService.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {
@@ -104,8 +106,9 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="category">listing category</param>
         /// <param name="startIndex">start index for page</param>
         /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<Listing> GetListingsByCategory(string category, int startIndex = 1, int pageCount = 10)
+        public List<Listing> GetListingsByCategory(string category, int startIndex = 1, int pageCount = 10, bool isLast = false)
         {
             try
             {
@@ -121,7 +124,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByCategory(category, startIndex, pageCount).ToList();
+                return _listingService.GetListingsByCategory(category, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {
