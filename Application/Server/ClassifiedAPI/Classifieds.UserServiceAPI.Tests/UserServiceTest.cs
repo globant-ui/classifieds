@@ -11,7 +11,7 @@ namespace Classifieds.UserServiceAPI.Tests
     public class UserServiceTest
     {
         #region Class Variables
-        private Mock<IUserRepository> _moqAppManager;
+        private Mock<IUserRepository<ClassifiedsUser>> _moqAppManager;
         private IUserService _service;
         string _returnString = string.Empty;
         private ClassifiedsUser _user;
@@ -21,7 +21,7 @@ namespace Classifieds.UserServiceAPI.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _moqAppManager = new Mock<IUserRepository>();
+            _moqAppManager = new Mock<IUserRepository<ClassifiedsUser>>();
             _service = new UserService.BusinessServices.UserService(_moqAppManager.Object);
         }
         #endregion
