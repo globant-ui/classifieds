@@ -30,10 +30,9 @@ namespace Classifieds.SearchAPI.Tests
         public void Repo_FreeTextSearch_Test()
         {
             //Act
-            var classifieds = _searchRepo.FullTextSearch("Automobile");
+            var classifieds = _searchRepo.FullTextSearch("Automobile", 1, 5, false);
             //Assert
             Assert.IsNotNull(classifieds);
-
         }
 
         [TestMethod]
@@ -42,7 +41,7 @@ namespace Classifieds.SearchAPI.Tests
             //Arrange
             string searchText = string.Empty;
             //Act
-            var result = _searchRepo.FullTextSearch(searchText);
+            var result = _searchRepo.FullTextSearch(searchText, 1, 5, false);
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Count, 0);
@@ -53,7 +52,7 @@ namespace Classifieds.SearchAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repo_FreeTextSearch_ThrowsException()
         {
-            _searchRepo.FullTextSearch(null);
+            _searchRepo.FullTextSearch(null, 1, 5, false);
         }
         #endregion
     }

@@ -47,7 +47,7 @@ namespace Classifieds.SearchAPI.Tests
         public void Controller_FreeTextSearchTest()
         {            
             //Arrange           
-            _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>()))
+            _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(
                 new List<Listing>
                 { new Listing
@@ -68,7 +68,7 @@ namespace Classifieds.SearchAPI.Tests
             
 
             //Act
-            List<Listing> list = _controller.GetFullTextSearch("searchText");
+            List<Listing> list = _controller.GetFullTextSearch("searchText", 1, 5);
 
             //Assert
             Assert.AreEqual(list.Count, 1);
@@ -83,10 +83,24 @@ namespace Classifieds.SearchAPI.Tests
         public void Controller_FreeTextSearch_ThrowsException()
         {
             ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>())).Throws(ex);
+            _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Throws(ex);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(),It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetFullTextSearch(null);
+            _controller.GetFullTextSearch(null, 1, 5);
+        }
+
+        /// <summary>
+        /// Controller_FreeTextSearch_ThrowsException with negative parameters throws Exception.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void Controller_FreeTextSearch_ThrowsExceptionWithNegativeParams()
+        {
+            Exception ex = new Exception("Exception", new Exception());
+            _mockService.Setup(x => x.FullTextSearch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Throws(ex);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetFullTextSearch("search text", -1, 5);
         }
         #endregion
     }
