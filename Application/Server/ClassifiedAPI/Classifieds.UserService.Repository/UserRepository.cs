@@ -9,16 +9,16 @@ using MongoDB.Driver.Builders;
 
 namespace Classifieds.UserService.Repository
 {
-    public class UserRepository:DBRepository, IUserRepository
+    public class UserRepository<TEntity> : DBRepository, IUserRepository<TEntity> where TEntity : ClassifiedsUser
     {
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["UserCollection"];
         private readonly IDBRepository _dbRepository;
-        MongoCollection<ClassifiedsUser> Classifieds
+        MongoCollection<TEntity> Classifieds
         {
             get
             {
-                return _dbRepository.GetCollection<ClassifiedsUser>(_collectionClassifieds);
+                return  _dbRepository.GetCollection<TEntity>(_collectionClassifieds);
             }
         }
         #endregion
@@ -36,12 +36,12 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="user">ClassifiedsUser object</param>
         /// <returns>return newly added listing object</returns>
-        public string RegisterUser(ClassifiedsUser user)
+        public string RegisterUser(TEntity user)
         {
             string returnStr = string.Empty;
             try
             {
-                var result = this.Classifieds.FindAll()
+                var result = Classifieds.FindAll()
                                 .Where(p => p.UserEmail == user.UserEmail)
                                 .ToList();
                 if (result.Count == 0)
@@ -69,11 +69,11 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns>userProfile object</returns>
-        public ClassifiedsUser GetUserProfile(string userEmail)
+        public TEntity GetUserProfile(string userEmail)
         {
             try
             {
-                var result = this.Classifieds.FindAll()
+                var result = Classifieds.FindAll()
                                    .Where(p => p.UserEmail == userEmail)
                                    .ToList();
                 return result.FirstOrDefault();
@@ -89,7 +89,7 @@ namespace Classifieds.UserService.Repository
         /// <param name="id"></param>
         /// <param name="userProfile"></param>
         /// <returns>updated object of ClassifiedsUser</returns>
-        public ClassifiedsUser UpdateUserProfile(string id, ClassifiedsUser userProfile)
+        public TEntity UpdateUserProfile(string id, TEntity userProfile)
         {
             try
             {

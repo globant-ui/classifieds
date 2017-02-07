@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Classifieds.UserService.Repository
 {
-    public interface IUserRepository
+    public interface IUserRepository<TEntity> where TEntity : ClassifiedsUser
     {
-        string RegisterUser(ClassifiedsUser user);
-        ClassifiedsUser GetUserProfile(string userEmail);
-        ClassifiedsUser UpdateUserProfile(string id, ClassifiedsUser userProfile);
+        string RegisterUser(TEntity user);
+        TEntity GetUserProfile(string userEmail);
+        TEntity UpdateUserProfile(string id, TEntity userProfile);
     }
 }

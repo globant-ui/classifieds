@@ -16,6 +16,7 @@ using Classifieds.UserService.Repository;
 using Classifieds.ListingComments.BusinessServices;
 using Classifieds.ListingComments.BusinessEntities;
 using Classifieds.ListingComments.Repository;
+using Classifieds.UserService.BusinessEntities;
 
 namespace Classifieds.IOC
 {
@@ -24,6 +25,7 @@ namespace Classifieds.IOC
     /// we can inject dependancy in constructor.
     /// class name: UnityConfig
     /// Purpose :To implement dependancy injection
+    /// Created By: Amol Pawar
     /// Modified by :
     /// Modified date:
     /// </summary>
@@ -46,7 +48,7 @@ namespace Classifieds.IOC
             container.RegisterType<MastersData.Repository.IDBRepository, MastersData.Repository.DBRepository>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IUserService, Classifieds.UserService.BusinessServices.UserService>(new HierarchicalLifetimeManager());
-            container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUserRepository<ClassifiedsUser>, UserRepository<ClassifiedsUser>>(new HierarchicalLifetimeManager());
             container.RegisterType<UserService.Repository.IDBRepository, UserService.Repository.DBRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICommonRepository, CommonRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICommonDBRepository, CommonDBRepository>(new HierarchicalLifetimeManager());

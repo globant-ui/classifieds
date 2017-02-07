@@ -7,11 +7,11 @@ namespace Classifieds.UserService.BusinessServices
     public class UserService : IUserService
     {
         #region Private Variables
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository<ClassifiedsUser> _userRepository;
         #endregion
 
         #region Constructor
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository<ClassifiedsUser> userRepository)
         {
             _userRepository = userRepository;
         }
