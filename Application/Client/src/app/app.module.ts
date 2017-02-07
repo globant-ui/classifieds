@@ -14,6 +14,7 @@ import { HomeComponent } from './home/components/home.component';
 import { HeaderComponent } from './_common/header/components/header.component';
 import { CardListComponent } from './card-list/components/card-list.component';
 import { BannerComponent } from './banner/components/banner.component';
+import { ProfileComponent } from './profile/components/profile.component';
 import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
 import { LoginComponent } from './_common/login/component/login.component';
@@ -48,7 +49,8 @@ type StoreType = {
     BannerComponent,
     SearchComponent,
     FilterComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
