@@ -12,9 +12,9 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <button class="green-button">
-                <span class="icon-flag">
-                </span>
+                    <button class="green-button" [routerLink]="['createListing']">
+                        <span class="icon-flag">
+                        </span>
                         <span>create</span>
                     </button>
                 </li>
@@ -64,6 +64,9 @@
             </div>
         </div>
     </div>
+</div>
+<div>
+	<router-outlet></router-outlet>
 </div>
 
 <!--

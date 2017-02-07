@@ -153,8 +153,8 @@ export class LoginComponent implements OnInit{
                         this.session.set( 'token', token);
                         this.session.set( 'username', userGoogle['name'] );
                         console.log("session started",this.session);
-                        this._cookieService.putObject('SESSION_PORTAL',this.session);
-                        this._router.navigateByUrl('home');*/
+                        this._cookieService.putObject('SESSION_PORTAL',this.session);*/
+                        this._router.navigateByUrl('home');
                     },
                     error => {
                         console.error(error);
@@ -166,7 +166,7 @@ export class LoginComponent implements OnInit{
     }
 
       private validateUser (user){
-         let data= user;
+         let data = user;
          this._http.post(this.validateUrl,data)
          .subscribe((res)=> {
               let validUser = res.json();

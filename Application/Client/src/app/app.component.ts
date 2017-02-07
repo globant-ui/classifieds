@@ -10,7 +10,7 @@ import  {SettingsService} from  './_common/services/setting.service';
   styleUrls: [
     './app.component.css'
   ],
-  template: `<main><router-outlet></router-outlet></main>`
+  template: `<header><router-outlet></router-outlet></header>`
 })
 export class AppComponent {
   angularclassLogo = 'assets/img/angularclass-avatar.png';
