@@ -3,9 +3,11 @@ using Classifieds.Common.Repositories;
 using Classifieds.UserService.BusinessEntities;
 using Classifieds.UserService.BusinessServices;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Linq;
 
 namespace Classifieds.UserServiceAPI.Controllers
 {
@@ -24,6 +26,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         private readonly IUserService _userService;
         private readonly ILogger _logger;
         private readonly ICommonRepository _commonRepository;
+        private string _userEmail = string.Empty;
         #endregion
 
         #region Constructor
@@ -45,6 +48,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="user">User object</param>
         /// <returns>Response containing access token</returns>
         [HttpPost]
+
         public HttpResponseMessage RegisterUser(ClassifiedsUser user)
         {
             string email = string.Empty;
@@ -78,7 +82,55 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw new Exception(HttpStatusCode.Conflict.ToString() + " Internal server error");
             }
          }
+        /// <summary>
+        /// Get user profile including user tags, wish list, subscriptions.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        public ClassifiedsUser GetUserProfile(string userEmail)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.GetUserProfile(userEmail);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+       
+        /// <summary>
+        /// update user profile
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userProfile"></param>
+        /// <returns>updated user details</returns>
+        public ClassifiedsUser PutUserProfile(string id, ClassifiedsUser userProfile)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.UpdateUserProfile(id, userProfile);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
         #endregion
+       
         #region private methods
         /// <summary>
         /// Returns user email string
@@ -94,6 +146,19 @@ namespace Classifieds.UserServiceAPI.Controllers
                     result = user.UserEmail;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Returns user email string for header
+        /// </summary>
+        /// <returns>string</returns>
+        private string GetUserEmailFromHeader()
+        {
+            IEnumerable<string> headerValues;
+            HttpRequestMessage message = Request ?? new HttpRequestMessage();
+            message.Headers.TryGetValues("UserEmail", out headerValues);
+            string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
+            return hearderVal;
         }
 
         #endregion
