@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
 namespace Classifieds.ListingsAPI.Tests
 {
@@ -62,6 +61,10 @@ namespace Classifieds.ListingsAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
+                Type = "test",
+                IsPublished = true,
+                Negotiable = true,
+                Model = "test",
                 Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;
