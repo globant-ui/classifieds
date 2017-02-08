@@ -1,9 +1,11 @@
 import { Component} from '@angular/core';
 let tpls = require('../tpls/createCard.html').toString();
+let styles = require('../styles/createCard.scss').toString();
 
 @Component({
     selector:'create-card',
-    template: tpls
+    template: tpls,
+    styles: [styles]
 })
 export class CreateCardComponent {
 
