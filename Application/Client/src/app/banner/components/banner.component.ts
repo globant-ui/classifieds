@@ -6,10 +6,10 @@ let styles = require('../styles/banner.component.scss').toString();
 let tpls = require('../tpls/banner.component.html').toString();
 
 @Component({
-  selector: 'banner',
-  styles : [ styles ],
-  providers:[SettingsService],
-  template : tpls
+    selector: 'banner',
+    styles : [ styles ],
+    providers:[SettingsService],
+    template : tpls
 })
 
 export class BannerComponent {
@@ -20,7 +20,7 @@ export class BannerComponent {
   constructor(public appState: AppState,private _settingsService: SettingsService,private renderer: Renderer,private elRef:ElementRef) {}
 
   @Input()
-  categories;
+    categories;
 
   ngOnInit() {
     this.listingsData=this._settingsService.getBannerListingsData();
