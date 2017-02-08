@@ -144,6 +144,48 @@ namespace Classifieds.Listings.BusinessServices
                 throw ex;
             }
         }
+
+        #region GetListingsByEmail
+        /// <summary>
+        /// Returns the collection of listing for given email
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <returns></returns>
+        public List<Listing> GetListingsByEmail(string email)
+        {
+            try
+            {
+                return _listingRepository.GetListingsByEmail(email).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion GetListingsByEmail
+
+        #region GetListingsByCategoryAndSubCategory
+
+        /// <summary>
+        /// service method returns collection of listing by Ccatgeory and Subcategory
+        /// </summary>
+        /// <param name="category">listing category</param>
+        /// <param name="subCategory">listing subCategory</param>
+        /// <returns>collection(listing)</returns>
+        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory)
+        {
+            try
+            {
+                return _listingRepository.GetListingsByCategoryAndSubCategory(category, subCategory);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByCategoryAndSubCategory
+
         #endregion
     }
 }

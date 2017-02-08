@@ -57,7 +57,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
+
                 return _listingService.GetListingById(id).ToList();
             }
             catch (Exception ex)
@@ -149,7 +149,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
+
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Created, classified);
                 var newItemUrl = Url.Link("Listings", new { id = classified._id });
@@ -180,7 +180,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
+
                 var classified = _listingService.UpdateListing(id, listing);
                 result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
@@ -208,7 +208,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
+
                 _listingService.DeleteListing(id);
                 result = Request.CreateResponse(HttpStatusCode.NoContent);
             }
@@ -225,7 +225,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="noOfRecords">Number of records to be return </param>
         /// <returns></returns>
-        public List<Listing> GetTopListings(int noOfRecords=10)
+        public List<Listing> GetTopListings(int noOfRecords = 10)
         {
             try
             {
@@ -235,7 +235,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                
+
                 return _listingService.GetTopListings(noOfRecords);
             }
             catch (Exception ex)
@@ -244,6 +244,66 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
+
+        #region GetListingsByEmail
+
+        /// <summary>
+        /// Returns the listings for given email
+        /// </summary>
+        /// <param name="email">listings email</param>
+        /// <returns></returns>
+        public List<Listing> GetListingsByEmail(string email)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+
+                return _listingService.GetListingsByEmail(email).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByEmail
+
+        #region GetListingsByCategoryAndSubCategory
+
+        /// <summary>
+        /// Returns the listings for given Category and Subcategory
+        /// </summary>
+        /// <param name="category">listing category</param>
+        /// <param name="subCategory">listing subCategory</param>
+        /// <returns></returns>
+        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory)
+        {
+            try
+            {
+                _userEmail = GetUserEmail();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+
+                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByCategoryAndSubCategory
+
         #endregion
 
         #region private methods
@@ -256,7 +316,7 @@ namespace Classifieds.ListingsAPI.Controllers
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
             message.Headers.TryGetValues("UserEmail", out headerValues);
-            string hearderVal = headerValues == null ? string.Empty: headerValues.FirstOrDefault();
+            string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
         }
         #endregion

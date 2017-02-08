@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace Classifieds.Listings.Repository
 {
-    public class ListingRepository<TEntity> : DBRepository, IListingRepository<TEntity> where TEntity:Listing
+    public class ListingRepository<TEntity> : DBRepository, IListingRepository<TEntity> where TEntity : Listing
     {
         #region Private Variables
-        private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];        
+        private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];
         private readonly IDBRepository _dbRepository;
         private MongoCollection<TEntity> Classifieds
         {
@@ -74,7 +74,7 @@ namespace Classifieds.Listings.Repository
                 {
                     skip = startIndex - 1;
                 }
-                
+
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.SubCategory == subCategory)
                                             .Select(p => p)
@@ -138,7 +138,7 @@ namespace Classifieds.Listings.Repository
             try
             {
                 var result = Classifieds.Save(listing);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage){ }
+                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage) { }
                 return listing;
             }
             catch (Exception ex)
@@ -166,7 +166,7 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.YearOfPurchase, listObj.YearOfPurchase)
                     .Set(p => p.ExpiryDate, listObj.ExpiryDate)
                     .Set(p => p.Status, listObj.Status)
-                    .Set(p => p.Submittedby, listObj.Submittedby)
+                    .Set(p => p.SubmittedBy, listObj.SubmittedBy)
                     .Set(p => p.SubmittedDate, listObj.SubmittedDate)
                     .Set(p => p.IdealFor, listObj.IdealFor)
                     .Set(p => p.Furnished, listObj.Furnished)
@@ -192,7 +192,7 @@ namespace Classifieds.Listings.Repository
             }
             catch (Exception ex)
             {
-               throw ex;
+                throw ex;
             }
         }
 
@@ -222,7 +222,7 @@ namespace Classifieds.Listings.Repository
         public List<TEntity> GetTopListings(int noOfRecords)
         {
             try
-            {             
+            {
                 SortByBuilder sortBuilder = new SortByBuilder();
                 sortBuilder.Descending("_id");
                 var result = Classifieds.FindAllAs<TEntity>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
@@ -233,6 +233,52 @@ namespace Classifieds.Listings.Repository
                 throw ex;
             }
         }
+
+        #region GetListingsByEmail
+        /// <summary>
+        /// Returns a listing based on listing Email
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <returns>Listing Email</returns>
+        public List<TEntity> GetListingsByEmail(string email)
+        {
+            try
+            {
+                var query = Query<TEntity>.EQ(p => p.SubmittedBy, email);
+                var partialRresult = Classifieds.Find(query)
+                                        .ToList();
+
+                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByEmail
+
+        #region GetListingsByCategoryAndSubCategory
+
+        public List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory)
+        {
+            try
+            {
+                List<TEntity> result = Classifieds.FindAll()
+                                            .Where(p => (p.ListingCategory == category) && (p.SubCategory == subCategory))
+                                            .ToList();
+                return result;
+            }
+            catch (MongoException ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByCategoryAndSubCategory
+
         #endregion
 
         #region private methods

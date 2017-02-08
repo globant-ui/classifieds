@@ -14,8 +14,8 @@ namespace Classifieds.SearchAPI.Tests
     public class SearchBusinessServiceTest
     {
         #region Private Variables
-            private Mock<ISearchRepository<Listing>> _moqAppManager;
-            private ISearchService _service;
+        private Mock<ISearchRepository<Listing>> _moqAppManager;
+        private ISearchService _service;
         #endregion
 
         #region Initialization
@@ -46,7 +46,7 @@ namespace Classifieds.SearchAPI.Tests
                 YearOfPurchase = 123,
                 ExpiryDate = "test",
                 Status = "test",
-                Submittedby = "test",
+                SubmittedBy = "test",
                 SubmittedDate = "test",
                 IdealFor = "test",
                 Furnished = "test",
@@ -55,7 +55,7 @@ namespace Classifieds.SearchAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
 
             var classifiedList = new List<Listing>();
@@ -64,7 +64,7 @@ namespace Classifieds.SearchAPI.Tests
 
         }
         #endregion
-         
+
         #region Test Methods
         /// <summary>
         /// Test positive scenario for FreeTextSearchTest by any string
@@ -109,8 +109,8 @@ namespace Classifieds.SearchAPI.Tests
             _service.FullTextSearch(null, 1, 5, false);
         }
 
-        #endregion 
+        #endregion
 
-        
+
     }
 }

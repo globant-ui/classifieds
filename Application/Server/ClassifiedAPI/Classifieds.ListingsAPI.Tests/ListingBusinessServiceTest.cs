@@ -30,7 +30,7 @@ namespace Classifieds.ListingsAPI.Tests
         private void SetUpClassifiedsListing()
         {
             var lstListing = GetListObject();
-            _classifiedList.Add(lstListing);            
+            _classifiedList.Add(lstListing);
         }
 
         private Listing GetListObject()
@@ -38,34 +38,34 @@ namespace Classifieds.ListingsAPI.Tests
             var listObject = new Listing
             {
                 _id = "9",
-                ListingType = "test",
-                ListingCategory = "test",
-                SubCategory = "test",
-                Title = "test",
-                Address = "AAA",
-                ContactNo = "1111",
+                ListingType = "sale",
+                ListingCategory = "Housing",
+                SubCategory = "3 bhk",
+                Title = "flat on rent",
+                Address = "pune",
+                ContactNo = "12345",
                 ContactName = "AAA AAA",
                 Configuration = "NA",
-                Details = "for rupees 20,000,000,000",
-                Brand = "test",
-                Price = 123,
-                YearOfPurchase = 123,
-                ExpiryDate = "test",
-                Status = "test",
-                Submittedby = "test",
-                SubmittedDate = "test",
-                IdealFor = "test",
-                Furnished = "test",
+                Details = "for rupees 49,00,000",
+                Brand = "Kumar",
+                Price = 45000,
+                YearOfPurchase = 2000,
+                ExpiryDate = "03-02-2018",
+                Status = "ok",
+                SubmittedBy = "v.wadsamudrakar@globant.com",
+                SubmittedDate = "03-02-2018",
+                IdealFor = "Family",
+                Furnished = "yes",
                 FuelType = "test",
-                KmDriven = 123,
+                KmDriven = 5000,
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Type = "test",
+                Type = "2 BHK",
                 IsPublished = true,
                 Negotiable = true,
-                Model = "test",
-                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Model = "NA",
+                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;
         }
@@ -97,13 +97,13 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var lstObject = GetListObject();
-            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(new List<Listing>() );
+            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(new List<Listing>());
 
             //Act
             var result = _service.GetListingById(lstObject._id);
 
             //Assert
-            Assert.AreEqual(result.Count,0);           
+            Assert.AreEqual(result.Count, 0);
         }
 
         /// <summary>
@@ -161,10 +161,10 @@ namespace Classifieds.ListingsAPI.Tests
             var result = _service.GetListingsBySubCategory(lstObject.SubCategory, 1, 5, false);
 
             //Assert
-            Assert.AreEqual(result.Count,0);
+            Assert.AreEqual(result.Count, 0);
             Assert.IsInstanceOfType(result, typeof(IList<Listing>));
         }
-        
+
         /// <summary>
         /// tests the positive test criteria
         /// </summary>
@@ -197,7 +197,7 @@ namespace Classifieds.ListingsAPI.Tests
             var result = _service.GetListingsByCategory(_classifiedList[0].ListingCategory, 1, 5, false);
 
             //Assert
-            Assert.AreEqual(result.Count,0);
+            Assert.AreEqual(result.Count, 0);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingByCategory_ThrowException()
         {
             var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.GetListingsByCategory(null, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Throws(ex);            
+            _moqAppManager.Setup(x => x.GetListingsByCategory(null, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Throws(ex);
             _service.GetListingsByCategory(null, 1, 5, false);
         }
 
@@ -337,7 +337,7 @@ namespace Classifieds.ListingsAPI.Tests
                 list.Add(GetListObject());
             }
             _moqAppManager.Setup(x => x.GetTopListings(It.IsAny<int>())).Returns(list);
-            
+
             //Act
             var result = _service.GetTopListings(5);
 
@@ -353,12 +353,113 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetTopListing_ThrowException()
         {
             // Arrange
-            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());           
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
             _moqAppManager.Setup(x => x.GetTopListings(It.IsAny<int>())).Throws(ex);
 
             //Act
-            _service.GetTopListings(5);           
+            _service.GetTopListings(5);
         }
+
+        #region GetListingsByEmailTest
+
+        /// <summary>
+        /// test positive scenario for Get Listing By Email  
+        /// </summary>
+        [TestMethod]
+        public void GetListingsByEmailTest()
+        {
+            // Arrange
+            SetUpClassifiedsListing();
+            _moqAppManager.Setup(x => x.GetListingsByEmail(It.IsAny<string>())).Returns(_classifiedList);
+
+            //Act
+            var result = _service.GetListingsByEmail(_classifiedList[0].SubmittedBy);
+
+            //Assert
+            Assert.AreEqual(result.Count, 1);
+        }
+
+        /// <summary>
+        /// test for empty result  i.e. no match found
+        /// </summary>
+        [TestMethod]
+        public void GetListingByEmail_EmptyResult_Test()
+        {
+            //Arrange
+            var lstObject = GetListObject();
+            _moqAppManager.Setup(x => x.GetListingsByEmail(It.IsAny<string>())).Returns(new List<Listing>());
+
+            //Act
+            var result = _service.GetListingsByEmail(lstObject.SubmittedBy);
+
+            //Assert
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        /// <summary>
+        /// test for null input giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetListingByEmail_ThrowsException()
+        {
+            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetListingsByEmail(null)).Throws(ex);
+            _service.GetListingsByEmail(null);
+        }
+
+        #endregion GetListingsByEmailTest
+
+        #region GetListingsByCategoryAndSubCategoryTest
+
+        /// <summary>
+        /// test positive scenario for Get Listing By Category And SubCategory  
+        /// </summary>
+        [TestMethod]
+        public void GetListingsByCategoryAndSubCategoryTest()
+        {
+            // Arrange
+            SetUpClassifiedsListing();
+            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>())).Returns(_classifiedList);
+
+            //Act
+            var result = _service.GetListingsByCategoryAndSubCategory(_classifiedList[0].ListingCategory, _classifiedList[0].SubCategory);
+
+            //Assert
+            Assert.AreEqual(result.Count, 1);
+        }
+
+        /// <summary>
+        /// test for empty result  i.e. no match found
+        /// </summary>
+        [TestMethod]
+        public void GetListingByCategoryAndSubCategory_EmptyResult_Test()
+        {
+            //Arrange
+            var lstObject = GetListObject();
+            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>())).Returns(new List<Listing>());
+
+            //Act
+            var result = _service.GetListingsByCategoryAndSubCategory(lstObject.ListingCategory, lstObject.SubCategory);
+
+            //Assert
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        /// <summary>
+        /// test for null input giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetListingByCategoryAndSubCategory_ThrowsException()
+        {
+            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(null, null)).Throws(ex);
+            _service.GetListingsByCategoryAndSubCategory(null, null);
+        }
+
+        #endregion GetListingsByEmailTest
+
         #endregion
     }
 }
