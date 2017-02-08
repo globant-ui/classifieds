@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http.Hosting;
 using System.Net;
 using System.Web.Http;
+using System.Web.Http.Routing;
 using Classifieds.Common;
 using Classifieds.Common.Entities;
 using Classifieds.Common.Repositories;
@@ -67,6 +68,17 @@ namespace Classifieds.UserServiceAPI.Tests
             };
             return token;
         }
+
+        private Subscription GetSubscription()
+        {
+            Subscription subscription = new Subscription
+            {
+                _id = "1",
+                Email = "v.wadsamudrakar@globant.com",
+                SubmittedDate = "07-02-2017 12:45:34.243"
+            };
+            return subscription;
+        }
         #endregion
 
         /// <summary>
@@ -97,5 +109,121 @@ namespace Classifieds.UserServiceAPI.Tests
         {
             _controller.RegisterUser(null);
         }
+
+        #region AddSubscriptionTest
+
+        /// <summary>
+        /// test positive scenario for Post Subscription
+        /// </summary>
+        [TestMethod]
+        public void Controller_AddSubscriptionTest()
+        {
+            // Arrange
+            _mockService.Setup(x => x.AddSubscription(It.IsAny<Subscription>()))
+            .Returns(GetSubscription());
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+            };
+            _controller.Configuration = new HttpConfiguration();
+            _controller.Configuration.Routes.MapHttpRoute(
+                name: "Category",
+                routeTemplate: "api/{controller}/{method}/{id}",
+                defaults: new { id = RouteParameter.Optional });
+
+            _controller.RequestContext.RouteData = new HttpRouteData(
+                route: new HttpRoute(),
+                values: new HttpRouteValueDictionary { { "controller", "Subscription" } });
+
+            // Act
+            var listObj = GetSubscription();
+            var response = _controller.AddSubscription(listObj);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.AreEqual(true, response.IsSuccessStatusCode);
+        }
+
+        /// <summary>
+        /// test for inserting null Subscription object throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_PostSubscription_ThrowsException()
+        {
+            _controller.AddSubscription(null);
+        }
+
+        /// <summary>
+        /// test positive scenario for PostCategory and verify response header location
+        /// </summary>
+        [TestMethod]
+        public void Controller_PostcategoryTest_SetsLocationHeader_MockURLHelperVersion()
+        {
+            // This version uses a mock UrlHelper.
+            // Arrange
+            _mockService.Setup(x => x.AddSubscription(It.IsAny<Subscription>()))
+            .Returns(GetSubscription);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _controller.Request = new HttpRequestMessage();
+            _controller.Configuration = new HttpConfiguration();
+
+            string locationUrl = "http://localhost/Classifieds.UserAPI/api/user";
+
+            // Create the mock and set up the Link method, which is used to create the Location header.
+            // The mock version returns a fixed string.
+            var mockUrlHelper = new Mock<UrlHelper>();
+            mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
+            _controller.Url = mockUrlHelper.Object;
+
+            // Act
+            Subscription subObj = GetSubscription();
+            var response = _controller.AddSubscription(subObj);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.AreEqual(true, response.IsSuccessStatusCode);
+        }
+
+        #endregion AddSubscriptionTest
+
+        #region DeleteSubscriptionTestCases
+
+        /// <summary>
+        /// test positive scenario for deleting Subscription
+        /// </summary>
+        [TestMethod]
+        public void Controller_DeleteSubscriptionTest()
+        {
+            // Arrange
+            var dataObject = GetSubscription();
+            _mockService.Setup(x => x.DeleteSubscription(It.IsAny<string>()));
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("http://localhost/api/User")
+            };
+            // Act                
+            var response = _controller.DeleteSubscription(dataObject._id);
+
+            //Assert
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.AreEqual(true, response.IsSuccessStatusCode);
+        }
+
+        /// <summary>
+        /// test for deleting Subscription object throws exception
+        /// </summary>
+        [ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
+        public void Controller_DeleteSubscription_ThrowsException()
+        {
+            _controller.DeleteSubscription(null);
+        }
+
+        #endregion DeleteSubscriptionTestCases
+
     }
 }

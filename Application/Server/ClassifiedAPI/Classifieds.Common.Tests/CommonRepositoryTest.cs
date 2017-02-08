@@ -57,8 +57,7 @@ namespace Classifieds.Common.Tests
         {
             //Arrange
             HttpRequestMessage request = new HttpRequestMessage();
-            string expectedMsg = new HttpResponseMessage(HttpStatusCode.Conflict).ToString() +
-                                 " Pls try after some time.";
+            string expectedMsg = new HttpResponseMessage(HttpStatusCode.Conflict).ToString() + " Pls try after some time.";
             //Act
             var result = _commonRepo.IsAuthenticated(request);
 

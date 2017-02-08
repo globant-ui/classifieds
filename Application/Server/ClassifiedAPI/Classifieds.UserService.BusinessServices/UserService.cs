@@ -8,13 +8,16 @@ namespace Classifieds.UserService.BusinessServices
     {
         #region Private Variables
         private readonly IUserRepository<ClassifiedsUser> _userRepository;
+        private readonly ISubscriptionRepository<Subscription> _subRepository;
         #endregion
 
         #region Constructor
-        public UserService(IUserRepository<ClassifiedsUser> userRepository)
+        public UserService(IUserRepository<ClassifiedsUser> userRepository, ISubscriptionRepository<Subscription> subRepository)
         {
             _userRepository = userRepository;
+            _subRepository = subRepository;
         }
+
         #endregion
 
         #region Public Methods
@@ -68,6 +71,48 @@ namespace Classifieds.UserService.BusinessServices
             }
 
         }
+
+        #region AddSubscription
+
+        /// <summary>
+        /// Insert new Subscription item into the database
+        /// </summary>
+        /// <param name="subscriptionObj">Subscription Object</param>
+        /// <returns>Newly added Subscription object</returns>
+        public Subscription AddSubscription(Subscription subscriptionObj)
+        {
+            try
+            {
+                return _subRepository.AddSubscription(subscriptionObj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region DeleteSubscription
+        /// <summary>
+        /// Delete Subscription item for given Id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>deleted Id</returns>
+        public void DeleteSubscription(string id)
+        {
+            try
+            {
+                _subRepository.DeleteSubscription(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion DeleteSubscription
+
         #endregion
     }
 }

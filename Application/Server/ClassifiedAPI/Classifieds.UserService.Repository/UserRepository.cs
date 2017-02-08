@@ -18,7 +18,7 @@ namespace Classifieds.UserService.Repository
         {
             get
             {
-                return  _dbRepository.GetCollection<TEntity>(_collectionClassifieds);
+                return _dbRepository.GetCollection<TEntity>(_collectionClassifieds);
             }
         }
         #endregion
@@ -31,6 +31,9 @@ namespace Classifieds.UserService.Repository
         #endregion
 
         #region Public Methods
+
+        #region RegisterUser
+
         /// <summary>
         /// Insert a new user object into the database
         /// </summary>
@@ -64,6 +67,11 @@ namespace Classifieds.UserService.Repository
             }
             return returnStr;
         }
+
+        #endregion RegisterUser
+
+        #region GetUserProfile
+
         /// <summary>
         /// Get complete userprofile including tags, subscriptions, wishlist
         /// </summary>
@@ -83,6 +91,11 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
+
+        #endregion GetUserProfile
+
+        #region UpdateUserProfile
+
         /// <summary>
         /// update user profile
         /// </summary>
@@ -101,7 +114,7 @@ namespace Classifieds.UserService.Repository
                     .Set(p => p.UserName, userProfile.UserName)
                     .Set(p => p.Mobile, userProfile.Mobile)
                     .Set(p => p.WishList, userProfile.WishList)
-                    .Set(p => p.Subscription[0], userProfile.Subscription[0])
+                    .Set(p => p.Alert[0], userProfile.Alert[0])
                     .Set(p => p.Tags[0], userProfile.Tags[0]);
                 var result = Classifieds.Update(query, update);
                 if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
@@ -115,6 +128,9 @@ namespace Classifieds.UserService.Repository
             }
 
         }
+
+        #endregion UpdateUserProfile
+
         #endregion
     }
 }

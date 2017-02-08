@@ -42,13 +42,14 @@ namespace Classifieds.UserServiceAPI.Controllers
         #endregion
 
         #region Public Methods
+
+        #region RegisterUser
         /// <summary>
         /// Registers the user if not present in Db
         /// </summary>
         /// <param name="user">User object</param>
         /// <returns>Response containing access token</returns>
         [HttpPost]
-
         public HttpResponseMessage RegisterUser(ClassifiedsUser user)
         {
             string email = string.Empty;
@@ -56,9 +57,9 @@ namespace Classifieds.UserServiceAPI.Controllers
             {
                 email = GetUserEmail(user);
                 HttpResponseMessage response = null;
-                if(user == null || user.UserEmail == null || user.UserName == null)
+                if (user == null || user.UserEmail == null || user.UserName == null)
                     throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid request");
-                else if(!(user.UserEmail.ToLowerInvariant().EndsWith("globant.com")))
+                else if (!(user.UserEmail.ToLowerInvariant().EndsWith("globant.com")))
                     throw new Exception(HttpStatusCode.PreconditionFailed.ToString() + "Invalid domain");
 
                 var result = _userService.RegisterUser(user);
@@ -81,7 +82,11 @@ namespace Classifieds.UserServiceAPI.Controllers
                 _logger.Log(ex, email);
                 throw new Exception(HttpStatusCode.Conflict.ToString() + " Internal server error");
             }
-         }
+        }
+
+        #endregion RegisterUser
+
+        #region GetUserProfile
         /// <summary>
         /// Get user profile including user tags, wish list, subscriptions.
         /// </summary>
@@ -104,7 +109,11 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
-       
+
+        #endregion GetUserProfile
+
+        #region PutUserProfile
+
         /// <summary>
         /// update user profile
         /// </summary>
@@ -129,8 +138,73 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+
+        #endregion PutUserProfile
+
+        #region AddSubscription
+
+        /// <summary>
+        /// Insert new Subscription item into the database
+        /// </summary>
+        /// <returns>newly added Subscription object</returns>
+        public HttpResponseMessage AddSubscription(Subscription subscriptionObj)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmailFromHeader();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var subscription = _userService.AddSubscription(subscriptionObj);
+                result = Request.CreateResponse<Subscription>(HttpStatusCode.Created, subscription);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+
+            return result;
+        }
+
+        #endregion AddSubscription
+
+        #region DeleteSubscription
+        /// <summary>
+        /// Delete Subscription item for given Id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>deleted id</returns>
+        public HttpResponseMessage DeleteSubscription(string id)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmailFromHeader();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                _userService.DeleteSubscription(id);
+                result = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+
+            return result;
+        }
+
         #endregion
-       
+
+        #endregion Public Methods
+
         #region private methods
         /// <summary>
         /// Returns user email string

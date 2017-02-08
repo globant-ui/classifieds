@@ -1,5 +1,4 @@
 ﻿using Classifieds.UserService.BusinessEntities;
-using System.Collections.Generic;
 
 namespace Classifieds.UserService.BusinessServices
 {
@@ -8,5 +7,7 @@ namespace Classifieds.UserService.BusinessServices
         string RegisterUser(ClassifiedsUser user);
         ClassifiedsUser GetUserProfile(string userEmail);
         ClassifiedsUser UpdateUserProfile(string id, ClassifiedsUser userProfile);
+        Subscription AddSubscription(Subscription subObject);
+        void DeleteSubscription(string id);
     }
 }
