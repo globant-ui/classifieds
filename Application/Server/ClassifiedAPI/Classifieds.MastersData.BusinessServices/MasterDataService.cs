@@ -126,5 +126,50 @@ namespace Classifieds.MastersData.BusinessServices
         }
 
         #endregion
+
+        #region Get all filters by subcategory
+
+        public SubCategory GetAllFiltersBySubCategory(string subCategory)
+        {
+            try
+            {
+                return _masterDataRepository.GetAllFiltersBySubCategory(subCategory);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Get filters by filter name and subcategory name
+
+        public Filters GetFiltersByFilterName(string subCategory, string filterName)
+        {
+            try
+            {
+                return _masterDataRepository.GetFiltersByFilterName(subCategory, filterName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Get filters by filter name and subcategory name
+
+        public List<string> GetFilterNamesOnly(string subCategory)
+        {
+            try
+            {
+                return _masterDataRepository.GetFilterNamesOnly(subCategory);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
     }
 }

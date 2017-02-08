@@ -217,7 +217,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55266</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Classifieds.MastersDataAPI</IISUrl>
+          <IISUrl>http://localhost/MastersDataAPI</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost/Classifieds.MastersDataAPI</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

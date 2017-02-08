@@ -196,6 +196,84 @@ namespace Classifieds.MastersDataAPI.Controllers
 
         #endregion
 
+        #region GetAllCategory
+        /// <summary>
+        /// Returns the All Filters By SubCategory 
+        /// </summary>
+        /// <returns>All Category List</returns>
+        public SubCategory GetAllFiltersBySubCategory(string subCategory)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _masterDataService.GetAllFiltersBySubCategory(subCategory);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+        }
+        #endregion
+
+        #region GetAllCategory
+        /// <summary>
+        /// Returns Filters By filter name and SubCategory 
+        /// </summary>
+        /// <returns>All Category List</returns>
+        public Filters GetFiltersByFilterName(string subCategory, string filterName)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _masterDataService.GetFiltersByFilterName(subCategory, filterName);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+        }
+        #endregion
+
+        #region GetAllCategory
+        /// <summary>
+        /// Returns all Filters names only By SubCategory 
+        /// </summary>
+        /// <returns>All Category List</returns>
+        public List<string> GetFilterNamesOnly(string subCategory)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _masterDataService.GetFilterNamesOnly(subCategory);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+        }
+        #endregion
+
         #region private methods
         private string GetUserEmail()
         {

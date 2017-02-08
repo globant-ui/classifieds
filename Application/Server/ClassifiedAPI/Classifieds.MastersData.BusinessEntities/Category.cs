@@ -17,10 +17,22 @@ namespace Classifieds.MastersData.BusinessEntities
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; } //MongoDb uses this field as identity.
         public string ListingCategory { get; set; }
-        public string[] SubCategory { get; set; }
+        public SubCategory[] SubCategory { get; set; }
         public string Image { get; set; }
-
         #endregion
 
     }
+
+    public class SubCategory
+    {
+        public string Name { get; set; }
+        public Filters[] Filters { get; set; }
+    }
+
+    public class Filters
+    {
+        public string FilterName { get; set; }
+        public string[] FilterValues { get; set; }
+    }
+
 }

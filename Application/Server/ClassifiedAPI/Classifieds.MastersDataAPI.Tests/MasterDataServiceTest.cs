@@ -42,11 +42,11 @@ namespace Classifieds.MastersData.BusinessServices.Test
             Category dataObject = new Category
             {
                 ListingCategory = "Automotive",
-                SubCategory = new string[]{ "Car",
-                                            "Motor Cycle",
-                                            "Scooter",
-                                            "Bicycle",
-                                            "Accessories" },
+                //SubCategory = new string[]{ "Car",
+                //                            "Motor Cycle",
+                //                            "Scooter",
+                //                            "Bicycle",
+                //                            "Accessories" },
                 Image = "Automotive.png"
 
             };
