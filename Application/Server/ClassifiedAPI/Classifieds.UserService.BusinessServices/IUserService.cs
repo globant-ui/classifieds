@@ -8,9 +8,11 @@ namespace Classifieds.UserService.BusinessServices
         string RegisterUser(ClassifiedsUser user);
         ClassifiedsUser GetUserProfile(string userEmail);
         ClassifiedsUser UpdateUserProfile(ClassifiedsUser userProfile);
-        void AddTag(string userEmail, Tags tag);
-        void AddAlert(string userEmail, Alert alert);
-        void DeleteTag(string userEmail, Tags tag);
-        void DeleteAlert(string userEmail, Alert alert);
+        Subscription AddSubscription(Subscription subObject);
+        void DeleteSubscription(string id);
+        bool AddTag(string userEmail, Tags tag);
+        bool AddAlert(string userEmail, Alert alert);
+        bool DeleteTag(string userEmail, Tags tag);
+        bool DeleteAlert(string userEmail, Alert alert);
     }
 }

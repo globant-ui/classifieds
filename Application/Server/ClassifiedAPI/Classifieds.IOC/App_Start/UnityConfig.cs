@@ -49,6 +49,7 @@ namespace Classifieds.IOC
 
             container.RegisterType<IUserService, Classifieds.UserService.BusinessServices.UserService>(new HierarchicalLifetimeManager());
             container.RegisterType<IUserRepository<ClassifiedsUser>, UserRepository<ClassifiedsUser>>(new HierarchicalLifetimeManager());
+            container.RegisterType<ISubscriptionRepository<Subscription>, SubscriptionRepository<Subscription>>(new HierarchicalLifetimeManager());
             container.RegisterType<UserService.Repository.IDBRepository, UserService.Repository.DBRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICommonRepository, CommonRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICommonDBRepository, CommonDBRepository>(new HierarchicalLifetimeManager());
