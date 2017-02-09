@@ -30,7 +30,7 @@ private enabledDropdown : boolean = false;
 
     fetchInterest( e:Event,val ){
 
-        if (val.length >= 3) {
+        if ( val.length >= 3 ) {
             this.subCategoryUrl = this.subCategoryUrl;
             //Delay of some time to slow down the results
             clearTimeout(this.delayTimer);
@@ -44,7 +44,7 @@ private enabledDropdown : boolean = false;
     fetchInterestData( text: string ) {
       this._cservice.observableGetHttp( this.subCategoryUrl, null, false )
           .subscribe((res: Response) => {
-              if (res['subCategory'] && res['subCategory'][ 'length' ] > 0) {
+              if ( res['subCategory'] && res['subCategory'][ 'length' ] > 0 ) {
                   this.interestResult = res['subCategory'];
                   this.enabledDropdown = true;
               } else {
@@ -57,14 +57,14 @@ private enabledDropdown : boolean = false;
   }
 
 //to select an item from dropdown
-    selectInterest(val){
-        this.selectedInterests.push(val);
+    selectInterest( val ){
+        this.selectedInterests.push( val );
         this.enabledDropdown = false;
         this.interestResult = [];
     }
      
     //to delete an item from tag 
     deleteIntrest( index, val ) {
-      this.selectedInterests.splice(index, 1);
+      this.selectedInterests.splice( index, 1 );
     }
 } 
