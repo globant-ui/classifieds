@@ -1,0 +1,83 @@
+<div class="container">
+  <h2>Modal Example</h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+
+        <form class="form-horizontal">
+        <div class="form-group">
+              <div class="col-sm-8">
+                 <input type="text" class="form-control" #interest (keyup) = "fetchInterest($event,interest.value);" placeholder="add tag">
+              </div>
+        </div>
+
+            <div class="autoSuggestion" *ngIf = "enabledDropdown">
+                <ul>
+                    <li (click)="selectInterest(res)" *ngFor="let res of interestResult">
+                        {{ res }}
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+              <span *ngFor = "let res of selectedInterests; let i=index;">
+                {{res}}
+                <button value="X" (click)="deleteIntrest(i, res);">X</button>
+              </span>
+
+            </div>
+             
+            <div class="col-sm-2">
+              <div class="checkbox-inline">
+                  <label><input type="checkbox">Banglore</label>
+              </div>
+            </div>
+        
+           
+            <div class="col-sm-2">
+              <div class="checkbox-inline">
+                  <label><input type="checkbox"> Pune</label>
+              </div>
+            </div>
+        
+       
+               
+            <div class="col-sm-2">
+              <div class="checkbox-inline">
+                  <label><input type="checkbox">All</label>
+              </div>
+            </div>
+       
+        </form>
+      
+       
+        <!--<div class="">
+         <div class="checkbox-inline">
+            <label><input type="checkbox" value="">banglore </label>
+        </div>
+        <div class="checkbox-inline">
+              <label><input type="checkbox" value="">pune</label>
+        </div>
+         <div class="checkbox-inline">
+              <label><input type="checkbox" value="">All</label>
+        </div>
+        </div>-->
+        
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+     
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
