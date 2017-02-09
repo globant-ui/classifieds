@@ -27,6 +27,7 @@ namespace Classifieds.MastersDataAPI.Tests
         private Mock<ICommonRepository> _mockAuthRepo;
         private readonly List<Category> _classifiedList = new List<Category>();
         private readonly List<string> _categoryList = new List<string>();
+        private readonly List<string> _subCategoryList = new List<string>();
         private CategoryController _controller;
         #endregion
 
@@ -48,6 +49,7 @@ namespace Classifieds.MastersDataAPI.Tests
             var lstcategory = GetCategoryDataObject();
             _classifiedList.Add(lstcategory);
             _categoryList.Add("Automotive");
+            _subCategoryList.Add("Car");
         }
 
         #endregion
@@ -134,6 +136,41 @@ namespace Classifieds.MastersDataAPI.Tests
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetCategorySuggetion(null);
+        }
+
+        #endregion GetCategorySuggetionTest
+
+        #region GetSubCategorySuggetionTest
+
+        /// <summary>
+        ///test positive scenario for Get sub Category list for maching input
+        /// </summary>
+        [TestMethod]
+        public void GetSubCategorySuggetionTest()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            SetUpClassifiedsListing();
+            _mockService.Setup(x => x.GetSubCategorySuggestion(It.IsAny<string>()))
+              .Returns(_subCategoryList);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+
+            //Act
+            var objList = _controller.GetSubCategorySuggestion("Auto");
+
+            //Assert
+            Assert.AreEqual(objList.Count, 1);
+            Assert.AreEqual(objList[0], "Car");
+        }
+
+        /// <summary>
+        /// test for null exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_GetSubCategorySuggetion_ThrowsException()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetSubCategorySuggestion(null);
         }
 
         #endregion GetCategorySuggetionTest

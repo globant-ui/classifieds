@@ -10,5 +10,6 @@ namespace Classifieds.MastersData.BusinessServices
         Category UpdateCategory(string id, Category listObject);
         void DeleteCategory(string id);
         List<string> GetCategorySuggetion(string categoryText);
+        List<string> GetSubCategorySuggestion(string subCategoryText);
     }
 }
