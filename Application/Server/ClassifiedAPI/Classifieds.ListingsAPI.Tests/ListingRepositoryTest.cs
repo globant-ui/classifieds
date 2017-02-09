@@ -410,23 +410,23 @@ namespace Classifieds.ListingsAPI.Tests
         /// test for incorrect Category And SubCategory return null;
         /// </summary>
         [TestMethod]
+        [ExpectedException(typeof(AssertFailedException))]
         public void Repo_GetListingsByCategoryAndSubCategoryTest_Null()
         {
             //Act
             var result = _listingRepo.GetListingsByCategoryAndSubCategory(null, null);
 
             //Assert
-            Assert.IsNull(result);
+            Assert.IsNull(result,"Null");
         }
 
         /// <summary>
-        /// test for incorrect email throws exception
+        /// test for incorrect Category And SubCategory throws exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Repo_GetListingByCategoryAndSubCategoryTest_InvalidEmail_ThrowException()
+        public void Repo_GetListingByCategoryAndSubCategoryTest_Invalid()
         {
-            var result = _listingRepo.GetListingsByCategoryAndSubCategory("qazxsw","abcde");
+            var result = _listingRepo.GetListingsByCategoryAndSubCategory("qazxsw", "qazxsw");
             Assert.AreEqual(0, result.Count);
         }
 
