@@ -12,6 +12,7 @@ namespace Classifieds.UserServiceAPI.Tests
     {
         #region Class Variables
         private Mock<IUserRepository<ClassifiedsUser>> _moqAppManager;
+        private Mock<ISubscriptionRepository<Subscription>> _moqSubAppManager;
         private IUserService _service;
         string _returnString = string.Empty;
         private ClassifiedsUser _user;
@@ -22,7 +23,8 @@ namespace Classifieds.UserServiceAPI.Tests
         public void Initialize()
         {
             _moqAppManager = new Mock<IUserRepository<ClassifiedsUser>>();
-            _service = new UserService.BusinessServices.UserService(_moqAppManager.Object);
+            _moqSubAppManager = new Mock<ISubscriptionRepository<Subscription>>();
+            _service = new UserService.BusinessServices.UserService(_moqAppManager.Object, _moqSubAppManager.Object);
         }
         #endregion
 
@@ -44,7 +46,19 @@ namespace Classifieds.UserServiceAPI.Tests
             return user;
         }
 
+        private Subscription GetSubscription()
+        {
+            Subscription subscription = new Subscription
+            {
+                Email = "v.wadsamudrakar@globant.com",
+                SubmittedDate = "08-02-2017 12:45:34.243"
+            };
+            return subscription;
+        }
+
         #endregion
+
+        #region RegisterUserTest
         [TestMethod]
         public void RegisterUserTest()
         {
@@ -68,5 +82,73 @@ namespace Classifieds.UserServiceAPI.Tests
             _moqAppManager.Setup(x => x.RegisterUser(It.IsAny<ClassifiedsUser>())).Throws(ex);
             _service.RegisterUser(null);
         }
+
+        #endregion RegisterUserTest
+
+        #region AddSubscriptionTest
+
+        /// <summary>
+        /// test positive scenario for Add Subscription
+        /// </summary>
+        [TestMethod]
+        public void AddSubscriptionTest()
+        {
+            //Arrange
+            var lstObject = GetSubscription();
+            _moqSubAppManager.Setup(x => x.AddSubscription(It.IsAny<Subscription>())).Returns(lstObject);
+
+            //Act
+            var result = _service.AddSubscription(lstObject);
+
+            //Assert
+            Assert.IsNotNull(result, null);
+            Assert.IsInstanceOfType(result, typeof(Subscription));
+        }
+
+        /// <summary>
+        /// test for inserting empty Subscription object return null result
+        /// </summary>
+        [TestMethod]
+        public void AddSubscriptionTest_EmptyList()
+        {
+            var result = _service.AddSubscription(null);
+            Assert.IsNull(result, null);
+        }
+
+        #endregion AddSubscriptionTest
+
+        #region DeleteSubscriptionTest
+
+        /// <summary>
+        /// test positive scenario for DeleteEmailSubscription
+        /// </summary>
+        [TestMethod]
+        public void DeleteSubscriptionTest()
+        {
+            //Arrange
+            var lstObject = GetSubscription();
+            _moqSubAppManager.Setup(x => x.DeleteSubscription(It.IsAny<string>()));
+
+            //Act
+            _service.DeleteSubscription(lstObject._id);
+
+            //Assert
+            Assert.IsTrue(true);
+            _moqSubAppManager.Verify(v => v.DeleteSubscription(lstObject._id), Times.Once());
+        }
+
+        /// <summary>
+        /// test for null Exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DeleteSubscriptionTest_InvalidId_ThrowException()
+        {
+            ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqSubAppManager.Setup(x => x.DeleteSubscription(null)).Throws(ex);
+            _service.DeleteSubscription(null);
+        }
+
+        #endregion DeleteSubscriptionTest
     }
 }

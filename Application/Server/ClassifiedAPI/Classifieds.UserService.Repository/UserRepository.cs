@@ -19,7 +19,7 @@ namespace Classifieds.UserService.Repository
         {
             get
             {
-                return  _dbRepository.GetCollection<TEntity>(_collectionClassifieds);
+                return _dbRepository.GetCollection<TEntity>(_collectionClassifieds);
             }
         }
         #endregion
@@ -32,6 +32,9 @@ namespace Classifieds.UserService.Repository
         #endregion
 
         #region Public Methods
+
+        #region RegisterUser
+
         /// <summary>
         /// Insert a new user object into the database
         /// </summary>
@@ -65,6 +68,11 @@ namespace Classifieds.UserService.Repository
             }
             return returnStr;
         }
+
+        #endregion RegisterUser
+
+        #region GetUserProfile
+
         /// <summary>
         /// Get complete userprofile including tags, subscriptions, wishlist
         /// </summary>
@@ -84,6 +92,11 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
+
+        #endregion GetUserProfile
+
+        #region UpdateUserProfile
+
         /// <summary>
         /// update user profile
         /// </summary>
@@ -95,15 +108,11 @@ namespace Classifieds.UserService.Repository
             {
                 var query = Query<ClassifiedsUser>.EQ(p => p._id, userProfile._id);
                 var update = Update<ClassifiedsUser>
-                    //.Set(p => p.UserEmail, userProfile.UserEmail)
                     .Set(p => p.Designation, userProfile.Designation)
                     .Set(p => p.Image, userProfile.Image)
                     .Set(p => p.Location, userProfile.Location)
                     .Set(p => p.UserName, userProfile.UserName)
                     .Set(p => p.Mobile, userProfile.Mobile);
-                    //.Set(p => p.WishList, userProfile.WishList)
-                    //.Set(p => p.Alert[0], userProfile.Alert[0])
-                    //.Set(p => p.Tags[0], userProfile.Tags[0]);
                 var result = Classifieds.Update(query, update);
                 return userProfile;
             }
@@ -118,12 +127,13 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public void AddTag(string userEmail, Tags tag)
+        public bool AddTag(string userEmail, Tags tag)
         { 
             try
             {
                 var result= Classifieds.Update(Query.EQ("UserEmail", userEmail),
                 Update.PushWrapped("Tags", tag));
+                return result.UpdatedExisting;
             }
             catch (Exception ex)
             {
@@ -135,12 +145,13 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public void DeleteTag(string userEmail, Tags tag)
+        public bool DeleteTag(string userEmail, Tags tag)
         {
             try
             {
                 var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),
                 Update.PullWrapped<Tags>("Tags", tag));
+                return result.UpdatedExisting;
             }
             catch (Exception ex)
             {
@@ -152,12 +163,13 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="alert"></param>
-        public void AddAlert(string userEmail, Alert alert)
+        public bool AddAlert(string userEmail, Alert alert)
         {
             try
             {
                 var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),
                 Update.PushWrapped("Alert", alert));
+                return result.UpdatedExisting;
             }
             catch (Exception ex)
             {
@@ -169,18 +181,22 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="alert"></param>
-        public void DeleteAlert(string userEmail, Alert alert)
+        public bool DeleteAlert(string userEmail, Alert alert)
         {
             try
             {
                 var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),
                 Update.PullWrapped<Alert>("Alert", alert));
+                return result.UpdatedExisting;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        #endregion UpdateUserProfile
+
         #endregion
     }
 }
