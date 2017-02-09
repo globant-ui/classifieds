@@ -29,11 +29,31 @@ namespace Classifieds.MastersData.BusinessServices
         
         #region GetAllCategory
 
-        public List<Category> GetAllCategory()
+        public List<CategoryViewModel> GetAllCategory()
         {
             try
             {
-                return _masterDataRepository.GetAllCategory().ToList();
+                //return _masterDataRepository.GetAllCategory().ToList();
+                List<Category> categories = _masterDataRepository.GetAllCategory().ToList();
+                List<CategoryViewModel> categoryVms = new List<CategoryViewModel>();
+                List<string> subCategoryNames = new List<string>();
+                foreach (Category ct in categories)
+                {
+                    foreach (SubCategory sc in ct.SubCategory)
+                    {
+                        subCategoryNames.Add(sc.Name);
+                    }
+                    CategoryViewModel categoryVm = new CategoryViewModel
+                    {
+                        _id = ct._id,
+                        ListingCategory = ct.ListingCategory,
+                        Image = ct.Image,
+                        SubCategory = subCategoryNames.ToArray()
+                    };
+                    categoryVms.Add(categoryVm);
+                    subCategoryNames.Clear();
+                }
+                return categoryVms;
             }
             catch (Exception ex)
             {
@@ -133,7 +153,19 @@ namespace Classifieds.MastersData.BusinessServices
         {
             try
             {
-                return _masterDataRepository.GetAllFiltersBySubCategory(subCategory);
+                SubCategory selectedSubCategory = null;
+                var result = _masterDataRepository.GetAllFiltersBySubCategory(subCategory);
+                if (result.Count > 0)
+                {
+                    foreach (SubCategory sc in result[0].SubCategory)
+                    {
+                        if (subCategory.Contains(sc.Name))
+                        {
+                            selectedSubCategory = sc;
+                        }
+                    }
+                }
+                return selectedSubCategory;
             }
             catch (Exception ex)
             {
@@ -148,7 +180,25 @@ namespace Classifieds.MastersData.BusinessServices
         {
             try
             {
-                return _masterDataRepository.GetFiltersByFilterName(subCategory, filterName);
+                Filters selectedSubCategory = null;
+                var result = _masterDataRepository.GetFiltersByFilterName(subCategory, filterName);
+                if (result.Count > 0)
+                {
+                    foreach (SubCategory sc in result[0].SubCategory)
+                    {
+                        if (subCategory.Contains(sc.Name))
+                        {
+                            foreach (Filters filter in sc.Filters)
+                            {
+                                if (filterName.Contains(filter.FilterName))
+                                {
+                                    selectedSubCategory = filter;
+                                }
+                            }
+                        }
+                    }
+                }
+                return selectedSubCategory;
             }
             catch (Exception ex)
             {
@@ -163,7 +213,22 @@ namespace Classifieds.MastersData.BusinessServices
         {
             try
             {
-                return _masterDataRepository.GetFilterNamesOnly(subCategory);
+                List<string> selectedSubCategory = new List<string>();
+                var result = _masterDataRepository.GetFilterNamesOnly(subCategory);
+                if (result.Count > 0)
+                {
+                    foreach (SubCategory sc in result[0].SubCategory)
+                    {
+                        if (subCategory.Contains(sc.Name))
+                        {
+                            foreach (Filters flt in sc.Filters)
+                            {
+                                selectedSubCategory.Add(flt.FilterName);
+                            }
+                        }
+                    }
+                }
+                return selectedSubCategory;
             }
             catch (Exception ex)
             {

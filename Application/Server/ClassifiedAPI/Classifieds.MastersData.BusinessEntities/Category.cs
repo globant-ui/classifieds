@@ -35,4 +35,12 @@ namespace Classifieds.MastersData.BusinessEntities
         public string[] FilterValues { get; set; }
     }
 
+    public class CategoryViewModel
+    {
+        public string _id { get; set; } //MongoDb uses this field as identity.
+        public string ListingCategory { get; set; }
+        public string[] SubCategory { get; set; }
+        public string Image { get; set; }
+    }
+
 }

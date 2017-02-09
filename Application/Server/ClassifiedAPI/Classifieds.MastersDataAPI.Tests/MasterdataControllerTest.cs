@@ -26,10 +26,9 @@ namespace Classifieds.MastersDataAPI.Tests
         private Mock<IMasterDataService> _mockService;
         private Mock<ILogger> _logger;
         private Mock<ICommonRepository> _mockAuthRepo;
-        private readonly List<Category> _classifiedList = new List<Category>();
         private readonly List<string> _categoryList = new List<string>();
-        private const string UrlLocation = "http://localhost/api/Category";
         private CategoryController _controller;
+        private readonly List<CategoryViewModel> _categoryViewModelList = new List<CategoryViewModel>();
         #endregion
 
         #region Initialize
@@ -47,8 +46,6 @@ namespace Classifieds.MastersDataAPI.Tests
 
         private void SetUpClassifiedsListing()
         {
-            var lstcategory = GetCategoryDataObject();
-            _classifiedList.Add(lstcategory);
             _categoryList.Add("Automotive");
         }
 
@@ -90,11 +87,22 @@ namespace Classifieds.MastersDataAPI.Tests
             {
                 tempFilters[i] = new Filters();
                 tempFilters[i].FilterName = "Filter" + i;
-                tempFilters[i].FilterValues = new string[] { "A" + i, "B" + i };
+                tempFilters[i].FilterValues = new [] { "A" + i, "B" + i };
             }
             return tempFilters;
         }
 
+        private CategoryViewModel GetCategoryVmDataObject()
+        {
+            CategoryViewModel dataObject = new CategoryViewModel()
+            {
+                _id = "9",
+                ListingCategory = "Automotive",
+                SubCategory = new [] {"Cars", "Motorcycles", "Scooters", "Bicycles" },
+                Image = "Automotive.png"
+            };
+            return dataObject;
+        }
         #endregion
 
         #region GetAllCategoryTestCases
@@ -106,8 +114,8 @@ namespace Classifieds.MastersDataAPI.Tests
         [TestMethod]
         public void GetAllCategoryTest()
         {
-            SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetAllCategory()).Returns(_classifiedList);
+            _categoryViewModelList.Add(GetCategoryVmDataObject()); //SetUpClassifiedsListing();
+            _mockService.Setup(x => x.GetAllCategory()).Returns(_categoryViewModelList);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
@@ -116,7 +124,7 @@ namespace Classifieds.MastersDataAPI.Tests
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].SubCategory[0].Name, "SubCategory0");
+            Assert.AreEqual(objList[0].SubCategory[0], "Cars");
         }
 
         /// <summary>
@@ -137,7 +145,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void GetAllCategory_EmptyCategoryTest()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _mockService.Setup(x => x.GetAllCategory()).Returns(new List<Category>());
+            _mockService.Setup(x => x.GetAllCategory()).Returns(new List<CategoryViewModel>());
             var result = _controller.GetAllCategory();
 
             //Assert
@@ -370,7 +378,6 @@ namespace Classifieds.MastersDataAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_GetAllFiltersBySubCategory_ThrowsException()
         {
-            SubCategory[] sc = GetSubCategoryDataObject();
             var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
             _mockService.Setup(x => x.GetAllFiltersBySubCategory(null)).Throws(ex);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");

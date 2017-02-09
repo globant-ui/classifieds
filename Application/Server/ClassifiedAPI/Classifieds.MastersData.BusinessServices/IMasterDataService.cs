@@ -5,7 +5,7 @@ namespace Classifieds.MastersData.BusinessServices
 {
     public interface IMasterDataService
     {
-        List<Category> GetAllCategory();
+        List<CategoryViewModel> GetAllCategory();
         Category CreateCategory(Category listObject);
         Category UpdateCategory(string id, Category listObject);
         void DeleteCategory(string id);
