@@ -54,18 +54,35 @@ namespace Classifieds.Listings.Repository
         /// Returns a collection of listings based on sub category
         /// </summary>
         /// <param name="subCategory">listing Sub Category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<TEntity> GetListingsBySubCategory(string subCategory)
+        public List<TEntity> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                var partialRresult = Classifieds.FindAll()
-                                        .Where(p => p.SubCategory == subCategory)
-                                        .ToList();
-
-                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
-
-                return result;
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds.FindAll()
+                    .Where(p => p.SubCategory == subCategory)
+                    .Count();
+                    skip = GetLastPageSkipValue(pageCount, count);
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+                
+                List<TEntity> listings = Classifieds.FindAll()
+                                            .Where(p => p.SubCategory == subCategory)
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
+                                            .ToList();
+                listings = listings.Count > 0 ? listings.ToList() : null;
+                return listings;
             }
             catch (Exception ex)
             {
@@ -77,15 +94,33 @@ namespace Classifieds.Listings.Repository
         /// Returns a collection of listings based on category
         /// </summary>
         /// <param name="category">listing category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<TEntity> GetListingsByCategory(string category)
+        public List<TEntity> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                List<TEntity> result = Classifieds.FindAll()
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds.FindAll()
+                    .Where(p => p.ListingCategory == category)
+                    .Count();
+                    skip = GetLastPageSkipValue(pageCount, count);
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+                List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.ListingCategory == category)
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
                                             .ToList();
-                return result;
+                return listings;
             }
             catch (MongoException ex)
             {
@@ -124,32 +159,35 @@ namespace Classifieds.Listings.Repository
             {
                 var query = Query<TEntity>.EQ(p => p._id, id);
                 var update = Update<TEntity>.Set(p => p.Title, listObj.Title)
-                                             .Set(p => p.ListingType, listObj.ListingType)
-                                             .Set(p => p.ListingCategory, listObj.ListingCategory)
-                                             .Set(p => p.Brand, listObj.Brand)
-                                             .Set(p => p.Price, listObj.Price)
-                                             .Set(p => p.YearOfPurchase, listObj.YearOfPurchase)
-                                             .Set(p => p.ExpiryDate, listObj.ExpiryDate)
-                                             .Set(p => p.Status, listObj.Status)
-                                             .Set(p => p.Submittedby, listObj.Submittedby)
-                                             .Set(p => p.SubmittedDate, listObj.SubmittedDate)
-                                             .Set(p => p.IdealFor, listObj.IdealFor)
-                                             .Set(p => p.Furnished, listObj.Furnished)
-                                             .Set(p => p.FuelType, listObj.FuelType)
-                                             .Set(p => p.KmDriven, listObj.KmDriven)
-                                             .Set(p => p.YearofMake, listObj.YearofMake)
-                                             .Set(p => p.Dimensions, listObj.Dimensions)
-                                             .Set(p => p.TypeofUse, listObj.TypeofUse)
-                                             .Set(p => p.Photos, listObj.Photos)
-                                             .Set(p => p.Address, listObj.Address)
-                                             .Set(p => p.ContactName, listObj.ContactName)
-                                             .Set(p => p.ContactNo, listObj.ContactNo)
-                                             .Set(p => p.Details, listObj.Details)
-                                             .Set(p => p.Configuration, listObj.Configuration);
+                    .Set(p => p.ListingType, listObj.ListingType)
+                    .Set(p => p.ListingCategory, listObj.ListingCategory)
+                    .Set(p => p.Brand, listObj.Brand)
+                    .Set(p => p.Price, listObj.Price)
+                    .Set(p => p.YearOfPurchase, listObj.YearOfPurchase)
+                    .Set(p => p.ExpiryDate, listObj.ExpiryDate)
+                    .Set(p => p.Status, listObj.Status)
+                    .Set(p => p.Submittedby, listObj.Submittedby)
+                    .Set(p => p.SubmittedDate, listObj.SubmittedDate)
+                    .Set(p => p.IdealFor, listObj.IdealFor)
+                    .Set(p => p.Furnished, listObj.Furnished)
+                    .Set(p => p.FuelType, listObj.FuelType)
+                    .Set(p => p.KmDriven, listObj.KmDriven)
+                    .Set(p => p.YearofMake, listObj.YearofMake)
+                    .Set(p => p.Dimensions, listObj.Dimensions)
+                    .Set(p => p.TypeofUse, listObj.TypeofUse)
+                    .Set(p => p.Photos, listObj.Photos)
+                    .Set(p => p.Address, listObj.Address)
+                    .Set(p => p.ContactName, listObj.ContactName)
+                    .Set(p => p.ContactNo, listObj.ContactNo)
+                    .Set(p => p.Details, listObj.Details)
+                    .Set(p => p.Configuration, listObj.Configuration)
+                    .Set(p => p.SubCategory, listObj.SubCategory)
+                    .Set(p => p.Type, listObj.Type)
+                    .Set(p => p.Model, listObj.Model)
+                    .Set(p => p.Negotiable, listObj.Negotiable)
+                    .Set(p => p.IsPublished, listObj.IsPublished);
 
-
-                var result = Classifieds.Update(query, update);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage){ }
+                Classifieds.Update(query, update);
                 return listObj;
             }
             catch (Exception ex)
@@ -197,5 +235,26 @@ namespace Classifieds.Listings.Repository
         }
         #endregion
 
+        #region private methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageCount"></param>
+        /// <param name="rowCount"></param>
+        /// <returns></returns>
+        private int GetLastPageSkipValue(int pageCount, int rowCount)
+        {
+            int temp;
+            if (rowCount % pageCount == 0)
+            {
+                temp = rowCount / pageCount - 1;
+            }
+            else
+            {
+                temp = rowCount / pageCount;
+            }
+            return temp * pageCount;
+        }
+        #endregion
     }
 }

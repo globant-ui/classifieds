@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Classifieds.UserService.BusinessEntities;
 using Classifieds.UserService.Repository;
@@ -9,7 +10,7 @@ namespace Classifieds.UserServiceAPI.Tests
     public class UserRepositoryTest
     {
         #region Class Variables
-        private IUserRepository _userRepo;
+        private IUserRepository<ClassifiedsUser> _userRepo;
         private IDBRepository _dbRepository;
         private ClassifiedsUser _user;
         #endregion
@@ -19,7 +20,7 @@ namespace Classifieds.UserServiceAPI.Tests
         public void Initialize()
         {
             _dbRepository = new DBRepository();
-            _userRepo = new UserRepository(_dbRepository);
+            _userRepo = new UserRepository<ClassifiedsUser>(_dbRepository);
             
         }
         #endregion
