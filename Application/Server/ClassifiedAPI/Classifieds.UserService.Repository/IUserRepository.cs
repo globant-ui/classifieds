@@ -7,6 +7,10 @@ namespace Classifieds.UserService.Repository
     {
         string RegisterUser(TEntity user);
         TEntity GetUserProfile(string userEmail);
-        TEntity UpdateUserProfile(string id, TEntity userProfile);
+        TEntity UpdateUserProfile(TEntity userProfile);
+        void AddTag(string userEmail, Tags tag);
+        void DeleteTag(string userEmail, Tags tag);
+        void AddAlert(string userEmail, Alert alert);
+        void DeleteAlert(string userEmail, Alert alert);
     }
 }

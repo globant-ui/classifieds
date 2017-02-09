@@ -53,20 +53,83 @@ namespace Classifieds.UserService.BusinessServices
         /// <summary>
         /// Updates user profile.
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="userProfile"></param>
         /// <returns>user profile object</returns>
-        public ClassifiedsUser UpdateUserProfile(string id, ClassifiedsUser userProfile)
+        public ClassifiedsUser UpdateUserProfile(ClassifiedsUser userProfile)
         {
             try
             {
-                return _userRepository.UpdateUserProfile(id, userProfile);
+                return _userRepository.UpdateUserProfile(userProfile);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
+        }
+        /// <summary>
+        /// Add user tag
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
+        public void AddTag(string userEmail, Tags tag)
+        {
+            try
+            {
+               _userRepository.AddTag(userEmail, tag);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Delete tag of user profile
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
+        public void DeleteTag(string userEmail, Tags tag)
+        {
+            try
+            {
+                _userRepository.DeleteTag(userEmail, tag);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add alert for user
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        public void AddAlert(string userEmail, Alert alert)
+        {
+            try
+            {
+                _userRepository.AddAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add alert for user
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        public void DeleteAlert(string userEmail, Alert alert)
+        {
+            try
+            {
+                _userRepository.DeleteAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
     }

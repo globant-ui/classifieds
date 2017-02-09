@@ -48,7 +48,6 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="user">User object</param>
         /// <returns>Response containing access token</returns>
         [HttpPost]
-
         public HttpResponseMessage RegisterUser(ClassifiedsUser user)
         {
             string email = string.Empty;
@@ -103,15 +102,14 @@ namespace Classifieds.UserServiceAPI.Controllers
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
-        }
-       
+        }      
         /// <summary>
         /// update user profile
         /// </summary>
         /// <param name="id"></param>
         /// <param name="userProfile"></param>
         /// <returns>updated user details</returns>
-        public ClassifiedsUser PutUserProfile(string id, ClassifiedsUser userProfile)
+        public ClassifiedsUser PutUserProfile(ClassifiedsUser userProfile)
         {
             try
             {
@@ -121,7 +119,115 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                return _userService.UpdateUserProfile(id, userProfile);
+                return _userService.UpdateUserProfile(userProfile);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add user tag by subcategory and Locations
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public void PutTag(string userEmail,Tags tag)
+        {
+            try
+            {
+                tag.SubCategory = "test";
+                tag.Location= new string[] {"Phaltan","Satara"};
+               _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                _userService.AddTag(userEmail, tag);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Delete User Tag
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
+        public void DeleteTag(string userEmail, Tags tag)
+        {
+            try
+            {
+                Tags tagobj= new Tags();
+                tagobj.SubCategory = "test";
+                tagobj.Location= new string[] {"Phaltan","Satara"};
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                _userService.DeleteTag(userEmail, tagobj);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add user Alerts by subcategory and Locations
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        /// <returns></returns>
+        public void PutAlert(string userEmail, Alert alert)
+        {
+            try
+            {
+                alert.Category = "Housing";
+                alert.SubCategory = "2BHK";
+                alert.IsEmail = false;
+                alert.IsSms = true;
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                _userService.AddAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add user Alerts by subcategory and Locations
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        /// <returns></returns>
+        public void DeleteAlert(string userEmail, Alert alert)
+        {
+            try
+            {
+                alert.Category = "Housing";
+                alert.SubCategory = "2BHK";
+                alert.IsEmail = true;
+                alert.IsSms = false;
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                _userService.DeleteAlert(userEmail, alert);
             }
             catch (Exception ex)
             {
@@ -130,7 +236,7 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
         }
         #endregion
-       
+
         #region private methods
         /// <summary>
         /// Returns user email string
