@@ -8,16 +8,21 @@ namespace Classifieds.UserService.BusinessServices
     {
         #region Private Variables
         private readonly IUserRepository<ClassifiedsUser> _userRepository;
+        private readonly ISubscriptionRepository<Subscription> _subRepository;
         #endregion
 
         #region Constructor
-        public UserService(IUserRepository<ClassifiedsUser> userRepository)
+        public UserService(IUserRepository<ClassifiedsUser> userRepository, ISubscriptionRepository<Subscription> subRepository)
         {
             _userRepository = userRepository;
+            _subRepository = subRepository;
         }
+
         #endregion
 
         #region Public Methods
+
+        #region User Profile Methods
         /// <summary>
         /// Registers a classifieds user into the database
         /// </summary>
@@ -53,14 +58,13 @@ namespace Classifieds.UserService.BusinessServices
         /// <summary>
         /// Updates user profile.
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="userProfile"></param>
         /// <returns>user profile object</returns>
-        public ClassifiedsUser UpdateUserProfile(string id, ClassifiedsUser userProfile)
+        public ClassifiedsUser UpdateUserProfile(ClassifiedsUser userProfile)
         {
             try
             {
-                return _userRepository.UpdateUserProfile(id, userProfile);
+                return _userRepository.UpdateUserProfile(userProfile);
             }
             catch (Exception ex)
             {
@@ -68,6 +72,114 @@ namespace Classifieds.UserService.BusinessServices
             }
 
         }
+        /// <summary>
+        /// Add user tag
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
+        public bool AddTag(string userEmail, Tags tag)
+        {
+            try
+            {
+              return _userRepository.AddTag(userEmail, tag);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Delete tag of user profile
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
+        public bool DeleteTag(string userEmail, Tags tag)
+        {
+            try
+            {
+               return  _userRepository.DeleteTag(userEmail, tag);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add alert for user
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        public bool AddAlert(string userEmail, Alert alert)
+        {
+            try
+            {
+                return _userRepository.AddAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add alert for user
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        public bool DeleteAlert(string userEmail, Alert alert)
+        {
+            try
+            {
+              return  _userRepository.DeleteAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region AddSubscription
+
+        /// <summary>
+        /// Insert new Subscription item into the database
+        /// </summary>
+        /// <param name="subscriptionObj">Subscription Object</param>
+        /// <returns>Newly added Subscription object</returns>
+        public Subscription AddSubscription(Subscription subscriptionObj)
+        {
+            try
+            {
+                return _subRepository.AddSubscription(subscriptionObj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region DeleteSubscription
+        /// <summary>
+        /// Delete Subscription item for given Id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>deleted Id</returns>
+        public void DeleteSubscription(string id)
+        {
+            try
+            {
+                _subRepository.DeleteSubscription(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion DeleteSubscription
+
         #endregion
     }
 }

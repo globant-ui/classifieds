@@ -16,7 +16,6 @@ using Classifieds.Common.Repositories;
 namespace Classifieds.MastersDataAPI.Tests
 {
     [TestClass]
-    [Ignore]
     public class MasterdataControllerTest
     {
         #region Unit Test Cases
@@ -28,7 +27,7 @@ namespace Classifieds.MastersDataAPI.Tests
         private Mock<ICommonRepository> _mockAuthRepo;
         private readonly List<Category> _classifiedList = new List<Category>();
         private readonly List<string> _categoryList = new List<string>();
-        private const string UrlLocation = "http://localhost/api/Category";
+        private readonly List<string> _subCategoryList = new List<string>();
         private CategoryController _controller;
         #endregion
 
@@ -38,7 +37,7 @@ namespace Classifieds.MastersDataAPI.Tests
         {
             _mockService = new Mock<IMasterDataService>();
             _logger = new Mock<ILogger>();
-            _mockService = new Mock<IMasterDataService>();
+            _mockAuthRepo = new Mock<ICommonRepository>();
             _controller = new CategoryController(_mockService.Object, _logger.Object, _mockAuthRepo.Object);
         }
         #endregion
@@ -50,6 +49,7 @@ namespace Classifieds.MastersDataAPI.Tests
             var lstcategory = GetCategoryDataObject();
             _classifiedList.Add(lstcategory);
             _categoryList.Add("Automotive");
+            _subCategoryList.Add("Car");
         }
 
         #endregion
@@ -64,13 +64,13 @@ namespace Classifieds.MastersDataAPI.Tests
         public void GetAllCategoryTest()
         {
             SetUpClassifiedsListing();
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _mockService.Setup(x => x.GetAllCategory())
            .Returns(_classifiedList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-            var objList = new List<Category>();
-            objList = _controller.GetAllCategory();
+            var objList = _controller.GetAllCategory();
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
@@ -84,6 +84,7 @@ namespace Classifieds.MastersDataAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_GetCategory_ThrowsException()
         {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetAllCategory();
         }
 
@@ -93,6 +94,7 @@ namespace Classifieds.MastersDataAPI.Tests
         [TestMethod]
         public void GetAllCategory_EmptyCategoryTest()
         {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _mockService.Setup(x => x.GetAllCategory())
             .Returns(new List<Category>());
             var result = _controller.GetAllCategory();
@@ -111,14 +113,14 @@ namespace Classifieds.MastersDataAPI.Tests
         [TestMethod]
         public void GetCategorySuggetionTest()
         {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             SetUpClassifiedsListing();
             _mockService.Setup(x => x.GetCategorySuggetion(It.IsAny<string>()))
               .Returns(_categoryList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-            var objList = new List<string>();
-            objList = _controller.GetCategorySuggetion("Auto");
+            var objList = _controller.GetCategorySuggetion("Auto");
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
@@ -132,7 +134,43 @@ namespace Classifieds.MastersDataAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_GetCategorySuggetion_ThrowsException()
         {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetCategorySuggetion(null);
+        }
+
+        #endregion GetCategorySuggetionTest
+
+        #region GetSubCategorySuggetionTest
+
+        /// <summary>
+        ///test positive scenario for Get sub Category list for maching input
+        /// </summary>
+        [TestMethod]
+        public void GetSubCategorySuggetionTest()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            SetUpClassifiedsListing();
+            _mockService.Setup(x => x.GetSubCategorySuggestion(It.IsAny<string>()))
+              .Returns(_subCategoryList);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+
+            //Act
+            var objList = _controller.GetSubCategorySuggestion("Auto");
+
+            //Assert
+            Assert.AreEqual(objList.Count, 1);
+            Assert.AreEqual(objList[0], "Car");
+        }
+
+        /// <summary>
+        /// test for null exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_GetSubCategorySuggetion_ThrowsException()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetSubCategorySuggestion(null);
         }
 
         #endregion GetCategorySuggetionTest
@@ -147,6 +185,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_PostCategoryTest()
         {
             // Arrange
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
             .Returns(GetCategoryDataObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
@@ -180,6 +219,7 @@ namespace Classifieds.MastersDataAPI.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Controller_PostCategory_ThrowsException()
         {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.Post(null);
         }
 
@@ -191,6 +231,7 @@ namespace Classifieds.MastersDataAPI.Tests
         {
             // This version uses a mock UrlHelper.
             // Arrange
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _mockService.Setup(x => x.CreateCategory(It.IsAny<Category>()))
             .Returns(GetCategoryDataObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
@@ -223,7 +264,7 @@ namespace Classifieds.MastersDataAPI.Tests
             {
                 _id = "9",
                 ListingCategory = "Automotive",
-                SubCategory = new string[] { "Car",
+                SubCategory = new[] { "Car",
                                             "Motor Cycle",
                                             "Scooter",
                                             "Bicycle",
@@ -245,6 +286,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_DeleteCategoryTest()
         {
             // Arrange
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             var dataObject = GetCategoryDataObject();
             _mockService.Setup(x => x.DeleteCategory(It.IsAny<string>()));
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
@@ -268,6 +310,7 @@ namespace Classifieds.MastersDataAPI.Tests
         [TestMethod]
         public void Controller_DeleteCatgory_ThrowsException()
         {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.Delete(null);
         }
 
@@ -282,6 +325,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_UpdateCategoryTest()
         {
             // Arrange
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _mockService.Setup(x => x.UpdateCategory(It.IsAny<string>(), It.IsAny<Category>()))
             .Returns(GetCategoryDataObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
@@ -310,6 +354,7 @@ namespace Classifieds.MastersDataAPI.Tests
         [TestMethod]
         public void Controller_UpdateCategory_ThrowsException()
         {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             var updatedProduct = new Category() { ListingCategory = "Automotive", Image = "" };
             _controller.Put(null, updatedProduct);
         }
