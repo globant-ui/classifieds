@@ -13,7 +13,7 @@ namespace Classifieds.Listings.Repository
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];
         private readonly IDBRepository _dbRepository;
-        public enum Status
+        private enum Status
         {
             Active,
             Closed,
