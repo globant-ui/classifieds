@@ -35,10 +35,10 @@ namespace Classifieds.ListingsAPI.Tests
         private Listing GetListObject()
         {
             var listObject = new Listing
-            {               
+            {
                 ListingType = "sale",
                 ListingCategory = "Housing",
-                SubCategory = "2 bhk",
+                SubCategory = "Apartments",
                 Title = "flat on rent",
                 Address = "pune",
                 ContactNo = "12345",
@@ -46,16 +46,16 @@ namespace Classifieds.ListingsAPI.Tests
                 Configuration = "NA",
                 Details = "for rupees 49,00,000",
                 Brand = "Kumar",
-                Price = 90,
+                Price = 45000,
                 YearOfPurchase = 2000,
-                ExpiryDate = "test",
-                Status = "test",
-                Submittedby = "test",
-                SubmittedDate = "test",
-                IdealFor = "test",
-                Furnished = "test",
+                ExpiryDate = "03-02-2018",
+                Status = "Active",
+                SubmittedBy = "v.wadsamudrakar@globant.com",
+                SubmittedDate = "03-02-2018",
+                IdealFor = "Family",
+                Furnished = "yes",
                 FuelType = "test",
-                KmDriven = 123,
+                KmDriven = 5000,
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
@@ -63,7 +63,7 @@ namespace Classifieds.ListingsAPI.Tests
                 IsPublished = true,
                 Negotiable = true,
                 Model = "NA",
-                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;
         }
@@ -160,9 +160,9 @@ namespace Classifieds.ListingsAPI.Tests
         /// <summary>
         /// test for null category returns empty result
         /// </summary>
-        [TestMethod]        
+        [TestMethod]
         public void Repo_GetListingByCategoryTest_NullCategory()
-        {   
+        {
             var nullResult = _listingRepo.GetListingsByCategory(null, 1, 5, false);
             Assert.AreEqual(0, nullResult.Count);
         }
@@ -175,7 +175,7 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var lstObject = GetListObject();
-            
+
             //Act
             var result = _listingRepo.Add(lstObject);
 
@@ -209,7 +209,7 @@ namespace Classifieds.ListingsAPI.Tests
             _listingRepo.Delete(result._id);
 
             var newresult = _listingRepo.GetListingById(result._id);
-            
+
             //Assert
             Assert.IsNull(newresult);
 
@@ -224,7 +224,7 @@ namespace Classifieds.ListingsAPI.Tests
         {
             _listingRepo.Delete("qwer");
         }
-       
+
         /// <summary>
         /// test positive scenario for updating listing object
         /// </summary>
@@ -272,7 +272,7 @@ namespace Classifieds.ListingsAPI.Tests
             Assert.IsNotNull(result, null);
 
             //Act
-             var newResult = _listingRepo.GetListingsBySubCategory(result.SubCategory, 1, 5, false);
+            var newResult = _listingRepo.GetListingsBySubCategory(result.SubCategory, 1, 5, false);
 
             //Assert
             Assert.IsNotNull(newResult[0]);
@@ -341,9 +341,97 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_GetTopListingTest_ThrowException()
         {
             //Act
-            _listingRepo.GetTopListings(2);            
+            _listingRepo.GetTopListings(2);
         }
+
+        #region GetListingsByEmailTest
+
+        /// <summary>
+        /// test positive scenario for Get Listing By Email 
+        /// </summary>
+        [TestMethod]
+        public void Repo_GetListingsByEmailTest()
+        {
+            // Arrange
+            SetUpClassifiedsListing();
+
+            //Act
+            var result = _listingRepo.GetListingsByEmail(_classifiedList[0].SubmittedBy);
+
+            //Assert            
+            Assert.IsNotNull(result[0]);
+        }
+
+        /// <summary>
+        /// test for incorrect email return null;
+        /// </summary>
+        [TestMethod]
+        public void Repo_GetListingsByEmailTest_Null()
+        {
+            //Act
+            var result = _listingRepo.GetListingsByEmail(null);
+
+            //Assert
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// test for incorrect email throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Repo_GetListingByEmailTest_InvalidEmail_ThrowException()
+        {
+            var result = _listingRepo.GetListingsByEmail("qazxsw");
+            Assert.AreEqual(0, result.Count);
+        }
+
         #endregion
 
+        #region GetListingsByCategoryAndSubCategoryTest
+
+        /// <summary>
+        /// test positive scenario for Get Listing By Category and SubCategory 
+        /// </summary>
+        [TestMethod]
+        public void GetListingsByCategoryAndSubCategoryTest()
+        {
+            // Arrange
+            SetUpClassifiedsListing();
+
+            //Act
+            var result = _listingRepo.GetListingsByCategoryAndSubCategory(_classifiedList[0].ListingCategory, _classifiedList[0].SubCategory, _classifiedList[0].SubmittedBy, 1, 5, false);
+
+            //Assert            
+            Assert.IsNotNull(result[0]);
+        }
+
+        /// <summary>
+        /// test for incorrect Category And SubCategory return null;
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AssertFailedException))]
+        public void Repo_GetListingsByCategoryAndSubCategoryTest_Null()
+        {
+            //Act
+            var result = _listingRepo.GetListingsByCategoryAndSubCategory(null, null, null, 1, 5, false);
+
+            //Assert
+            Assert.IsNull(result, "Null");
+        }
+
+        /// <summary>
+        /// test for incorrect Category And SubCategory throws exception
+        /// </summary>
+        [TestMethod]
+        public void Repo_GetListingByCategoryAndSubCategoryTest_Invalid()
+        {
+            var result = _listingRepo.GetListingsByCategoryAndSubCategory("qazxsw", "qazxsw", "qazxsw", 1, 5, false);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #endregion
     }
 }

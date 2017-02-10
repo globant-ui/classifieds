@@ -12,5 +12,7 @@ namespace Classifieds.Listings.BusinessServices
         Listing UpdateListing(string id, Listing listObject);
         void DeleteListing(string id);
         List<Listing> GetTopListings(int noOfRecords);
+        List<Listing> GetListingsByEmail(string email);
+        List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
     }
 }
