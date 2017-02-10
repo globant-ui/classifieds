@@ -30,7 +30,7 @@
             </div>
 
             <div>
-              <span *ngFor = "let res of selectedInterests; let i=index;">
+              <span *ngFor = "let res of obj.selectedInterests; let i=index;">
                 {{res}}
                 <button value="X" (click)="deleteIntrest(i, res);">X</button>
               </span>

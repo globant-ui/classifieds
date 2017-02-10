@@ -19,19 +19,21 @@ let tpls = require('../tpls/select-interest.component.html').toString();
 export class SelectInterestComponent {
 
 private delayTimer  : any = null;
-private subCategoryUrl:string = "http://localhost:3000/app/_common/select-interest/json/select-interest.json";
+private subCategoryUrl:string = "http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=";
 private interestResult:any ;
-private selectedInterests = [];
+private obj = {
+  'selectedInterests': [],
+  'preferedLoc': []
+};
 private enabledDropdown : boolean = false;
+
 
   constructor(
                  private _settingsService: SettingsService,
                  private _cservice:CService) {}
 
-    fetchInterest( e:Event,val ){
-
+    fetchInterest( e:Event, val ){
         if ( val.length >= 3 ) {
-            this.subCategoryUrl = this.subCategoryUrl;
             //Delay of some time to slow down the results
             clearTimeout(this.delayTimer);
 
@@ -42,10 +44,10 @@ private enabledDropdown : boolean = false;
     }
       //get call to get the dropdowndown list
     fetchInterestData( text: string ) {
-      this._cservice.observableGetHttp( this.subCategoryUrl, null, false )
+      this._cservice.observableGetHttp( this.subCategoryUrl + text, null, false )
           .subscribe((res: Response) => {
-              if ( res['subCategory'] && res['subCategory'][ 'length' ] > 0 ) {
-                  this.interestResult = res['subCategory'];
+              if ( res[ 'length' ] > 0 ) {
+                  this.interestResult = res;
                   this.enabledDropdown = true;
               } else {
                   console.log("No result found!!!");
@@ -58,13 +60,14 @@ private enabledDropdown : boolean = false;
 
 //to select an item from dropdown
     selectInterest( val ){
-        this.selectedInterests.push( val );
+        this.obj.selectedInterests.push( val );
         this.enabledDropdown = false;
         this.interestResult = [];
     }
      
-    //to delete an item from tag 
+    //to delete an item from tagList
     deleteIntrest( index, val ) {
-      this.selectedInterests.splice( index, 1 );
+      this.obj.selectedInterests.splice( index, 1 );
     }
+   
 } 
