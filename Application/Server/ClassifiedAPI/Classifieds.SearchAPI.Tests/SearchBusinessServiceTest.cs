@@ -14,8 +14,8 @@ namespace Classifieds.SearchAPI.Tests
     public class SearchBusinessServiceTest
     {
         #region Private Variables
-            private Mock<ISearchRepository<Listing>> _moqAppManager;
-            private ISearchService _service;
+        private Mock<ISearchRepository<Listing>> _moqAppManager;
+        private ISearchService _service;
         #endregion
 
         #region Initialization
@@ -46,7 +46,7 @@ namespace Classifieds.SearchAPI.Tests
                 YearOfPurchase = 123,
                 ExpiryDate = "test",
                 Status = "test",
-                Submittedby = "test",
+                SubmittedBy = "test",
                 SubmittedDate = "test",
                 IdealFor = "test",
                 Furnished = "test",
@@ -55,16 +55,16 @@ namespace Classifieds.SearchAPI.Tests
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
 
             var classifiedList = new List<Listing>();
             classifiedList.Add(classified);
-            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(classifiedList);
+            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(classifiedList);
 
         }
         #endregion
-         
+
         #region Test Methods
         /// <summary>
         /// Test positive scenario for FreeTextSearchTest by any string
@@ -75,7 +75,7 @@ namespace Classifieds.SearchAPI.Tests
             //Arrange
             SetUpClassifields();
             //Act
-            var classifieds = _service.FullTextSearch("searchText");
+            var classifieds = _service.FullTextSearch("searchText", 1, 5, false);
             //Assert
             Assert.AreEqual(classifieds.Count, 1);
 
@@ -88,9 +88,9 @@ namespace Classifieds.SearchAPI.Tests
         public void BusinessService_FreeTextSearch_EmptyResult_Test()
         {
             //Arrange
-            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Returns(new List<Listing>());
+            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<Listing>());
             //Act
-            var result = _service.FullTextSearch("searchText");
+            var result = _service.FullTextSearch("searchText", 1, 5, false);
             //Assert
             Assert.AreEqual(result.Count, 0);
             Assert.IsInstanceOfType(result, typeof(IList<Listing>));
@@ -105,12 +105,12 @@ namespace Classifieds.SearchAPI.Tests
         {
             //Arrange
             ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>())).Throws(ex);
-            _service.FullTextSearch(null);
+            _moqAppManager.Setup(x => x.FullTextSearch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Throws(ex);
+            _service.FullTextSearch(null, 1, 5, false);
         }
 
-        #endregion 
+        #endregion
 
-        
+
     }
 }

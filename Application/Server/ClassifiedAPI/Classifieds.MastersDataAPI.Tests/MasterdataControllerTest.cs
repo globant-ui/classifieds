@@ -16,7 +16,6 @@ using Classifieds.Common.Repositories;
 namespace Classifieds.MastersDataAPI.Tests
 {
     [TestClass]
-    
     public class MasterdataControllerTest
     {
         #region Unit Test Cases
@@ -27,6 +26,7 @@ namespace Classifieds.MastersDataAPI.Tests
         private Mock<ILogger> _logger;
         private Mock<ICommonRepository> _mockAuthRepo;
         private readonly List<string> _categoryList = new List<string>();
+        private readonly List<string> _subCategoryList = new List<string>();
         private CategoryController _controller;
         private readonly List<CategoryViewModel> _categoryViewModelList = new List<CategoryViewModel>();
         #endregion
@@ -47,6 +47,7 @@ namespace Classifieds.MastersDataAPI.Tests
         private void SetUpClassifiedsListing()
         {
             _categoryList.Add("Automotive");
+            _subCategoryList.Add("Car");
         }
 
         #endregion
@@ -188,6 +189,41 @@ namespace Classifieds.MastersDataAPI.Tests
 
         #endregion GetCategorySuggetionTest
 
+        #region GetSubCategorySuggetionTest
+
+        /// <summary>
+        ///test positive scenario for Get sub Category list for maching input
+        /// </summary>
+        [TestMethod]
+        public void GetSubCategorySuggetionTest()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            SetUpClassifiedsListing();
+            _mockService.Setup(x => x.GetSubCategorySuggestion(It.IsAny<string>()))
+              .Returns(_subCategoryList);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+
+            //Act
+            var objList = _controller.GetSubCategorySuggestion("Auto");
+
+            //Assert
+            Assert.AreEqual(objList.Count, 1);
+            Assert.AreEqual(objList[0], "Car");
+        }
+
+        /// <summary>
+        /// test for null exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_GetSubCategorySuggetion_ThrowsException()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetSubCategorySuggestion(null);
+        }
+
+        #endregion GetCategorySuggetionTest
+
         #region PostMasterDataTestCases
 
 
@@ -265,6 +301,7 @@ namespace Classifieds.MastersDataAPI.Tests
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.AreEqual(true, response.IsSuccessStatusCode);
         }
+
         
         #endregion PostMasterDataTestCases
 
@@ -277,6 +314,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_DeleteCategoryTest()
         {
             // Arrange
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             var dataObject = GetCategoryDataObject();
             _mockService.Setup(x => x.DeleteCategory(It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");

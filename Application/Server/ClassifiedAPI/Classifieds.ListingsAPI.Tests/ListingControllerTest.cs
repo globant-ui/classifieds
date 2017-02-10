@@ -50,30 +50,34 @@ namespace Classifieds.ListingsAPI.Tests
             Listing listObject = new Listing
             {
                 _id = "9",
-                ListingType = "test",
+                ListingType = "sale",
                 ListingCategory = "Housing",
-                SubCategory = "test",
-                Title = "test",
-                Address = "AAA",
-                ContactNo = "1111",
+                SubCategory = "Apartments",
+                Title = "flat on rent",
+                Address = "pune",
+                ContactNo = "12345",
                 ContactName = "AAA AAA",
                 Configuration = "NA",
-                Details = "for rupees 20,000,000,000",
-                Brand = "test",
-                Price = 123,
-                YearOfPurchase = 123,
-                ExpiryDate = "test",
-                Status = "test",
-                Submittedby = "test",
-                SubmittedDate = "test",
-                IdealFor = "test",
-                Furnished = "test",
+                Details = "for rupees 49,00,000",
+                Brand = "Kumar",
+                Price = 45000,
+                YearOfPurchase = 2000,
+                ExpiryDate = "03-02-2018",
+                Status = "Active",
+                SubmittedBy = "v.wadsamudrakar@globant.com",
+                SubmittedDate = "03-02-2018",
+                IdealFor = "Family",
+                Furnished = "yes",
                 FuelType = "test",
-                KmDriven = 123,
+                KmDriven = 5000,
                 YearofMake = 123,
                 Dimensions = "test",
                 TypeofUse = "test",
-                Photos = new [] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg"}
+                Type = "2 BHK",
+                IsPublished = true,
+                Negotiable = true,
+                Model = "NA",
+                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;
 
@@ -99,7 +103,7 @@ namespace Classifieds.ListingsAPI.Tests
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].Title, "test");
+            Assert.AreEqual(objList[0].Title, "flat on rent");
         }
 
         /// <summary>
@@ -109,17 +113,17 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingsBySubCategoryTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>()))
+            _mockService.Setup(x => x.GetListingsBySubCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(_classifiedList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
 
             //Act            
-            var objList = _controller.GetListingsBySubCategory("test");
+            var objList = _controller.GetListingsBySubCategory("Apartments", 1, 5);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].SubCategory, "test");
+            Assert.AreEqual(objList[0].SubCategory, "Apartments");
         }
 
         /// <summary>
@@ -141,9 +145,19 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingsBySubCategory_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsBySubCategory(null);
+            _controller.GetListingsBySubCategory(null, 1, 5);
         }
 
+        /// <summary>
+        /// test for negative start index and page count giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void Controller_GetListingsBySubCategory_ThrowsExceptionWithNegativeParams()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetListingsBySubCategory("test", -2, 5);
+        }
         /// <summary>
         /// test positive scenario get listing collection by category
         /// </summary>
@@ -154,10 +168,10 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            _mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>())).Returns(_classifiedList);
+            _mockService.Setup(service => service.GetListingsByCategory(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(_classifiedList);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            var values = _controller.GetListingsByCategory("Housing");
+            var values = _controller.GetListingsByCategory("Housing", 1, 5);
 
             //Assert
             Assert.AreEqual(values.Count, 1);
@@ -172,9 +186,19 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingByCategory_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsByCategory(null);
+            _controller.GetListingsByCategory(null, 1, 5);
         }
 
+        /// <summary>
+        ///  test for negative category giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void GetListingByCategory_ThrowsExceptionWithNegativeParams()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetListingsByCategory("Housing", 1, -5);
+        }
         /// <summary>
         /// test positive scenario for PostList and verify response header location
         /// </summary>
@@ -342,7 +366,7 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             List<Listing> list = new List<Listing>();
-            for (int i = 0; i < 5; i++) 
+            for (int i = 0; i < 5; i++)
             {
                 list.Add(GetListObject());
             }
@@ -378,7 +402,75 @@ namespace Classifieds.ListingsAPI.Tests
 
             //Assert
             Assert.AreEqual(objList.Count, 10);
-        }       
+        }
+
+        #region GetListingsByEmailTest
+        /// <summary>
+        /// test positive scenario for Get Listing By Email  
+        /// </summary>
+        [TestMethod]
+        public void GetListingsByEmailTest()
+        {
+            SetUpClassifiedsListing();
+            _mockService.Setup(x => x.GetListingsByEmail(It.IsAny<string>()))
+                .Returns(_classifiedList);
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+
+            //Act           
+            var objList = _controller.GetListingsByEmail("v.wadsamudrakar@globant.com");
+
+            //Assert
+            Assert.AreEqual(objList.Count, 1);
+            Assert.AreEqual(objList[0].SubmittedBy, "v.wadsamudrakar@globant.com");
+        }
+
+        /// <summary>
+        /// test for null listing Email giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_GetListingByEmail_ThrowsException()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetListingsByEmail(null);
+        }
+
+        #endregion GetListingsByEmailTest
+
+        #region GetListingsByCategoryAndSubCategoryTest
+        /// <summary>
+        /// test positive scenario for Get Listing By Category And SubCategory  
+        /// </summary>
+        [TestMethod]
+        public void GetListingsByCategoryAndSubCategoryTest()
+        {
+            SetUpClassifiedsListing();
+            _mockService.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(_classifiedList);
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+
+            //Act           
+            var objList = _controller.GetListingsByCategoryAndSubCategory("Housing", "Apartments", "santosh.kale@globant.com", 1, 5);
+
+            //Assert
+            Assert.AreEqual(objList.Count, 1);
+            Assert.AreEqual(objList[0].ListingCategory, "Housing", objList[0].SubCategory, "Apartments", objList[0].SubmittedBy, "santosh.kale@globant.com", 1, 5);
+        }
+
+        /// <summary>
+        /// test for null listing Email giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_GetListingByCategoryAndSubCategory_ThrowsException()
+        {
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.GetListingsByCategoryAndSubCategory(null, null, null, 1, -5, false);
+        }
+
+        #endregion GetListingsByEmailTest
+
         #endregion
     }
 }

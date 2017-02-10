@@ -85,6 +85,28 @@ namespace Classifieds.MastersData.BusinessServices
 
         #endregion
 
+        /// <summary>
+        /// Returns All sub Categories matching the imput text.
+        /// </summary>
+        /// <param name="subCategoryText">sub Category Text</param>
+        /// <returns>All Sub Category List</returns>
+
+        #region GetSubCategorySuggetion
+
+        public List<string> GetSubCategorySuggestion(string subCategoryText)
+        {
+            try
+            {
+                return _masterDataRepository.GetSubCategorySuggestion(subCategoryText).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
         #region CreateCategory
 
         /// <summary>

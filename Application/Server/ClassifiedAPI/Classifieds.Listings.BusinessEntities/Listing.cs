@@ -31,7 +31,7 @@ namespace Classifieds.Listings.BusinessEntities
         public Int32 YearOfPurchase { get; set; }
         public string ExpiryDate { get; set; }
         public string Status { get; set; }
-        public string Submittedby { get; set; }
+        public string SubmittedBy { get; set; }
         public string SubmittedDate { get; set; }
         public string IdealFor { get; set; }
         public string Furnished { get; set; }
@@ -40,6 +40,10 @@ namespace Classifieds.Listings.BusinessEntities
         public Int32 YearofMake { get; set; }
         public string Dimensions { get; set; }
         public string TypeofUse { get; set; }
+        public string Type { get; set; }
+        public string Model { get; set; }
+        public bool Negotiable { get; set; }
+        public bool IsPublished { get; set; }
         public string[] Photos { get; set; }
     }
 }

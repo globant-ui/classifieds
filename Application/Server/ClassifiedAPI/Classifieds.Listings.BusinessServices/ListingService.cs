@@ -10,11 +10,17 @@ namespace Classifieds.Listings.BusinessServices
     {
         #region Private Variables
         private readonly IListingRepository<Listing> _listingRepository;
+        public enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
         #endregion
 
         #region Constructor
         public ListingService(IListingRepository<Listing> listingRepository)
-        {            
+        {
             _listingRepository = listingRepository;
         }
         #endregion
@@ -40,30 +46,36 @@ namespace Classifieds.Listings.BusinessServices
         /// <summary>
         /// Returns the listings for given sub category
         /// </summary>
-        /// <param name="subCategory">listing Sub Category</param>
-        /// <returns>List of Listing</returns>
-        public List<Listing> GetListingsBySubCategory(string subCategory)
+        /// <param name="subCategory">Sub category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        //// <param name="isLast">Whether last page</param>
+        /// <returns>Collection of listings</returns>
+        public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                return _listingRepository.GetListingsBySubCategory(subCategory).ToList();
+                return _listingRepository.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-       
+
         /// <summary>
-        /// service method returns collection of listing
+        /// service method returns collection of listings based on category
         /// </summary>
-        /// <param name="category">listing category</param>
-        /// <returns>collection(listing)</returns>
-        public List<Listing> GetListingsByCategory(string category)
+        /// <param name="category">Cateogry</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
+        /// <returns>Collection of listings</returns>
+        public List<Listing> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                return _listingRepository.GetListingsByCategory(category);
+                return _listingRepository.GetListingsByCategory(category, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {
@@ -131,13 +143,57 @@ namespace Classifieds.Listings.BusinessServices
         {
             try
             {
-               return _listingRepository.GetTopListings(noOfRecords);
+                return _listingRepository.GetTopListings(noOfRecords);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        #region GetListingsByEmail
+        /// <summary>
+        /// Returns the collection of listing for given email
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <returns></returns>
+        public List<Listing> GetListingsByEmail(string email)
+        {
+            try
+            {
+                return _listingRepository.GetListingsByEmail(email).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion GetListingsByEmail
+
+        #region GetListingsByCategoryAndSubCategory
+
+        /// <summary>
+        /// service method returns collection of listing by Ccatgeory and Subcategory
+        /// </summary>
+        /// <param name="category">listing category</param>
+        /// <param name="subCategory">listing subCategory</param>
+        /// <param name="email">listing email</param>
+        /// <param name="status">listing status</param>
+        /// <returns>collection(listing)</returns>
+        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast)
+        {
+            try
+            {
+                return _listingRepository.GetListingsByCategoryAndSubCategory(category, subCategory, email, startIndex, pageCount, isLast);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByCategoryAndSubCategory
+
         #endregion
     }
 }

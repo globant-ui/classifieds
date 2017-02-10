@@ -101,6 +101,37 @@ namespace Classifieds.MastersDataAPI.Controllers
 
         #endregion
 
+        #region GetSubCategorySuggestion
+        /// <summary>
+        /// Returns All sub Categories matching the input text.
+        /// </summary>
+        /// <param name="subCategoryText">sub Category Text</param>
+        /// <returns>sub Category Suggestion result</returns>
+        public List<string> GetSubCategorySuggestion(string subCategoryText)
+        {
+            List<string> result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                result = _masterDataService.GetSubCategorySuggestion(subCategoryText).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+            return result;
+
+        }
+
+        #endregion
+
         #region PostCategory
 
         /// <summary>

@@ -133,6 +133,10 @@
       <Project>{9b4e84fd-6331-4b4f-a82d-6ad79d7a7c62}</Project>
       <Name>Classifieds.Search.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Classifieds.UserService.BusinessEntities\Classifieds.UserService.BusinessEntities.csproj">
+      <Project>{afbec199-55c8-414b-8104-e2d3f39c2bc5}</Project>
+      <Name>Classifieds.UserService.BusinessEntities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Classifieds.UserService.BusinessServices\Classifieds.UserService.BusinessServices.csproj">
       <Project>{04264ee5-d1d8-4cbc-8b1b-84ece383c4d1}</Project>
       <Name>Classifieds.UserService.BusinessServices</Name>
