@@ -49,7 +49,7 @@ namespace Classifieds.Listings.BusinessServices
         /// <param name="subCategory">Sub category</param>
         /// <param name="startIndex">start index for page</param>
         /// <param name="pageCount">No of listings to include in result</param>
-        //// <param name="isLast">Whether last page</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
         public List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast)
         {
@@ -155,13 +155,16 @@ namespace Classifieds.Listings.BusinessServices
         /// <summary>
         /// Returns the collection of listing for given email
         /// </summary>
-        /// <param name="email">Email</param>
+        /// <param name="email">listing email</param>
+        /// <param name="startIndex">listing startIndex</param>
+        /// <param name="pageCount">listing pageCount</param>
+        /// <param name="isLast">listing isLast</param>
         /// <returns></returns>
-        public List<Listing> GetListingsByEmail(string email)
+        public List<Listing> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                return _listingRepository.GetListingsByEmail(email).ToList();
+                return _listingRepository.GetListingsByEmail(email, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {
@@ -178,7 +181,9 @@ namespace Classifieds.Listings.BusinessServices
         /// <param name="category">listing category</param>
         /// <param name="subCategory">listing subCategory</param>
         /// <param name="email">listing email</param>
-        /// <param name="status">listing status</param>
+        /// <param name="startIndex">listing startIndex</param>
+        /// <param name="pageCount">listing pageCount</param>
+        /// <param name="isLast">listing isLast</param>
         /// <returns>collection(listing)</returns>
         public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast)
         {

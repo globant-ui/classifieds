@@ -356,7 +356,7 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            var result = _listingRepo.GetListingsByEmail(_classifiedList[0].SubmittedBy);
+            var result = _listingRepo.GetListingsByEmail(_classifiedList[0].SubmittedBy, 1, 5, false);
 
             //Assert            
             Assert.IsNotNull(result[0]);
@@ -369,7 +369,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_GetListingsByEmailTest_Null()
         {
             //Act
-            var result = _listingRepo.GetListingsByEmail(null);
+            var result = _listingRepo.GetListingsByEmail(null, 1, -5, false);
 
             //Assert
             Assert.IsNull(result);
@@ -382,7 +382,7 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_GetListingByEmailTest_InvalidEmail_ThrowException()
         {
-            var result = _listingRepo.GetListingsByEmail("qazxsw");
+            var result = _listingRepo.GetListingsByEmail("qazxsw", 1, 5, false);
             Assert.AreEqual(0, result.Count);
         }
 

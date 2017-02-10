@@ -412,13 +412,13 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingsByEmailTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetListingsByEmail(It.IsAny<string>()))
+            _mockService.Setup(x => x.GetListingsByEmail(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(_classifiedList);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act           
-            var objList = _controller.GetListingsByEmail("v.wadsamudrakar@globant.com");
+            var objList = _controller.GetListingsByEmail("v.wadsamudrakar@globant.com", 1, 5, false);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);

@@ -12,7 +12,7 @@ namespace Classifieds.Listings.Repository
         TEntity Update(string id, TEntity entity);
         void Delete(string id);
         List<TEntity> GetTopListings(int noOfRecords);
-        List<TEntity> GetListingsByEmail(string email);
+        List<TEntity> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast);
         List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
     }
 }
