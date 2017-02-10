@@ -41,11 +41,11 @@ namespace Classifieds.MastersData.Repository.Test
             Category dataObject = new Category
             {
                 ListingCategory = "Automotive",
-                SubCategory = new String[] { "Car",
-                                            "Motor Cycle",
-                                            "Scooter",
-                                            "Bicycle",
-                                            "Accessories" },
+                //SubCategory = new String[] { "Car",
+                //                            "Motor Cycle",
+                //                            "Scooter",
+                //                            "Bicycle",
+                //                            "Accessories" },
                 Image = "Automotive.png"
             };
             return dataObject;

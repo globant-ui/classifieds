@@ -5,11 +5,14 @@ namespace Classifieds.MastersData.BusinessServices
 {
     public interface IMasterDataService
     {
-        List<Category> GetAllCategory();
+        List<CategoryViewModel> GetAllCategory();
         Category CreateCategory(Category listObject);
         Category UpdateCategory(string id, Category listObject);
         void DeleteCategory(string id);
         List<string> GetCategorySuggetion(string categoryText);
         List<string> GetSubCategorySuggestion(string subCategoryText);
+        SubCategory GetAllFiltersBySubCategory(string subCategory);
+        Filters GetFiltersByFilterName(string subCategory, string filterName);
+        List<string> GetFilterNamesOnly(string subCategory);
     }
 }
