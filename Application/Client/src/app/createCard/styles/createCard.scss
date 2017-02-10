@@ -1,6 +1,5 @@
 @import "../../_common/styles/sass/style";
 
-
 .container{
 	padding-top: 30px;
 	h1{
@@ -140,6 +139,9 @@
 			}
 			.noPadding{
 				padding: 0 !important;
+				#image-upload{
+					display:none;
+				}
 			}
 			.img-icon{
 				padding: 20px 10px;

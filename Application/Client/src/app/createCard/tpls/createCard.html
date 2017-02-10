@@ -37,7 +37,7 @@
               done
             </li>
         </ol>
-        <form>
+         <form [formGroup]="myForm" novalidate>
             <div class="row form-group">
               <div class="col-lg-3 col-md-3 col-xs-12"> 
                 <label class="uppercaseText">i want to</label>
@@ -45,10 +45,10 @@
               <div class="col-lg-9 col-md-9 col-xs-12">
                 <fieldset id="typeListing">
                   <label class="radio-inline">
-                    <input type="radio" name="typeListing" checked="checked">sell
+                    <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="checked">sale
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="typeListing">rent
+                    <input type="radio" name="cardType" formControlName="cardType" value="rent">rent
                   </label>
                 </fieldset>
               </div>
@@ -61,54 +61,22 @@
             <div class="row form-group">
               <div class="col-lg-12 col-md-12 col-xs-12">
                 <ul class="nav navbar-nav">
-                  <li>
-                    <div class="img-icon">
+                  <li *ngFor="let category of categories">
+                    <div class="img-icon" (click)="reloadSubcategories(category)">
                        <span class="spriteimage {{category.ListingCategory}}Icon"></span>
                     </div>
                   </li>
-                  <!--<li>
-                    <div class="img-icon selectedCategory">
-                      <span class="spriteimage automotiveIcon"></span>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="img-icon">
-                      <span class="spriteimage furnitureIcon"></span>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="img-icon">
-                      <span class="spriteimage electronicIcon"></span>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="img-icon">
-                      <span class="spriteimage assortedIcon"></span>
-                    </div>
-                  </li>-->
                 </ul>
                 </div>
               </div>
               <div class="row form-group">
                 <div class="col-lg-4 col-md-4 col-xs-12"> 
-                  <label class="uppercaseText">select the sub-category <span>Automotive</span></label>
+                  <label class="uppercaseText">select the sub-category</label>
                 </div>
                 <div class="col-lg-8 col-md-8 col-xs-12">
                   <fieldset id="sub-category">
-                    <label class="radio-inline capitalText">
-                      <input type="radio" name="sub-category" checked="checked">cars
-                    </label>
-                    <label class="radio-inline capitalText">
-                      <input type="radio" name="sub-category">motorcycles
-                    </label>
-                    <label class="radio-inline capitalText">
-                      <input type="radio" name="sub-category">bicycles
-                    </label>
-                    <label class="radio-inline capitalText">
-                      <input type="radio" name="sub-category">scooters
-                    </label>
-                    <label class="radio-inline capitalText">
-                      <input type="radio" name="sub-category">accessories
+                    <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories"> 
+                      <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}">{{subCategory}}
                     </label>
                   </fieldset>
                 </div>
@@ -123,14 +91,15 @@
                 <div class="col-lg-12 col-md-12 col-xs-12">
                   <ul class="nav navbar-nav">
                     <li>
-                        <div class="img-icon noPadding">
-                            <img src="../../../../assets/img/similarListing.png">
+                        <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
+                            <img src="{{img}}">
                         </div>
                         <div class="img-icon noPadding">
-                            <img src="../../../../assets/img/similarListing.png">
-                        </div>
-                        <div class="img-icon noPadding">
-                            <img src="../../../../assets/img/addImage.png" />
+                            <label for="image-upload">
+                                <img src="../../../../assets/img/addImage.png" />
+                            </label>
+                            <input id="image-upload" type="file" (change)="fileNameChanged($event)" />
+                            
                         </div>
                     </li>
                   </ul>
@@ -139,7 +108,11 @@
             </div>
             <div class="row form-group">
               <div class="col-lg-5 col-md-5 col-xs-12">
-                  <input class="fullWidth" type="text" name="Type" placeholder="Type" />
+                  <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
+                  <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
+                      Title is required
+                  </div>
+                  
               </div>
               <div class="col-lg-5 col-md-5 col-xs-12">
                   <select class="locationSelect fullWidth">
@@ -152,17 +125,23 @@
             </div>
             <div class="row form-group">
               <div class="col-lg-5 col-md-5 col-xs-12">
-                  <input class="fullWidth" type="text" name="Price" placeholder="Price" />
+                  <input #price class="fullWidth form-control" type="text" id="price" placeholder="Price" required />
+                  <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
+                    Price is required
+                  </div>-->
               </div>
               <div class="col-lg-5 col-md-5 col-xs-12">
                   <div class="checkbox">
-                    <label><input type="checkbox" checked> Negotaible</label>
+                    <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> Negotaible</label>
                   </div>
               </div>
             </div>
             <div class="row form-group">
               <div class="col-lg-10 col-md-10 col-xs-12">
-                  <input class="fullWidth" type="text" name="shortDeasription" placeholder="Short Description" />
+                  <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" />
+                  <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
+                      Short Description is required.
+                  </div>
               </div>
             </div>
             <div class="row form-group">
@@ -215,10 +194,10 @@
             </div>
             <div class="row form-group buttonRow">
                 <div class="col-lg-6 col-md-6 col-xs-12">
-                    <button class="capitalText tempSavebutton">Save and close</button>
+                    <button class="capitalText tempSavebutton" (click)="createCard('saveClose')">Save and close</button>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">
-                    <button class="uppercaseText createButton pull-right"> Create </button>
+                    <button class="uppercaseText createButton pull-right" (click)="createCard('create')"> Create </button>
                 </div>
             </div>
         </form>
