@@ -13,6 +13,12 @@ namespace Classifieds.Listings.Repository
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];
         private readonly IDBRepository _dbRepository;
+        public enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
         private MongoCollection<TEntity> Classifieds
         {
             get { return _dbRepository.GetCollection<TEntity>(_collectionClassifieds); }
@@ -37,8 +43,9 @@ namespace Classifieds.Listings.Repository
             try
             {
                 var query = Query<TEntity>.EQ(p => p._id, id);
-                var partialRresult = Classifieds.Find(query)//.Where(p => p._id == id)
-                                        .ToList();
+                var partialRresult = Classifieds.Find(query)
+                                                .Where(p => p.Status == Status.Active.ToString())
+                                                .ToList();
 
                 List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
@@ -66,9 +73,10 @@ namespace Classifieds.Listings.Repository
                 if (isLast)
                 {
                     int count = Classifieds.FindAll()
-                    .Where(p => p.SubCategory == subCategory)
+                   .Where(p => (p.SubCategory == subCategory) && (p.Status == Status.Active.ToString()))
                     .Count();
                     skip = GetLastPageSkipValue(pageCount, count);
+
                 }
                 else
                 {
@@ -76,7 +84,7 @@ namespace Classifieds.Listings.Repository
                 }
 
                 List<TEntity> listings = Classifieds.FindAll()
-                                            .Where(p => p.SubCategory == subCategory)
+                                            .Where(p => (p.SubCategory == subCategory) && (p.Status == Status.Active.ToString()))
                                             .Select(p => p)
                                             .Skip(skip)
                                             .Take(pageCount)
@@ -106,7 +114,7 @@ namespace Classifieds.Listings.Repository
                 if (isLast)
                 {
                     int count = Classifieds.FindAll()
-                    .Where(p => p.ListingCategory == category)
+                    .Where(p => (p.ListingCategory == category) && (p.Status == Status.Active.ToString()))
                     .Count();
                     skip = GetLastPageSkipValue(pageCount, count);
                 }
@@ -115,7 +123,7 @@ namespace Classifieds.Listings.Repository
                     skip = startIndex - 1;
                 }
                 List<TEntity> listings = Classifieds.FindAll()
-                                            .Where(p => p.ListingCategory == category)
+                                            .Where(p => (p.ListingCategory == category) && (p.Status == Status.Active.ToString()))
                                             .Select(p => p)
                                             .Skip(skip)
                                             .Take(pageCount)
@@ -262,13 +270,30 @@ namespace Classifieds.Listings.Repository
 
         #region GetListingsByCategoryAndSubCategory
 
-        public List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory)
+        public List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast)
         {
             try
             {
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds
+                   .FindAll()
+                    .Count(p => (p.ListingCategory == category) && (p.SubCategory == subCategory) && (p.SubmittedBy != email) && (p.Status == Status.Active.ToString()));
+                    skip = GetLastPageSkipValue(pageCount, count);
+
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
                 List<TEntity> result = Classifieds.FindAll()
-                                            .Where(p => (p.ListingCategory == category) && (p.SubCategory == subCategory))
+                                            .Where(p => (p.ListingCategory == category) && (p.SubCategory == subCategory) && (p.SubmittedBy != email) && (p.Status == Status.Active.ToString()))
+                                             .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
                                             .ToList();
+                result = result.Count > 0 ? result.ToList() : null;
                 return result;
             }
             catch (MongoException ex)

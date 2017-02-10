@@ -10,11 +10,17 @@ namespace Classifieds.Listings.BusinessServices
     {
         #region Private Variables
         private readonly IListingRepository<Listing> _listingRepository;
+        public enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
         #endregion
 
         #region Constructor
         public ListingService(IListingRepository<Listing> listingRepository)
-        {            
+        {
             _listingRepository = listingRepository;
         }
         #endregion
@@ -137,7 +143,7 @@ namespace Classifieds.Listings.BusinessServices
         {
             try
             {
-               return _listingRepository.GetTopListings(noOfRecords);
+                return _listingRepository.GetTopListings(noOfRecords);
             }
             catch (Exception ex)
             {
@@ -171,12 +177,14 @@ namespace Classifieds.Listings.BusinessServices
         /// </summary>
         /// <param name="category">listing category</param>
         /// <param name="subCategory">listing subCategory</param>
+        /// <param name="email">listing email</param>
+        /// <param name="status">listing status</param>
         /// <returns>collection(listing)</returns>
-        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory)
+        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                return _listingRepository.GetListingsByCategoryAndSubCategory(category, subCategory);
+                return _listingRepository.GetListingsByCategoryAndSubCategory(category, subCategory, email, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {

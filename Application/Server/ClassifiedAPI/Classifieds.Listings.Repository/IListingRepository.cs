@@ -13,6 +13,6 @@ namespace Classifieds.Listings.Repository
         void Delete(string id);
         List<TEntity> GetTopListings(int noOfRecords);
         List<TEntity> GetListingsByEmail(string email);
-        List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory);
+        List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
     }
 }

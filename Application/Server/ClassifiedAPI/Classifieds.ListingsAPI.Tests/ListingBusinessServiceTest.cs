@@ -40,7 +40,7 @@ namespace Classifieds.ListingsAPI.Tests
                 _id = "9",
                 ListingType = "sale",
                 ListingCategory = "Housing",
-                SubCategory = "3 bhk",
+                SubCategory = "Apartments",
                 Title = "flat on rent",
                 Address = "pune",
                 ContactNo = "12345",
@@ -51,7 +51,7 @@ namespace Classifieds.ListingsAPI.Tests
                 Price = 45000,
                 YearOfPurchase = 2000,
                 ExpiryDate = "03-02-2018",
-                Status = "ok",
+                Status = "Active",
                 SubmittedBy = "v.wadsamudrakar@globant.com",
                 SubmittedDate = "03-02-2018",
                 IdealFor = "Family",
@@ -420,10 +420,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>())).Returns(_classifiedList);
+            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(_classifiedList);
 
             //Act
-            var result = _service.GetListingsByCategoryAndSubCategory(_classifiedList[0].ListingCategory, _classifiedList[0].SubCategory);
+            var result = _service.GetListingsByCategoryAndSubCategory(_classifiedList[0].ListingCategory, _classifiedList[0].SubCategory, _classifiedList[0].SubmittedBy, 1, 5, false);
 
             //Assert
             Assert.AreEqual(result.Count, 1);
@@ -437,10 +437,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var lstObject = GetListObject();
-            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>())).Returns(new List<Listing>());
+            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<Listing>());
 
             //Act
-            var result = _service.GetListingsByCategoryAndSubCategory(lstObject.ListingCategory, lstObject.SubCategory);
+            var result = _service.GetListingsByCategoryAndSubCategory(lstObject.ListingCategory, lstObject.SubCategory, lstObject.SubmittedBy, 1, 5, false);
 
             //Assert
             Assert.AreEqual(result.Count, 0);
@@ -454,8 +454,8 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingByCategoryAndSubCategory_ThrowsException()
         {
             ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(null, null)).Throws(ex);
-            _service.GetListingsByCategoryAndSubCategory(null, null);
+            _moqAppManager.Setup(x => x.GetListingsByCategoryAndSubCategory(null, null, null, 1, 5, false)).Throws(ex);
+            _service.GetListingsByCategoryAndSubCategory(null, null, null, 1, 5, false);
         }
 
         #endregion GetListingsByEmailTest

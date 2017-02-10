@@ -13,6 +13,6 @@ namespace Classifieds.Listings.BusinessServices
         void DeleteListing(string id);
         List<Listing> GetTopListings(int noOfRecords);
         List<Listing> GetListingsByEmail(string email);
-        List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory);
+        List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
     }
 }

@@ -52,7 +52,7 @@ namespace Classifieds.ListingsAPI.Tests
                 _id = "9",
                 ListingType = "sale",
                 ListingCategory = "Housing",
-                SubCategory = "3 bhk",
+                SubCategory = "Apartments",
                 Title = "flat on rent",
                 Address = "pune",
                 ContactNo = "12345",
@@ -63,7 +63,7 @@ namespace Classifieds.ListingsAPI.Tests
                 Price = 45000,
                 YearOfPurchase = 2000,
                 ExpiryDate = "03-02-2018",
-                Status = "ok",
+                Status = "Active",
                 SubmittedBy = "v.wadsamudrakar@globant.com",
                 SubmittedDate = "03-02-2018",
                 IdealFor = "Family",
@@ -119,11 +119,11 @@ namespace Classifieds.ListingsAPI.Tests
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
 
             //Act            
-            var objList = _controller.GetListingsBySubCategory("3 bhk", 1, 5);
+            var objList = _controller.GetListingsBySubCategory("Apartments", 1, 5);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].SubCategory, "3 bhk");
+            Assert.AreEqual(objList[0].SubCategory, "Apartments");
         }
 
         /// <summary>
@@ -446,16 +446,16 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingsByCategoryAndSubCategoryTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>())).Returns(_classifiedList);
+            _mockService.Setup(x => x.GetListingsByCategoryAndSubCategory(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(_classifiedList);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act           
-            var objList = _controller.GetListingsByCategoryAndSubCategory("Housing", "3 bhk");
+            var objList = _controller.GetListingsByCategoryAndSubCategory("Housing", "Apartments", "santosh.kale@globant.com", 1, 5);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].ListingCategory, "Housing");
+            Assert.AreEqual(objList[0].ListingCategory, "Housing", objList[0].SubCategory, "Apartments", objList[0].SubmittedBy, "santosh.kale@globant.com", 1, 5);
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingByCategoryAndSubCategory_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsByCategoryAndSubCategory(null, null);
+            _controller.GetListingsByCategoryAndSubCategory(null, null, null, 1, -5, false);
         }
 
         #endregion GetListingsByEmailTest

@@ -281,8 +281,12 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="category">listing category</param>
         /// <param name="subCategory">listing subCategory</param>
+        /// <param name="email">listing email</param>
+        /// <param name="startIndex">listing startIndex</param>
+        /// <param name="pageCount">listing pageCount</param>
+        /// <param name="isLast">listing isLast</param>
         /// <returns></returns>
-        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory)
+        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex = 1, int pageCount = 10, bool isLast = false)
         {
             try
             {
@@ -292,8 +296,13 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
+                if (startIndex < 0 || pageCount <= 0)
+                {
+                    string param = startIndex < 0 ? "Start Index" : "Page Count";
+                    throw new Exception(param + "passed cannot be negative!");
+                }
 
-                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory).ToList();
+                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, email, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {

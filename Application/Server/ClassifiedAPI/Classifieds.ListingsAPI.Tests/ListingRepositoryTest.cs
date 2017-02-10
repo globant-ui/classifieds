@@ -38,7 +38,7 @@ namespace Classifieds.ListingsAPI.Tests
             {
                 ListingType = "sale",
                 ListingCategory = "Housing",
-                SubCategory = "3 bhk",
+                SubCategory = "Apartments",
                 Title = "flat on rent",
                 Address = "pune",
                 ContactNo = "12345",
@@ -49,7 +49,7 @@ namespace Classifieds.ListingsAPI.Tests
                 Price = 45000,
                 YearOfPurchase = 2000,
                 ExpiryDate = "03-02-2018",
-                Status = "ok",
+                Status = "Active",
                 SubmittedBy = "v.wadsamudrakar@globant.com",
                 SubmittedDate = "03-02-2018",
                 IdealFor = "Family",
@@ -400,7 +400,7 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            var result = _listingRepo.GetListingsByCategoryAndSubCategory(_classifiedList[0].ListingCategory, _classifiedList[0].SubCategory);
+            var result = _listingRepo.GetListingsByCategoryAndSubCategory(_classifiedList[0].ListingCategory, _classifiedList[0].SubCategory, _classifiedList[0].SubmittedBy, 1, 5, false);
 
             //Assert            
             Assert.IsNotNull(result[0]);
@@ -414,10 +414,10 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_GetListingsByCategoryAndSubCategoryTest_Null()
         {
             //Act
-            var result = _listingRepo.GetListingsByCategoryAndSubCategory(null, null);
+            var result = _listingRepo.GetListingsByCategoryAndSubCategory(null, null, null, 1, 5, false);
 
             //Assert
-            Assert.IsNull(result,"Null");
+            Assert.IsNull(result, "Null");
         }
 
         /// <summary>
@@ -426,13 +426,12 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]
         public void Repo_GetListingByCategoryAndSubCategoryTest_Invalid()
         {
-            var result = _listingRepo.GetListingsByCategoryAndSubCategory("qazxsw", "qazxsw");
+            var result = _listingRepo.GetListingsByCategoryAndSubCategory("qazxsw", "qazxsw", "qazxsw", 1, 5, false);
             Assert.AreEqual(0, result.Count);
         }
 
         #endregion
 
         #endregion
-
     }
 }
