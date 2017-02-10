@@ -10,11 +10,17 @@ namespace Classifieds.Listings.BusinessServices
     {
         #region Private Variables
         private readonly IListingRepository<Listing> _listingRepository;
+        public enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
         #endregion
 
         #region Constructor
         public ListingService(IListingRepository<Listing> listingRepository)
-        {            
+        {
             _listingRepository = listingRepository;
         }
         #endregion
@@ -137,13 +143,57 @@ namespace Classifieds.Listings.BusinessServices
         {
             try
             {
-               return _listingRepository.GetTopListings(noOfRecords);
+                return _listingRepository.GetTopListings(noOfRecords);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        #region GetListingsByEmail
+        /// <summary>
+        /// Returns the collection of listing for given email
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <returns></returns>
+        public List<Listing> GetListingsByEmail(string email)
+        {
+            try
+            {
+                return _listingRepository.GetListingsByEmail(email).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion GetListingsByEmail
+
+        #region GetListingsByCategoryAndSubCategory
+
+        /// <summary>
+        /// service method returns collection of listing by Ccatgeory and Subcategory
+        /// </summary>
+        /// <param name="category">listing category</param>
+        /// <param name="subCategory">listing subCategory</param>
+        /// <param name="email">listing email</param>
+        /// <param name="status">listing status</param>
+        /// <returns>collection(listing)</returns>
+        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast)
+        {
+            try
+            {
+                return _listingRepository.GetListingsByCategoryAndSubCategory(category, subCategory, email, startIndex, pageCount, isLast);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByCategoryAndSubCategory
+
         #endregion
     }
 }
