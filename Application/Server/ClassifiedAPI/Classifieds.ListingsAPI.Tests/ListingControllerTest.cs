@@ -466,7 +466,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingByCategoryAndSubCategory_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsByCategoryAndSubCategory(null, null, null, 1, -5, false);
+            _controller.GetListingsByCategoryAndSubCategory(null, null, null, 1, 5, false);
         }
 
         #endregion GetListingsByEmailTest
