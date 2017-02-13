@@ -50,7 +50,7 @@ namespace Classifieds.MastersDataAPI.Controllers
         /// Returns the All Category 
         /// </summary>
         /// <returns>All Category List</returns>
-        public List<Category> GetAllCategory()
+        public List<CategoryViewModel> GetAllCategory()
         {
             try
             {
@@ -61,7 +61,6 @@ namespace Classifieds.MastersDataAPI.Controllers
                     throw new Exception(authResult);
                 }
                 return _masterDataService.GetAllCategory().ToList();
-
             }
             catch (Exception ex)
             {
@@ -151,7 +150,7 @@ namespace Classifieds.MastersDataAPI.Controllers
                     throw new Exception(authResult);
                 }
                 var classified = _masterDataService.CreateCategory(categoryObj);
-                result = Request.CreateResponse<Category>(HttpStatusCode.Created, classified);
+                result = Request.CreateResponse(HttpStatusCode.Created, classified);
             }
             catch (Exception ex)
             {
@@ -183,7 +182,7 @@ namespace Classifieds.MastersDataAPI.Controllers
                     throw new Exception(authResult);
                 }
                 var classified = _masterDataService.UpdateCategory(id, categoryObj);
-                result = Request.CreateResponse<Category>(HttpStatusCode.Accepted, classified);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
             {
@@ -225,6 +224,84 @@ namespace Classifieds.MastersDataAPI.Controllers
             return result;
         }
 
+        #endregion
+
+        #region GetAllFiltersBySubCategory
+        /// <summary>
+        /// Returns the All Filters By SubCategory 
+        /// </summary>
+        /// <returns>All Category List</returns>
+        public SubCategory GetAllFiltersBySubCategory(string subCategory)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _masterDataService.GetAllFiltersBySubCategory(subCategory);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+        }
+        #endregion
+
+        #region GetFiltersByFilterName
+        /// <summary>
+        /// Returns Filters By filter name and SubCategory 
+        /// </summary>
+        /// <returns>All Category List</returns>
+        public Filters GetFiltersByFilterName(string subCategory, string filterName)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _masterDataService.GetFiltersByFilterName(subCategory, filterName);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+        }
+        #endregion
+
+        #region GetFilterNamesOnly
+        /// <summary>
+        /// Returns all Filters names only By SubCategory 
+        /// </summary>
+        /// <returns>All Category List</returns>
+        public List<string> GetFilterNamesOnly(string subCategory)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _masterDataService.GetFilterNamesOnly(subCategory);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+        }
         #endregion
 
         #region private methods

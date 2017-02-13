@@ -33,11 +33,8 @@ namespace Classifieds.MastersData.Repository
         {
             try
             {
-                var partialRresult = Classifieds.FindAll()
-                                    .ToList();
+                var partialRresult = Classifieds.FindAll().ToList();
                 List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
-
-
                 return result;
             }
             catch (Exception ex)
@@ -86,7 +83,7 @@ namespace Classifieds.MastersData.Repository
             try
             {
                 var partialRresult = Classifieds.FindAll()
-                                    .Where(p => p.ListingCategory.StartsWith(categoryText))
+                                    .Where(p => p.ListingCategory.ToUpper().StartsWith(categoryText.ToUpper()))
                                     .ToList();
                 List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
@@ -115,18 +112,19 @@ namespace Classifieds.MastersData.Repository
             try
             {
                 var partialRresult = Classifieds.FindAll()
-                                    .Where(p => p.SubCategory.Contains(subCategoryText))
-                                    .Select(p => p.SubCategory)
                                     .ToList();
                 if (partialRresult.Count > 0)
                 {
                     mySubCategory = new List<string>();
                     foreach (var elem in partialRresult)
                     {
-                        foreach (string s in elem)
+                        if (elem.SubCategory != null)
                         {
-                            if (s == subCategoryText)
-                                mySubCategory.Add(s);
+                            foreach (SubCategory s in elem.SubCategory)
+                            {
+                                if (s.Name.ToUpper().Contains(subCategoryText.ToUpper()))
+                                    mySubCategory.Add(s.Name);
+                            }
                         }
                     }
                 }
@@ -152,11 +150,7 @@ namespace Classifieds.MastersData.Repository
         {
             try
             {
-                var result = Classifieds.Save(categoryobj);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-
-                }
+                Classifieds.Save(categoryobj);
                 return categoryobj;
             }
             catch (Exception ex)
@@ -186,12 +180,7 @@ namespace Classifieds.MastersData.Repository
                                                .Set(p => p.SubCategory, categoryObj.SubCategory)
                                                .Set(p => p.Image, categoryObj.Image);
 
-                var result = Classifieds.Update(query, update);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-
-                }
-
+                Classifieds.Update(query, update);
                 return categoryObj;
             }
             catch (Exception ex)
@@ -221,6 +210,68 @@ namespace Classifieds.MastersData.Repository
             }
         }
 
+        #endregion
+
+        #region GetAllFiltersBySubCategory
+        /// <summary>
+        /// Returns all filters for specific subcategory with filter name and filter values
+        /// </summary>
+        /// <param name="subCategory">subCategory Name</param>
+        /// <returns></returns>
+        public List<TEntity> GetAllFiltersBySubCategory(string subCategory)
+        {
+            try
+            {
+                var subCategoryQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => Query<SubCategory>.EQ(sc => sc.Name, subCategory));
+                return Classifieds.Find(subCategoryQuery).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetFiltersByFilterName
+        /// <summary>
+        /// Returns all filter values for given FilterName and subcategory
+        /// </summary>
+        /// <param name="subCategory">Subcategory Name</param>
+        /// <param name="filterName">Filter Name</param>
+        /// <returns></returns>
+        public List<TEntity> GetFiltersByFilterName(string subCategory, string filterName)
+        {
+            try
+            {
+                var filterQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => Query<SubCategory>.EQ(sc => sc.Name, subCategory));
+                return Classifieds.Find(filterQuery).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetFiltersNames
+        /// <summary>
+        /// Get filter names only for specific subcategory
+        /// </summary>
+        /// <param name="subCategory">Subcategory Name</param>
+        /// <returns></returns>
+        public List<TEntity> GetFilterNamesOnly(string subCategory)
+        {
+            try
+            {
+                var subCategoryQuery = Query<SubCategory>.EQ(sc => sc.Name, subCategory);
+                var finalQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => subCategoryQuery);
+                return Classifieds.Find(finalQuery).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
     }
 }
