@@ -103,7 +103,7 @@ namespace Classifieds.MastersData.Repository.Test
         /// test for null input Category Text returns null result
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void GetCategorySuggetionTest_NullSubCategoryText()
         {
             _masterDataRepo.GetCategorySuggetion(null);
@@ -121,8 +121,45 @@ namespace Classifieds.MastersData.Repository.Test
 
         #endregion GetCategorySuggetionTest
 
+        #region GetSubCategorySuggetionTest
+
+        /// <summary>
+        /// test positive scenario for get category list for matching input
+        /// </summary>
+        [TestMethod]
+        public void GetSubCategorySuggetionTest()
+        {
+            //Act
+            var result = _masterDataRepo.GetSubCategorySuggestion("mot");
+
+            //Assert
+            Assert.IsNotNull(result[0]);
+        }
+
+        /// <summary>
+        /// test for null input Category Text returns null result
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void GetSubCategorySuggetionTest_NullSubCategoryText()
+        {
+            _masterDataRepo.GetSubCategorySuggestion(null);
+        }
+
+        /// <summary>
+        /// test for invalid input CategoryText returns null result
+        /// </summary>
+        [TestMethod]
+        public void GetSubCategorySuggetionTest_InvalidSubCategory()
+        {
+            var result = _masterDataRepo.GetSubCategorySuggestion("qwer");
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        #endregion GetCategorySuggetionTest
+
         #region PostCategoryTestCases
-        
+
         /// <summary>
         /// test positive scenario for add data Object into the database
         /// </summary>

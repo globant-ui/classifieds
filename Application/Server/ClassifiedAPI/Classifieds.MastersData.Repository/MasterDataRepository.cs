@@ -83,7 +83,7 @@ namespace Classifieds.MastersData.Repository
             try
             {
                 var partialRresult = Classifieds.FindAll()
-                                    .Where(p => p.ListingCategory.StartsWith(categoryText))
+                                    .Where(p => p.ListingCategory.ToUpper().StartsWith(categoryText.ToUpper()))
                                     .ToList();
                 List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
@@ -111,22 +111,23 @@ namespace Classifieds.MastersData.Repository
             List<string> mySubCategory = null;
             try
             {
-                //var partialRresult = Classifieds.FindAll()
-                //                    .Where(p => p.SubCategory.Contains(subCategoryText))
-                //                    .Select(p => p.SubCategory)
-                //                    .ToList();
-                //if (partialRresult.Count > 0)
-                //{
-                //    mySubCategory = new List<string>();
-                //    foreach (var elem in partialRresult)
-                //    {
-                //        foreach (string s in elem)
-                //        {
-                //            if (s == subCategoryText)
-                //                mySubCategory.Add(s);
-                //        }
-                //    }
-                //}
+                var partialRresult = Classifieds.FindAll()
+                                    .ToList();
+                if (partialRresult.Count > 0)
+                {
+                    mySubCategory = new List<string>();
+                    foreach (var elem in partialRresult)
+                    {
+                        if (elem.SubCategory != null)
+                        {
+                            foreach (SubCategory s in elem.SubCategory)
+                            {
+                                if (s.Name.ToUpper().Contains(subCategoryText.ToUpper()))
+                                    mySubCategory.Add(s.Name);
+                            }
+                        }
+                    }
+                }
 
                 return mySubCategory;
             }

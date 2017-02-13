@@ -204,7 +204,7 @@ namespace Classifieds.MastersDataAPI.Tests
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-            var objList = _controller.GetSubCategorySuggestion("Auto");
+            var objList = _controller.GetSubCategorySuggestion("car");
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
