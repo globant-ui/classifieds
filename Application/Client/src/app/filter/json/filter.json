@@ -1,30 +1,29 @@
+
 {
   "status": "success",
   "message": null,
   "details":
   [
     {
-      "listName":"Top ten"
+      "listName":"ALL"
     },
     {
-      "listName":"Electronics"
+      "listName":"HOUSING"
     },
     {
-      "listName":"Housing"
+      "listName":"ELECTRONICS"
     },
     {
-      "listName":"Automotive"
+      "listName":"AUTOMATIVE"
     },
     {
-      "listName":"Furniture"
+      "listName":"FURNITURE"
     },
     {
-      "listName":"Other"
+      "listName":"OTHER"
+    },
+    {
+      "listName":"RECOMMENDED"
     }
   ]
 }
-
-
-
-
-
