@@ -370,10 +370,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingsByEmail(It.IsAny<string>())).Returns(_classifiedList);
+            _moqAppManager.Setup(x => x.GetListingsByEmail(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(_classifiedList);
 
             //Act
-            var result = _service.GetListingsByEmail(_classifiedList[0].SubmittedBy);
+            var result = _service.GetListingsByEmail(_classifiedList[0].SubmittedBy, 1, 5, false);
 
             //Assert
             Assert.AreEqual(result.Count, 1);
@@ -387,10 +387,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var lstObject = GetListObject();
-            _moqAppManager.Setup(x => x.GetListingsByEmail(It.IsAny<string>())).Returns(new List<Listing>());
+            _moqAppManager.Setup(x => x.GetListingsByEmail(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<Listing>());
 
             //Act
-            var result = _service.GetListingsByEmail(lstObject.SubmittedBy);
+            var result = _service.GetListingsByEmail(lstObject.SubmittedBy, 1, 5, false);
 
             //Assert
             Assert.AreEqual(result.Count, 0);
@@ -404,8 +404,8 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingByEmail_ThrowsException()
         {
             ArgumentNullException ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.GetListingsByEmail(null)).Throws(ex);
-            _service.GetListingsByEmail(null);
+            _moqAppManager.Setup(x => x.GetListingsByEmail(null, 1, -5, false)).Throws(ex);
+            _service.GetListingsByEmail(null, 1, -5, false);
         }
 
         #endregion GetListingsByEmailTest

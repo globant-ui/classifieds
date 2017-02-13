@@ -246,19 +246,37 @@ namespace Classifieds.Listings.Repository
         /// <summary>
         /// Returns a listing based on listing Email
         /// </summary>
-        /// <param name="email">email</param>
+        /// <param name="email">User email</param>
+        /// <param name="startIndex">startIndex</param>
+        /// <param name="pageCount">pageCount</param>
+        /// <param name="isLast">isLast</param>
         /// <returns>Listing Email</returns>
-        public List<TEntity> GetListingsByEmail(string email)
+        public List<TEntity> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                var query = Query<TEntity>.EQ(p => p.SubmittedBy, email);
-                var partialRresult = Classifieds.Find(query)
-                                        .ToList();
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds
+                   .FindAll()
+                    .Count(p => p.SubmittedBy == email);
+                    skip = GetLastPageSkipValue(pageCount, count);
 
-                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
 
-                return result;
+                List<TEntity> listings = Classifieds.FindAll()
+                                            .Where(p => p.SubmittedBy == email)
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
+                                            .ToList();
+                listings = listings.Count > 0 ? listings.ToList() : null;
+                return listings;
             }
             catch (Exception ex)
             {
@@ -269,7 +287,16 @@ namespace Classifieds.Listings.Repository
         #endregion GetListingsByEmail
 
         #region GetListingsByCategoryAndSubCategory
-
+        /// <summary>
+        /// Returns a listing based on listing Email
+        /// </summary>
+        /// <param name="category">Listing category</param>
+        /// <param name="subCategory">Listing subCategory</param>
+        /// <param name="email">User email</param>
+        /// <param name="startIndex">startIndex</param>
+        /// <param name="pageCount">pageCount</param>
+        /// <param name="isLast">isLast</param>
+        /// <returns>Listing Email</returns>
         public List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast)
         {
             try
