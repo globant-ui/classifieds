@@ -29,7 +29,7 @@ export class HomeComponent {
   public filterCat:any;
 
 
-  @ViewChildren("cheader") CHeader;
+  // @ViewChildren("cheader") CHeader;
 
   constructor(
       public appState: AppState,

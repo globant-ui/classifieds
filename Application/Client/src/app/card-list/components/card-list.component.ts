@@ -12,6 +12,8 @@ let tpls = require('../tpls/card-list.component.html').toString();
     template : tpls
 })
 export class CardListComponent{
+
+    public showProductInfoPage: boolean = false;
     constructor(public appState: AppState,private _settingsService : SettingsService) {}
 
     @Input() cards;
@@ -19,4 +21,7 @@ export class CardListComponent{
     ngOnInit(){
         console.log('all = ',this.cards);
     }
+   showProductInfo(){
+     this.showProductInfoPage = true;
+  }
 }
