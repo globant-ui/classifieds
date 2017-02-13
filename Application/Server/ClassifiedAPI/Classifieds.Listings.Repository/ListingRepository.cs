@@ -145,8 +145,7 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                var result = Classifieds.Save(listing);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage) { }
+                Classifieds.Save(listing);
                 return listing;
             }
             catch (Exception ex)

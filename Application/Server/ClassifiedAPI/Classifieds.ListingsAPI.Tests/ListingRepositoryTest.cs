@@ -128,7 +128,6 @@ namespace Classifieds.ListingsAPI.Tests
 
             //Assert            
             Assert.IsNotNull(result[0]);
-            //Assert.AreEqual(5, result.Count);
         }
 
         /// <summary>
