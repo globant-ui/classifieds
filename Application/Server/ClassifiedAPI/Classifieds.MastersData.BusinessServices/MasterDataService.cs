@@ -39,7 +39,7 @@ namespace Classifieds.MastersData.BusinessServices
                 List<string> subCategoryNames = new List<string>();
                 foreach (Category ct in categories)
                 {
-                    foreach (SubCategory sc in ct.SubCategory)
+                    foreach (SubCategory sc in ct.SubCategory ?? Enumerable.Empty<SubCategory>())
                     {
                         subCategoryNames.Add(sc.Name);
                     }
@@ -179,7 +179,7 @@ namespace Classifieds.MastersData.BusinessServices
                 var result = _masterDataRepository.GetAllFiltersBySubCategory(subCategory);
                 if (result.Count > 0)
                 {
-                    foreach (SubCategory sc in result[0].SubCategory)
+                    foreach (SubCategory sc in result[0].SubCategory ?? Enumerable.Empty<SubCategory>())
                     {
                         if (subCategory.Contains(sc.Name))
                         {
@@ -206,11 +206,11 @@ namespace Classifieds.MastersData.BusinessServices
                 var result = _masterDataRepository.GetFiltersByFilterName(subCategory, filterName);
                 if (result.Count > 0)
                 {
-                    foreach (SubCategory sc in result[0].SubCategory)
+                    foreach (SubCategory sc in result[0].SubCategory ?? Enumerable.Empty<SubCategory>())
                     {
                         if (subCategory.Contains(sc.Name))
                         {
-                            foreach (Filters filter in sc.Filters)
+                            foreach (Filters filter in sc.Filters ?? Enumerable.Empty<Filters>())
                             {
                                 if (filterName.Contains(filter.FilterName))
                                 {

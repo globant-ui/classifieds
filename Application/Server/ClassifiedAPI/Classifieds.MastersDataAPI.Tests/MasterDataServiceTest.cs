@@ -16,9 +16,9 @@ namespace Classifieds.MastersData.BusinessServices.Test
         #region Class Variables
         private Mock<IMasterDataRepository<Category>> _moqAppManager;
         private IMasterDataService _service;
-        private readonly List<Category> classifiedcategory = new List<Category>();
+        private readonly List<Category> _classifiedcategory = new List<Category>();
         private readonly List<string> _categoryList = new List<string>();
-        private readonly List<string> _subCategoryList = new List<string>();
+        private readonly List<CategoryViewModel> _categoryViewModelList = new List<CategoryViewModel>();
         #endregion
 
         #region Initialize
@@ -34,24 +34,63 @@ namespace Classifieds.MastersData.BusinessServices.Test
         private void SetUpClassifiedsCategory()
         {
             var lstcategory = GetCategoryObject();
-            classifiedcategory.Add(lstcategory);
+            _classifiedcategory.Add(lstcategory);
             _categoryList.Add("Automotive");
-            _subCategoryList.Add("Car");
+           
         }
 
+       
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// for Get Data Object of Category
+        /// </summary>
         private Category GetCategoryObject()
         {
             Category dataObject = new Category
             {
-                _id = "sfsd43243",
+                _id = "9",
                 ListingCategory = "Automotive",
-                //SubCategory = new string[]{ "Car",
-                //                            "Motor Cycle",
-                //                            "Scooter",
-                //                            "Bicycle",
-                //                            "Accessories" },
+                SubCategory = GetSubCategoryDataObject(),
                 Image = "Automotive.png"
+            };
+            return dataObject;
+        }
 
+        private SubCategory[] GetSubCategoryDataObject()
+        {
+            SubCategory[] subCat = new SubCategory[2];
+
+            for (int i = 0; i < 2; i++)
+            {
+                subCat[i] = new SubCategory();
+                subCat[i].Name = "SubCategory" + i;
+                subCat[i].Filters = GetFiltersDataObject();
+            }
+            return subCat;
+        }
+
+        private Filters[] GetFiltersDataObject()
+        {
+            Filters[] tempFilters = new Filters[2];
+            for (int i = 0; i < 2; i++)
+            {
+                tempFilters[i] = new Filters();
+                tempFilters[i].FilterName = "Filter" + i;
+                tempFilters[i].FilterValues = new[] { "A" + i, "B" + i };
+            }
+            return tempFilters;
+        }
+
+        private CategoryViewModel GetCategoryVmDataObject()
+        {
+            CategoryViewModel dataObject = new CategoryViewModel()
+            {
+                _id = "9",
+                ListingCategory = "Automotive",
+                SubCategory = new[] { "Cars", "Motorcycles", "Scooters", "Bicycles" },
+                Image = "Automotive.png"
             };
             return dataObject;
         }
@@ -78,15 +117,15 @@ namespace Classifieds.MastersData.BusinessServices.Test
         public void GetAllCategoryTest()
         {
             // Arrange
-            //SetUpClassifiedsCategory();
-            //_moqAppManager.Setup(x => x.GetAllCategory()).Returns(classifiedcategory);
+            SetUpClassifiedsCategory();
+            _moqAppManager.Setup(x => x.GetAllCategory()).Returns(_classifiedcategory);
 
             ////Act
-            //var result = _service.GetAllCategory();
+            var result = _service.GetAllCategory();
 
-            ////Assert
-            //Assert.AreEqual(1, result.Count);
-            //Assert.IsNotNull(result[0]);
+            //Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.IsNotNull(result[0]);
         }
 
         /// <summary>
@@ -95,16 +134,16 @@ namespace Classifieds.MastersData.BusinessServices.Test
         [TestMethod]
         public void GetAllCategory_EmptyResultTest()
         {
-            //// Arrange
-            //SetUpClassifiedsCategory();
-            //_moqAppManager.Setup(x => x.GetAllCategory()).Returns(new List<Category>() { new Category() });
+            // Arrange
+            SetUpClassifiedsCategory();
+            _moqAppManager.Setup(x => x.GetAllCategory()).Returns(new List<Category>() { new Category() });
 
-            ////Act
-            //var result = _service.GetAllCategory();
+            //Act
+            var result = _service.GetAllCategory();
 
-            ////Assert
-            //Assert.AreEqual(1, result.Count);
-            //Assert.IsInstanceOfType(result[0], typeof(Category));
+            //Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.IsInstanceOfType(result[0], typeof(CategoryViewModel));
         }
 
         #endregion GetAllCategoryTestCases
@@ -274,6 +313,95 @@ namespace Classifieds.MastersData.BusinessServices.Test
 
         #endregion GetSubCategorySuggetionTest
 
+        #region Filter Test Cases
+
+        /// <summary>
+        ///test positive scenario for get all filters by subcategory
+        /// </summary>
+        [TestMethod]
+        public void GetAllFiltersBySubCategory()
+        {
+            //Arrange
+            SetUpClassifiedsCategory();
+            _moqAppManager.Setup(x => x.GetAllFiltersBySubCategory(It.IsAny<string>())).Returns(_classifiedcategory);
+
+            //Act
+            var objList = _service.GetAllFiltersBySubCategory("SubCategory0");
+
+            //Assert
+            Assert.AreEqual(objList.Filters[1].FilterName, "Filter1");
+        }
+
+        /// <summary>
+        /// test for null exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetAllFiltersBySubCategory_ThrowsException()
+        {
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetAllFiltersBySubCategory(null)).Throws(ex);
+            _service.GetAllFiltersBySubCategory(null);
+        }
+
+        /// <summary>
+        ///test positive scenario for get filters by filterName and subcategory
+        /// </summary>
+        [TestMethod]
+        public void GetFiltersByFilterName()
+        {
+            SetUpClassifiedsCategory();
+            _moqAppManager.Setup(x => x.GetFiltersByFilterName(It.IsAny<string>(), It.IsAny<string>())).Returns(_classifiedcategory);
+
+            //Act
+            var objList = _service.GetFiltersByFilterName("SubCategory0", "Filter1");
+
+            //Assert
+            Assert.AreEqual(objList.FilterValues.Length, 2);
+        }
+
+        /// <summary>
+        /// test for null exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetFiltersByFilterName_ThrowsException()
+        {
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetFiltersByFilterName(null, null)).Throws(ex);
+            _service.GetFiltersByFilterName(null, null);
+        }
+
+        /// <summary>
+        ///test positive scenario for GetFilter Names Only for given subcategory
+        /// </summary>
+        [TestMethod]
+        public void GetFilterNamesOnly()
+        {
+            //Arrange
+            SetUpClassifiedsCategory();
+            _moqAppManager.Setup(x => x.GetFilterNamesOnly(It.IsAny<string>())).Returns(_classifiedcategory);
+            
+
+            //Act
+            var objList = _service.GetFilterNamesOnly("SubCategory1");
+
+            //Assert
+            Assert.AreEqual(objList[1], "Filter1");
+        }
+
+        /// <summary>
+        /// test for null exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetFilterNamesOnly_ThrowsException()
+        {
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.GetFilterNamesOnly(null)).Throws(ex);
+            _service.GetFilterNamesOnly(null);
+        }
+        #endregion
 
         #endregion Unit Test Cases
     }

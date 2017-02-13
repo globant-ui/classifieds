@@ -36,16 +36,57 @@ namespace Classifieds.MastersData.Repository.Test
             classifiedCategory.Add(lstCategory);
         }
 
+     
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// for Get Data Object of Category
+        /// </summary>
         private Category GetCategoryObject()
         {
             Category dataObject = new Category
             {
+                _id = "9",
                 ListingCategory = "Automotive",
-                //SubCategory = new String[] { "Car",
-                //                            "Motor Cycle",
-                //                            "Scooter",
-                //                            "Bicycle",
-                //                            "Accessories" },
+                SubCategory = GetSubCategoryDataObject(),
+                Image = "Automotive.png"
+            };
+            return dataObject;
+        }
+
+        private SubCategory[] GetSubCategoryDataObject()
+        {
+            SubCategory[] subCat = new SubCategory[2];
+
+            for (int i = 0; i < 2; i++)
+            {
+                subCat[i] = new SubCategory();
+                subCat[i].Name = "SubCategory" + i;
+                subCat[i].Filters = GetFiltersDataObject();
+            }
+            return subCat;
+        }
+
+        private Filters[] GetFiltersDataObject()
+        {
+            Filters[] tempFilters = new Filters[2];
+            for (int i = 0; i < 2; i++)
+            {
+                tempFilters[i] = new Filters();
+                tempFilters[i].FilterName = "Filter" + i;
+                tempFilters[i].FilterValues = new[] { "A" + i, "B" + i };
+            }
+            return tempFilters;
+        }
+
+        private CategoryViewModel GetCategoryVmDataObject()
+        {
+            CategoryViewModel dataObject = new CategoryViewModel()
+            {
+                _id = "9",
+                ListingCategory = "Automotive",
+                SubCategory = new[] { "Cars", "Motorcycles", "Scooters", "Bicycles" },
                 Image = "Automotive.png"
             };
             return dataObject;
@@ -60,9 +101,6 @@ namespace Classifieds.MastersData.Repository.Test
         [TestMethod]
         public void Repo_GetAllCategoryTest()
         {
-            // Arrange
-            SetUpClassifiedsCategory();
-
             //Act
             var result = _masterDataRepo.GetAllCategory();
 
@@ -271,6 +309,88 @@ namespace Classifieds.MastersData.Repository.Test
         }
 
         #endregion DeleteCategoryTestCases
+
+        #region Filter Test Cases
+
+        /// <summary>
+        ///test positive scenario for get all filters by subcategory
+        /// </summary>
+        [TestMethod]
+        public void GetAllFiltersBySubCategory()
+        {
+            //Act
+            var objList = _masterDataRepo.GetAllFiltersBySubCategory("Car");
+
+            //Assert
+            Assert.AreEqual(objList[0].SubCategory[0].Filters[0].FilterName, "Type");
+        }
+
+        /// <summary>
+        /// test for empty result
+        /// </summary>
+        [TestMethod]
+        public void GetAllFiltersBySubCategory_Empty()
+        {
+            //Act
+            var result =_masterDataRepo.GetAllFiltersBySubCategory(null);
+            //Assert
+            Assert.AreEqual(result.Count, 0);
+           
+        }
+
+
+        /// <summary>
+        ///test positive scenario for get filters by filterName and subcategory
+        /// </summary>
+        [TestMethod]
+        public void GetFiltersByFilterName()
+        {
+            //Act
+            var objList = _masterDataRepo.GetFiltersByFilterName("Car", "Type");
+
+            //Assert
+            Assert.AreEqual(objList[0].SubCategory[0].Filters[0].FilterValues.Length, 3);
+        }
+
+        /// <summary>
+        /// test for empty result
+        /// </summary>
+        [TestMethod]
+        public void GetFiltersByFilterName_Empty()
+        {
+            //Act
+            var result =_masterDataRepo.GetFiltersByFilterName(null, null);
+
+            //Assert
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        /// <summary>
+        ///test positive scenario for GetFilter Names Only for given subcategory
+        /// </summary>
+        [TestMethod]
+        public void GetFilterNamesOnly()
+        {
+            //Act
+            var objList = _masterDataRepo.GetFilterNamesOnly("Car");
+
+            //Assert
+            Assert.AreEqual(objList[0].SubCategory[0].Filters[0].FilterName, "Type");
+        }
+
+        /// <summary>
+        /// test for empty result
+        /// </summary>
+        [TestMethod]
+        public void GetFilterNamesOnly_Empty()
+        {
+            //Act
+            var result = _masterDataRepo.GetFilterNamesOnly(null);
+            //Assert
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        #endregion
 
         #endregion
     }
