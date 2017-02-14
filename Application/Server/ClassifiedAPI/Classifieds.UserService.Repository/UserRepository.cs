@@ -1,12 +1,9 @@
 ﻿using Classifieds.UserService.BusinessEntities;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using MongoDB.Driver.Linq;
 using MongoDB.Driver.Builders;
-using System.Threading.Tasks;
 
 namespace Classifieds.UserService.Repository
 {
@@ -50,7 +47,7 @@ namespace Classifieds.UserService.Repository
                                 .ToList();
                 if (result.Count == 0)
                 {
-                    var userResult = this.Classifieds.Save(user);
+                    var userResult = Classifieds.Save(user);
                     if (userResult.DocumentsAffected == 0 && userResult.HasLastErrorMessage)
                     {
                         throw new Exception("Registrtion failed");
@@ -122,24 +119,33 @@ namespace Classifieds.UserService.Repository
             }
 
         }
+        #endregion UpdateUserProfile
+
+        #region User Tag Add, Delete
         /// <summary>
         /// Add user tags
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="tag"></param>
-        public bool AddTag(string userEmail, Tags tag)
+        /// <param name="tags"></param>
+        public bool AddTag(string userEmail, Tags[] tags)
         { 
             try
             {
-                var result= Classifieds.Update(Query.EQ("UserEmail", userEmail),
-                Update.PushWrapped("Tags", tag));
-                return result.UpdatedExisting;
+                bool result=true;
+                foreach (var tag in tags)
+                {
+                    var returnResult = Classifieds.Update(Query.EQ("UserEmail", userEmail),
+                    Update.PushWrapped("Tags", tag));
+                    result = returnResult.UpdatedExisting;
+                }
+                return result;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+       
         /// <summary>
         /// Delete tags
         /// </summary>
@@ -158,6 +164,9 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
+        #endregion
+
+        #region User Alert Add, Delete
         /// <summary>
         /// Add Alerts
         /// </summary>
@@ -194,8 +203,85 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
+        #endregion
 
-        #endregion UpdateUserProfile
+        #region User WishList Get, Add and Delete
+        /// <summary>
+        /// Add to wishList
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="listingId"></param>
+        public bool AddtoWishList(string userEmail, string listingId)
+        {
+            try
+            {
+                var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),
+                Update.PushWrapped("WishList", listingId));
+                return result.UpdatedExisting;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="listingId"></param>
+        /// <returns></returns>
+        public bool DeleteFromWishList(string userEmail, string listingId)
+        {
+            try
+            {
+                var result = Classifieds.Update(Query.EQ("UserEmail", listingId),
+                Update.PullWrapped("WishList", listingId));
+                return result.UpdatedExisting;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Get UserWishList
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>string array of Listing id's</returns>
+        public string[] GetUserWishList(string userEmail)
+        {
+            try
+            {
+                var query = Query.EQ("UserEmail", userEmail);
+                var items = Classifieds.Find(query).ToList();
+                return items[0].WishList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Get user Recommonded TagList
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>returns taglist</returns>
+        public Tags[] GetRecommondedTagList(string userEmail)
+        {
+            try
+            {
+                var query = Query.EQ("UserEmail", userEmail);
+                var items = Classifieds.Find(query).ToList();
+                return items[0].Tags;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        #endregion
 
         #endregion
     }

@@ -77,7 +77,7 @@ namespace Classifieds.UserService.BusinessServices
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public bool AddTag(string userEmail, Tags tag)
+        public bool AddTag(string userEmail, Tags[] tag)
         {
             try
             {
@@ -130,6 +130,66 @@ namespace Classifieds.UserService.BusinessServices
             try
             {
               return  _userRepository.DeleteAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add listing id in to wish List and update User profile.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="listingId"></param>
+        /// <returns></returns>
+        public bool AddtoWishList(string userEmail, string listingId)
+        {
+            try
+            {
+                return _userRepository.AddtoWishList(userEmail, listingId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        /// <summary>
+        /// Delete listing id from WishList and update user profile
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="listingId"></param>
+        /// <returns></returns>
+        public bool DeleteFromWishList(string userEmail, string listingId)
+        {
+            try
+            {
+                return _userRepository.DeleteFromWishList(userEmail, listingId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public string[] GetUserWishList(string userEmail)
+        {
+            try
+            {
+                return _userRepository.GetUserWishList(userEmail);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Tags[] GetRecommondedTagList(string userEmail)
+        {
+            try
+            {
+                return _userRepository.GetRecommondedTagList(userEmail);
             }
             catch (Exception ex)
             {
