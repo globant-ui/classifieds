@@ -6,14 +6,14 @@ export class mapData{
   constructor() {
   }
 
-  mapCardData(form) {
+  mapCardData(selectedCategory,form) {
       let today = new Date();
       let locale = "en-us";
       let cardCreatedDate = today.getDate() + '-' + today.toLocaleString(locale, { month: "short" })  + '-' + today.getFullYear();
 
       let data = {   
         "ListingType": form._value.cardType,
-        "ListingCategory": form._value.selectedCategory,
+        "ListingCategory": selectedCategory,
         "SubCategory": form._value.subCategory,
         "Title": form._value.title,
         "Address": "",

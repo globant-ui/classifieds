@@ -31,7 +31,7 @@ export class CreateCardComponent implements OnInit {
         // the long way
         this.myForm = new FormGroup({
             cardType: new FormControl('', [<any>Validators.required]),
-            //category: new FormControl('', [<any>Validators.required]),
+            category: new FormControl('', [<any>Validators.required]),
             subCategory: new FormControl('', [<any>Validators.required]),
             //cardImages: new FormControl('', [<any>Validators.required]),
             title: new FormControl('', [<any>Validators.required]),
@@ -82,19 +82,13 @@ export class CreateCardComponent implements OnInit {
     }
 
     createCard(action){
-       console.log(this.selectedCategory)
-       this.myForm._value.selectedCategory = this.selectedCategory;
-       console.log(this.myForm)
-       let cardData = this.data.mapCardData(this.myForm);
+       let cardData = this.data.mapCardData(this.selectedCategory,this.myForm);
        if(action == 'create'){
            cardData.IsPublished = true;
        }
-       console.log(cardData)
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
            console.log("comes here in result",res);
-        //    this.categories = res;
-        //    this.subcategories = this.categories[0].SubCategory;
          },
          error => {
            console.log("error in response");
