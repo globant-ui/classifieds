@@ -18,7 +18,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
         private IMasterDataService _service;
         private readonly List<Category> _classifiedcategory = new List<Category>();
         private readonly List<string> _categoryList = new List<string>();
-        private readonly List<CategoryViewModel> _categoryViewModelList = new List<CategoryViewModel>();
+        
         #endregion
 
         #region Initialize
@@ -82,18 +82,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
             }
             return tempFilters;
         }
-
-        private CategoryViewModel GetCategoryVmDataObject()
-        {
-            CategoryViewModel dataObject = new CategoryViewModel()
-            {
-                _id = "9",
-                ListingCategory = "Automotive",
-                SubCategory = new[] { "Cars", "Motorcycles", "Scooters", "Bicycles" },
-                Image = "Automotive.png"
-            };
-            return dataObject;
-        }
+        
         #endregion
 
         #region GetAllCategoryTestCases

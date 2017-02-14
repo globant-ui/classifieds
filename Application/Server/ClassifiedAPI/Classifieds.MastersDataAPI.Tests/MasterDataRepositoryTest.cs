@@ -1,9 +1,7 @@
 ﻿#region using
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Classifieds.MastersData.Repository;
 using Classifieds.MastersData.BusinessEntities;
-using System.Collections.Generic;
 #endregion
 
 namespace Classifieds.MastersData.Repository.Test
@@ -16,7 +14,7 @@ namespace Classifieds.MastersData.Repository.Test
         #region Class Variables
         private IMasterDataRepository<Category> _masterDataRepo;
         private IDBRepository _dbRepository;
-        private readonly List<Category> classifiedCategory = new List<Category>();
+       
         #endregion
 
         #region Initialize
@@ -28,17 +26,7 @@ namespace Classifieds.MastersData.Repository.Test
 
         }
         #endregion
-
-        #region Setup
-        private void SetUpClassifiedsCategory()
-        {
-            var lstCategory = GetCategoryObject();
-            classifiedCategory.Add(lstCategory);
-        }
-
      
-        #endregion
-
         #region Private Methods
         /// <summary>
         /// for Get Data Object of Category
@@ -79,18 +67,7 @@ namespace Classifieds.MastersData.Repository.Test
             }
             return tempFilters;
         }
-
-        private CategoryViewModel GetCategoryVmDataObject()
-        {
-            CategoryViewModel dataObject = new CategoryViewModel()
-            {
-                _id = "9",
-                ListingCategory = "Automotive",
-                SubCategory = new[] { "Cars", "Motorcycles", "Scooters", "Bicycles" },
-                Image = "Automotive.png"
-            };
-            return dataObject;
-        }
+      
         #endregion
 
         #region GetAllCategoryTestCases
@@ -108,17 +85,18 @@ namespace Classifieds.MastersData.Repository.Test
             Assert.IsNotNull(result[0]);
         }
 
-        /// <summary>
-        /// tests for incorrect input giving empty result
-        /// </summary>
-        [TestMethod]
-        public void GetAllCategory_Repo_Invalid_OR_Null()
-        {
-            var result = new List<Category>();
-            Assert.AreEqual(0, result.Count);
+        ///// <summary>
+        ///// tests for incorrect input giving empty result
+        ///// </summary>
+        //[TestMethod]
+        //public void GetAllCategory_Repo_Invalid_OR_Null()
+        //{
+        //    //var result = new List<Category>();
 
-            Assert.AreEqual(null, null);
-        }
+        //    //Assert.AreEqual(0, result.Count);
+
+        //    //Assert.AreEqual(null, null);
+        //}
 
         #endregion GetAllCategoryTestCases
 
