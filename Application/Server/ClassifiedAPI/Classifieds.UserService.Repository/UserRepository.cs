@@ -126,19 +126,14 @@ namespace Classifieds.UserService.Repository
         /// Add user tags
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="tags"></param>
-        public bool AddTag(string userEmail, Tags[] tags)
+        /// <param name="tag"></param>
+        public bool AddTag(string userEmail, Tags tag)
         { 
             try
             {
-                bool result=true;
-                foreach (var tag in tags)
-                {
                     var returnResult = Classifieds.Update(Query.EQ("UserEmail", userEmail),
                     Update.PushWrapped("Tags", tag));
-                    result = returnResult.UpdatedExisting;
-                }
-                return result;
+                    return returnResult.UpdatedExisting;
             }
             catch (Exception ex)
             {
