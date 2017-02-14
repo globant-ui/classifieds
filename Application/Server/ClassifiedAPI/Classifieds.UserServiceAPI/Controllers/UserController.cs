@@ -128,16 +128,16 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
         }
         /// <summary>
-        /// Add user tag by subcategory and Locations
+        /// Add user tag by subcategory and Locations and update user Profile
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
         /// <returns>boolen true as success</returns>
-        public bool PutTag(string userEmail,Tags tag)
+        public bool PutTag(string userEmail,Tags[] tag)
         {
             try
             {
-               _userEmail = GetUserEmailFromHeader();
+              _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
                 {
@@ -152,7 +152,7 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
         }
         /// <summary>
-        /// Delete User Tag
+        /// Delete User Tag and update user profile
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
@@ -175,7 +175,7 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
         }
         /// <summary>
-        /// Add user Alerts by subcategory and Locations
+        /// Add user Alerts by subcategory and Locations, update user profile
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="alert"></param>
@@ -199,7 +199,7 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
         }
         /// <summary>
-        /// Add user Alerts by subcategory and Locations
+        /// Add user Alerts by subcategory and Locations, update user profile
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="alert"></param>
@@ -215,6 +215,101 @@ namespace Classifieds.UserServiceAPI.Controllers
                     throw new Exception(authResult);
                 }
                return _userService.DeleteAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add to wishList update UserProfile
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="listinId"></param>
+        /// <returns>boolen true as success</returns>
+        public bool PutToWishList(string userEmail, string listinId)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.AddtoWishList(userEmail, listinId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Delete listing id from wishList and update UserProfile
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="listinId"></param>
+        /// <returns>boolen true as success</returns>
+        public bool DeleteFromWishList(string userEmail, string listinId)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.DeleteFromWishList(userEmail, listinId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Get user wishlist
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>String Array of Listing Ids</returns>
+        public string[] GetUserWishList(string userEmail)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.GetUserWishList(userEmail);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Add user recommonded TagList
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>boolen true as success</returns>
+        public Tags[] GetRecommondedTagList(string userEmail)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.GetRecommondedTagList(userEmail);
             }
             catch (Exception ex)
             {

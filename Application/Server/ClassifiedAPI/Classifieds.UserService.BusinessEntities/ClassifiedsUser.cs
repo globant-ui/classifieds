@@ -31,7 +31,7 @@ namespace Classifieds.UserService.BusinessEntities
 
     public class Tags
     {
-        public string SubCategory { get; set; }
+        public string[] SubCategory { get; set; }
         public string[] Location { get; set; }
     }
 
