@@ -288,7 +288,7 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             Listing listObject = GetListObject();
-            _mockService.Setup(x => x.DeleteListing(It.IsAny<string>()));//.Returns(GetListObject());
+            _mockService.Setup(x => x.DeleteListing(It.IsAny<string>()));
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.Request = new HttpRequestMessage
@@ -343,7 +343,6 @@ namespace Classifieds.ListingsAPI.Tests
             Assert.IsNotNull(contentResult);
             Assert.AreEqual(HttpStatusCode.Accepted, contentResult.StatusCode);
             Assert.IsNotNull(contentResult.Content);
-            //Assert.That(listObject._id, Is.EqualTo("9")); // hasn't changed
         }
 
         /// <summary>
@@ -412,13 +411,13 @@ namespace Classifieds.ListingsAPI.Tests
         public void GetListingsByEmailTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetListingsByEmail(It.IsAny<string>()))
+            _mockService.Setup(x => x.GetListingsByEmail(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(_classifiedList);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act           
-            var objList = _controller.GetListingsByEmail("v.wadsamudrakar@globant.com");
+            var objList = _controller.GetListingsByEmail("v.wadsamudrakar@globant.com", 1, 5);
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
@@ -466,7 +465,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_GetListingByCategoryAndSubCategory_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsByCategoryAndSubCategory(null, null, null, 1, -5, false);
+            _controller.GetListingsByCategoryAndSubCategory(null, null, null, 1, 5, false);
         }
 
         #endregion GetListingsByEmailTest

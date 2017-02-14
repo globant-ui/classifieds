@@ -250,9 +250,12 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <summary>
         /// Returns the listings for given email
         /// </summary>
-        /// <param name="email">listings email</param>
+        /// <param name="email">listing email</param>
+        /// <param name="startIndex">listing startIndex</param>
+        /// <param name="pageCount">listing pageCount</param>
+        /// <param name="isLast">listing isLast</param>
         /// <returns></returns>
-        public List<Listing> GetListingsByEmail(string email)
+        public List<Listing> GetListingsByEmail(string email, int startIndex = 1, int pageCount = 10, bool isLast = false)
         {
             try
             {
@@ -262,8 +265,13 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
+                if (startIndex < 0 || pageCount <= 0)
+                {
+                    string param = startIndex < 0 ? "Start Index" : "Page Count";
+                    throw new Exception(param + "passed cannot be negative!");
+                }
 
-                return _listingService.GetListingsByEmail(email).ToList();
+                return _listingService.GetListingsByEmail(email, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {
