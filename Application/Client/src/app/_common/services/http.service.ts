@@ -23,7 +23,7 @@ export class CService {
     let headers = new Headers();
       this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
       console.log('session obj = ',this.sessionObj);
-    headers.append( 'Content-Type', 'application/jsonp; charset=UTF-8' );
+    headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
     headers.append('AccessToken',this.sessionObj.token);
     headers.append('UserEmail',this.sessionObj.useremail);
     return headers;
@@ -31,7 +31,6 @@ export class CService {
 
   public getRequestOptions(): RequestOptions {
     let requestOptions = new RequestOptions();
-    //requestOptions.withCredentials = false;
     requestOptions.headers = this.getHeaders();
     return requestOptions;
   }

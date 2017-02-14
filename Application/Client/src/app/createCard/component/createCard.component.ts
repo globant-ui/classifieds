@@ -4,6 +4,7 @@ import {CService} from  '../../_common/services/http.service';
 import {mapData} from  '../../mapData/mapData';
 
 import {apiPaths} from  '../../../serverConfig/apiPaths';
+import {Http, Headers} from '@angular/http';
 
 let tpls = require('../tpls/createCard.html').toString();
 let styles = require('../styles/createCard.scss').toString();
@@ -60,10 +61,9 @@ export class CreateCardComponent implements OnInit {
     }
 
     reloadSubcategories(category){
-        console.log(category)
-        this.selectedCategory = category.name;
+        this.selectedCategory = category.ListingCategory;
         this.subcategories = category.SubCategory;
-
+        
     }
 
     fileNameChanged(event){
@@ -82,7 +82,9 @@ export class CreateCardComponent implements OnInit {
     }
 
     createCard(action){
+       console.log(this.selectedCategory)
        this.myForm._value.selectedCategory = this.selectedCategory;
+       console.log(this.myForm)
        let cardData = this.data.mapCardData(this.myForm);
        if(action == 'create'){
            cardData.IsPublished = true;

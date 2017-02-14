@@ -1,206 +1,208 @@
-<div class="container">
-  <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
-      <h1>Sell or rent your product</h1>
-      <p>Upload real photographs of your furni1.ure from 2-3 different angles. Any defects/damages MUST be included in the photographs. We do not accept any stock photographs! </p>
-      <p>lease DO NOT post multiple ads for the same items or service. All duplicate, spam and wrongly categorized ads will be deleted.</p>
-      <div class="similarListings">
-        <h3>Similar Listings</h3>
-        <div class="listing">
-            <img src="../../../../assets/img/similarListing.png" />
-            <div class="listingContent">
-              <span class="title"><h5>Iphone 7</h5></span>
-              <span class="price pull-right">RS 60000</span>
-            </div>
-        </div>
-        <div class="listing">
-            <img src="../../../../assets/img/similarListing.png" />
-            <div class="listingContent">
-              <span class="title"><h5>Iphone 7</h5></span>
-              <span class="price pull-right">RS 60000</span>
-            </div>
+<div class="createCardContainer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+        <h1>Sell or rent your product</h1>
+        <p>Upload real photographs of your furni1.ure from 2-3 different angles. Any defects/damages MUST be included in the photographs. We do not accept any stock photographs! </p>
+        <p>lease DO NOT post multiple ads for the same items or service. All duplicate, spam and wrongly categorized ads will be deleted.</p>
+        <div class="similarListings">
+          <h3>Similar Listings</h3>
+          <div class="listing">
+              <img src="../../../../assets/img/similarListing.png" />
+              <div class="listingContent">
+                <span class="title"><h5>Iphone 7</h5></span>
+                <span class="price pull-right">RS 60000</span>
+              </div>
+          </div>
+          <div class="listing">
+              <img src="../../../../assets/img/similarListing.png" />
+              <div class="listingContent">
+                <span class="title"><h5>Iphone 7</h5></span>
+                <span class="price pull-right">RS 60000</span>
+              </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-lg-9 col-md-8">
-        <ol class="progress">
-            <li class="is-complete" data-step='&#10003;'>
-              select
-            </li>
-            <li class="is-active" data-step='2'>
-              upload
-            </li>
-            <li data-step="3">
-              add info
-            </li>
-            <li data-step="4" class="progress__last">
-              done
-            </li>
-        </ol>
-         <form [formGroup]="myForm" novalidate>
-            <div class="row form-group">
-              <div class="col-lg-3 col-md-3 col-xs-12"> 
-                <label class="uppercaseText">i want to</label>
-              </div>
-              <div class="col-lg-9 col-md-9 col-xs-12">
-                <fieldset id="typeListing">
-                  <label class="radio-inline">
-                    <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="checked">sale
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" name="cardType" formControlName="cardType" value="rent">rent
-                  </label>
-                </fieldset>
-              </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-lg-12 col-md-12 col-xs-12">
-                <label class="uppercaseText">Select the category</label>
-              </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-lg-12 col-md-12 col-xs-12">
-                <ul class="nav navbar-nav">
-                  <li *ngFor="let category of categories">
-                    <div class="img-icon" (click)="reloadSubcategories(category)">
-                       <span class="spriteimage {{category.ListingCategory}}Icon"></span>
-                    </div>
-                  </li>
-                </ul>
-                </div>
-              </div>
+      <div class="col-lg-9 col-md-8">
+          <ol class="progress">
+              <li class="is-complete" data-step='&#10003;'>
+                select
+              </li>
+              <li class="is-active" data-step='2'>
+                upload
+              </li>
+              <li data-step="3">
+                add info
+              </li>
+              <li data-step="4" class="progress__last">
+                done
+              </li>
+          </ol>
+          <form [formGroup]="myForm" novalidate>
               <div class="row form-group">
-                <div class="col-lg-4 col-md-4 col-xs-12"> 
-                  <label class="uppercaseText">select the sub-category</label>
+                <div class="col-lg-3 col-md-3 col-xs-12"> 
+                  <label class="uppercaseText">i want to</label>
                 </div>
-                <div class="col-lg-8 col-md-8 col-xs-12">
-                  <fieldset id="sub-category">
-                    <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories"> 
-                      <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}">{{subCategory}}
+                <div class="col-lg-9 col-md-9 col-xs-12">
+                  <fieldset id="typeListing">
+                    <label class="radio-inline">
+                      <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="checked">sale
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="cardType" formControlName="cardType" value="rent">rent
                     </label>
                   </fieldset>
                 </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
+              </div>
+              <div class="row form-group">
                 <div class="col-lg-12 col-md-12 col-xs-12">
-                  <label class="uppercaseText">Add photos</label>
+                  <label class="uppercaseText">Select the category</label>
                 </div>
               </div>
-              <div class="row">
+              <div class="row form-group">
                 <div class="col-lg-12 col-md-12 col-xs-12">
                   <ul class="nav navbar-nav">
-                    <li>
-                        <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
-                            <img src="{{img}}">
-                        </div>
-                        <div class="img-icon noPadding">
-                            <label for="image-upload">
-                                <img src="../../../../assets/img/addImage.png" />
-                            </label>
-                            <input id="image-upload" type="file" (change)="fileNameChanged($event)" />
-                            
-                        </div>
+                    <li *ngFor="let category of categories">
+                      <div class="img-icon" (click)="reloadSubcategories(category)">
+                        <span class="spriteimage {{category.ListingCategory}}Icon"></span>
+                      </div>
                     </li>
                   </ul>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col-lg-4 col-md-4 col-xs-12"> 
+                    <label class="uppercaseText">select the sub-category</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-xs-12">
+                    <fieldset id="sub-category">
+                      <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories"> 
+                        <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}">{{subCategory}}
+                      </label>
+                    </fieldset>
+                  </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-xs-12">
+                    <label class="uppercaseText">Add photos</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-xs-12">
+                    <ul class="nav navbar-nav">
+                      <li>
+                          <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
+                              <img src="{{img}}">
+                          </div>
+                          <div class="img-icon noPadding">
+                              <label for="image-upload">
+                                  <img src="../../../../assets/img/addImage.png" />
+                              </label>
+                              <input id="image-upload" type="file" (change)="fileNameChanged($event)" />
+                              
+                          </div>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-lg-5 col-md-5 col-xs-12">
-                  <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
-                  <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
-                      Title is required
+              <div class="row form-group">
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
+                    <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
+                        Title is required
+                    </div>
+                    
+                </div>
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <select class="locationSelect fullWidth">
+                      <option selected disabled>Location</option>
+                      <option>Pune</option>
+                      <option>Banglore</option>
+                    </select>
+                    <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <input #price class="fullWidth form-control" type="text" id="price" placeholder="Price" required />
+                    <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
+                      Price is required
+                    </div>-->
+                </div>
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <div class="checkbox">
+                      <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> Negotaible</label>
+                    </div>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-lg-10 col-md-10 col-xs-12">
+                    <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" />
+                    <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
+                        Short Description is required.
+                    </div>
+                </div>
+              </div>
+              <div class="row form-group">
+                  <div class="col-lg-10 col-md-10 col-xs-12">
+                    <div class="row">
+                      <div class="col-lg-4 col-md-4 col-xs-12">
+                        <select class="typeSelect fullWidth">
+                          <option selected disabled>Type</option>
+                        </select>
+                        <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-xs-12">
+                        <select class="brandSelect fullWidth">
+                          <option selected disabled>Brand</option>
+                        </select>
+                        <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-xs-12">
+                        <select class="modelSelect fullWidth">
+                          <option selected disabled>Model</option>
+                        </select>
+                        <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                      </div>
+                    </div>
                   </div>
-                  
               </div>
-              <div class="col-lg-5 col-md-5 col-xs-12">
-                  <select class="locationSelect fullWidth">
-                    <option selected disabled>Location</option>
-                    <option>Pune</option>
-                    <option>Banglore</option>
-                  </select>
-                  <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-              </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-lg-5 col-md-5 col-xs-12">
-                  <input #price class="fullWidth form-control" type="text" id="price" placeholder="Price" required />
-                  <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
-                    Price is required
-                  </div>-->
-              </div>
-              <div class="col-lg-5 col-md-5 col-xs-12">
-                  <div class="checkbox">
-                    <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> Negotaible</label>
-                  </div>
-              </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-lg-10 col-md-10 col-xs-12">
-                  <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" />
-                  <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
-                      Short Description is required.
-                  </div>
-              </div>
-            </div>
-            <div class="row form-group">
+              <div class="row form-group">
                 <div class="col-lg-10 col-md-10 col-xs-12">
                   <div class="row">
                     <div class="col-lg-4 col-md-4 col-xs-12">
-                      <select class="typeSelect fullWidth">
-                        <option selected disabled>Type</option>
+                      <select class="yearSelect fullWidth">
+                        <option selected disabled>Year</option>
                       </select>
                       <div class="glyphicon glyphicon-chevron-down downArrow"></div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-xs-12">
-                      <select class="brandSelect fullWidth">
-                        <option selected disabled>Brand</option>
+                      <select class="fuelTypeSelect fullWidth">
+                        <option selected disabled>Fuel</option>
                       </select>
                       <div class="glyphicon glyphicon-chevron-down downArrow"></div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-xs-12">
-                      <select class="modelSelect fullWidth">
-                        <option selected disabled>Model</option>
+                      <select class="kmDrivenSelect fullWidth">
+                        <option selected disabled>Km Driven</option>
                       </select>
                       <div class="glyphicon glyphicon-chevron-down downArrow"></div>
                     </div>
-                  </div>
-                </div>
-            </div>
-            <div class="row form-group">
-              <div class="col-lg-10 col-md-10 col-xs-12">
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-xs-12">
-                    <select class="yearSelect fullWidth">
-                      <option selected disabled>Year</option>
-                    </select>
-                    <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-xs-12">
-                    <select class="fuelTypeSelect fullWidth">
-                      <option selected disabled>Fuel</option>
-                    </select>
-                    <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-xs-12">
-                    <select class="kmDrivenSelect fullWidth">
-                      <option selected disabled>Km Driven</option>
-                    </select>
-                    <div class="glyphicon glyphicon-chevron-down downArrow"></div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row form-group buttonRow">
-                <div class="col-lg-6 col-md-6 col-xs-12">
-                    <button class="capitalText tempSavebutton" (click)="createCard('saveClose')">Save and close</button>
-                </div>
-                <div class="col-lg-6 col-md-6 col-xs-12">
-                    <button class="uppercaseText createButton pull-right" (click)="createCard('create')"> Create </button>
-                </div>
-            </div>
-        </form>
+              <div class="row form-group buttonRow">
+                  <div class="col-lg-6 col-md-6 col-xs-12">
+                      <button class="capitalText tempSavebutton" (click)="createCard('saveClose')">Save and close</button>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-xs-12">
+                      <button class="uppercaseText createButton pull-right" (click)="createCard('create')"> Create </button>
+                  </div>
+              </div>
+          </form>
+      </div>
     </div>
   </div>
 </div>
