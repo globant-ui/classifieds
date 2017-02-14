@@ -77,7 +77,7 @@ namespace Classifieds.UserService.BusinessServices
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public bool AddTag(string userEmail, Tags[] tag)
+        public bool AddTag(string userEmail, Tags tag)
         {
             try
             {

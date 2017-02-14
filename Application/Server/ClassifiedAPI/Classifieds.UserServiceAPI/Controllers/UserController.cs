@@ -85,6 +85,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// Get user profile including user tags, wish list, subscriptions.
         /// </summary>
         /// <param name="userEmail"></param>
+        [HttpGet]
         public ClassifiedsUser GetUserProfile(string userEmail)
         {
             try
@@ -103,13 +104,14 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
 
-        }      
+        }
         /// <summary>
         /// update user profile
         /// </summary>
         /// <param name="userProfile"></param>
         /// <returns>updated user details</returns>
-        public ClassifiedsUser PutUserProfile(ClassifiedsUser userProfile)
+        [HttpPut]
+        public ClassifiedsUser UpdateUserProfile(ClassifiedsUser userProfile)
         {
             try
             {
@@ -133,7 +135,8 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
         /// <returns>boolen true as success</returns>
-        public bool PutTag(string userEmail,Tags[] tag)
+        [HttpPost]
+        public bool AddTag(string userEmail,Tags tag)
         {
             try
             {
@@ -156,6 +159,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
+        [HttpDelete]
         public bool DeleteTag(string userEmail, Tags tag)
         {
             try
@@ -180,7 +184,8 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="userEmail"></param>
         /// <param name="alert"></param>
         /// <returns></returns>
-        public bool PutAlert(string userEmail, Alert alert)
+        [HttpPost]
+        public bool AddAlert(string userEmail, Alert alert)
         {
             try
             {
@@ -204,6 +209,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="userEmail"></param>
         /// <param name="alert"></param>
         /// <returns></returns>
+        [HttpDelete]
         public bool DeleteAlert(string userEmail, Alert alert)
         {
             try
@@ -228,7 +234,8 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="userEmail"></param>
         /// <param name="listinId"></param>
         /// <returns>boolen true as success</returns>
-        public bool PutToWishList(string userEmail, string listinId)
+        [HttpPost]
+        public bool AddToWishList(string userEmail, string listinId)
         {
             try
             {
@@ -252,6 +259,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="userEmail"></param>
         /// <param name="listinId"></param>
         /// <returns>boolen true as success</returns>
+        [HttpDelete]
         public bool DeleteFromWishList(string userEmail, string listinId)
         {
             try
