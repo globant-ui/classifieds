@@ -29,7 +29,7 @@ private obj = {
   'preferedLoc': []
 };
 private enabledDropdown : boolean = true;
-//private selectInterestPopUpFlag : boolean = true;
+private selectInterestPopUpFlag : boolean = true;
 
   constructor(
                  private _settingsService: SettingsService,
