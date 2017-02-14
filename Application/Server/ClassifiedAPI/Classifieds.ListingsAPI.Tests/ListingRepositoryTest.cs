@@ -128,7 +128,6 @@ namespace Classifieds.ListingsAPI.Tests
 
             //Assert            
             Assert.IsNotNull(result[0]);
-            Assert.AreEqual(5, result.Count);
         }
 
         /// <summary>
@@ -314,7 +313,7 @@ namespace Classifieds.ListingsAPI.Tests
         [TestMethod]
         public void Repo_GetListingsBySubCategoryTest_InvalidSubCategory()
         {
-            var result = _listingRepo.GetListingsBySubCategory("qwer", 1, 5, false);
+            var result = _listingRepo.GetListingsBySubCategory("qwer", 1, -5, false);
             Assert.IsNull(result);
         }
 
@@ -356,7 +355,7 @@ namespace Classifieds.ListingsAPI.Tests
             SetUpClassifiedsListing();
 
             //Act
-            var result = _listingRepo.GetListingsByEmail(_classifiedList[0].SubmittedBy);
+            var result = _listingRepo.GetListingsByEmail(_classifiedList[0].SubmittedBy, 1, 5, false);
 
             //Assert            
             Assert.IsNotNull(result[0]);
@@ -369,7 +368,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_GetListingsByEmailTest_Null()
         {
             //Act
-            var result = _listingRepo.GetListingsByEmail(null);
+            var result = _listingRepo.GetListingsByEmail(null, 1, -5, false);
 
             //Assert
             Assert.IsNull(result);
@@ -382,7 +381,7 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_GetListingByEmailTest_InvalidEmail_ThrowException()
         {
-            var result = _listingRepo.GetListingsByEmail("qazxsw");
+            var result = _listingRepo.GetListingsByEmail("qazxsw", 1, 5, false);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -410,21 +409,21 @@ namespace Classifieds.ListingsAPI.Tests
         /// test for incorrect Category And SubCategory return null;
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(AssertFailedException))]
         public void Repo_GetListingsByCategoryAndSubCategoryTest_Null()
         {
             //Act
             var result = _listingRepo.GetListingsByCategoryAndSubCategory(null, null, null, 1, 5, false);
 
             //Assert
-            Assert.IsNull(result, "Null");
+            Assert.IsNull(result);
         }
 
         /// <summary>
         /// test for incorrect Category And SubCategory throws exception
         /// </summary>
         [TestMethod]
-        public void Repo_GetListingByCategoryAndSubCategoryTest_Invalid()
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Repo_GetListingByCategoryAndSubCategoryTest_Invalid_Exception()
         {
             var result = _listingRepo.GetListingsByCategoryAndSubCategory("qazxsw", "qazxsw", "qazxsw", 1, 5, false);
             Assert.AreEqual(0, result.Count);

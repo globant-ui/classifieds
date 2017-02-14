@@ -15,7 +15,6 @@ namespace Classifieds.ListingCommentsAPI.Tests
         private IListingCommentsRepository<ListingComment> _listingCommmentsRepo;
         private IDBRepository _dbRepository;
         private readonly List<ListingComment> _classifiedListingComments = new List<ListingComment>();
-        private const string ListingId = "5873490a48bd151ef5d67a29";
         #endregion
 
         #region Initialize
@@ -179,7 +178,6 @@ namespace Classifieds.ListingCommentsAPI.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_UpdateListingCommentsTest_NullId_ThrowException()
         {
-            //ListingComment updatedListingComments = null;
             var result = _listingCommmentsRepo.UpdateListingComment(null, null);
             Assert.IsNull(result);
         }

@@ -13,20 +13,20 @@ namespace Classifieds.Search.Repository
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["SearchDBConnectionString"].ConnectionString;
         private readonly string _database = ConfigurationManager.AppSettings["SearchDB"];
 
-        private MongoClient client = null;
-        private MongoServer server = null;
-        private MongoDatabase db = null;
+        private readonly MongoClient _client = null;
+        private readonly MongoServer _server = null;
+        private readonly MongoDatabase _db = null;
 
         public DBRepository()
         {
-            client = new MongoClient(_connectionString);
-            server = client.GetServer();
-            db = server.GetDatabase(_database);
+            _client = new MongoClient(_connectionString);
+            _server = _client.GetServer();
+            _db = _server.GetDatabase(_database);
         }
 
         protected MongoDatabase Database
         {
-            get { return server.GetDatabase(_database); }
+            get { return _server.GetDatabase(_database); }
         }
     }
 }

@@ -87,10 +87,6 @@ namespace Classifieds.ListingComments.Repository
             try
             {
                 var result = Classifieds.Save(listingComments);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-
-                }
                 return listingComments;
             }
             catch (Exception ex)
@@ -119,12 +115,7 @@ namespace Classifieds.ListingComments.Repository
                                                .Set(p => p.UpdatedBy, dataObj.UpdatedBy)
                                                .Set(p => p.Verified, dataObj.Verified)
                                                .Set(p => p.UpdatedDate, dataObj.UpdatedDate);
-                var result = Classifieds.Update(query, update);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-
-                }
-
+                Classifieds.Update(query, update);
                 return dataObj;
             }
             catch (Exception ex)
