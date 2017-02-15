@@ -69,7 +69,8 @@ namespace Classifieds.UserServiceAPI.Controllers
                     Classifieds.Common.Entities.UserToken userToken = new Classifieds.Common.Entities.UserToken();
                     userToken.AccessToken = tokenId;
                     userToken.UserEmail = user.UserEmail;
-                    userToken.LoginDateTime = DateTime.Now.ToString();
+                    userToken.LoginDateTime = DateTime.Now;
+                    userToken.IsFirstTimeLogin = result == "Saved" ? true : false;
                     _commonRepository.SaveToken(userToken);
                     response = Request.CreateResponse<Classifieds.Common.Entities.UserToken>(HttpStatusCode.Created, userToken);
                 }
@@ -136,11 +137,11 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="tag"></param>
         /// <returns>boolen true as success</returns>
         [HttpPost]
-        public bool AddTag(string userEmail,Tags tag)
+        public bool AddTag(string userEmail, Tags tag)
         {
             try
             {
-              _userEmail = GetUserEmailFromHeader();
+                _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
                 {
@@ -164,7 +165,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         {
             try
             {
-               _userEmail = GetUserEmailFromHeader();
+                _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
                 {
@@ -220,7 +221,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-               return _userService.DeleteAlert(userEmail, alert);
+                return _userService.DeleteAlert(userEmail, alert);
             }
             catch (Exception ex)
             {
