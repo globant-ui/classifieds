@@ -3,8 +3,6 @@ import {CookieService} from 'angular2-cookie/core';
 import {Session} from '../../authentication/entity/session.entity';
 import { Router } from '@angular/router';
 
-//import {CService} from '../services/http.service';
-
 @Injectable()
 export class AuthenticationWindowService {
 
