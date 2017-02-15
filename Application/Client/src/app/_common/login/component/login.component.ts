@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit{
     doLogin(){
         let context = this;
         this.session =new Session({});
+        console.log(this._settingsService.settings);
+        debugger;
         let params = '?client_id=' + encodeURIComponent( this._settingsService.settings.auth.client_id )
             + '&redirect_uri=' + encodeURIComponent( this._settingsService.settings.auth.redirect_uri )
             + '&scope=' + encodeURIComponent( this._settingsService.settings.auth.scope )

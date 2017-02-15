@@ -70,6 +70,12 @@ nav.navbar-inverse{
     }
   }
 }
+.fixed-navbar{
+  .navbar-inverse{
+    @extend .fixed;
+    top: 0;
+  }
+}
 
 @media (min-width: 320px) and (max-width: 460px){
   nav.navbar-inverse{

@@ -1,6 +1,6 @@
-
+  <header [ngClass]="{'fixed-navbar':navIsFixed}"></header>
 <banner [categories]='bannerData'></banner>
-<nav class="navbar searchFilterContainerWrapper" #ch  eader id="cheader1">
+<nav class="navbar searchFilterContainerWrapper" id="cheader1" [ngClass]="{'fixed':navIsFixed}">
    <div class="searchFilterContainer">
         <search (searchCategory)="showOutput($event)"
                 (getSelectedFilter)="getSelectedFilter($event)"></search>
@@ -9,6 +9,4 @@
                 (getInitialCards) = "getInitialCards($event)"></filter>
    </div>
 </nav>
-<card-list [cards]='initialCardData'>
-
-</card-list>
+<card-list [cards]='initialCardData'></card-list>
