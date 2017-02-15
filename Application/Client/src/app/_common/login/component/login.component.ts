@@ -20,8 +20,8 @@ export class LoginComponent implements OnInit{
 
     public UserInformation: UserInformation;
     private windowHandle: any;
-    private intervalLength = 100;
-    private loopCount = 600;
+    private intervalLength: number = 100;
+    private loopCount: number = 600;
     private  intervalId = null;
     private session : Session;
     private  code : any;
