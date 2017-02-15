@@ -109,7 +109,7 @@ namespace Classifieds.MastersData.Repository.Test
         public void GetCategorySuggetionTest()
         {
             //Act
-            var result = _masterDataRepo.GetCategorySuggetion("Aut");
+            var result = _masterDataRepo.GetCategorySuggestion("Aut");
 
             //Assert
             Assert.IsNotNull(result[0]);
@@ -122,7 +122,7 @@ namespace Classifieds.MastersData.Repository.Test
         [ExpectedException(typeof(NullReferenceException))]
         public void GetCategorySuggetionTest_NullSubCategoryText()
         {
-            _masterDataRepo.GetCategorySuggetion(null);
+            _masterDataRepo.GetCategorySuggestion(null);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Classifieds.MastersData.Repository.Test
         [TestMethod]
         public void GetCategorySuggetionTest_InvalidSubCategory()
         {
-            var result = _masterDataRepo.GetCategorySuggetion("qwer");
+            var result = _masterDataRepo.GetCategorySuggestion("qwer");
             Assert.IsNull(result);
         }
 
