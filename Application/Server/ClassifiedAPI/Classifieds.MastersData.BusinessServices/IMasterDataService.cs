@@ -9,7 +9,7 @@ namespace Classifieds.MastersData.BusinessServices
         Category CreateCategory(Category listObject);
         Category UpdateCategory(string id, Category listObject);
         void DeleteCategory(string id);
-        List<string> GetCategorySuggetion(string categoryText);
+        List<string> GetCategorySuggestion(string categoryText);
         List<string> GetSubCategorySuggestion(string subCategoryText);
         SubCategory GetAllFiltersBySubCategory(string subCategory);
         Filters GetFiltersByFilterName(string subCategory, string filterName);
