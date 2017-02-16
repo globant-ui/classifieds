@@ -70,18 +70,20 @@ namespace Classifieds.UserService.BusinessServices
             {
                 throw ex;
             }
-
         }
         /// <summary>
         /// Add user tag
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public bool AddTag(string userEmail, Tags tag)
+        /// <returns>user tag object</returns>
+        public Tags AddTag(string userEmail, Tags tag)
         {
             try
             {
-              return _userRepository.AddTag(userEmail, tag);
+               _userRepository.AddTag(userEmail, tag);
+                var result = _userRepository.GetUserProfile(userEmail);
+                return result.Tags;
             }
             catch (Exception ex)
             {

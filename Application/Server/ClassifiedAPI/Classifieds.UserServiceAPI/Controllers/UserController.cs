@@ -136,7 +136,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="tag"></param>
         /// <returns>boolen true as success</returns>
         [HttpPost]
-        public bool AddTag(string userEmail,Tags tag)
+        public Tags AddTag(string userEmail,Tags tag)
         {
             try
             {

@@ -127,14 +127,12 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public bool AddTag(string userEmail, Tags tag)
+        public void AddTag(string userEmail, Tags tag)
         { 
             try
             {
-                bool result = false;
-                result = AddSubCatToTag(userEmail, tag);
-                result = AddLocToTag(userEmail, tag);
-                return result;
+                AddSubCatToTag(userEmail, tag);
+                AddLocToTag(userEmail, tag);
             }
             catch (Exception ex)
             {
@@ -281,9 +279,8 @@ namespace Classifieds.UserService.Repository
         #endregion
 
         #region Private Methods
-        private bool AddSubCatToTag(string userEmail, Tags tag)
+        private void AddSubCatToTag(string userEmail, Tags tag)
         {
-            bool result = false;
             if (tag.SubCategory != null )
             {
                 //update tag object and Push item in Subcategory Array
@@ -295,17 +292,15 @@ namespace Classifieds.UserService.Repository
                     if (items.Count == 0)
                     {
                         var resultCategory = Classifieds.Update(Query.EQ("UserEmail", userEmail),
-                        Update.PushWrapped("Tags.SubCategory", subcat));
-                        result = resultCategory.UpdatedExisting;
+                            Update.PushWrapped("Tags.SubCategory", subcat));
                     }
                 }
             }
-            return result;
+           
         }
-        private bool AddLocToTag(string userEmail, Tags tag)
+        private void AddLocToTag(string userEmail, Tags tag)
         {
-            bool result = false;
-            if (tag.Location!= null)
+           if (tag.Location!= null)
             {
                 //update tag object and Push item in Location Array
                 foreach (var location in tag.Location)
@@ -317,11 +312,10 @@ namespace Classifieds.UserService.Repository
                     {
                         var resultLocation = Classifieds.Update(Query.EQ("UserEmail", userEmail),
                         Update.PushWrapped("Tags.Location", location));
-                        result = resultLocation.UpdatedExisting;
                     }
                 }
             }
-            return result;
+          
         }
         #endregion
     }
