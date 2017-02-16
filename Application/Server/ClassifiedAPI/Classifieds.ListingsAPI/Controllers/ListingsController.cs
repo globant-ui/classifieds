@@ -27,6 +27,12 @@ namespace Classifieds.ListingsAPI.Controllers
         private readonly ILogger _logger;
         private readonly ICommonRepository _commonRepository;
         private string _userEmail = string.Empty;
+        private enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
         #endregion
 
         #region Constructor
@@ -149,10 +155,11 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-
+                listing.Status = Status.Active.ToString();
+                listing.SubmittedDate = DateTime.Now;
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Created, classified);
-                var newItemUrl = Url.Link("Listings", new { id = classified._id});
+                var newItemUrl = Url.Link("Listings", new { id = classified._id });
                 result.Headers.Location = new Uri(newItemUrl);
             }
             catch (Exception ex)
