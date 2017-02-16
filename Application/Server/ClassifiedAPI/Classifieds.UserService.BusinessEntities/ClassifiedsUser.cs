@@ -7,7 +7,7 @@ namespace Classifieds.UserService.BusinessEntities
 {
     public class ClassifiedsUser
     {
-        
+
         /// <summary>
         /// Class Name: ClassifiedsUser.cs
         /// Purpose: Used as a property / DTO class to hold and pass property values.
