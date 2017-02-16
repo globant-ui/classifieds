@@ -16,6 +16,7 @@ using Classifieds.UserService.Repository;
 using Classifieds.ListingComments.BusinessServices;
 using Classifieds.ListingComments.BusinessEntities;
 using Classifieds.ListingComments.Repository;
+using Classifieds.Listings.BusinessServices.ServiceAgent;
 using Classifieds.UserService.BusinessEntities;
 
 namespace Classifieds.IOC
@@ -57,6 +58,8 @@ namespace Classifieds.IOC
             container.RegisterType<IListingCommentService, ListingCommentService>(new HierarchicalLifetimeManager());
             container.RegisterType<IListingCommentsRepository<ListingComment>, ListingCommentsRepository<ListingComment>>(new HierarchicalLifetimeManager());
             container.RegisterType<ListingComments.Repository.IDBRepository, ListingComments.Repository.DBRepository>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IWebApiServiceAgent, WebApiServiceAgent>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(container);
         }

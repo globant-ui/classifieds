@@ -12,6 +12,7 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using Classifieds.Common;
 using Classifieds.Common.Repositories;
+using Classifieds.Listings.BusinessServices.ServiceAgent;
 
 namespace Classifieds.ListingsAPI.Tests
 {
@@ -25,6 +26,7 @@ namespace Classifieds.ListingsAPI.Tests
         private readonly List<Listing> _classifiedList = new List<Listing>();
         private const string UrlLocation = "http://localhost/api/listings";
         private ListingsController _controller;
+        private Mock<IWebApiServiceAgent> _mockWebApiServiceAgent;
         #endregion
 
         #region Initialize
@@ -34,7 +36,8 @@ namespace Classifieds.ListingsAPI.Tests
             _mockService = new Mock<IListingService>();
             _logger = new Mock<ILogger>();
             _mockAuthRepo = new Mock<ICommonRepository>();
-            _controller = new ListingsController(_mockService.Object, _logger.Object, _mockAuthRepo.Object);
+            _mockWebApiServiceAgent = new Mock<IWebApiServiceAgent>();
+            _controller = new ListingsController(_mockService.Object, _logger.Object, _mockAuthRepo.Object, _mockWebApiServiceAgent.Object);
         }
         #endregion
 

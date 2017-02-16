@@ -199,6 +199,22 @@ namespace Classifieds.Listings.BusinessServices
 
         #endregion GetListingsByCategoryAndSubCategory
 
+        /// <summary>
+        /// Returns the collection of listing for given listing Ids
+        /// </summary>
+        /// <param name="listingIds">array of Listing Id</param>
+        /// <returns></returns>
+        public List<Listing> GetMyWishList(string[] listingIds)
+        {
+            try
+            {
+                return _listingRepository.GetMyWishList(listingIds);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
     }
 }

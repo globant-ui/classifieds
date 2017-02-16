@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using MongoDB.Bson;
 
 namespace Classifieds.Listings.Repository
 {
@@ -330,6 +331,31 @@ namespace Classifieds.Listings.Repository
 
         #endregion GetListingsByCategoryAndSubCategory
 
+        /// <summary>
+        /// Returns listing object collection for given listing ids
+        /// </summary>
+        /// <param name="listingIds">array of listing ids</param>
+        /// <returns>Listing collection</returns>
+        public List<TEntity> GetMyWishList(string[] listingIds)
+        {
+            try
+            {
+                if (listingIds != null)
+                {
+                    ObjectId[] newObjectId = listingIds.Select(item => ObjectId.Parse(item)).ToArray();
+                    var query = Query.In("_id", BsonArray.Create(newObjectId));
+                    SortByBuilder sortBuilder = new SortByBuilder();
+                    sortBuilder.Descending("_id");
+                    var listings = Classifieds.Find(query).SetSortOrder(sortBuilder);
+                    return listings.ToList();
+                }
+                return null; 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         #region private methods

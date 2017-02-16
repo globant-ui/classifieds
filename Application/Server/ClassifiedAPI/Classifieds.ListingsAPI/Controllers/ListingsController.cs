@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common.Repositories;
+using Classifieds.Listings.BusinessServices.ServiceAgent;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -27,17 +28,20 @@ namespace Classifieds.ListingsAPI.Controllers
         private readonly ILogger _logger;
         private readonly ICommonRepository _commonRepository;
         private string _userEmail = string.Empty;
+        private string _accessToken = string.Empty;
+        private readonly IWebApiServiceAgent _webApiServiceAgent;
         #endregion
 
         #region Constructor
         /// <summary>
         /// The class constructor. 
         /// </summary>
-        public ListingsController(IListingService listingService, ILogger logger, ICommonRepository commonRepository)
+        public ListingsController(IListingService listingService, ILogger logger, ICommonRepository commonRepository, IWebApiServiceAgent webApiServiceAgent)
         {
             _listingService = listingService;
             _logger = logger;
             _commonRepository = commonRepository;
+            _webApiServiceAgent = webApiServiceAgent;
         }
         #endregion
 
@@ -321,6 +325,31 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion GetListingsByCategoryAndSubCategory
 
+        /// <summary>
+        /// Returns top listings from database  
+        /// </summary>
+        /// <returns></returns>
+        public List<Listing> GetMyWishlist()
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                _accessToken = GetAccessToken();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var listingIds = _webApiServiceAgent.GetWishListListingIds(_accessToken, _userEmail);
+                
+                return _listingService.GetMyWishList(listingIds);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
         #endregion
 
         #region private methods
@@ -333,6 +362,15 @@ namespace Classifieds.ListingsAPI.Controllers
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
             message.Headers.TryGetValues("UserEmail", out headerValues);
+            string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
+            return hearderVal;
+        }
+
+        private string GetAccessToken()
+        {
+            IEnumerable<string> headerValues;
+            HttpRequestMessage message = Request ?? new HttpRequestMessage();
+            message.Headers.TryGetValues("AccessToken", out headerValues);
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
         }
