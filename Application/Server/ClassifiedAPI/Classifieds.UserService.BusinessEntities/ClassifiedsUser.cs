@@ -25,7 +25,7 @@ namespace Classifieds.UserService.BusinessEntities
         public string Location { get; set; }
         public string[] WishList { get; set; }
         public string Image { get; set; }
-        public Tags[] Tags;
+        public Tags Tags;
         public Alert[] Alert;
     }
 
