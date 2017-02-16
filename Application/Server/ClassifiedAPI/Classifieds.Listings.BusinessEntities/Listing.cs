@@ -29,10 +29,11 @@ namespace Classifieds.Listings.BusinessEntities
         public string Brand { get; set; }
         public Int32 Price { get; set; }
         public Int32 YearOfPurchase { get; set; }
-        public string ExpiryDate { get; set; }
+        //public string ExpiryDate { get; set; }
         public string Status { get; set; }
         public string SubmittedBy { get; set; }
-        public string SubmittedDate { get; set; }
+        [BsonDateTimeOptions(Representation = BsonType.DateTime)]
+        public DateTime SubmittedDate { get; set; }
         public string IdealFor { get; set; }
         public string Furnished { get; set; }
         public string FuelType { get; set; }

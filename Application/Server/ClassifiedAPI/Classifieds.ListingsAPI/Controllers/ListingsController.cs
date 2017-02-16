@@ -152,7 +152,7 @@ namespace Classifieds.ListingsAPI.Controllers
 
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Created, classified);
-                var newItemUrl = Url.Link("Listings", new { id = classified._id });
+                var newItemUrl = Url.Link("Listings", new { id = classified._id});
                 result.Headers.Location = new Uri(newItemUrl);
             }
             catch (Exception ex)
