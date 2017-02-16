@@ -29,7 +29,6 @@ namespace Classifieds.Listings.BusinessEntities
         public string Brand { get; set; }
         public Int32 Price { get; set; }
         public Int32 YearOfPurchase { get; set; }
-        //public string ExpiryDate { get; set; }
         public string Status { get; set; }
         public string SubmittedBy { get; set; }
         [BsonDateTimeOptions(Representation = BsonType.DateTime)]
