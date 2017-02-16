@@ -1,9 +1,8 @@
 @import "../../_common/styles/sass/style";
 
-
+/*
 .container.banner-container{
-  /* background-color: $darkblue-color; */
-  width:100%;
+    width:100%;
   max-width:1366px;
   .banner-row{
     background: url("../../../assets/img/background.jpg") no-repeat;
@@ -25,7 +24,7 @@
           width: 100%;
           background-color: #ffffff;
           /*font-family: 'Open Sans';*/
-          li{
+          /*li{
             width:20%;
             border-left:2px solid $light-grey-border;
             padding: 25px 0 15px;
@@ -63,7 +62,7 @@
             }
           }
           li:hover{
-            
+
           }
         }
       }
@@ -273,4 +272,32 @@
       }
     }
   }
+}
+*/
+.breadcrumb-wraper {
+  .breadcrumb {
+    background: none;
+    padding: 8px 25px;
+    margin: 30px 0;
+    font-family: 'Open Sans';
+    font-weight: 700;
+    text-transform: capitalize;
+    a {
+      color: $darkblue-color;
+    }
+  }
+}
+
+.profile-insert {
+  .pager {
+    text-align: left;
+  }
+}
+
+.pad-topbot-17 {
+  padding: 17px 0;
+}
+
+.no-padding {
+  padding: 0;
 }

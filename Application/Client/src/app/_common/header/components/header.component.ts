@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit{
   private session : Session;
   private activeSession:boolean = false;
   public isCollapsed:boolean = true;
+  public showProfile: boolean = false;
 
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
@@ -53,7 +54,10 @@ export class HeaderComponent implements OnInit{
   doLogout(){
     this._authenticationWindowService.doLogOut();
   }
+  openProfile(){
+  console.log("in the profile header");
+  this.showProfile = true;
+  }
 
 
 }
-

@@ -2,7 +2,7 @@ import { Component,Input,OnInit,HostListener,AfterViewInit,Renderer,ElementRef }
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 
-let styles = require('../styles/profile.component.scss').toString();
+let styles = require('../styles/profile.scss').toString();
 let tpls = require('../tpls/profile.component.html').toString();
 
 @Component({
