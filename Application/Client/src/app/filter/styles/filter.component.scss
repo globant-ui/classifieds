@@ -7,11 +7,9 @@
     li{
       a{
         color: $primary-text-color;
-        font: 0.857em 'Open Sans', sans-serif;
-        font-weight:600;
+        @extend %type-open-sans-12-6-text;
         border-radius:15px;
         padding: 5px 20px;
-        /*margin:40px 0;*/
         border: 2px solid transparent;
       }
       a:hover, a.active{

@@ -27,9 +27,7 @@ nav{
             color: $darkblue-color;
             border-radius: 10px;
             padding: 5px 15px 5px 10px;
-            font-family: 'Open Sans';
-            font-weight: bold;
-            font-size: 0.714em;
+            @extend %type-open-sans-10-7-text;
             margin-right: 20px;
             border:none;
             text-transform: uppercase;
@@ -46,8 +44,7 @@ nav{
             .textwishlist, .textProfile{
               text-transform: uppercase;
               color: $white-color;
-              font-family: 'Open Sans';
-              font-size: 0.857em;
+              @extend %type-open-sans-12-4-text;
               float: right;
             }
             .wishlist{
