@@ -1,4 +1,4 @@
-<!-- <banner [categories]='bannerData'></banner> -->
+<!-- <banner [categories]='bannerData'></banner> --> 
 <nav class="navbar searchFilterContainerWrapper" #ch  eader id="cheader1">
    <div class="searchFilterContainer">
         <search (searchCategory)="showOutput($event)"
@@ -8,53 +8,11 @@
                 (getInitialCards) = "getInitialCards($event)"></filter>
    </div>
 </nav>
-<!-- <card-list [cards]='initialCardData'></card-list> -->
+<!-- <card-list [cards]='initialCardData'></card-list> --> 
 
-<nav class="navbar navbar-inverse hidden-md hidden-lg">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button class="navbar-toggle" type="button">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#"><img src="../../../../assets/img/logo.png"></a>
-    </div>
-    <div class="collapse navbar-collapse">
-      <ul _ngcontent-pvc-3="" class="nav navbar-nav navbar-right">
-        <li _ngcontent-pvc-3="">
-          <button _ngcontent-pvc-3="" class="green-button" ng-reflect-router-link="createCard">
-            <span _ngcontent-pvc-3="" class="icon-flag"></span>
-            <span _ngcontent-pvc-3="">create</span>
-          </button>
-        </li>
-        <li _ngcontent-pvc-3="">
-          <a _ngcontent-pvc-3="" href="#">
-            <span _ngcontent-pvc-3="" class="textwishlist">my wishlist</span>
-            <span _ngcontent-pvc-3="" class="icon-like-icon wishlist"></span>
-          </a>
-        </li>
-        <li _ngcontent-pvc-3="">
-          <a _ngcontent-pvc-3="" href="#">
-            <span _ngcontent-pvc-3="" class="icon-profile profile-btn"></span>
-            <span _ngcontent-pvc-3="" class="textProfile">my profile</span>
-          </a>
-        </li>
-        <li _ngcontent-pvc-3="">
-          <button _ngcontent-pvc-3="" class="green-button sign-out-btn">
-            <span _ngcontent-pvc-3="" class="icon-flag"></span>
-            <span _ngcontent-pvc-3="">Sign Out</span>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-
-<div class="productInfoPage">
+<div class="productInfoPage clearfix">
 	<!-- Breadcrumb Start -->
-	<ol class="breadcrumb" style="font-size: 0.68em;">
+	<ol class="breadcrumb">
 	  <li class="breadcrumb-item"><a href="#">HOME</a></li>
 	  <li class="breadcrumb-item"><a href="#">ELECTRONICS</a></li>
 	  <li class="breadcrumb-item"><a href="#">MOBILE</a></li>
@@ -63,8 +21,27 @@
 	</ol>
 	<!-- Breadcrumb End -->
 	<div class="col-md-12">
-		<div class="col-md-6" style="border: 1px solid red;">gdfgdfgdf</div>
-		<div class="col-md-6" style="border: 1px solid green;">
+		<div class="col-md-6 mobileViewCarousel">
+			<div class="largeViewSpacing"><img src="/assets/img/large-mobile-img.png" class="largeView"></div>
+			<div class="clearfix">
+				<div class="smallViewsArrow">
+					<a href="#"><img src="/assets/img/arrow-left-circle.png"></a>
+				</div>
+				<div class="smallViews">
+					<a href="#"><img src="/assets/img/small-mobile-img1.png"></a>
+	          	</div>
+				<div class="smallViews">
+					<a href="#"><img src="/assets/img/small-mobile-img2.png"></a>
+	          	</div>
+				<div class="smallViews">
+					<a href="#"><img src="/assets/img/small-mobile-img3.png"></a>
+	          	</div>
+				<div class="smallViewsArrow">
+					<a href="#"><img src="/assets/img/arrow-right-circle.png"></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
 			<div class="clearfix mobileDetails">
 				<div class="col-md-6">
 					<h1>I Phone 7</h1>
@@ -87,23 +64,61 @@
 				<div class="col-md-6"><p><span>TYPE:</span> Psdjdjfjgjgkfjfb</p></div>
 				<div class="col-md-6"><p><span>BRAND:</span> Psdjdjfjgjgkfjfb</p></div>
 			</div>
-			<div class="col-md-12 clearfix">
+			<div class="col-md-12 clearfix userDetailsSpacing">
 				<div class="col-md-8">
-					<span><img src="/assets/img/userProfilePic.png" class="img-circle"></span>
-					<span style="margin: 0 10px;"><img src="/assets/img/orange-icon.png"></span>
-					<span style="font-size: 12px;"><span style="letter-spacing: 2px; font-family: 'Open Sans'; font-weight: bold;">RUSLAN LATYPOV,</span> <i>Designer</i></span>
+					<span><a href="#"><img src="/assets/img/userProfilePic.png" class="img-circle"></a></span>
+					<span class="orangeIconSpacing"><img src="/assets/img/orange-icon.png"></span>
+					<span class="designerName"><span>RUSLAN LATYPOV,</span> <i>Designer</i></span>
 				</div>
 				<div class="col-md-4">
-					<button type="button" class="btn btn-primary btn-round-lg btn-lg" style="border-radius: 22.5px; background-color: #c1d72f; border-color: #c1d72f; font-weight: bold; font-size: 12px; border: none; outline: 0; font-family: 'Open Sans'; letter-spacing: 2px; padding: 15px 30px;">CONTACT</button>
+					<button type="button" class="btn btn-primary btn-round-lg btn-lg contactButton">CONTACT</button>
 				</div>
 			</div>
-			<div class="col-md-12 clearfix text-right" style="margin: 20px 0;">
+			<div class="col-md-12 clearfix text-right wishlistText">
 				<a href="#">
-					<span class="icon-like-icon wishlist" style="color: red; margin-right: 10px;"></span>
-					<span class="textwishlist" style="font-size: 12px; font-weight: bold; color: #9fa3a7;">ADD TO WISHLIST</span>
+					<span class="icon-like-icon wishlist"></span>
+					<span class="textwishlist">ADD TO WISHLIST</span>
 				</a>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12" style="height: 200px; border: 1px solid black; background-color: #eee;"></div>
+	<div class="col-md-12 similarListings">
+		<h3>Similar Listings</h3>
+		<div class="clearfix similarListingsBottomSpacing">
+			<div class="listing smallArrow">
+				<a href="#"><img src="/assets/img/arrow-left-circle.png"></a>
+			</div>
+			<div class="listing">
+				<img src="../../../../assets/img/similarListing.png">
+              	<div class="listingContent">
+                	<span class="title"><h5>Iphone 7</h5></span>
+                	<span class="price pull-right">RS 60000</span>
+              	</div>
+          	</div>
+			<div class="listing">
+				<img src="../../../../assets/img/similarListing.png">
+              	<div class="listingContent">
+                	<span class="title"><h5>Iphone 7</h5></span>
+                	<span class="price pull-right">RS 60000</span>
+              	</div>
+          	</div>
+			<div class="listing">
+				<img src="../../../../assets/img/similarListing.png">
+              	<div class="listingContent">
+                	<span class="title"><h5>Iphone 7</h5></span>
+                	<span class="price pull-right">RS 60000</span>
+              	</div>
+          	</div>
+			<div class="listing">
+				<img src="../../../../assets/img/similarListing.png">
+              	<div class="listingContent">
+                	<span class="title"><h5>Iphone 7</h5></span>
+                	<span class="price pull-right">RS 60000</span>
+              	</div>
+          	</div>
+			<div class="listing smallArrow">
+				<a href="#"><img src="/assets/img/arrow-right-circle.png"></a>
+			</div>
+		</div>
+	</div>
 </div>

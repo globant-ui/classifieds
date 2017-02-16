@@ -18,11 +18,13 @@
 }
 .productInfoPage {
 	.breadcrumb {
-		background-color: #fff;
-		color: #495574;
+		background-color: $white-color;
+		color: $darkblue-color;
+		font: 0.857em 'Open Sans', sans-serif;
+		padding: 20px 45px;
 	}
 	.breadcrumb li a , .breadcrumb>li+li:before , .breadcrumb>.active {
-		color: #495574;
+		color: $darkblue-color;
 	}
 	.breadcrumb .active span {
 		text-decoration: underline;
@@ -37,16 +39,17 @@
 		letter-spacing: 2px;
 	}
 	h1 , .description {
-		color: #292929;
+		color: $createListing-complete-active-text-color;
 	}
 	h3 {
 		color: #202020;
 	}
-	i , h5 , .typeBrandDetails {
-		color: #9fa3a7;
+	i , .typeBrandDetails , h5.textCustom {
+		color: $primary-text-color;
 	}
 	.typeBrandDetails {
-		font-size: 10px; 
+		font-size: 0.8em;
+    	padding-top: 15px;
 		span {
 			font-weight: bold;
 			letter-spacing: 2px;
@@ -54,9 +57,103 @@
 	}
 	.textCustom {
 		line-height: 25px;
+		padding-bottom: 10px;
 	}
 	.mobileDetails {
 		margin-bottom: 30px;
+	}
+	.mobileViewCarousel {
+		.largeViewSpacing {
+			margin-bottom: 30px;
+		}
+		.largeView {
+			margin: 0 15.7%;
+		}
+		.smallViewsArrow {
+			width: 41px; height: 40px; background-color: transparent; margin: 0 15px; float: left;
+			img {
+				width: 41px; height: 40px; margin-top: 40px;
+			}
+		}
+		.smallViews {
+			width: 116px; height: 115px; margin: 0 19.7px; float: left;
+			img {
+				width: 116px; height: 115px;
+			}
+		}
+	}
+	.orangeIconSpacing {
+		margin: 0 10px;
+	}
+	.designerName {
+		font-size: 12px;
+		span {
+			letter-spacing: 2px; font-family: 'Open Sans'; font-weight: bold;
+		}
+	}
+	.contactButton {
+		border-radius: 22.5px; background-color: $green-color; font-weight: bold; font-size: 12px; border: none; outline: 0; font-family: 'Open Sans'; letter-spacing: 2px; padding: 15px 30px;
+	}
+	.contactButton.btn-primary:hover {
+		background-color: $green-color; outline: 0;
+	}
+	.wishlistText {
+		margin: 20px 0;
+		span.wishlist {
+			color: $red-color; margin-right: 10px;
+		}
+		span.textwishlist {
+			font-size: 12px; font-weight: bold; color: $primary-text-color;
+		}
+		a:hover {
+			text-decoration: none;
+		}
+	}
+	.userDetailsSpacing {
+		margin-top: 88px;
+	}
+	.similarListings {
+		background-color: #eee;
+		h3 {
+			color: #000; margin-left: 8.8%;
+		}
+		.similarListingsBottomSpacing {
+			margin-bottom: 56px;
+		}
+		.listing.smallArrow {
+			width: 41px; height: 40px; background-color: transparent;
+			img {
+				width: 41px; height: 40px; margin-top: 116px;
+			}
+		}
+		.listing {
+			background-color: $createListing-item-bgcolor;
+			width: 232px;
+			height: 255px;
+			float: left;
+    		margin: 0 25px;
+			img {
+				width: 232px;
+				height: 210px;
+			}
+			.listingContent {
+				display: inline;
+				span {
+					display: inline-block;
+					color: $primary-text-color;
+					padding: 5px;
+				}
+				span.title {
+					font-weight: semibold;
+					color: $heading-color;
+				}
+				span.price {
+					margin-top: 10px;
+					margin-bottom: 10px;
+					letter-spacing: 2px;
+				}
+			}
+		}
 	}
 }
 @media (min-width: 320px) and (max-width: 460px){
