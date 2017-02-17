@@ -296,7 +296,6 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="category">listing category</param>
         /// <param name="subCategory">listing subCategory</param>
-        /// <param name="email">listing email</param>
         /// <param name="startIndex">listing startIndex</param>
         /// <param name="pageCount">listing pageCount</param>
         /// <param name="isLast">listing isLast</param>
