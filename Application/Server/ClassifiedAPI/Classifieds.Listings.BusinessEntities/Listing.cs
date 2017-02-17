@@ -38,12 +38,18 @@ namespace Classifieds.Listings.BusinessEntities
         public string FuelType { get; set; }
         public Int32 KmDriven { get; set; }
         public Int32 YearofMake { get; set; }
-        public string Dimensions { get; set; }
+        public Dimension Dimensions { get; set; }
         public string TypeofUse { get; set; }
         public string Type { get; set; }
         public string Model { get; set; }
         public bool Negotiable { get; set; }
         public bool IsPublished { get; set; }
         public string[] Photos { get; set; }
+    }
+    public class Dimension
+    {
+        public string Length { get; set; }
+        public string Width { get; set; }
+        public string Height { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace Classifieds.ListingsAPI.Tests
                 FuelType = "test",
                 KmDriven = 5000,
                 YearofMake = 123,
-                Dimensions = "test",
+                Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
                 TypeofUse = "test",
                 Type = "2 BHK",
                 IsPublished = true,

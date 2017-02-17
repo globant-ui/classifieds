@@ -52,7 +52,7 @@ namespace Classifieds.SearchAPI.Tests
                 FuelType = "test",
                 KmDriven = 123,
                 YearofMake = 123,
-                Dimensions = "test",
+                Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
                 TypeofUse = "test",
                 Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
@@ -109,7 +109,5 @@ namespace Classifieds.SearchAPI.Tests
         }
 
         #endregion
-
-
     }
 }
