@@ -341,6 +341,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
+                subscriptionObj.SubmittedDate = DateTime.Now;
                 var subscription = _userService.AddSubscription(subscriptionObj);
                 result = Request.CreateResponse<Subscription>(HttpStatusCode.Created, subscription);
             }
