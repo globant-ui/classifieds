@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit{
     private  intervalId = null;
     private session : Session;
     private  code : any;
-    private  validateUrl = 'http://in-it0289/UserApi/api/User/Register';
+    private  validateUrl = 'http://in-it0289/UserApi/api/User/RegisterUser';
     private activeSession:boolean = false;
 
   @ViewChild('childModal') public childModal:ModalDirective;
@@ -149,11 +149,11 @@ export class LoginComponent implements OnInit{
                         ClassifiedsUser.UserName = userGoogle['name'];
                         console.log('check classifieds user = ',ClassifiedsUser);
                         this.validateUser(ClassifiedsUser);
-                        /*this.session.set( 'authenticated', true );
+                        this.session.set( 'authenticated', true );
                         this.session.set( 'token', token);
                         this.session.set( 'username', userGoogle['name'] );
                         console.log("session started",this.session);
-                        this._cookieService.putObject('SESSION_PORTAL',this.session);*/
+                       /* this._cookieService.putObject('SESSION_PORTAL',this.session);*/
                         this._router.navigateByUrl('home');
                     },
                     error => {

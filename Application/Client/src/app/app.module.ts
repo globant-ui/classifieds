@@ -11,7 +11,11 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home/components/home.component';
+import { ProgressComponent } from './_common/progress/components/progress.component';
+
 import { HeaderComponent } from './_common/header/components/header.component';
+import { SimilarListingComponent } from './_common/similarListing/components/similarListing.component';
+
 import { CardListComponent } from './card-list/components/card-list.component';
 import { BannerComponent } from './banner/components/banner.component';
 import {CookieService} from 'angular2-cookie/core';
@@ -47,7 +51,9 @@ type StoreType = {
     AppComponent,
     HomeComponent,
     HeaderComponent,
+    ProgressComponent,
     CardListComponent,
+    SimilarListingComponent,
     BannerComponent,
     SearchComponent,
     FilterComponent,

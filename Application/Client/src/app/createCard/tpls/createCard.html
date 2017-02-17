@@ -5,39 +5,10 @@
         <h1>Sell or rent your product</h1>
         <p>Upload real photographs of your furni1.ure from 2-3 different angles. Any defects/damages MUST be included in the photographs. We do not accept any stock photographs! </p>
         <p>lease DO NOT post multiple ads for the same items or service. All duplicate, spam and wrongly categorized ads will be deleted.</p>
-        <div class="similarListings">
-          <h3>Similar Listings</h3>
-          <div class="listing">
-              <img src="../../../../assets/img/similarListing.png" />
-              <div class="listingContent">
-                <span class="title"><h5>Iphone 7</h5></span>
-                <span class="price pull-right">RS 60000</span>
-              </div>
-          </div>
-          <div class="listing">
-              <img src="../../../../assets/img/similarListing.png" />
-              <div class="listingContent">
-                <span class="title"><h5>Iphone 7</h5></span>
-                <span class="price pull-right">RS 60000</span>
-              </div>
-          </div>
-        </div>
+        <similar-listing [type]="type"></similar-listing>
       </div>
       <div class="col-lg-9 col-md-8">
-          <ol class="progress">
-              <li class="is-complete" data-step='&#10003;'>
-                select
-              </li>
-              <li class="is-active" data-step='2'>
-                upload
-              </li>
-              <li data-step="3">
-                add info
-              </li>
-              <li data-step="4" class="progress__last">
-                done
-              </li>
-          </ol>
+          <progress-bar [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
           <form [formGroup]="myForm" novalidate>
               <div class="row form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12"> 
@@ -77,7 +48,7 @@
                   <div class="col-lg-8 col-md-8 col-xs-12">
                     <fieldset id="sub-category">
                       <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories"> 
-                        <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}">{{subCategory}}
+                        <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}" (change)="subCategoryUpdated()">{{subCategory}}
                       </label>
                     </fieldset>
                   </div>
@@ -116,7 +87,7 @@
                     
                 </div>
                 <div class="col-lg-5 col-md-5 col-xs-12">
-                    <select class="locationSelect fullWidth">
+                    <select #location class="locationSelect fullWidth" formControlName="location">
                       <option selected disabled>Location</option>
                       <option>Pune</option>
                       <option>Banglore</option>
@@ -126,7 +97,7 @@
               </div>
               <div class="row form-group">
                 <div class="col-lg-5 col-md-5 col-xs-12">
-                    <input #price class="fullWidth form-control" type="text" id="price" placeholder="Price" required />
+                    <input #price formControlName="price" name="price" class="fullWidth form-control" type="text" id="price" placeholder="Price" required />
                     <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
                       Price is required
                     </div>-->
@@ -139,7 +110,7 @@
               </div>
               <div class="row form-group">
                 <div class="col-lg-10 col-md-10 col-xs-12">
-                    <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" />
+                    <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
                     <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
                         Short Description is required.
                     </div>
