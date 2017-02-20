@@ -15,7 +15,6 @@ export class AuthenticationWindowService {
     this.session = null;
     this._cookieService.remove('SESSION_PORTAL');
     this._router.navigateByUrl('/');
-
   }
 
   createWindow( url, name = 'Window', width = 430, height = 600, fullScreen: boolean ) {

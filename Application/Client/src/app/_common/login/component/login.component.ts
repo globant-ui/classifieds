@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit{
     private  intervalId = null;
     private session : Session;
     private  code : any;
-    private  validateUrl = 'http://in-it0289/UserApi/api/User/Register';
+    private  validateUrl = 'http://in-it0289/UserApi/api/User/RegisterUser';
     private activeSession:boolean = false;
 
   @ViewChild('childModal') public childModal:ModalDirective;
