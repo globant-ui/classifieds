@@ -127,31 +127,30 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public bool AddTag(string userEmail, Tags tag)
-        {
+        public void AddTag(string userEmail, Tags tag)
+        { 
             try
             {
-                var returnResult = Classifieds.Update(Query.EQ("UserEmail", userEmail),
-                Update.PushWrapped("Tags", tag));
-                return returnResult.UpdatedExisting;
+                AddSubCatToTag(userEmail, tag);
+                AddLocToTag(userEmail, tag);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-
+       
         /// <summary>
         /// Delete tags
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="tag"></param>
-        public bool DeleteTag(string userEmail, Tags tag)
+        /// <param name="tagName"></param>
+        public bool DeleteTag(string userEmail, string tagName)
         {
             try
             {
                 var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),
-                Update.PullWrapped<Tags>("Tags", tag));
+                Update.PullWrapped("Tags.SubCategory", tagName));
                 return result.UpdatedExisting;
             }
             catch (Exception ex)
@@ -261,7 +260,7 @@ namespace Classifieds.UserService.Repository
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns>returns taglist</returns>
-        public Tags[] GetRecommondedTagList(string userEmail)
+        public Tags GetRecommondedTagList(string userEmail)
         {
             try
             {
@@ -278,6 +277,47 @@ namespace Classifieds.UserService.Repository
 
         #endregion
 
+        #endregion
+
+        #region Private Methods
+        private void AddSubCatToTag(string userEmail, Tags tag)
+        {
+            if (tag.SubCategory != null )
+            {
+                //update tag object and Push item in Subcategory Array
+                foreach (var subcat in tag.SubCategory)
+                {
+                    //check tag is existed or not in subcategory array.
+                    var query = Query.EQ("Tags.SubCategory", subcat);
+                    var items = Classifieds.Find(query).ToList();
+                    if (items.Count == 0)
+                    {
+                        var resultCategory = Classifieds.Update(Query.EQ("UserEmail", userEmail),
+                            Update.PushWrapped("Tags.SubCategory", subcat));
+                    }
+                }
+            }
+           
+        }
+        private void AddLocToTag(string userEmail, Tags tag)
+        {
+           if (tag.Location!= null)
+            {
+                //update tag object and Push item in Location Array
+                foreach (var location in tag.Location)
+                {
+                    //check for is exist or not in Location array
+                    var query = Query.EQ("Tags.Location", location);
+                    var items = Classifieds.Find(query).ToList();
+                    if (items.Count == 0)
+                    {
+                        var resultLocation = Classifieds.Update(Query.EQ("UserEmail", userEmail),
+                        Update.PushWrapped("Tags.Location", location));
+                    }
+                }
+            }
+          
+        }
         #endregion
     }
 }

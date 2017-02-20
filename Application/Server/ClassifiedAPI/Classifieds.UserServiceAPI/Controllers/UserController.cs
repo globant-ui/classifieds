@@ -137,7 +137,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="tag"></param>
         /// <returns>boolen true as success</returns>
         [HttpPost]
-        public bool AddTag(string userEmail, Tags tag)
+        public Tags AddTag(string userEmail,Tags tag)
         {
             try
             {
@@ -159,9 +159,9 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// Delete User Tag and update user profile
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="tag"></param>
+        /// <param name="tagName"></param>
         [HttpDelete]
-        public bool DeleteTag(string userEmail, Tags tag)
+        public bool DeleteTag(string userEmail,string tagName)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                return _userService.DeleteTag(userEmail, tag);
+                return _userService.DeleteTag(userEmail, tagName);
             }
             catch (Exception ex)
             {
@@ -308,7 +308,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns>boolen true as success</returns>
-        public Tags[] GetRecommondedTagList(string userEmail)
+        public Tags GetRecommondedTagList(string userEmail)
         {
             try
             {

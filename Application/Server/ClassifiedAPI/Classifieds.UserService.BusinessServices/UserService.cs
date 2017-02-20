@@ -70,34 +70,37 @@ namespace Classifieds.UserService.BusinessServices
             {
                 throw ex;
             }
-
         }
         /// <summary>
         /// Add user tag
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
-        public bool AddTag(string userEmail, Tags tag)
+        /// <returns>user tag object</returns>
+        public Tags AddTag(string userEmail, Tags tag)
         {
             try
             {
-              return _userRepository.AddTag(userEmail, tag);
+               _userRepository.AddTag(userEmail, tag);
+                var result = _userRepository.GetUserProfile(userEmail);
+                return result.Tags;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
         /// <summary>
         /// Delete tag of user profile
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="tag"></param>
-        public bool DeleteTag(string userEmail, Tags tag)
+        /// <param name="tagName"></param>
+        public bool DeleteTag(string userEmail, string tagName)
         {
             try
             {
-               return  _userRepository.DeleteTag(userEmail, tag);
+               return  _userRepository.DeleteTag(userEmail, tagName);
             }
             catch (Exception ex)
             {
@@ -185,7 +188,7 @@ namespace Classifieds.UserService.BusinessServices
             }
         }
 
-        public Tags[] GetRecommondedTagList(string userEmail)
+        public Tags GetRecommondedTagList(string userEmail)
         {
             try
             {
