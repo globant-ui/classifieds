@@ -34,9 +34,9 @@
 					color: $heading-color;
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
-					height: $font-size22*$line-height*$lines-to-show2; /* Fallback for non-webkit */
+					height: $font-size-22*$line-height*$lines-to-show2; /* Fallback for non-webkit */
 					/*margin: 0 auto;*/
-					font-size: $font-size22;
+					font-size: $font-size-22;
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show2;
 					-webkit-box-orient: vertical;
@@ -49,9 +49,9 @@
 					color: $primary-text-color;
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
-					height: $font-size12*$line-height*$lines-to-show3; /* Fallback for non-webkit */
+					height: $font-size-12*$line-height*$lines-to-show3; /* Fallback for non-webkit */
 					/*margin: 15px auto 0;*/
-					font-size: $font-size12;
+					font-size: $font-size-12;
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show3;
 					-webkit-box-orient: vertical;
@@ -187,7 +187,7 @@
 						display: none;
 					}
 					h3{
-						height: $font-size22*$line-height*$lines-to-show1;
+						height: $font-size-22*$line-height*$lines-to-show1;
 						-webkit-line-clamp: $lines-to-show1;
 						line-height: 2;
 						font-size: 1em;
