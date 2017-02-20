@@ -1,16 +1,8 @@
 import { Component,OnInit } from '@angular/core';
-import { AppState } from '../../../app.service';
 import {AuthenticationWindowService} from '../../authentication/services/authentication.service';
 import {SettingsService} from '../../services/setting.service';
-import {Http, Headers, RequestOptions, Jsonp} from '@angular/http';
-import {UserInformation} from '../../authentication/entity/userInformation.entity';
 import {Session} from '../../authentication/entity/session.entity';
-import {Router} from '@angular/router';
 import {CookieService} from 'angular2-cookie/core';
-
-
-
-
 
 let styles = require('../styles/header.component.scss').toString();
 let tpls = require('../tpls/header.component.html').toString();
@@ -28,9 +20,6 @@ export class HeaderComponent implements OnInit{
 
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
-              private _settingsService: SettingsService,
-              private _http: Http,
-              private _router:Router,
               private _cookieService:CookieService){}
 
   ngOnInit(){
