@@ -38,7 +38,7 @@ namespace Classifieds.Listings.BusinessServices.ServiceAgent
 
         public Tags GetRecommendedTag(string accessToken, string userEmail)
         {
-            Tags[] recommendedTags = new Tags[0];
+            var recommendedTags = new Tags();
 
             var client = new HttpClient();
             client.BaseAddress = new Uri(_baseAddress);
@@ -48,9 +48,9 @@ namespace Classifieds.Listings.BusinessServices.ServiceAgent
             HttpResponseMessage response = client.GetAsync(_userRecommondedTagListApi + userEmail).Result;
             if (response.IsSuccessStatusCode)
             {
-                recommendedTags = response.Content.ReadAsAsync<Tags[]>().Result;
+                recommendedTags = response.Content.ReadAsAsync<Tags>().Result;
             }
-            return recommendedTags[0];
+            return recommendedTags;
         }
     }
 
