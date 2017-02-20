@@ -6,32 +6,25 @@ let styles = require('../styles/banner.component.scss').toString();
 let tpls = require('../tpls/banner.component.html').toString();
 
 @Component({
-  selector: 'banner',
-  styles : [ styles ],
-  providers:[SettingsService],
-  template : tpls
+    selector: 'banner',
+    styles : [ styles ],
+    providers:[SettingsService],
+    template : tpls
 })
 
-export class BannerComponent {
+export class BannerComponent implements OnInit{
   private settings : any ;
   private showSubCategory:any;
   private listingsData : any ;
   localState = { value: '' };
   constructor(public appState: AppState,private _settingsService: SettingsService,private renderer: Renderer,private elRef:ElementRef) {}
-
+    private settings : any ;
   @Input()
-  categories;
+    categories;
 
   ngOnInit() {
     this.listingsData=this._settingsService.getBannerListingsData();
     console.log('dsf = ',this.listingsData);
-  }
-  ngAfterViewInit() {
-    //this.delegate(document.getElementsByTagName('body')[0], "click", this.mouseHoverHandler);
-    // this.renderer.listenGlobal('document', 'click', (event) => {
-    //   // Do something with 'event'
-    //   alert("event clicked")
-    // });
   }
 
   submitState(value: string) {
@@ -71,4 +64,6 @@ export class BannerComponent {
     }
 
   }
+}
+
 }

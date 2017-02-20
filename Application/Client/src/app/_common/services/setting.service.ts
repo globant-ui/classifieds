@@ -18,6 +18,7 @@ export class SettingsService{
   private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
 
   constructor(private _cservice:CService) {
+    this.getSettings();
   }
 
   getSettings(){

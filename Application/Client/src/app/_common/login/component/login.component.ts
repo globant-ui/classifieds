@@ -31,24 +31,84 @@ export class LoginComponent implements OnInit{
   private activeSession:boolean = false;
 
   @ViewChild('childModal') public childModal:ModalDirective;
-  constructor(public _authenticationWindowService: AuthenticationWindowService,
-              private _settingsService: SettingsService,
-              private _http: Http,
-              private _router: Router,
-              private _cookieService:CookieService){}
 
-  ngOnInit(){
-    console.log('here');
-    console.log(this._settingsService.getSettings());
-    console.log(this._settingsService.settings);
-    this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
-    this.activeSession = (this.session && this.session.isValid());
-    console.log(this.activeSession);
-    if(this.activeSession){
-      this._router.navigateByUrl('home');
+    constructor(public _authenticationWindowService: AuthenticationWindowService,
+                private _settingsService: SettingsService,
+                private _http: Http,
+                private _router: Router,
+                private _cookieService:CookieService){
+
+    }
+
+
+    ngOnInit(){
+        this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
+        this.activeSession = (this.session && this.session.isValid());
+        //console.log(this.activeSession);
+        if(this.activeSession){
+            this._router.navigateByUrl('home');
+        }
+    }
+
+  /*  ngAfterViewInit(){
+        this.showChildModal();
+    }
+
+    public showChildModal() {
+        this.childModal.show();
+    }
+
+    public hideChildModal() {
+        this.childModal.hide();
+    }
+
+    doLogin(){
+        //console.log(this._settingsService.settings);
+        let context = this;
+        this.session =new Session({});
+        console.log(this._settingsService.settings);
+        debugger;
+        let params = '?client_id=' + encodeURIComponent( this._settingsService.settings.auth.client_id )
+            + '&redirect_uri=' + encodeURIComponent( this._settingsService.settings.auth.redirect_uri )
+            + '&scope=' + encodeURIComponent( this._settingsService.settings.auth.scope )
+            + '&response_type=' + this._settingsService.settings.auth.response_type
+            + '&prompt=' + this._settingsService.settings.auth.prompt
+            + '&access_type=' + this._settingsService.settings.auth.access_type;
+
+        let loopCount = this.loopCount;
+
+        this.windowHandle = this._authenticationWindowService.createWindow( (this._settingsService.settings.auth.google_login + params), 'Login', 0, 0, true );
+        this.intervalId = setInterval(() => {
+            if ( loopCount-- < 0 ) {
+                context.windowHandle.close();
+                clearInterval( context.intervalId );
+            } else {
+                let href: string;
+                try {
+                    href = context.windowHandle.location.href;
+                } catch (e) {
+                }
+                if (href != null) {
+                    let re = /code=(.*)/;
+                    let found = href.match(re);
+                    if (found && found.length > 1) {
+                        //console.log('Google callback URL: ', href);
+                        context.windowHandle.close();
+                        clearInterval(context.intervalId);
+                        let unfilteredCode = found[1];
+                        this.code = unfilteredCode.substring(0, unfilteredCode.length - +( unfilteredCode.lastIndexOf('#') == unfilteredCode.length - 1));
+                        this.getAuthToken(this.code).then((res)=>{
+                            this.getUserInfoGoogle(res['access_token']);
+                            //console.log('token',res['access_token']);
+
+                        });
+                    }
+                }
+            }
+        },context.intervalLength);
     }
   }
-
+*/
   ngAfterViewInit(){
     this.showChildModal();
   }
