@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../services/setting.service';
 import { Observable }     from 'rxjs/Observable';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../services/http.service';
+import {CookieService} from 'angular2-cookie/core';
 import 'rxjs/Rx';
 
 //using jquery syntax $
@@ -19,21 +20,30 @@ let tpls = require('../tpls/select-interest.component.html').toString();
   template : tpls
 })
 
-export class SelectInterestComponent {
+export class SelectInterestComponent implements OnInit {
 
 private delayTimer  : any = null;
 private subCategoryUrl:string = "http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=";
 private interestResult:any ;
 private obj = {
   'selectedInterests': [],
-  'preferedLoc': []
+  'preferedLoc': [],
+  'userEmail':''
 };
 private enabledDropdown : boolean = true;
 private selectInterestPopUpFlag : boolean = true;
+private isValid : boolean = true;
+private disabledCheckbox : boolean = false;
 
   constructor(
                  private _settingsService: SettingsService,
-                 private _cservice:CService) {}
+                 private _cservice:CService,
+                 private _cookieService:CookieService) {}
+
+  ngOnInit(){
+      this.obj.userEmail = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
+      console.log('session obj interest = ',this.obj.userEmail);
+    }
 
   fetchInterest(e: Event, val) {
       if (val.length >= 3) {
@@ -71,12 +81,13 @@ private selectInterestPopUpFlag : boolean = true;
         console.log("---------", this.obj.selectedInterests)
         console.log("this.obj.selectedInterests=====", this.obj.selectedInterests)
         this.enabledDropdown = false;
+        this.isValid = false;
         this.interestResult = [];
     }
      
     //to delete an item from tagList
     deleteIntrest(index, val) {
-        this.obj.selectedInterests.splice(index, 1);
+        let delFlag = this.obj.selectedInterests.splice(index, 1);
     }
 
     //to close the pop-up window
@@ -86,15 +97,37 @@ private selectInterestPopUpFlag : boolean = true;
 
     //checkbox code
     selectCheckbox(element: HTMLInputElement): void {
-
+           
         let elemIndex = this.obj.preferedLoc.indexOf(element.value);
-            if (element.checked && elemIndex === -1) {
-                this.obj.preferedLoc.push(element.value);
-            } else if (elemIndex > -1) {
-                this.obj.preferedLoc.splice(elemIndex, 1);
+        
+        if( element.value != 'All' && element.checked ) {
+                this.obj.preferedLoc.push( element.value );
+                
+        }
+            else {
+                this.obj.preferedLoc.splice( elemIndex, 1 );   
+                this.disabledCheckbox = false;
             }
-        console.log("----ff", this.obj.preferedLoc);
-        console.log("----obj", this.obj);
+         if( element.value == 'All' ) {
+                this.obj.preferedLoc.length = 0;
+
+                if( element.checked ) {
+                    this.obj.preferedLoc.push( "Pune", "Banglore" ); 
+                    this.disabledCheckbox = true;
+                }
+                
+            }
+             console.log("----ff", this.obj);
+        } 
+        
+    PostData(obj){
+        if(obj.preferedLoc.length === 0){
+            obj.preferedLoc.push("Pune","Banglore");
+         }
+      
+         console.log("im done",obj);
+   
     }
 
 } 
+
