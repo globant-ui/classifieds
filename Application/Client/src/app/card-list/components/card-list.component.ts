@@ -1,6 +1,7 @@
 import { Component,Input,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import { SettingsService } from '../../_common/services/setting.service';
+import {Router} from '@angular/router';
 
 let styles = require('../styles/card-list.component.scss').toString();
 let tpls = require('../tpls/card-list.component.html').toString();
@@ -14,14 +15,16 @@ let tpls = require('../tpls/card-list.component.html').toString();
 export class CardListComponent{
 
     public showProductInfoPage: boolean = false;
-    constructor(public appState: AppState,private _settingsService : SettingsService) {}
+    constructor(public appState: AppState, private _settingsService : SettingsService, private _router:Router) {}
 
     @Input() cards;
 
     ngOnInit(){
         console.log('all = ',this.cards);
     }
-   showProductInfo(){
+   showProductInfo(id){
+      console.log("--------------------------------",this.cards);
      this.showProductInfoPage = true;
+     this._router.navigate(['productInfo',id]);
   }
 }

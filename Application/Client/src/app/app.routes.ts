@@ -10,6 +10,6 @@ export const ROUTES: Routes = [
   {
     path: 'home', component: HomeComponent
   },
-  {path: 'productInfo', component: ProductInfoComponent}
-
+  {path: 'productInfo', component: ProductInfoComponent},
+  {path: 'productInfo/:id', component: ProductInfoComponent}
 ];

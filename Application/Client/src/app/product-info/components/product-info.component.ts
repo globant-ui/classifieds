@@ -1,5 +1,6 @@
 import { Component,Input,OnInit,HostListener,AfterViewInit,Renderer,ElementRef } from '@angular/core';
 import { AppState } from '../../app.service';
+import { ActivatedRoute } from '@angular/router';
 import {SettingsService} from '../../_common/services/setting.service';
 
 let styles = require('../styles/product-info.component.scss').toString();
@@ -13,16 +14,20 @@ let tpls = require('../tpls/product-info.html').toString();
 })
 
 export class ProductInfoComponent {
-  private settings : any ;
-  private showSubCategory:any;
-  private listingsData : any ;
   localState = { value: '' };
-  constructor(public appState: AppState,private _settingsService: SettingsService,private renderer: Renderer,private elRef:ElementRef) {}
+  constructor(private _route: ActivatedRoute, public appState: AppState,private _settingsService: SettingsService,private renderer: Renderer,private elRef:ElementRef) {
+    this._route.params.subscribe(params => {
+      this.productId = +params['id'];
+    });
+  }
 
   @Input() showProductInfoPage;
 
+  private productId;
+
   ngOnInit() {
     console.log("product info");
+
   }
 
 }
