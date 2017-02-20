@@ -48,16 +48,15 @@ namespace Classifieds.ListingsAPI.Tests
                 Brand = "Kumar",
                 Price = 45000,
                 YearOfPurchase = 2000,
-                ExpiryDate = "03-02-2018",
                 Status = "Active",
                 SubmittedBy = "v.wadsamudrakar@globant.com",
-                SubmittedDate = "03-02-2018",
+                SubmittedDate = new DateTime(2018, 02, 03),
                 IdealFor = "Family",
                 Furnished = "yes",
                 FuelType = "test",
                 KmDriven = 5000,
                 YearofMake = 123,
-                Dimensions = "test",
+                Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
                 TypeofUse = "test",
                 Type = "2 BHK",
                 IsPublished = true,
@@ -67,6 +66,7 @@ namespace Classifieds.ListingsAPI.Tests
             };
             return listObject;
         }
+
         #endregion
 
         #region Unit Test Cases

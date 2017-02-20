@@ -5,7 +5,7 @@ namespace Classifieds.Common
     public class Logger: ILogger
     {
         #region Private Variable
-        private Classifieds.NLog.MongoDB.ILogger _logger;
+        private readonly Classifieds.NLog.MongoDB.ILogger _logger;
         #endregion
 
         #region Constructor

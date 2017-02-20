@@ -76,7 +76,7 @@ namespace Classifieds.MastersDataAPI.Controllers
         /// </summary>
         /// <param name="categoryText">Category Text</param>
         /// <returns>Category Suggestion result</returns>
-        public List<string> GetCategorySuggetion(string categoryText)
+        public List<string> GetCategorySuggestion(string categoryText)
         {
             List<string> result;
             try
@@ -87,7 +87,7 @@ namespace Classifieds.MastersDataAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                result = _masterDataService.GetCategorySuggetion(categoryText).ToList();
+                result = _masterDataService.GetCategorySuggestion(categoryText).ToList();
 
             }
             catch (Exception ex)

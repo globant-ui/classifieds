@@ -16,6 +16,10 @@ namespace Classifieds.Common.Entities
 
         public string AccessToken { get; set; }
 
-        public string LoginDateTime { get; set; }
+        [BsonDateTimeOptions(Representation = BsonType.DateTime)]
+        public DateTime LoginDateTime { get; set; }
+
+        public bool IsFirstTimeLogin { get; set; }
+
     }
 }

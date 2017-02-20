@@ -172,7 +172,6 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.Brand, listObj.Brand)
                     .Set(p => p.Price, listObj.Price)
                     .Set(p => p.YearOfPurchase, listObj.YearOfPurchase)
-                    .Set(p => p.ExpiryDate, listObj.ExpiryDate)
                     .Set(p => p.Status, listObj.Status)
                     .Set(p => p.SubmittedBy, listObj.SubmittedBy)
                     .Set(p => p.SubmittedDate, listObj.SubmittedDate)

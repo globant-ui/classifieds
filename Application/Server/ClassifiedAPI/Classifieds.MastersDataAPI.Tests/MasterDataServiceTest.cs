@@ -250,10 +250,10 @@ namespace Classifieds.MastersData.BusinessServices.Test
         {
             // Arrange
             SetUpClassifiedsCategory();
-            _moqAppManager.Setup(x => x.GetCategorySuggetion(It.IsAny<string>())).Returns(_categoryList);
+            _moqAppManager.Setup(x => x.GetCategorySuggestion(It.IsAny<string>())).Returns(_categoryList);
 
             //Act
-            var result = _service.GetCategorySuggetion("Auto");
+            var result = _service.GetCategorySuggestion("Auto");
 
             //Assert
             Assert.AreEqual(result.Count, 1);
@@ -266,7 +266,7 @@ namespace Classifieds.MastersData.BusinessServices.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetCategorySuggetion_ThrowsException()
         {
-            _service.GetCategorySuggetion(null);
+            _service.GetCategorySuggestion(null);
         }
 
         #endregion GetCategorySuggetionTest

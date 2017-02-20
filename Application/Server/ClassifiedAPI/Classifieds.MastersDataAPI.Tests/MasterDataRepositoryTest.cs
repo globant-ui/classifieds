@@ -85,19 +85,6 @@ namespace Classifieds.MastersData.Repository.Test
             Assert.IsNotNull(result[0]);
         }
 
-        ///// <summary>
-        ///// tests for incorrect input giving empty result
-        ///// </summary>
-        //[TestMethod]
-        //public void GetAllCategory_Repo_Invalid_OR_Null()
-        //{
-        //    //var result = new List<Category>();
-
-        //    //Assert.AreEqual(0, result.Count);
-
-        //    //Assert.AreEqual(null, null);
-        //}
-
         #endregion GetAllCategoryTestCases
 
         #region GetCategorySuggetionTest
@@ -109,7 +96,7 @@ namespace Classifieds.MastersData.Repository.Test
         public void GetCategorySuggetionTest()
         {
             //Act
-            var result = _masterDataRepo.GetCategorySuggetion("Aut");
+            var result = _masterDataRepo.GetCategorySuggestion("Aut");
 
             //Assert
             Assert.IsNotNull(result[0]);
@@ -122,7 +109,7 @@ namespace Classifieds.MastersData.Repository.Test
         [ExpectedException(typeof(NullReferenceException))]
         public void GetCategorySuggetionTest_NullSubCategoryText()
         {
-            _masterDataRepo.GetCategorySuggetion(null);
+            _masterDataRepo.GetCategorySuggestion(null);
         }
 
         /// <summary>
@@ -131,7 +118,7 @@ namespace Classifieds.MastersData.Repository.Test
         [TestMethod]
         public void GetCategorySuggetionTest_InvalidSubCategory()
         {
-            var result = _masterDataRepo.GetCategorySuggetion("qwer");
+            var result = _masterDataRepo.GetCategorySuggestion("qwer");
             Assert.IsNull(result);
         }
 

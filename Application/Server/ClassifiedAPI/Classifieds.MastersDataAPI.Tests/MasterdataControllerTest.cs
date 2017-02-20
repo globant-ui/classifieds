@@ -88,7 +88,7 @@ namespace Classifieds.MastersDataAPI.Tests
             {
                 tempFilters[i] = new Filters();
                 tempFilters[i].FilterName = "Filter" + i;
-                tempFilters[i].FilterValues = new [] { "A" + i, "B" + i };
+                tempFilters[i].FilterValues = new[] { "A" + i, "B" + i };
             }
             return tempFilters;
         }
@@ -99,7 +99,7 @@ namespace Classifieds.MastersDataAPI.Tests
             {
                 _id = "9",
                 ListingCategory = "Automotive",
-                SubCategory = new [] {"Cars", "Motorcycles", "Scooters", "Bicycles" },
+                SubCategory = new[] { "Cars", "Motorcycles", "Scooters", "Bicycles" },
                 Image = "Automotive.png"
             };
             return dataObject;
@@ -115,7 +115,7 @@ namespace Classifieds.MastersDataAPI.Tests
         [TestMethod]
         public void GetAllCategoryTest()
         {
-            _categoryViewModelList.Add(GetCategoryVmDataObject()); //SetUpClassifiedsListing();
+            _categoryViewModelList.Add(GetCategoryVmDataObject());
             _mockService.Setup(x => x.GetAllCategory()).Returns(_categoryViewModelList);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
@@ -164,12 +164,12 @@ namespace Classifieds.MastersDataAPI.Tests
         public void GetCategorySuggetionTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetCategorySuggetion(It.IsAny<string>())).Returns(_categoryList);
+            _mockService.Setup(x => x.GetCategorySuggestion(It.IsAny<string>())).Returns(_categoryList);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-           var objList = _controller.GetCategorySuggetion("Auto");
+            var objList = _controller.GetCategorySuggestion("Auto");
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
@@ -184,7 +184,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_GetCategorySuggetion_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetCategorySuggetion(null);
+            _controller.GetCategorySuggestion(null);
         }
 
         #endregion GetCategorySuggetionTest
@@ -302,7 +302,7 @@ namespace Classifieds.MastersDataAPI.Tests
             Assert.AreEqual(true, response.IsSuccessStatusCode);
         }
 
-        
+
         #endregion PostMasterDataTestCases
 
         #region DeleteCategoryTestCases
@@ -421,7 +421,7 @@ namespace Classifieds.MastersDataAPI.Tests
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetAllFiltersBySubCategory(null);
         }
-        
+
         /// <summary>
         ///test positive scenario for get filters by filterName and subcategory
         /// </summary>
@@ -429,12 +429,12 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_GetFiltersByFilterName()
         {
             Filters[] filter = GetFiltersDataObject();
-            _mockService.Setup(x => x.GetFiltersByFilterName(It.IsAny<string>(),It.IsAny<string>())).Returns(filter[0]);
+            _mockService.Setup(x => x.GetFiltersByFilterName(It.IsAny<string>(), It.IsAny<string>())).Returns(filter[0]);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-            var objList = _controller.GetFiltersByFilterName("SubCategory0","Filter1");
+            var objList = _controller.GetFiltersByFilterName("SubCategory0", "Filter1");
 
             //Assert
             Assert.AreEqual(objList.FilterValues.Length, 2);
@@ -448,7 +448,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_GetFiltersByFilterName_ThrowsException()
         {
             var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _mockService.Setup(x => x.GetFiltersByFilterName(null,null)).Throws(ex);
+            _mockService.Setup(x => x.GetFiltersByFilterName(null, null)).Throws(ex);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetFiltersByFilterName(null, null);
         }
@@ -460,7 +460,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_GetFilterNamesOnly()
         {
             Filters[] filters = GetFiltersDataObject();
-            List<string> filterNames= new List<string>();
+            List<string> filterNames = new List<string>();
             foreach (var flt in filters)
             {
                 filterNames.Add(flt.FilterName);

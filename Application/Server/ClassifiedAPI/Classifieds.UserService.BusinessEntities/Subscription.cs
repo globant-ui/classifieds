@@ -18,7 +18,8 @@ namespace Classifieds.UserService.BusinessEntities
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; } //MongoDb uses this field as identity.
-        public string Email { get; set; }
-        public string SubmittedDate { get; set; }
+        public string UserEmail { get; set; }
+        [BsonDateTimeOptions(Representation = BsonType.DateTime)]
+        public DateTime SubmittedDate { get; set; }
     }
 }

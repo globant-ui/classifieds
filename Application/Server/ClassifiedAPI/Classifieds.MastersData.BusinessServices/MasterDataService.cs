@@ -26,14 +26,13 @@ namespace Classifieds.MastersData.BusinessServices
         /// Returns All Category
         /// </summary>
         /// <returns></returns>
-        
+
         #region GetAllCategory
 
         public List<CategoryViewModel> GetAllCategory()
         {
             try
             {
-                //return _masterDataRepository.GetAllCategory().ToList();
                 List<Category> categories = _masterDataRepository.GetAllCategory().ToList();
                 List<CategoryViewModel> categoryVms = new List<CategoryViewModel>();
                 List<string> subCategoryNames = new List<string>();
@@ -68,14 +67,14 @@ namespace Classifieds.MastersData.BusinessServices
         /// </summary>
         /// <param name="categoryText">Category Text</param>
         /// <returns>All Category List</returns>
-       
-        #region GetCategorySuggetion
 
-        public List<string> GetCategorySuggetion(string categoryText)
+        #region GetCategorySuggestion
+
+        public List<string> GetCategorySuggestion(string categoryText)
         {
             try
             {
-                return _masterDataRepository.GetCategorySuggetion(categoryText).ToList();
+                return _masterDataRepository.GetCategorySuggestion(categoryText).ToList();
             }
             catch (Exception ex)
             {

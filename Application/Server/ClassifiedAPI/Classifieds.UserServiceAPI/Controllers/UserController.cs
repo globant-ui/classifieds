@@ -69,7 +69,8 @@ namespace Classifieds.UserServiceAPI.Controllers
                     Classifieds.Common.Entities.UserToken userToken = new Classifieds.Common.Entities.UserToken();
                     userToken.AccessToken = tokenId;
                     userToken.UserEmail = user.UserEmail;
-                    userToken.LoginDateTime = DateTime.Now.ToString();
+                    userToken.LoginDateTime = DateTime.Now;
+                    userToken.IsFirstTimeLogin = result == "Saved" ? true : false;
                     _commonRepository.SaveToken(userToken);
                     response = Request.CreateResponse<Classifieds.Common.Entities.UserToken>(HttpStatusCode.Created, userToken);
                 }
@@ -136,11 +137,11 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="tag"></param>
         /// <returns>boolen true as success</returns>
         [HttpPost]
-        public bool AddTag(string userEmail,Tags tag)
+        public Tags AddTag(string userEmail,Tags tag)
         {
             try
             {
-              _userEmail = GetUserEmailFromHeader();
+                _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
                 {
@@ -158,19 +159,19 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// Delete User Tag and update user profile
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="tag"></param>
+        /// <param name="tagName"></param>
         [HttpDelete]
-        public bool DeleteTag(string userEmail, Tags tag)
+        public bool DeleteTag(string userEmail,string tagName)
         {
             try
             {
-               _userEmail = GetUserEmailFromHeader();
+                _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-                return _userService.DeleteTag(userEmail, tag);
+                return _userService.DeleteTag(userEmail, tagName);
             }
             catch (Exception ex)
             {
@@ -220,7 +221,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-               return _userService.DeleteAlert(userEmail, alert);
+                return _userService.DeleteAlert(userEmail, alert);
             }
             catch (Exception ex)
             {
@@ -307,7 +308,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns>boolen true as success</returns>
-        public Tags[] GetRecommondedTagList(string userEmail)
+        public Tags GetRecommondedTagList(string userEmail)
         {
             try
             {
@@ -340,6 +341,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
+                subscriptionObj.SubmittedDate = DateTime.Now;
                 var subscription = _userService.AddSubscription(subscriptionObj);
                 result = Request.CreateResponse<Subscription>(HttpStatusCode.Created, subscription);
             }
@@ -389,10 +391,9 @@ namespace Classifieds.UserServiceAPI.Controllers
         private string GetUserEmail(ClassifiedsUser user)
         {
             string result = string.Empty;
-            if (user != null)
+            if (user?.UserEmail != null)
             {
-                if (user.UserEmail != null)
-                    result = user.UserEmail;
+                result = user.UserEmail;
             }
             return result;
         }

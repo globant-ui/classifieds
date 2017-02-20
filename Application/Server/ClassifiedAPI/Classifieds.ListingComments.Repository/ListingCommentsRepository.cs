@@ -86,7 +86,7 @@ namespace Classifieds.ListingComments.Repository
         {
             try
             {
-                var result = Classifieds.Save(listingComments);
+                Classifieds.Save(listingComments);
                 return listingComments;
             }
             catch (Exception ex)
