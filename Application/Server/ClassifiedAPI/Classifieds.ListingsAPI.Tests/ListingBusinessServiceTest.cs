@@ -52,7 +52,7 @@ namespace Classifieds.ListingsAPI.Tests
                 YearOfPurchase = 2000,
                 Status = "Active",
                 SubmittedBy = "v.wadsamudrakar@globant.com",
-                SubmittedDate = new DateTime(2018,02,03),
+                SubmittedDate = new DateTime(2018, 02, 03),
                 IdealFor = "Family",
                 Furnished = "yes",
                 FuelType = "test",
@@ -458,6 +458,43 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         #endregion GetListingsByEmailTest
+
+        #region PutCloseListingTest
+
+        /// <summary>
+        /// test positive scenario for update closelisting
+        /// </summary>
+        [TestMethod]
+        public void PutCloseListingTest()
+        {
+            //Arrange
+            var lstObject = GetListObject();
+            _moqAppManager.Setup(x => x.CLoseListing(It.IsAny<string>(), It.IsAny<Listing>())).Returns(lstObject);
+            var closeListing = new Listing() { Status = lstObject.Status };
+            //Act
+            var result = _service.CLoseListing(lstObject._id, closeListing);
+
+            //Assert
+            Assert.IsNotNull(result, null);
+            Assert.IsInstanceOfType(result, typeof(Listing));
+        }
+
+        /// <summary>
+        /// test for Update Close listing with null id throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PutPutCloseListingTest_InvalidId_ThrowException()
+        {
+            //Arrange
+            var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
+            _moqAppManager.Setup(x => x.CLoseListing(It.IsAny<string>(), It.IsAny<Listing>())).Throws(ex);
+
+            //Act
+            _service.CLoseListing(null, null);
+        }
+
+        #endregion PutCloseListingTest
 
         #endregion
     }
