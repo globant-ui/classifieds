@@ -164,12 +164,12 @@ namespace Classifieds.MastersDataAPI.Tests
         public void GetCategorySuggetionTest()
         {
             SetUpClassifiedsListing();
-            _mockService.Setup(x => x.GetCategorySuggetion(It.IsAny<string>())).Returns(_categoryList);
+            _mockService.Setup(x => x.GetCategorySuggestion(It.IsAny<string>())).Returns(_categoryList);
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
             //Act
-           var objList = _controller.GetCategorySuggetion("Auto");
+           var objList = _controller.GetCategorySuggestion("Auto");
 
             //Assert
             Assert.AreEqual(objList.Count, 1);
@@ -184,7 +184,7 @@ namespace Classifieds.MastersDataAPI.Tests
         public void Controller_GetCategorySuggetion_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetCategorySuggetion(null);
+            _controller.GetCategorySuggestion(null);
         }
 
         #endregion GetCategorySuggetionTest

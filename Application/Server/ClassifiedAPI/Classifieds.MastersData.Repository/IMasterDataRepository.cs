@@ -10,7 +10,7 @@ namespace Classifieds.MastersData.Repository
         List<TEntity> GetCategoryById(string id);
         TEntity UpdateCategory(string id, TEntity listObject);
         void DeleteCategory(string id);
-        List<string> GetCategorySuggetion(string categoryText);
+        List<string> GetCategorySuggestion(string categoryText);
         List<string> GetSubCategorySuggestion(string subCategoryText);
         List<TEntity> GetAllFiltersBySubCategory(string subCategory);
         List<TEntity> GetFiltersByFilterName(string subCategory, string filterName);

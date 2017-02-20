@@ -27,6 +27,12 @@ namespace Classifieds.ListingsAPI.Controllers
         private readonly ILogger _logger;
         private readonly ICommonRepository _commonRepository;
         private string _userEmail = string.Empty;
+        private enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
         #endregion
 
         #region Constructor
@@ -149,7 +155,8 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-
+                listing.Status = Status.Active.ToString();
+                listing.SubmittedDate = DateTime.Now;
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Created, classified);
                 var newItemUrl = Url.Link("Listings", new { id = classified._id });
@@ -294,7 +301,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="pageCount">listing pageCount</param>
         /// <param name="isLast">listing isLast</param>
         /// <returns></returns>
-        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex = 1, int pageCount = 10, bool isLast = false)
+        public List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, int startIndex = 1, int pageCount = 10, bool isLast = false)
         {
             try
             {
@@ -310,7 +317,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, email, startIndex, pageCount, isLast).ToList();
+                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, _userEmail, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {

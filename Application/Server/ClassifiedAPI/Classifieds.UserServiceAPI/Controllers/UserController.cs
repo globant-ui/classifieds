@@ -69,7 +69,8 @@ namespace Classifieds.UserServiceAPI.Controllers
                     Classifieds.Common.Entities.UserToken userToken = new Classifieds.Common.Entities.UserToken();
                     userToken.AccessToken = tokenId;
                     userToken.UserEmail = user.UserEmail;
-                    userToken.LoginDateTime = DateTime.Now.ToString();
+                    userToken.LoginDateTime = DateTime.Now;
+                    userToken.IsFirstTimeLogin = result == "Saved" ? true : false;
                     _commonRepository.SaveToken(userToken);
                     response = Request.CreateResponse<Classifieds.Common.Entities.UserToken>(HttpStatusCode.Created, userToken);
                 }
@@ -140,7 +141,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         {
             try
             {
-              _userEmail = GetUserEmailFromHeader();
+                _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
                 {
@@ -164,7 +165,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         {
             try
             {
-               _userEmail = GetUserEmailFromHeader();
+                _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
                 {
@@ -220,7 +221,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-               return _userService.DeleteAlert(userEmail, alert);
+                return _userService.DeleteAlert(userEmail, alert);
             }
             catch (Exception ex)
             {
@@ -340,6 +341,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
+                subscriptionObj.SubmittedDate = DateTime.Now;
                 var subscription = _userService.AddSubscription(subscriptionObj);
                 result = Request.CreateResponse<Subscription>(HttpStatusCode.Created, subscription);
             }

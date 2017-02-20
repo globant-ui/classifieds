@@ -71,13 +71,13 @@ namespace Classifieds.MastersData.Repository
 
         #endregion GetCategoryById
 
-        #region GetCategorySuggetion
+        #region GetCategorySuggestion
         /// <summary>
         /// Returns All Categgries matching the imput text.
         /// </summary>
         /// <param name="categoryText">Category Text</param>
         /// <returns>Category List Suggetion</returns>
-        public List<string> GetCategorySuggetion(string categoryText)
+        public List<string> GetCategorySuggestion(string categoryText)
         {
             List<string> myCategory = null;
             try

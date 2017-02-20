@@ -42,8 +42,8 @@ namespace Classifieds.UserServiceAPI.Tests
         {
             Subscription subscription = new Subscription
             {
-                Email = "v.wadsamudrakar@globant.com",
-                SubmittedDate = "08-02-2017 12:45:34.243"
+                UserEmail = "v.wadsamudrakar@globant.com",
+                SubmittedDate = new DateTime(2018, 02, 03)
             };
             return subscription;
         }
