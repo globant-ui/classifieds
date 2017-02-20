@@ -63,7 +63,6 @@ namespace Classifieds.UserServiceAPI.Tests
         public void RegisterUserTest()
         {
             SetUpClassifiedsUsers();
-            //string returnString = "200 OK";
             _moqAppManager.Setup(x => x.RegisterUser(this._user)).Returns(_returnString);
 
             //Act

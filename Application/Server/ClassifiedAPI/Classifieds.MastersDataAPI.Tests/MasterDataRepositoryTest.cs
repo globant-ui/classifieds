@@ -85,19 +85,6 @@ namespace Classifieds.MastersData.Repository.Test
             Assert.IsNotNull(result[0]);
         }
 
-        ///// <summary>
-        ///// tests for incorrect input giving empty result
-        ///// </summary>
-        //[TestMethod]
-        //public void GetAllCategory_Repo_Invalid_OR_Null()
-        //{
-        //    //var result = new List<Category>();
-
-        //    //Assert.AreEqual(0, result.Count);
-
-        //    //Assert.AreEqual(null, null);
-        //}
-
         #endregion GetAllCategoryTestCases
 
         #region GetCategorySuggetionTest

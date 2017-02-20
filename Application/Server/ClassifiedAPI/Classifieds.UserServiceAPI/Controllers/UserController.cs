@@ -391,10 +391,9 @@ namespace Classifieds.UserServiceAPI.Controllers
         private string GetUserEmail(ClassifiedsUser user)
         {
             string result = string.Empty;
-            if (user != null)
+            if (user?.UserEmail != null)
             {
-                if (user.UserEmail != null)
-                    result = user.UserEmail;
+                result = user.UserEmail;
             }
             return result;
         }

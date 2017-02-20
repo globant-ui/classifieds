@@ -110,7 +110,7 @@ namespace Classifieds.UserService.Repository
                     .Set(p => p.Location, userProfile.Location)
                     .Set(p => p.UserName, userProfile.UserName)
                     .Set(p => p.Mobile, userProfile.Mobile);
-                var result = Classifieds.Update(query, update);
+                Classifieds.Update(query, update);
                 return userProfile;
             }
             catch (Exception ex)
@@ -139,6 +139,7 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
+       
         /// <summary>
         /// Delete tags
         /// </summary>

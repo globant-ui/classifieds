@@ -14,7 +14,6 @@ namespace Classifieds.UserServiceAPI
             cors.SupportsCredentials = true;
             config.EnableCors(cors);
             // Web API configuration and services
-            //config.Filters.Add(new BasicAuthorization());
             UnityConfig.RegisterComponents(config);
             // Web API routes
             config.MapHttpAttributeRoutes();
