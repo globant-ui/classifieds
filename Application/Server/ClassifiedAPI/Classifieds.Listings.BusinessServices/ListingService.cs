@@ -215,6 +215,18 @@ namespace Classifieds.Listings.BusinessServices
                 throw ex;
             }
         }
+
+        public List<Listing> GetRecommendedList(Tags tags)
+        {
+            try
+            {
+                return _listingRepository.GetRecommendedList(tags);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
     }
 }

@@ -356,6 +356,25 @@ namespace Classifieds.Listings.Repository
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Returns recommended listing collection for given tag
+        /// </summary>
+        /// <param name="tag">array of listing ids</param>
+        /// <returns>Listing collection</returns>
+        public List<TEntity> GetRecommendedList(Tags tag)
+        {
+            try
+            {
+                var finalQuery = Query.And(Query.In("Address", BsonArray.Create(tag.Location)),Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
+                var listings = Classifieds.Find(finalQuery);
+                return listings.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         #region private methods

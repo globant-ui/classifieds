@@ -326,7 +326,7 @@ namespace Classifieds.ListingsAPI.Controllers
         #endregion GetListingsByCategoryAndSubCategory
 
         /// <summary>
-        /// Returns top listings from database  
+        /// Returns User wish list collection from database  
         /// </summary>
         /// <returns></returns>
         public List<Listing> GetMyWishlist()
@@ -341,8 +341,40 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
                 var listingIds = _webApiServiceAgent.GetWishListListingIds(_accessToken, _userEmail);
-                
-                return _listingService.GetMyWishList(listingIds);
+                if (listingIds != null)
+                {
+                    return _listingService.GetMyWishList(listingIds);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Returns users recommended listings from database  
+        /// </summary>
+        /// <returns></returns>
+        public List<Listing> GetRecommendedList()
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                _accessToken = GetAccessToken();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var tags = _webApiServiceAgent.GetRecommendedTag(_accessToken, _userEmail);
+                if (tags != null)
+                {
+                    return _listingService.GetRecommendedList(tags);
+                }
+                return null;
             }
             catch (Exception ex)
             {

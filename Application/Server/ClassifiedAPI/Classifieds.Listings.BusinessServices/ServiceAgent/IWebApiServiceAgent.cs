@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Classifieds.Listings.BusinessEntities;
 
 namespace Classifieds.Listings.BusinessServices.ServiceAgent
 {
     public interface IWebApiServiceAgent
     {
         string[] GetWishListListingIds(string accessToken, string userEmail);
+        Tags GetRecommendedTag(string accessToken, string userEmail);
     }
 }

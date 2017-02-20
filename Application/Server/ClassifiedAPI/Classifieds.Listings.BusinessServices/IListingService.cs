@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Classifieds.Listings.BusinessEntities;
+using Classifieds.Listings.BusinessServices.ServiceAgent;
 
 namespace Classifieds.Listings.BusinessServices
 {
@@ -15,5 +16,6 @@ namespace Classifieds.Listings.BusinessServices
         List<Listing> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast);
         List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
         List<Listing> GetMyWishList(string[] listingIds);
+        List<Listing> GetRecommendedList(Tags tags);
     }
 }
