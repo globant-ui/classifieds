@@ -18,8 +18,9 @@ export class HeaderComponent implements OnInit{
   public isCollapsed:boolean = true;
   private session : Session;
   private activeSession:boolean = false;
-  //public isExpanded:boolean = false;
-  constructor(public _authenticationWindowService: AuthenticationWindowService, private _cookieService:CookieService){}
+
+  constructor(public _authenticationWindowService: AuthenticationWindowService,
+              private _cookieService:CookieService){}
 
   ngOnInit(){
     this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
