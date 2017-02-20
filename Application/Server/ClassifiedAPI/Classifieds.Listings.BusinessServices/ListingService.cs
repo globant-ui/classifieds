@@ -199,6 +199,28 @@ namespace Classifieds.Listings.BusinessServices
 
         #endregion GetListingsByCategoryAndSubCategory
 
+        #region CLoseListing
+
+        /// <summary>
+        /// Update listing status for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public Listing CLoseListing(string id, Listing listing)
+        {
+            try
+            {
+                return _listingRepository.CLoseListing(id, listing);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion CLoseListing
+
         #endregion
     }
 }
