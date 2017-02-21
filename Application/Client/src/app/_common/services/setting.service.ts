@@ -16,6 +16,7 @@ export class SettingsService{
   public  settings : any ;
   public  data: any;
   private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
+  private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
 
   constructor(private _cservice:CService) {
     this.getSettings();
