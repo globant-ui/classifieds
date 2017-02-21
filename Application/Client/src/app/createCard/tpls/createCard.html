@@ -1,0 +1,153 @@
+<div class="createCardContainer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+        <h1>Sell or rent your product</h1>
+        <p>Upload real photographs of your furni1.ure from 2-3 different angles. Any defects/damages MUST be included in the photographs. We do not accept any stock photographs! </p>
+        <p>lease DO NOT post multiple ads for the same items or service. All duplicate, spam and wrongly categorized ads will be deleted.</p>
+        <similar-listing [type]="type" (similarListingLoaded)="getFilters()"></similar-listing>
+      </div>
+      <div class="col-lg-9 col-md-8">
+          <progress-bar [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
+          <form [formGroup]="myForm" novalidate>
+              <div class="row form-group">
+                <div class="col-lg-3 col-md-3 col-xs-12"> 
+                  <label class="uppercaseText">i want to</label>
+                </div>
+                <div class="col-lg-9 col-md-9 col-xs-12">
+                  <fieldset id="typeListing">
+                    <label class="radio-inline">
+                      <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="checked">sale
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="cardType" formControlName="cardType" value="rent">rent
+                    </label>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                  <label class="uppercaseText">Select the category</label>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                  <ul class="nav navbar-nav">
+                    <li *ngFor="let category of categories">
+                      <div class="img-icon" (click)="reloadSubcategories(category)">
+                        <span class="spriteimage {{category.ListingCategory}}Icon"></span>
+                      </div>
+                    </li>
+                  </ul>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col-lg-4 col-md-4 col-xs-12"> 
+                    <label class="uppercaseText">select the sub-category</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-xs-12">
+                    <fieldset id="sub-category">
+                      <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories"> 
+                        <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}" (change)="subCategoryUpdated()">{{subCategory}}
+                      </label>
+                    </fieldset>
+                  </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-xs-12">
+                    <label class="uppercaseText">Add photos</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-xs-12">
+                    <ul class="nav navbar-nav">
+                      <li>
+                          <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
+                              <img src="{{img}}">
+                          </div>
+                          <div class="img-icon noPadding">
+                              <label for="image-upload">
+                                  <img src="../../../../assets/img/addImage.png" />
+                              </label>
+                              <input id="image-upload" type="file" (change)="fileNameChanged($event)" />
+                              
+                          </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
+                    <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
+                        Title is required
+                    </div>
+                    
+                </div>
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <select #location class="locationSelect fullWidth" formControlName="location">
+                      <option selected disabled>Location</option>
+                      <option>Pune</option>
+                      <option>Banglore</option>
+                    </select>
+                    <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <input #price formControlName="price" name="price" class="fullWidth form-control" type="text" id="price" placeholder="Price" required />
+                    <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
+                      Price is required
+                    </div>-->
+                </div>
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <div class="checkbox">
+                      <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> Negotaible</label>
+                    </div>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-lg-10 col-md-10 col-xs-12">
+                    <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
+                    <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
+                        Short Description is required.
+                    </div>
+                </div>
+              </div>
+              <div class="row form-group" *ngIf="filters.Filters">
+                  <div class="col-lg-10 col-md-10 col-xs-12">
+                    <div class="row">
+                      <div class="col-lg-4 col-md-4 col-xs-12" *ngFor="let filter of filters.Filters">
+                        <select class="typeSelect fullWidth" name="{{filter.FilterName}}" formControlName="{{filter.FilterName}}" >
+                          <option selected disabled>{{filter.FilterName}}</option>
+                          <option *ngFor="let FilterValues of filter.FilterValues" value="{{FilterValues}}">{{FilterValues}}</option>
+                        </select>
+                        <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="row form-group" *ngIf="textBoxes">
+                  <div class="col-lg-10 col-md-10 col-xs-12">
+                    <div class="row">
+                      <div class="col-lg-4 col-md-4 col-xs-12" *ngFor="let filter of textBoxes">
+                        <input class="typeSelect fullWidth" type="text" name="{{filter.FilterName}}" formControlName="{{filter.FilterName}}" placeholder="{{filter.FilterName}}" />
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="row form-group buttonRow">
+                  <div class="col-lg-6 col-md-6 col-xs-12">
+                      <button class="capitalText tempSavebutton" (click)="createCard('saveClose')">Save and close</button>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-xs-12">
+                      <button class="uppercaseText createButton pull-right" (click)="createCard('create')"> Create </button>
+                  </div>
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>

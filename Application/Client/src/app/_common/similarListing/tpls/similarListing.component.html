@@ -1,0 +1,19 @@
+<div class="similarListings">
+  <h3>Similar Listings</h3>
+  <div class="listing" *ngFor="let card of similarListing;let i = index;">
+    <template [ngIf]="i<2">
+        <img src="../../../../assets/img/similarListing.png" />
+        <div class="listingContent">
+          <span class="title"><h5>{{card.Title}}</h5></span>
+          <span class="price pull-right">{{card.Price}}</span>
+        </div>
+    </template>
+  </div>
+  <!--<div class="listing">
+      <img src="../../../../assets/img/similarListing.png" />
+      <div class="listingContent">
+        <span class="title"><h5>Iphone 7</h5></span>
+        <span class="price pull-right">RS 60000</span>
+      </div>
+  </div>-->
+</div>
