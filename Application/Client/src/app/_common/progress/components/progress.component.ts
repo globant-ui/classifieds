@@ -18,7 +18,7 @@ export class ProgressComponent implements OnChanges{
   
   @Input()
   isActive:string;
-  
+
   public showTick = '&#10003;';
   
   constructor(){

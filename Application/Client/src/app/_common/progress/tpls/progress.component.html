@@ -1,19 +1,4 @@
 <ol class="progress">
-    <li class="is-complete" data-step='&#10003;'>
-      select
-    </li>
-    <li class="is-active" data-step='2'>
-      upload
-    </li>
-    <li data-step="3">
-      add info
-    </li>
-    <li data-step="4" class="progress__last">
-      done
-    </li>
-</ol>
-
-<ol class="progress">
     <li *ngFor="let endPoint of endPoints;let i=index" [class.is-complete]="isCompleted.indexOf(endPoint) > -1" [class.is-active]="isActive==endPoint" [attr.data-step]="(isCompleted.indexOf(endPoint) > -1)?(showTick):(i+1)">
       {{endPoint}}
     </li>

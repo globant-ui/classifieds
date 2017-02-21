@@ -1,4 +1,4 @@
-import { Component,OnInit,Input,OnChanges,SimpleChange } from '@angular/core';
+import { Component,OnInit,Input,Output,EventEmitter,OnChanges,SimpleChange } from '@angular/core';
 import {CService} from  '../../services/http.service';
 import {apiPaths} from  '../../../../serverConfig/apiPaths';
 
@@ -16,6 +16,10 @@ export class SimilarListingComponent implements OnChanges{
   @Input()
   type;
   
+  @Output()
+  similarListingLoaded:EventEmitter<string> = new EventEmitter();
+  
+
   public similarListing;
 
   constructor(private httpService:CService,private apiPath:apiPaths){
@@ -45,6 +49,7 @@ export class SimilarListingComponent implements OnChanges{
       },
       ()=>{
         console.log("Finally");
+        this.similarListingLoaded.emit('loaded');
       })
   }
   
