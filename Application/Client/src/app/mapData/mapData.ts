@@ -11,7 +11,12 @@ export class mapData{
       let today = new Date();
       let locale = "en-us";
       let cardCreatedDate = today.getDate() + '-' + today.toLocaleString(locale, { month: "short" })  + '-' + today.getFullYear();
-
+      //let DimensionHeight = 
+      let dimensions = (form.get('DimensionLength')!=null && form.get('DimensionHeight')!=null && form.get('DimensionWidth')!=null)? {
+         "Length": form.get('DimensionLength').value,
+         "Width": form.get('DimensionWidth').value,
+         "Height": form.get('DimensionHeight').value
+      }:{};
       let data = {   
         "ListingType": (form.get('cardType')!=null)?form.get('cardType').value:'',
         "ListingCategory": selectedCategory,
@@ -34,7 +39,7 @@ export class mapData{
         "FuelType": "",
         "KmDriven": (form.get('KMDriven')!=null)?form.get('KMDriven').value:'',
         "YearofMake": (form.get('Year')!=null )?form.get('Year').value:'',
-        "Dimensions": '',
+        "Dimensions": dimensions,
         "TypeofUse": "",
         "Type": "",
         "Model": "NA",
