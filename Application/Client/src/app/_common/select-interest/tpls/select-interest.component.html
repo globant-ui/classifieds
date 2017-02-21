@@ -21,7 +21,7 @@
             <div class="selectedTags">
               <ul class="pager">
                 <li>
-                  <a *ngFor="let res of obj.selectedInterests;let i=index;">
+                  <a *ngFor="let res of obj.SubCategory;let i=index;">
                     {{res}}
                 <span class="glyphicon glyphicon-remove" (click)="deleteIntrest(i, res)"></span>
                 </a>
@@ -37,7 +37,7 @@
             <div class="btn-container">
               <a class="skip-text" (click)="skipInterest()">Skip for now</a>
               <button type="submit" class="btn btn-default pull-right done-btn" 
-                      [disabled]="obj.selectedInterests.length === 0 && obj.preferedLoc.length === 0" (click) = "PostData(obj)">DONE</button>
+                      [disabled]="obj.SubCategory.length === 0 && obj.Location.length === 0" (click) = "PostData(obj)">DONE</button>
             </div>
           </div>
 
