@@ -68,7 +68,7 @@ export class SearchComponent {
   
     searchCategoryByString( str ) {
         if (str.length >= 3) {
-            this.searchCategoryByStringUrl = this.searchUrl + str;
+            this.searchCategoryByStringUrl = this.searchAutoSuggestionUrl + str;
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
                 .subscribe((res: Response) => {
                     let obj = { 'categoryName': str, 'result': res };
