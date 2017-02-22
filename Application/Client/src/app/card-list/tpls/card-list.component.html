@@ -1,10 +1,10 @@
-<div class="container" >
-    
+
+  <div class="container">
+  <!--<router-outlet></router-outlet>-->
     <loader [isLoading] = "isLoading"></loader>
-     
-     <h2 class="category">All categories</h2>
-    <div class="row card-wrapper"  *ngIf = "!isLoading">
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" *ngFor="let card of cards">
+    <h2 class="category">All categories</h2>
+    <div class="row card-wrapper">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" *ngFor="let card of cards" (click)="showProductInfo(card._id)">
         <div class="plain-card-container">
             <div class="img-block">
                 <img src="../../../../assets/img/card/{{card.Photos[0]}}" class="img-responsive" />
@@ -20,3 +20,4 @@
         </div>
     </div>
 </div>
+  </div>

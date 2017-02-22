@@ -62,8 +62,22 @@ export class FilterComponent {
     for (let item of filterData) {
       item.isActive = false;
     }
-
     filterData[index].isActive = true;
     this.getSelectedFilterOption.emit( category );
   }
-}
+
+  getCardsByCategory(category)
+  {
+    this.categoryUrl = this.filterCategoryUrl+category;
+    this._cservice.observableGetHttp(this.categoryUrl,null,false)
+      .subscribe((res:Response)=> {
+          //console.log('res = ',res);
+          //this.filterCategory.emit(res);
+        },   error => {
+          console.log("error in response");
+        },
+        ()=>{
+          console.log("Finally");
+        })
+  }}
+

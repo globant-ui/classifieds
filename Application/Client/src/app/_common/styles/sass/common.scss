@@ -1,7 +1,7 @@
 body{
   background-color:$white-color;
-  font-family: 'Open Sans';
-  font-size: 14px;
+  font-family: $open-sans;
+  font-size: $font-size-14;
   line-height: 1;
 }
 
@@ -44,4 +44,12 @@ body{
   height:80px;
   background-position:-363px 0;
   display:block;
+}
+
+.fixed{
+  position: fixed !important;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
 }

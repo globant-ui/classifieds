@@ -8,19 +8,19 @@
       <div class="container-fluid">
         <div class="bannerwrapper">
           <ul class="nav navbar-nav">
-              <li *ngFor="let category of categories">
+              <li *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory">
                   <div class="img-icon">
                       <img src="../../../../assets/img/mobile-icon/{{category.Image}}" />
                   </div>
                   <div class="categoryTitle">{{category.ListingCategory}} </div>
                   <span class="spriteimage {{category.ListingCategory}}Icon"></span>
-                  <ul class="hoverlistWrapper">
-                      <li *ngFor="let sub of category.SubCategory"><a href="">{{sub}}</a></li>
+                  <ul class="hoverlistWrapper" *ngIf="showSubCategory">
+                      <li *ngFor="let sub of category.SubCategory"><a>{{sub}}</a></li>
                   </ul>
                   <button>EXPLORE</button>
                   <a href="#" class="expandListIcon"><span class="glyphicon glyphicon-chevron-down"></span></a>
               </li>
-          </ul> 
+          </ul>
         </div>
       </div>
     </nav>
