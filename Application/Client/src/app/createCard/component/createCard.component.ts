@@ -170,6 +170,7 @@ export class CreateCardComponent implements OnInit {
        console.log(this.isCompleted + '********************' + this.isActive);
 
        let cardData = this.data.mapCardData(this.selectedCategory,this.myForm);
+       debugger;
        if(action == 'create'){
            cardData.IsPublished = true;
        }
@@ -177,7 +178,6 @@ export class CreateCardComponent implements OnInit {
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
            console.log("comes here in result",res);
-           debugger;
          },
          error => {
            console.log("error in response");
