@@ -15,6 +15,7 @@ namespace Classifieds.Listings.BusinessServices
         List<Listing> GetTopListings(int noOfRecords);
         List<Listing> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast);
         List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
+        Listing CLoseListing(string id, Listing entity);
         List<Listing> GetMyWishList(string[] listingIds);
         List<Listing> GetRecommendedList(Tags tags);
     }

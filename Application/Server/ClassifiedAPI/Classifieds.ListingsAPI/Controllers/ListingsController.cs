@@ -388,6 +388,39 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
+        #region PutCLoseListing
+
+        /// <summary>
+        /// Update listing status for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public HttpResponseMessage PutCLoseListing(string id, Listing listing)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                listing.Status = Status.Closed.ToString();
+                var classified = _listingService.CLoseListing(id, listing);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion PutCLoseListing
+
         #endregion
 
         #region private methods

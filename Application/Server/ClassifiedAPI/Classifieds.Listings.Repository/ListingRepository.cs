@@ -330,6 +330,31 @@ namespace Classifieds.Listings.Repository
 
         #endregion GetListingsByCategoryAndSubCategory
 
+        #region CLoseListing
+
+        /// <summary>
+        /// Update Close listing  based on id from the database
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listObj">listing object </param>
+        /// <returns>return updated listing object</returns>
+        public TEntity CLoseListing(string id, TEntity listObj)
+        {
+            try
+            {
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var update = Update<TEntity>.Set(p => p.Status, listObj.Status);
+                Classifieds.Update(query, update);
+                return listObj;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion CLoseListing
+
         /// <summary>
         /// Returns listing object collection for given listing ids
         /// </summary>

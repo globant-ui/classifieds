@@ -432,6 +432,43 @@ namespace Classifieds.ListingsAPI.Tests
 
         #endregion
 
+        #region Repo_CloseListingTest
+
+        /// <summary>
+        /// test positive scenario for updating listing object
+        /// </summary>
+        [TestMethod]
+        public void Repo_CloseListingTest()
+        {
+            //Arrange
+            var lstObject = GetListObject();
+
+
+            //Act
+            var result = _listingRepo.Add(lstObject);
+            Assert.IsNotNull(result._id);
+            result.Status = "Closed";
+
+            var updatedresult = _listingRepo.CLoseListing(result._id, result);
+            Assert.IsNotNull(updatedresult);
+
+            Assert.AreEqual(result.Title, updatedresult.Title);
+            Assert.IsInstanceOfType(result, typeof(Listing));
+        }
+
+        /// <summary>
+        /// test for Update Close listing object with null listing id throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Repo_CloseListingTest_NullId_ThrowException()
+        {
+            var result = _listingRepo.CLoseListing(null, null);
+            Assert.IsNull(result);
+        }
+
+        #endregion
+
         #endregion
     }
 }

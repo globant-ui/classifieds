@@ -26,6 +26,12 @@ namespace Classifieds.ListingsAPI.Tests
         private readonly List<Listing> _classifiedList = new List<Listing>();
         private const string UrlLocation = "http://localhost/api/listings";
         private ListingsController _controller;
+        private enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
         private Mock<IWebApiServiceAgent> _mockWebApiServiceAgent;
         #endregion
 
@@ -135,7 +141,7 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void Controller_GetListingById_ThrowsException()
         {
-            //_mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            
             _controller.GetListingById(null);
         }
 
@@ -471,6 +477,52 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         #endregion GetListingsByEmailTest
+
+        #region Controller_CloseListingTest
+
+        /// <summary>
+        /// test positive scenario for updating close listing
+        /// </summary>
+        [TestMethod]
+        public void Controller_CloseListingTest()
+        {
+            // Arrange
+            _mockService.Setup(x => x.CLoseListing(It.IsAny<string>(), It.IsAny<Listing>()))
+                .Returns(GetListObject());
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(UrlLocation)
+            };
+            _controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+
+            // Act     
+            var listObject = GetListObject();
+            var updatedStatus = new Listing() { Status = listObject.Status };
+            var contentResult = _controller.PutCLoseListing(listObject._id, updatedStatus);
+
+            //Assert
+            Assert.IsNotNull(contentResult);
+            Assert.AreEqual(HttpStatusCode.Accepted, contentResult.StatusCode);
+            Assert.IsNotNull(contentResult.Content);
+        }
+
+        /// <summary>
+        ///  test for updating listing with null listing id throws exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_CloseListing_ThrowsException()
+        {
+            var updatedStatus = new Listing() { Status = "Closed" };
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Put(null, updatedStatus);
+        }
+
+        #endregion
 
         #endregion
     }
