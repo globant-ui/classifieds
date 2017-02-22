@@ -31,11 +31,11 @@ namespace Classifieds.Listings.BusinessServices
         /// </summary>
         /// <param name="id">Listing Id</param>
         /// <returns></returns>
-        public List<Listing> GetListingById(string id)
+        public Listing GetListingById(string id)
         {
             try
             {
-                return _listingRepository.GetListingById(id).ToList();
+                return _listingRepository.GetListingById(id);
             }
             catch (Exception ex)
             {
@@ -221,6 +221,34 @@ namespace Classifieds.Listings.BusinessServices
 
         #endregion CLoseListing
 
+        /// <summary>
+        /// Returns the collection of listing for given listing Ids
+        /// </summary>
+        /// <param name="listingIds">array of Listing Id</param>
+        /// <returns></returns>
+        public List<Listing> GetMyWishList(string[] listingIds)
+        {
+            try
+            {
+                return _listingRepository.GetMyWishList(listingIds);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<Listing> GetRecommendedList(Tags tags)
+        {
+            try
+            {
+                return _listingRepository.GetRecommendedList(tags);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
     }
 }

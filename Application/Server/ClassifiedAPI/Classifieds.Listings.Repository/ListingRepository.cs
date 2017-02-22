@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using MongoDB.Bson;
 
 namespace Classifieds.Listings.Repository
 {
@@ -38,18 +39,18 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="id">listing id</param>
         /// <returns>listing</returns>
-        public List<TEntity> GetListingById(string id)
+        public TEntity GetListingById(string id)
         {
             try
             {
                 var query = Query<TEntity>.EQ(p => p._id, id);
-                var partialRresult = Classifieds.Find(query)
-                                                .Where(p => p.Status == Status.Active.ToString())
-                                                .ToList();
+                var partialRresult = Classifieds
+                    .Find(query).SingleOrDefault(p => p.Status == Status.Active.ToString());
 
-                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
-                return result;
+                //TEntity result = partialRresult; // partialRresult.Count() > 0 ? partialRresult : null;
+
+                return partialRresult;
             }
             catch (Exception ex)
             {
@@ -354,6 +355,50 @@ namespace Classifieds.Listings.Repository
 
         #endregion CLoseListing
 
+        /// <summary>
+        /// Returns listing object collection for given listing ids
+        /// </summary>
+        /// <param name="listingIds">array of listing ids</param>
+        /// <returns>Listing collection</returns>
+        public List<TEntity> GetMyWishList(string[] listingIds)
+        {
+            try
+            {
+                if (listingIds != null)
+                {
+                    ObjectId[] newObjectId = listingIds.Select(item => ObjectId.Parse(item)).ToArray();
+                    var query = Query.In("_id", BsonArray.Create(newObjectId));
+                    SortByBuilder sortBuilder = new SortByBuilder();
+                    sortBuilder.Descending("_id");
+                    var listings = Classifieds.Find(query).SetSortOrder(sortBuilder);
+                    return listings.ToList();
+                }
+                return null; 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Returns recommended listing collection for given tag
+        /// </summary>
+        /// <param name="tag">array of listing ids</param>
+        /// <returns>Listing collection</returns>
+        public List<TEntity> GetRecommendedList(Tags tag)
+        {
+            try
+            {
+                var finalQuery = Query.And(Query.In("Address", BsonArray.Create(tag.Location)),Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
+                var listings = Classifieds.Find(finalQuery);
+                return listings.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         #region private methods

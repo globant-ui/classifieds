@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Classifieds.Listings.BusinessEntities;
+using Classifieds.Listings.BusinessServices.ServiceAgent;
 
 namespace Classifieds.Listings.BusinessServices
 {
     public interface IListingService
     {
-        List<Listing> GetListingById(string id);
+        Listing GetListingById(string id);
         List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast);
         List<Listing> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast);
         Listing CreateListing(Listing listObject);
@@ -15,5 +16,7 @@ namespace Classifieds.Listings.BusinessServices
         List<Listing> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast);
         List<Listing> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
         Listing CLoseListing(string id, Listing entity);
+        List<Listing> GetMyWishList(string[] listingIds);
+        List<Listing> GetRecommendedList(Tags tags);
     }
 }

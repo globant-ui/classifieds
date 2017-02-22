@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common.Repositories;
+using Classifieds.Listings.BusinessServices.ServiceAgent;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -33,17 +34,20 @@ namespace Classifieds.ListingsAPI.Controllers
             Closed,
             Expired
         };
+        private string _accessToken = string.Empty;
+        private readonly IWebApiServiceAgent _webApiServiceAgent;
         #endregion
 
         #region Constructor
         /// <summary>
         /// The class constructor. 
         /// </summary>
-        public ListingsController(IListingService listingService, ILogger logger, ICommonRepository commonRepository)
+        public ListingsController(IListingService listingService, ILogger logger, ICommonRepository commonRepository, IWebApiServiceAgent webApiServiceAgent)
         {
             _listingService = listingService;
             _logger = logger;
             _commonRepository = commonRepository;
+            _webApiServiceAgent = webApiServiceAgent;
         }
         #endregion
 
@@ -53,7 +57,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="id">listing id</param>
         /// <returns></returns>
-        public List<Listing> GetListingById(string id)
+        public Listing GetListingById(string id)
         {
             try
             {
@@ -64,7 +68,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
 
-                return _listingService.GetListingById(id).ToList();
+                return _listingService.GetListingById(id);
             }
             catch (Exception ex)
             {
@@ -327,6 +331,63 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion GetListingsByCategoryAndSubCategory
 
+        /// <summary>
+        /// Returns User wish list collection from database  
+        /// </summary>
+        /// <returns></returns>
+        public List<Listing> GetMyWishlist()
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                _accessToken = GetAccessToken();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var listingIds = _webApiServiceAgent.GetWishListListingIds(_accessToken, _userEmail);
+                if (listingIds != null)
+                {
+                    return _listingService.GetMyWishList(listingIds);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Returns users recommended listings from database  
+        /// </summary>
+        /// <returns></returns>
+        public List<Listing> GetRecommendedList()
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                _accessToken = GetAccessToken();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var tags = _webApiServiceAgent.GetRecommendedTag(_accessToken, _userEmail);
+                if (tags != null)
+                {
+                    return _listingService.GetRecommendedList(tags);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
         #region PutCLoseListing
 
         /// <summary>
@@ -372,6 +433,15 @@ namespace Classifieds.ListingsAPI.Controllers
             IEnumerable<string> headerValues;
             HttpRequestMessage message = Request ?? new HttpRequestMessage();
             message.Headers.TryGetValues("UserEmail", out headerValues);
+            string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
+            return hearderVal;
+        }
+
+        private string GetAccessToken()
+        {
+            IEnumerable<string> headerValues;
+            HttpRequestMessage message = Request ?? new HttpRequestMessage();
+            message.Headers.TryGetValues("AccessToken", out headerValues);
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
         }

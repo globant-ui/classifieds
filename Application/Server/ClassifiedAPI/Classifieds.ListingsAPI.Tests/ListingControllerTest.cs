@@ -12,6 +12,7 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using Classifieds.Common;
 using Classifieds.Common.Repositories;
+using Classifieds.Listings.BusinessServices.ServiceAgent;
 
 namespace Classifieds.ListingsAPI.Tests
 {
@@ -31,6 +32,7 @@ namespace Classifieds.ListingsAPI.Tests
             Closed,
             Expired
         };
+        private Mock<IWebApiServiceAgent> _mockWebApiServiceAgent;
         #endregion
 
         #region Initialize
@@ -40,7 +42,8 @@ namespace Classifieds.ListingsAPI.Tests
             _mockService = new Mock<IListingService>();
             _logger = new Mock<ILogger>();
             _mockAuthRepo = new Mock<ICommonRepository>();
-            _controller = new ListingsController(_mockService.Object, _logger.Object, _mockAuthRepo.Object);
+            _mockWebApiServiceAgent = new Mock<IWebApiServiceAgent>();
+            _controller = new ListingsController(_mockService.Object, _logger.Object, _mockAuthRepo.Object, _mockWebApiServiceAgent.Object);
         }
         #endregion
 
@@ -99,7 +102,7 @@ namespace Classifieds.ListingsAPI.Tests
         {
             SetUpClassifiedsListing();
             _mockService.Setup(x => x.GetListingById(It.IsAny<string>()))
-                .Returns(_classifiedList);
+                .Returns(GetListObject());
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
 
@@ -107,8 +110,8 @@ namespace Classifieds.ListingsAPI.Tests
             var objList = _controller.GetListingById("123");
 
             //Assert
-            Assert.AreEqual(objList.Count, 1);
-            Assert.AreEqual(objList[0].Title, "flat on rent");
+            Assert.IsNotNull(objList);
+            Assert.AreEqual(objList.Title, "flat on rent");
         }
 
         /// <summary>
@@ -135,10 +138,10 @@ namespace Classifieds.ListingsAPI.Tests
         /// test for null listing id giving exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void Controller_GetListingById_ThrowsException()
         {
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            
             _controller.GetListingById(null);
         }
 
