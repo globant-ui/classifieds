@@ -18,6 +18,7 @@ import { SimilarListingComponent } from './_common/similarListing/components/sim
 
 import { CardListComponent } from './card-list/components/card-list.component';
 import { BannerComponent } from './banner/components/banner.component';
+import { ProductInfoComponent } from './product-info/components/product-info.component';
 import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
 import { LoginComponent } from './_common/login/component/login.component';
@@ -58,6 +59,7 @@ type StoreType = {
     SearchComponent,
     FilterComponent,
     LoginComponent,
+    ProductInfoComponent,
     CreateCardComponent
   ],
   imports: [ // import Angular's modules
@@ -82,7 +84,7 @@ export class AppModule {
 
   hmrOnInit(store: StoreType) {
     if (!store || !store.state) return;
-    console.log('HMR store', JSON.stringify(store, null, 2));
+    //console.log('HMR store', JSON.stringify(store, null, 2));
     // set state
     this.appState._state = store.state;
     // set input values

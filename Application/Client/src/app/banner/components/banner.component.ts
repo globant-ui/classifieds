@@ -6,32 +6,26 @@ let styles = require('../styles/banner.component.scss').toString();
 let tpls = require('../tpls/banner.component.html').toString();
 
 @Component({
-  selector: 'banner',
-  styles : [ styles ],
-  providers:[SettingsService],
-  template : tpls
+    selector: 'banner',
+    styles : [ styles ],
+    providers:[SettingsService],
+    template : tpls
 })
+export class BannerComponent implements OnInit {
+  private settings: any;
+  private showSubCategory: any;
+  private listingsData: any;
+  localState = {value: ''};
 
-export class BannerComponent {
-  private settings : any ;
-  private showSubCategory:any;
-  private listingsData : any ;
-  localState = { value: '' };
-  constructor(public appState: AppState,private _settingsService: SettingsService,private renderer: Renderer,private elRef:ElementRef) {}
+  constructor(public appState: AppState, private _settingsService: SettingsService, private renderer: Renderer, private elRef: ElementRef) {
+  }
 
   @Input()
   categories;
 
   ngOnInit() {
-    this.listingsData=this._settingsService.getBannerListingsData();
-    console.log('dsf = ',this.listingsData);
-  }
-  ngAfterViewInit() {
-    //this.delegate(document.getElementsByTagName('body')[0], "click", this.mouseHoverHandler);
-    // this.renderer.listenGlobal('document', 'click', (event) => {
-    //   // Do something with 'event'
-    //   alert("event clicked")
-    // });
+    this.listingsData = this._settingsService.getBannerListingsData();
+    console.log('dsf = ', this.listingsData);
   }
 
   submitState(value: string) {
@@ -39,21 +33,22 @@ export class BannerComponent {
     this.appState.set('value', value);
     this.localState.value = '';
   }
+
   mouseHoverHandler() {
     alert("mouse hover");
-    this.showSubCategory= true;
+    this.showSubCategory = true;
   }
 
   clickHandler() {
     alert("click");
-    this.showSubCategory= true;
+    this.showSubCategory = true;
   }
 
-   delegate(el, evt, handler) {
-   el.addEventListener(evt, function () {
-    handler.call(el);
-  });
-}
+  delegate(el, evt, handler) {
+    el.addEventListener(evt, function () {
+      handler.call(el);
+    });
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -62,11 +57,11 @@ export class BannerComponent {
 
     if (size > 450) {
       this.renderer.listen(this.elRef.nativeElement, 'mouseover', (event) => {
-        this.showSubCategory =true;
+        this.showSubCategory = true;
       });
     } else {
       this.renderer.listen(this.elRef.nativeElement, 'click', (event) => {
-        this.showSubCategory =true;
+        this.showSubCategory = true;
       });
     }
 

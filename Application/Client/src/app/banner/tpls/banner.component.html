@@ -7,7 +7,7 @@
     <nav class="navbar">
       <div class="container-fluid">
         <div class="bannerwrapper">
-          <ul class="nav navbar-nav" (window:resize)="onResize($event)" >
+          <ul class="nav navbar-nav">
               <li *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory">
                   <div class="img-icon">
                       <img src="../../../../assets/img/mobile-icon/{{category.Image}}" />
