@@ -5,7 +5,7 @@ namespace Classifieds.Listings.Repository
 {
     public interface IListingRepository<TEntity> where TEntity : Listing
     {
-        List<TEntity> GetListingById(string id);
+        TEntity GetListingById(string id);
         List<TEntity> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast);
         List<TEntity> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast);
         TEntity Add(TEntity entity);

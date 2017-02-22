@@ -79,13 +79,13 @@ namespace Classifieds.ListingsAPI.Tests
         {
             // Arrange
             SetUpClassifiedsListing();
-            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(_classifiedList);
+            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(GetListObject);
 
             //Act
             var result = _service.GetListingById(_classifiedList[0]._id);
 
             //Assert
-            Assert.AreEqual(result.Count, 1);
+            Assert.AreEqual(result.Title, "flat on rent");
         }
 
         /// <summary>
@@ -96,13 +96,13 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var lstObject = GetListObject();
-            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(new List<Listing>());
+            _moqAppManager.Setup(x => x.GetListingById(It.IsAny<string>())).Returns(new Listing());
 
             //Act
             var result = _service.GetListingById(lstObject._id);
 
             //Assert
-            Assert.AreEqual(result.Count, 0);
+            Assert.AreEqual(result.Title, null);
         }
 
         /// <summary>

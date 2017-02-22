@@ -39,18 +39,18 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="id">listing id</param>
         /// <returns>listing</returns>
-        public List<TEntity> GetListingById(string id)
+        public TEntity GetListingById(string id)
         {
             try
             {
                 var query = Query<TEntity>.EQ(p => p._id, id);
-                var partialRresult = Classifieds.Find(query)
-                                                .Where(p => p.Status == Status.Active.ToString())
-                                                .ToList();
+                var partialRresult = Classifieds
+                    .Find(query).SingleOrDefault(p => p.Status == Status.Active.ToString());
 
-                List<TEntity> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
-                return result;
+                //TEntity result = partialRresult; // partialRresult.Count() > 0 ? partialRresult : null;
+
+                return partialRresult;
             }
             catch (Exception ex)
             {

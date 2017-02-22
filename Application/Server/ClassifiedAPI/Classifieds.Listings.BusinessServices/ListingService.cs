@@ -31,11 +31,11 @@ namespace Classifieds.Listings.BusinessServices
         /// </summary>
         /// <param name="id">Listing Id</param>
         /// <returns></returns>
-        public List<Listing> GetListingById(string id)
+        public Listing GetListingById(string id)
         {
             try
             {
-                return _listingRepository.GetListingById(id).ToList();
+                return _listingRepository.GetListingById(id);
             }
             catch (Exception ex)
             {

@@ -57,7 +57,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="id">listing id</param>
         /// <returns></returns>
-        public List<Listing> GetListingById(string id)
+        public Listing GetListingById(string id)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
 
-                return _listingService.GetListingById(id).ToList();
+                return _listingService.GetListingById(id);
             }
             catch (Exception ex)
             {

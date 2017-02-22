@@ -12,7 +12,7 @@ namespace Classifieds.Listings.BusinessServices.ServiceAgent
 
         private readonly string _baseAddress = ConfigurationManager.AppSettings["BaseAddress"];
         private readonly string _userWishListApi = ConfigurationManager.AppSettings["UserWishListAPI"];
-        private readonly string _userRecommondedTagListApi = ConfigurationManager.AppSettings["UserRecommondedTagListAPI"]; 
+        private readonly string _userRecommondedTagListApi = ConfigurationManager.AppSettings["UserRecommondedTagListAPI"];
 
         #endregion
 
@@ -28,10 +28,11 @@ namespace Classifieds.Listings.BusinessServices.ServiceAgent
             HttpResponseMessage response = client.GetAsync(_userWishListApi + userEmail).Result;
             if (response.IsSuccessStatusCode)
             {
-                wishlist = response.Content.ReadAsAsync<string[]>().Result;//var data = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                wishlist = response.Content.ReadAsAsync<string[]>().Result;
             }
             else
-            {//Something has gone wrong, handle it here
+            {
+                //Something has gone wrong, handle it here
             }
             return wishlist;
         }

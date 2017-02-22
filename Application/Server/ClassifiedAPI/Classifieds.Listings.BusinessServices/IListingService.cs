@@ -6,7 +6,7 @@ namespace Classifieds.Listings.BusinessServices
 {
     public interface IListingService
     {
-        List<Listing> GetListingById(string id);
+        Listing GetListingById(string id);
         List<Listing> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast);
         List<Listing> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast);
         Listing CreateListing(Listing listObject);
