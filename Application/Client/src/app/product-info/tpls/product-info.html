@@ -7,10 +7,11 @@
     <li class="breadcrumb-item"><a href="#">IPHONE</a></li>
     <li class="breadcrumb-item active"><span>IPHONE 7</span></li>
   </ol>
+
   <!-- Breadcrumb End -->
   <div class="col-md-12">
-    <div class="col-md-6 mobileViewCarousel">
-      <div class="largeViewSpacing"><img src="/assets/img/large-mobile-img.png" class="largeView"></div>
+    <div class="col-xs-12 col-md-6 mobileViewCarousel">
+     <!-- <div class="largeViewSpacing"><img src="/assets/img/large-mobile-img.png" class="largeView"></div>
       <div class="clearfix">
         <div class="smallViewsArrow">
           <a href="#"><img src="/assets/img/arrow-left-circle.png"></a>
@@ -27,47 +28,56 @@
         <div class="smallViewsArrow">
           <a href="#"><img src="/assets/img/arrow-right-circle.png"></a>
         </div>
-      </div>
+      </div>-->
+      <img src="/assets/img/gallery.jpg">
+
     </div>
-    <div class="col-md-6">
-      <div class="clearfix mobileDetails">
-        <div class="col-md-6">
+
+    <div class="col-xs-12 col-md-5">
+        <div class="clearfix mobileDetails">
+        <div class="col-xs-6 col-md-6">
           <h1>{{productInfoData.Title}}</h1>
           <h6><i>Posted on {{productInfoData.SubmittedDate}}</i></h6>
         </div>
-        <div class="col-md-6">
-          <h3>{{productInfoData.Price}}</h3>
-          <h6 *ngIf="productInfoData.Negotiable"><i>Negotiable</i></h6>
+        <div class="col-xs-6 col-md-6">
+          <h3 class="pull-right">{{productInfoData.Price}}
+          <p *ngIf="productInfoData.Negotiable"><i class="pull-right">Negotiable</i></p>
+          </h3>
+
         </div>
       </div>
-      <div class="col-md-12 description clearfix"><h6>DESCRIPTION</h6></div>
-      <div class="col-md-12 clearfix">
+      <div class="clearfix product-des-head">
+        <div class="col-xs-6 col-md-6 description clearfix no-padding-left"><h6>DESCRIPTION</h6></div>
+        <div class="col-xs-6 col-md-6 clearfix text-right wishlistText no-padding-right">
+          <a href="#">
+            <span class="icon-like-icon wishlist"></span>
+            <span class="textwishlist">ADD TO WISHLIST</span>
+          </a>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-12 clearfix">
         <h5 class="textCustom">{{productInfoData.Details}}</h5>
       </div>
       <div class="clearfix typeBrandDetails">
-        <div class="col-md-6"><p><span>TYPE:</span> ok ok ok</p></div>
-        <div class="col-md-6"><p><span>BRAND:</span> Yes Yes Yes</p></div>
+        <div class="col-xs-6 col-md-6"><p><span>TYPE:</span> Psdjdjfjgjgkfjfb</p></div>
+        <div class="col-xs-6 col-md-6"><p><span>BRAND:</span> Psdjdjfjgjgkfjfb</p></div>
       </div>
       <div class="clearfix typeBrandDetails">
-        <div class="col-md-6"><p><span>TYPE:</span>Cool COol cool</p></div>
-        <div class="col-md-6"><p><span>BRAND:</span> done  done done</p></div>
+        <div class="col-xs-6 col-md-6"><p><span>TYPE:</span> Psdjdjfjgjgkfjfb</p></div>
+        <div class="col-xs-6 col-md-6"><p><span>BRAND:</span> Psdjdjfjgjgkfjfb</p></div>
       </div>
-      <div class="col-md-12 clearfix userDetailsSpacing">
-        <div class="col-md-8">
+      <div class="col-xs-12 col-md-12 clearfix userDetailsSpacing no-padding-left">
+        <div class="col-xs-12 col-md-8">
           <span><a href="#"><img src="/assets/img/userProfilePic.png" class="img-circle"></a></span>
           <span class="orangeIconSpacing"><img src="/assets/img/orange-icon.png"></span>
           <span class="designerName"><span>{{productInfoData.ContactName}},</span> <i>Designer</i></span>
         </div>
-        <div class="col-md-4">
+        <div class="col-xs-12 col-md-4 no-padding-right">
           <button type="button" class="btn btn-primary btn-round-lg btn-lg contactButton">CONTACT</button>
+          <div class="hidden">+91 9890 555 555</div>
         </div>
       </div>
-      <div class="col-md-12 clearfix text-right wishlistText">
-        <a href="#">
-          <span class="icon-like-icon wishlist"></span>
-          <span class="textwishlist">ADD TO WISHLIST</span>
-        </a>
-      </div>
+
     </div>
   </div>
   <div class="col-md-12 similarListings">

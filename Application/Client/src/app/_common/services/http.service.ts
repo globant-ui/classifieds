@@ -19,10 +19,12 @@ export class CService {
   private getHeaders(): Headers {
 
     let headers = new Headers();
-    this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
-    headers.append('Content-Type', 'application/jsonp; charset=UTF-8');
-    headers.append('AccessToken', this.sessionObj.token);
-    headers.append('UserEmail', this.sessionObj.useremail);
+      this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
+      headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
+      if(this.sessionObj!=undefined){
+        headers.append('AccessToken',this.sessionObj.token);
+        headers.append('UserEmail',this.sessionObj.useremail);
+      }
     return headers;
   }
 

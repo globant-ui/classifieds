@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit{
   private  validateUrl = 'http://in-it0289/UserApi/api/User/RegisterUser';
   private activeSession:boolean = false;
 
+
   @ViewChild('childModal') public childModal:ModalDirective;
 
     constructor(public _authenticationWindowService: AuthenticationWindowService,
@@ -134,6 +135,7 @@ export class LoginComponent implements OnInit{
     return new Promise( ( resolve, reject ) => {
       if ( token ) {
         var headers = new Headers();
+// <<<<<<< HEAD
         headers.append('Authorization', 'Bearer ' + token);
         this._http.get(this._settingsService.settings.auth.google_userinfo, {headers: headers})
           .subscribe(
@@ -187,6 +189,7 @@ export class LoginComponent implements OnInit{
           console.log("Finally");
         })
   }
+
 
 }
 
