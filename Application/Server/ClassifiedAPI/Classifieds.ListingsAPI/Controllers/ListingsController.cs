@@ -57,18 +57,33 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="id">listing id</param>
         /// <returns></returns>
-        public Listing GetListingById(string id)
+        public ProductInfo GetListingById(string id)
         {
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 _userEmail = GetUserEmail();
+                _accessToken = GetAccessToken();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
-
-                return _listingService.GetListingById(id);
+                ProductInfo productInfo = new ProductInfo();
+                productInfo.Listing = _listingService.GetListingById(id); ;
+                if (!string.IsNullOrEmpty(productInfo.Listing.SubmittedBy))
+                {
+                    var userDetails = _webApiServiceAgent.GetUserDetails(_accessToken, _userEmail,
+                        productInfo.Listing.SubmittedBy);
+                    if (userDetails != null)
+                    {
+                        productInfo.UserName = userDetails.UserName;
+                        productInfo.Email = userDetails.UserEmail;
+                        productInfo.Contact = userDetails.Mobile;
+                        productInfo.Designation = userDetails.Designation;
+                        productInfo.Photo = userDetails.Image;
+                    }
+                }
+                return productInfo;
             }
             catch (Exception ex)
             {
