@@ -17,7 +17,6 @@ let tpls = require('../tpls/filter.component.html').toString();
 })
 
 export class FilterComponent {
-
   private filterData : any;
   private filterCategoryUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=';
   private categoryUrl:any;

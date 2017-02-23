@@ -24,6 +24,7 @@ export class ProductInfoComponent {
   private productId : any;
   private productInfoData: any;
   private productDetails: any;
+  //private productData: any;
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
 
   constructor(private _route: ActivatedRoute,
@@ -35,10 +36,14 @@ export class ProductInfoComponent {
 
     this._route.params.subscribe(params => {
       this.productId = params['id'];
+      console.log(this.productId);
     });
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
     this.getProductInfo();
   }
 
@@ -47,6 +52,8 @@ export class ProductInfoComponent {
     this._cservice.observableGetHttp(this.productDetails ,null,false)
       .subscribe((res:Response)=> {
           this.productInfoData = res;
+          //this.productInfoData =this.productData;
+          console.log(this.productInfoData);
         },
         error => {
           console.log("error in response");

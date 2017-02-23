@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
     this.baseUrl=this._settingsService.getBaseUrl();
     this.getInitialCards();
     this.getBannerListing();
-
     this.getAffixElOffsetTop();
   }
   getAffixElOffsetTop(){
