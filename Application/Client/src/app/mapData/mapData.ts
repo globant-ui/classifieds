@@ -23,8 +23,8 @@ export class mapData{
         "SubCategory": (form.get('subCategory'))?form.get('subCategory').value:'',
         "Title": (form.get('title'))?form.get('title').value:'',
         "Address": "",
-        "ContactNo": "",
-        "ContactName": "",
+        "ContactNo": (form.get('usercontact'))?form.get('usercontact').value:'',
+        "ContactName": (form.get('username'))?form.get('username').value:'',
         "Configuration": "",
         "Details": (form.get('shortDesc'))?form.get('shortDesc').value:'',
         "Brand": (form.get('Brand'))?form.get('Brand').value:'',
@@ -43,7 +43,7 @@ export class mapData{
         "TypeofUse": "",
         "Type": (form.get('Type'))?form.get('Type').value:'',
         "Model": "NA",
-        "Negotiable": form.get('negotiable').value,
+        "Negotiable": (form.get('negotiable')!='')?form.get('negotiable').value:false,
         "IsPublished": false,
         "Photos": []
       };
