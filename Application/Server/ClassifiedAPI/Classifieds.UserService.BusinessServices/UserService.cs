@@ -32,6 +32,22 @@ namespace Classifieds.UserService.BusinessServices
         {
             try
             {
+                if (user.Tags == null)
+                {
+                    Tags objTag = new Tags();
+                    objTag.SubCategory = new string[] {};
+                    objTag.Location = new string[] {};
+                    user.Tags = objTag;
+                }
+                if (user.Alert == null)
+                {
+                    Alert[] objAlert= new Alert[] {};
+                    user.Alert = objAlert;
+                }
+                if (user.WishList == null)
+                {
+                    user.WishList= new string[] {};
+                }
                 return _userRepository.RegisterUser(user);
             }
             catch (Exception ex)

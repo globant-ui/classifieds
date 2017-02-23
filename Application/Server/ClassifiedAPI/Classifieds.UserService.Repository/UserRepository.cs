@@ -288,7 +288,7 @@ namespace Classifieds.UserService.Repository
                 foreach (var subcat in tag.SubCategory)
                 {
                     //check tag is existed or not in subcategory array.
-                    var query = Query.EQ("Tags.SubCategory", subcat);
+                    var query =Query.And(Query.EQ("Tags.SubCategory", subcat), Query.EQ("UserEmail", userEmail));
                     var items = Classifieds.Find(query).ToList();
                     if (items.Count == 0)
                     {
@@ -307,7 +307,7 @@ namespace Classifieds.UserService.Repository
                 foreach (var location in tag.Location)
                 {
                     //check for is exist or not in Location array
-                    var query = Query.EQ("Tags.Location", location);
+                    var query = Query.And(Query.EQ("Tags.Location", location), Query.EQ("UserEmail", userEmail)); ;
                     var items = Classifieds.Find(query).ToList();
                     if (items.Count == 0)
                     {

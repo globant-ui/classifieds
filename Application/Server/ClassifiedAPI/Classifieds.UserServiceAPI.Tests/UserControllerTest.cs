@@ -80,7 +80,8 @@ namespace Classifieds.UserServiceAPI.Tests
             return subscription;
         }
         #endregion
-
+        
+        #region RegisterUserTest
         /// <summary>
         /// Test for successful user registration
         /// </summary>
@@ -109,6 +110,7 @@ namespace Classifieds.UserServiceAPI.Tests
         {
             _controller.RegisterUser(null);
         }
+        #endregion RegisterUserTest
 
         #region AddSubscriptionTest
 
@@ -122,6 +124,7 @@ namespace Classifieds.UserServiceAPI.Tests
             _mockService.Setup(x => x.AddSubscription(It.IsAny<Subscription>()))
             .Returns(GetSubscription());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -149,7 +152,7 @@ namespace Classifieds.UserServiceAPI.Tests
         /// test for inserting null Subscription object throws exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void Controller_PostSubscription_ThrowsException()
         {
             _controller.AddSubscription(null);
@@ -169,12 +172,13 @@ namespace Classifieds.UserServiceAPI.Tests
             _controller.Request = new HttpRequestMessage();
             _controller.Configuration = new HttpConfiguration();
 
-            string locationUrl = "http://localhost/Classifieds.UserAPI/api/user";
+            string locationUrl = "http://localhost/UserAPI/api/user";
 
             // Create the mock and set up the Link method, which is used to create the Location header.
             // The mock version returns a fixed string.
             var mockUrlHelper = new Mock<UrlHelper>();
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.Url = mockUrlHelper.Object;
 
             // Act
@@ -200,6 +204,7 @@ namespace Classifieds.UserServiceAPI.Tests
             var dataObject = GetSubscription();
             _mockService.Setup(x => x.DeleteSubscription(It.IsAny<string>()));
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -216,7 +221,7 @@ namespace Classifieds.UserServiceAPI.Tests
         /// <summary>
         /// test for deleting Subscription object throws exception
         /// </summary>
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(NullReferenceException))]
         [TestMethod]
         public void Controller_DeleteSubscription_ThrowsException()
         {
@@ -225,5 +230,402 @@ namespace Classifieds.UserServiceAPI.Tests
 
         #endregion DeleteSubscriptionTestCases
 
+        #region GetUserProfileTest
+        /// <summary>
+        /// Test for GetUserProfile valid Scenario
+        /// </summary>
+        [TestMethod]
+        public void Controller_GetUserProfileTest_Valid()
+        {
+           _mockService.Setup(x => x.GetUserProfile(It.IsAny<string>()))
+                .Returns(new ClassifiedsUser()
+                {
+                    UserEmail = "amol.pawar@globant.com",
+                    UserName = "Amol Pawar"
+                }
+               );
+           _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+           _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            //Act
+            var result = _controller.GetUserProfile("amol.pawar@globant.com");
+
+            //Assert
+            Assert.AreEqual(result.UserName, "Amol Pawar");
+        }
+
+        /// <summary>
+        ///  GetUserProfile Empty result Test.
+        /// </summary>
+        [TestMethod]
+        public void Controller_GetUserProfileTes_EmptyResult()
+        {
+            _mockService.Setup(x => x.GetUserProfile(It.IsAny<string>()))
+                .Returns(new ClassifiedsUser()
+                {
+                    UserEmail = "",
+                    UserName = ""
+                });
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            //Act
+            var result = _controller.GetUserProfile(string.Empty);
+            //Assert
+            Assert.AreEqual(result.UserName, "");
+        }
+        /// <summary>
+        /// Controller_FreeTextSearch_ThrowsException Test Exception.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_GetUserProfileTest_ThrowsException()
+        {
+            _mockService.Setup(x => x.GetUserProfile(It.IsAny<string>()))
+                .Returns(new ClassifiedsUser()
+                {
+                    UserEmail = "",
+                    UserName = ""
+                });
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            //Act
+            _controller.GetUserProfile(null);
+         
+        }
+
+        #endregion GetUserProfileTest
+
+        #region UpdateUserProfileTest
+        /// <summary>
+        /// Test for Update UserProfile valid Scenario
+        /// </summary>
+        [TestMethod]
+        public void Controller_UpdateUserProfileTest_Valid()
+        {
+            _mockService.Setup(x => x.UpdateUserProfile(It.IsAny<ClassifiedsUser>()))
+                .Returns(
+                    new ClassifiedsUser()
+                    {
+                        UserEmail = "amol.pawar@globant.com",
+                        UserName = "Amol Pawar"
+                    }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            //Act
+            var result = _controller.UpdateUserProfile(new ClassifiedsUser()
+            {
+                UserEmail = "amol.pawar@globant.com",
+                UserName = "Amol Pawar"
+            });
+
+            //Assert
+            Assert.AreEqual(result.UserName, "Amol Pawar");
+        }
+        /// <summary>
+        /// Test for Update UserProfile Exception Scenario
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_UpdateUserProfileTest_ThrowsException()
+        {
+            _mockService.Setup(x => x.UpdateUserProfile(It.IsAny<ClassifiedsUser>()))
+                .Returns(
+                    new ClassifiedsUser()
+                    {
+                        UserEmail = "amol.pawar@globant.com",
+                        UserName = "Amol Pawar"
+                    }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            //Act
+            _controller.UpdateUserProfile(null);
+          
+        }
+        #endregion UpdateUserProfileTest
+
+        #region TagUnitTest
+        /// <summary>
+        /// test positive scenario for Post UserTag
+        /// </summary>
+        [TestMethod]
+        public void Controller_AddTagTest()
+        {
+            // Arrange
+            _mockService.Setup(x => x.AddTag(It.IsAny<string>(),It.IsAny<Tags>()))
+            .Returns(new Tags()
+                    {
+                        SubCategory = new string[] { "SubCategory1", "SubCategory2" },
+                        Location = new string[] { "Location1", "Location2" }
+                    }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+            };
+            _controller.Configuration = new HttpConfiguration();
+            _controller.Configuration.Routes.MapHttpRoute(
+                name: "UserServiceAPI",
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional });
+
+            _controller.RequestContext.RouteData = new HttpRouteData(
+                route: new HttpRoute(),
+                values: new HttpRouteValueDictionary { { "controller", "User" } });
+
+            // Act
+           var result = _controller.AddTag("amol.pawar@globant.com",new Tags()
+            {
+                SubCategory = new string[] { "SubCategory1", "SubCategory2" },
+                Location = new string[] { "Location1", "Location2" }
+            });
+            
+            // Assert
+            Assert.IsNotNull(result.SubCategory);
+            Assert.AreEqual(result.Location.Length,2);
+        }
+
+        /// <summary>
+        /// test exception scenario for Post UserTag
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Controller_AddTag_ExceptionTest()
+        {
+            var result = _controller.AddTag(null, new Tags()
+            {
+                SubCategory = new string[] { "SubCategory1", "SubCategory2" },
+                Location = new string[] { "Location1", "Location2" }
+            });
+        }
+        /// <summary>
+        /// test positive scenario for deleting User Tag
+        /// </summary>
+        [TestMethod]
+        public void Controller_DeleteTag()
+        {
+            // Arrange
+            _mockService.Setup(x => x.DeleteTag(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("http://localhost/UserAPI/api/User")
+            };
+            // Act                
+            var result = _controller.DeleteTag("amol.pawar@globant.com","Cars");
+
+            //Assert
+            Assert.IsTrue(result);
+       }
+        /// <summary>
+        /// test positive scenario for deleting User Tag
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Controller_DeleteTag_Exception()
+        {
+            // Arrange
+            _mockService.Setup(x => x.DeleteTag(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+           
+            _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("http://localhost/UserAPI/api/User")
+            };
+            // Act                
+            _controller.DeleteTag("amol.pawar@globant.com", "Cars");
+           
+        }
+
+        #endregion TagUnitTest
+
+        #region AlertUnitTest
+        /// <summary>
+        /// test positive scenario for Post UserAlert
+        /// </summary>
+        [TestMethod]
+        public void Controller_AddAlertTest()
+        {
+            // Arrange
+            _mockService.Setup(x => x.AddAlert(It.IsAny<string>(), It.IsAny<Alert>()))
+            .Returns(true);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+            };
+
+            _controller.Configuration = new HttpConfiguration();
+            _controller.Configuration.Routes.MapHttpRoute(
+                name: "UserServiceAPI",
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional });
+
+            _controller.RequestContext.RouteData = new HttpRouteData(
+                route: new HttpRoute(),
+                values: new HttpRouteValueDictionary { { "controller", "User" } });
+
+            // Act
+            var result = _controller.AddAlert("amol.pawar@globant.com", new Alert()
+            {
+                Category= "Category",
+                SubCategory = "SubCategory",
+                IsEmail = true,
+                IsSms= true
+            });
+
+            // Assert
+            Assert.IsTrue(result);
+            
+        }
+
+        /// <summary>
+        /// test exception scenario for Post UserAlert
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Controller_AddAlert_ExceptionTest()
+        {
+            var result = _controller.AddAlert(null, new Alert()
+            {
+                Category = "Category",
+                SubCategory = "SubCategory",
+                IsEmail = true,
+                IsSms = true
+            });
+        }
+        /// <summary>
+        /// test positive scenario for deleting User Alert
+        /// </summary>
+        [TestMethod]
+        public void Controller_DeleteAlert()
+        {
+            // Arrange
+            _mockService.Setup(x => x.DeleteAlert(It.IsAny<string>(), It.IsAny<Alert>())).Returns(true);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            
+            // Act                
+            var result = _controller.DeleteAlert("amol.pawar@globant.com", new Alert()
+            {
+                Category = "Category",
+                SubCategory = "SubCategory",
+                IsEmail = true,
+                IsSms = true
+            });
+
+            //Assert
+            Assert.IsTrue(result);
+        }
+        /// <summary>
+        /// test positive scenario for deleting User Tag
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Controller_DeleteAlert_Exception()
+        {
+            // Arrange
+           _mockService.Setup(x => x.DeleteTag(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+           _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+           _controller.Request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("http://localhost/api/User")
+            };
+            // Act                
+            _controller.DeleteTag("amol.pawar@globant.com", "Cars");
+        }
+        #endregion AlertUnitTest
+
+        #region UserWishListUnitTest
+        [TestMethod]
+        public void Controller_GetUserWishListTest_Valid()
+        {
+            _mockService.Setup(x => x.GetUserWishList(It.IsAny<string>()))
+                 .Returns(new string[]
+                 {
+                     "ListingId1","ListingId2","ListingId3"
+                 }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            //Act
+            var result = _controller.GetUserWishList("amol.pawar@globant.com");
+
+            //Assert
+            Assert.AreEqual(result.Length, 3);
+            Assert.IsNotNull(result);
+       }
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Controller_GetUserWishListTest_Exception()
+        {
+            _mockService.Setup(x => x.GetUserWishList(It.IsAny<string>()))
+                 .Returns(new string[]
+                 {
+                     "ListingId1","ListingId2","ListingId3"
+                 }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+          
+            //Act
+            var result = _controller.GetUserWishList("amol.pawar@globant.com");
+
+            //Assert
+            Assert.AreEqual(result.Length, 3);
+            Assert.IsNotNull(result);
+        }
+        #endregion UserWishListUnitTest
+        #region UserRecommondedTagUnitTest
+        [TestMethod]
+        public void Controller_GetRecommondedTagListTest_Valid()
+        {
+            _mockService.Setup(x => x.GetRecommondedTagList(It.IsAny<string>()))
+                 .Returns(new Tags()
+                 {
+                     SubCategory = new string[] { "SubCategory1", "SubCategory2" },
+                     Location = new string[] { "Location1", "Location2" }
+                 }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+
+            //Act
+            var result = _controller.GetRecommondedTagList("amol.pawar@globant.com");
+
+            //Assert
+            Assert.IsNotNull(result.SubCategory);
+            Assert.AreEqual(result.Location.Length, 2);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Controller_GetUserTagListTest_Exception()
+        {
+            _mockService.Setup(x => x.GetRecommondedTagList(It.IsAny<string>()))
+                 .Returns(new Tags()
+                 {
+                     SubCategory = new string[] { "SubCategory1", "SubCategory2" },
+                     Location = new string[] { "Location1", "Location2" }
+                 }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+
+            //Act
+            _controller.GetRecommondedTagList("amol.pawar@globant.com");
+        }
+        #endregion UserRecommondedTagUnitTest
     }
 }
