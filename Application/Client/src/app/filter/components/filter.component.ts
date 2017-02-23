@@ -32,8 +32,8 @@ export class FilterComponent {
   ngOnInit()
   {
     this.filterData = this._settingsService.getFilterListingData();
-    let filterData = this.filterData;
-    for (let item of filterData) {
+   this.filterData = this.filterData;
+    for (let item of this.filterData) {
       if(item.listName==='Top ten'){item.isActive = true;}
     }
   }
@@ -57,12 +57,12 @@ export class FilterComponent {
   }
 
   selectedOption(category, index) {
-    let filterData = this.filterData;
+     this.filterData = this.filterData;
     
-    for (let item of filterData) {
+    for (let item of  this.filterData) {
       item.isActive = false;
     }
-    filterData[index].isActive = true;
+     this.filterData[index].isActive = true;
     this.getSelectedFilterOption.emit( category );
   }
 
