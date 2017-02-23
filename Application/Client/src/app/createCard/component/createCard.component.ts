@@ -41,6 +41,8 @@ export class CreateCardComponent implements OnInit {
     ngOnInit() {
         // the long way
         this.myForm = new FormGroup({
+            username: new FormControl('', [<any>Validators.required]),
+            usercontact: new FormControl('', [<any>Validators.required]),
             cardType: new FormControl('', [<any>Validators.required]),
             category: new FormControl('', [<any>Validators.required]),
             subCategory: new FormControl('', [<any>Validators.required]),

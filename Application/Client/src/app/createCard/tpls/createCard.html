@@ -80,11 +80,22 @@
               </div>
               <div class="row form-group">
                 <div class="col-lg-5 col-md-5 col-xs-12">
+                    <input #username formControlName="username" class="fullWidth" type="text" name="username" placeholder="Contact Person Name" required />
+                    <div [hidden]="myForm.controls.username.valid || (myForm.controls.username.pristine && !submitted)" class="alert alert-danger">
+                        Contact Name is required
+                    </div> 
+                </div>
+                <div class="col-lg-5 col-md-5 col-xs-12">
+                    <input #usercontact formControlName="usercontact" class="fullWidth" type="text" name="usercontact" placeholder="Contact Number" required />
+                    <div [hidden]="myForm.controls.usercontact.valid || (myForm.controls.usercontact.pristine && !submitted)" class="alert alert-danger">
+                        Contact is required
+                    </div> 
+                </div>
+                <div class="col-lg-5 col-md-5 col-xs-12">
                     <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
                     <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
                         Title is required
-                    </div>
-                    
+                    </div>      
                 </div>
                 <div class="col-lg-5 col-md-5 col-xs-12">
                     <select #location class="locationSelect fullWidth" formControlName="location">
