@@ -43,7 +43,7 @@ export class mapData{
         "TypeofUse": "",
         "Type": (form.get('Type'))?form.get('Type').value:'',
         "Model": "NA",
-        "Negotiable": form.get('negotiable').value,
+        "Negotiable": (form.get('negotiable')!='')?form.get('negotiable').value:false,
         "IsPublished": false,
         "Photos": []
       };
