@@ -31,6 +31,7 @@ export class HomeComponent {
   public initialCardData: any;
   public bannerData: any;
   public filterCat:any;
+ 
 
 
   @ViewChildren("cheader") CHeader;

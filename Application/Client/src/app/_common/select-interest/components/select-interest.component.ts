@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit, AfterViewInit  } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -6,6 +6,7 @@ import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../services/http.service';
 import {CookieService} from 'angular2-cookie/core';
 import 'rxjs/Rx';
+import {Session} from '../../authentication/entity/session.entity';
 
 //using jquery syntax $
 declare var $;
@@ -20,7 +21,7 @@ let tpls = require('../tpls/select-interest.component.html').toString();
   template : tpls
 })
 
-export class SelectInterestComponent implements OnInit {
+export class SelectInterestComponent implements OnInit, AfterViewInit  {
 
 private delayTimer  : any = null;
 private subCategoryUrl:string = "http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=";
@@ -35,6 +36,7 @@ private enabledDropdown : boolean = true;
 private selectInterestPopUpFlag : boolean = true;
 private isValid : boolean = true;
 private disabledCheckbox : boolean = false;
+ private session : Session;
 
   constructor(
                  private _settingsService: SettingsService,
@@ -45,6 +47,13 @@ private disabledCheckbox : boolean = false;
       this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
       console.log('session obj interest = ',this.emailId);
     }
+
+    ngAfterViewInit(){
+        this.session = new Session(this._cookieService.getObject('SESSION_PORTAL'));
+        if (this.session['isFirstTimeLogin']) {
+            $("#myModal").modal("show");
+        }
+    } 
 
   fetchInterest(e: Event, val) {
       if (val.length >= 3) {
@@ -120,7 +129,7 @@ private disabledCheckbox : boolean = false;
             }
              console.log("----ff", this.obj);
         } 
-        
+        //post call
     PostData(obj){
         if(obj.Location.length === 0){
             obj.Location.push("Pune","Banglore");
@@ -132,7 +141,7 @@ private disabledCheckbox : boolean = false;
             error => {
                 console.log("error in response");
             });
-         console.log("im done",obj);
+            $("#myModal").modal("hide");
    
     }
 

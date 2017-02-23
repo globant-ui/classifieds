@@ -26,7 +26,6 @@ export class SearchComponent {
     private searchCategorySuggestionUrl:string;
     private delayTimer  : any = null;
     private searchResult;
-    private values:any = '';
     private searchCategoryByStr: string = '';
     private enabledDropdown:boolean = false; 
     private isLoading : boolean = false;
@@ -36,8 +35,6 @@ export class SearchComponent {
                  private _cservice:CService) {}
 
     onKeyUp( event: any, text: string ) {
-        this.values += text;
-        text = text.charAt(0).toUpperCase() + text.slice(1);
         if (text.length >= 3) {
             this.searchCategoryByStringUrl = this.searchAutoSuggestionUrl + text;
             //Delay of some time to slow down the results
@@ -66,7 +63,7 @@ export class SearchComponent {
             });
     }
   
-    searchCategoryByString( str ) {
+    searchCategoryByString( str: string) {
         if (str.length >= 3) {
             this.searchCategoryByStringUrl = this.searchUrl + str;
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
