@@ -59,7 +59,7 @@ export class SearchComponent {
                 }
             },
             error => {
-                console.log("error in response");
+                console.log("error in response",error);
                  this.isLoading = false;
             });
     }
@@ -73,7 +73,7 @@ export class SearchComponent {
                     this.searchCategory.emit(obj.categoryName);
                 },
                 error => {
-                    console.log("error in response");
+                    console.log("error in response",error);
                 });
         }
     }
