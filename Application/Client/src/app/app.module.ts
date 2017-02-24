@@ -1,5 +1,6 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
@@ -76,7 +77,8 @@ type StoreType = {
     APP_PROVIDERS,
     CService,
     mapData,
-    CookieService
+    CookieService,
+    DatePipe
   ]
 })
 export class AppModule {
