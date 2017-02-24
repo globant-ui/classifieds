@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {Response, Http, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
-import {CookieService} from 'angular2-cookie/core';
+
+import {HeadersService} from './headers.service';
+
 
 declare var $: any;
 
@@ -13,24 +15,14 @@ export class CService {
   public code: string;
   private sessionObj;
 
-  constructor(public _http: Http, private _cookieService: CookieService) {
+  
+  constructor( public _http: Http,public headers:HeadersService) {
   }
 
-  private getHeaders(): Headers {
-
-    let headers = new Headers();
-      this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
-      headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
-      if(this.sessionObj!=undefined){
-        headers.append('AccessToken',this.sessionObj.token);
-        headers.append('UserEmail',this.sessionObj.useremail);
-      }
-    return headers;
-  }
 
   public getRequestOptions(): RequestOptions {
     let requestOptions = new RequestOptions();
-    requestOptions.headers = this.getHeaders();
+    requestOptions.headers = this.headers.getHeaders();
     return requestOptions;
   }
 

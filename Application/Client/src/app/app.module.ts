@@ -24,6 +24,7 @@ import {CService} from "./_common/services/http.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
 import {mapData} from  './mapData/mapData';
+import {HeadersService} from './_common/services/headers.service';
 
 import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
@@ -75,6 +76,7 @@ type StoreType = {
     ENV_PROVIDERS,
     APP_PROVIDERS,
     CService,
+    HeadersService,
     mapData,
     CookieService
   ]

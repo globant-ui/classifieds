@@ -8,6 +8,8 @@
           </div>
           <div class="col-lg-10 col-md-10 col-xs-10">
               <form [formGroup]="myForm" novalidate>
+                  <input hidden #submittedBy formControlName="submittedBy" value="{{submittedBy}}">
+                  
                   <div class="row form-group">
                     <div class="col-lg-3 col-md-3 col-xs-12"> 
                       <label class="uppercaseText">i want to</label>
