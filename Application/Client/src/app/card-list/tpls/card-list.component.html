@@ -1,0 +1,21 @@
+<div class="container-fluid cardList">
+  <!--<router-outlet></router-outlet>-->
+    <h2 class="category">All categories</h2>
+    <div class="row card-wrapper">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" *ngFor="let card of cards" (click)="showProductInfo(card._id)">
+            <div class="plain-card-container">
+                <div class="img-block">
+                    <img src="../../../../assets/img/card/{{card.Photos[0]}}" class="img-responsive" />
+                </div>
+                <div class="contentdetail">
+                    <h3>{{card.Title}}</h3>
+                    <p>{{card.Details}}</p>
+                    <ul>
+                        <li><span class="icon-clock"></span>{{card.SubmittedDate}}</li>
+                        <li><span class="icon-like-icon"></span>RS {{card.Price}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
