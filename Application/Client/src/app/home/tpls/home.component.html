@@ -1,11 +1,12 @@
 <banner [categories]='bannerData'></banner>
 <nav class="navbar searchFilterContainerWrapper" id="cheader1" [ngClass]="{'fixed':navIsFixed}">
    <div class="searchFilterContainer">
-        <search (searchCategory)="showOutput($event)"
-                (getSelectedFilter)="getSelectedFilter($event)"></search>
+        <search (searchCategory)="getCards($event)"
+                (getSelectedFilter)="getSelectedFilter($event)"
+                ></search>
         <filter [selectedFilter]="selectedFilter"
-                (filterCategory)="showOutput($event)"
-                (getInitialCards) = "getInitialCards($event)"></filter>
+                (getSelectedFilterOption)="getSelectedFilterOption($event)">
+        </filter>
    </div>
 </nav>
 <card-list [cards]='initialCardData'></card-list>
