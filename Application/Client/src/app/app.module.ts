@@ -27,6 +27,10 @@ import {mapData} from  './mapData/mapData';
 
 import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
+import { LoaderComponent } from './_common/loader/components/loader.component';
+
+
+
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap/modal';
@@ -59,6 +63,7 @@ type StoreType = {
     SearchComponent,
     FilterComponent,
     LoginComponent,
+    LoaderComponent,
     ProductInfoComponent,
     CreateCardComponent
   ],

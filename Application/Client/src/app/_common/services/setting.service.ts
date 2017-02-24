@@ -43,6 +43,10 @@ export class SettingsService{
     return filterListingJson.details;
   }
 
+  getPath(path){
+    return settingsJson.classifieds.services[path];
+  }
+
 }
 
 

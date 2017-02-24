@@ -20,23 +20,24 @@ export class SearchComponent {
     @Output() searchCategory: EventEmitter<any> = new EventEmitter<any>();
     @Output() getSelectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
-    private searchUrl = 'http://in-it0289/SearchAPI/api/Search/GetFullTextSearch?searchText=';
-    private searchAutoSuggestionUrl = "http://in-it0289/MasterDataAPI/api/category/GetCategorySuggetion?categoryText=";
+    private searchUrl = '';
+    private searchAutoSuggestionUrl = "";
     private searchCategoryByStringUrl:any;
     private searchCategorySuggestionUrl:string;
     private delayTimer  : any = null;
     private searchResult;
-    private values:any = '';
     private searchCategoryByStr: string = '';
     private enabledDropdown:boolean = false; 
+    private isLoading : boolean = false;
 
     constructor( public appState: AppState,
                  private _settingsService: SettingsService,
-                 private _cservice:CService) {}
+                 private _cservice:CService) {
+                     this.searchUrl = _settingsService.getPath('searchUrl');
+                     this.searchAutoSuggestionUrl =_settingsService.getPath('searchAutoSuggestionUrl');
+                 }
 
     onKeyUp( event: any, text: string ) {
-        this.values += text;
-        text = text.charAt(0).toUpperCase() + text.slice(1);
         if (text.length >= 3) {
             this.searchCategoryByStringUrl = this.searchAutoSuggestionUrl + text;
             //Delay of some time to slow down the results
@@ -49,8 +50,10 @@ export class SearchComponent {
     }
 
     fetchSearchedData( text: string ) {
+        this.isLoading = true;  ;
         this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
             .subscribe((res: Response) => {
+                this.isLoading = false;
                 if (res && res[ 'length' ] > 0) {
                     this.searchResult = res;
                     this.enabledDropdown = true;
@@ -59,7 +62,8 @@ export class SearchComponent {
                 }
             },
             error => {
-                console.log("error in response");
+                console.log("error in response",error);
+                 this.isLoading = false;
             });
     }
   
@@ -68,10 +72,11 @@ export class SearchComponent {
             this.searchCategoryByStringUrl = this.searchUrl + str;
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
                 .subscribe((res: Response) => {
-                    this.searchCategory.emit(res);
+                    let obj = { 'categoryName': str, 'result': res };
+                    this.searchCategory.emit(obj.categoryName);
                 },
                 error => {
-                    console.log("error in response");
+                    console.log("error in response",error);
                 });
         }
     }
@@ -81,5 +86,9 @@ export class SearchComponent {
         this.enabledDropdown = false;
         this.searchCategoryByString(selectedOpt);
         this.getSelectedFilter.emit(selectedOpt);
+    }
+
+    setFilter(filterData) {
+        this.searchCategoryByStr = filterData;
     }
 }
