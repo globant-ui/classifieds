@@ -23,7 +23,6 @@ export class CardListComponent{
         console.log('all = ',this.cards);
     }
    showProductInfo(id){
-      console.log("--------------------------------",this.cards);
      this.showProductInfoPage = true;
      this._router.navigate(['productInfo',id]);
   }
