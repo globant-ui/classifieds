@@ -56,10 +56,8 @@ namespace Classifieds.SearchAPI.Tests
                         ListingType = "ListingType",
                         ListingCategory = "ListingCategory",
                         SubCategory = "SubCategory",
-                        Address = "Address",
-                        ContactNo = "ContactNo",
-                        ContactName = "Contact Name",
-                        Configuration = "Configuration"
+                        Address = "Address"
+                        
                     }
                 });
 

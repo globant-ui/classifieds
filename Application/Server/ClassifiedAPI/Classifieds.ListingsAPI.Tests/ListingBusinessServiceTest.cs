@@ -43,9 +43,6 @@ namespace Classifieds.ListingsAPI.Tests
                 SubCategory = "Apartments",
                 Title = "flat on rent",
                 Address = "pune",
-                ContactNo = "12345",
-                ContactName = "AAA AAA",
-                Configuration = "NA",
                 Details = "for rupees 49,00,000",
                 Brand = "Kumar",
                 Price = 45000,
@@ -57,13 +54,11 @@ namespace Classifieds.ListingsAPI.Tests
                 Furnished = "yes",
                 FuelType = "test",
                 KmDriven = 5000,
-                YearofMake = 123,
                 Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
                 TypeofUse = "test",
                 Type = "2 BHK",
                 IsPublished = true,
                 Negotiable = true,
-                Model = "NA",
                 Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
             };
             return listObject;

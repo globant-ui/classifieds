@@ -179,18 +179,13 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.Furnished, listObj.Furnished)
                     .Set(p => p.FuelType, listObj.FuelType)
                     .Set(p => p.KmDriven, listObj.KmDriven)
-                    .Set(p => p.YearofMake, listObj.YearofMake)
                     .Set(p => p.Dimensions, listObj.Dimensions)
                     .Set(p => p.TypeofUse, listObj.TypeofUse)
                     .Set(p => p.Photos, listObj.Photos)
                     .Set(p => p.Address, listObj.Address)
-                    .Set(p => p.ContactName, listObj.ContactName)
-                    .Set(p => p.ContactNo, listObj.ContactNo)
                     .Set(p => p.Details, listObj.Details)
-                    .Set(p => p.Configuration, listObj.Configuration)
                     .Set(p => p.SubCategory, listObj.SubCategory)
                     .Set(p => p.Type, listObj.Type)
-                    .Set(p => p.Model, listObj.Model)
                     .Set(p => p.Negotiable, listObj.Negotiable)
                     .Set(p => p.IsPublished, listObj.IsPublished);
 

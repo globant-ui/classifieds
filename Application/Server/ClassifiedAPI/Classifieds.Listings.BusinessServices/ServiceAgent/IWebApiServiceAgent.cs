@@ -6,5 +6,6 @@ namespace Classifieds.Listings.BusinessServices.ServiceAgent
     {
         string[] GetWishListListingIds(string accessToken, string userEmail);
         Tags GetRecommendedTag(string accessToken, string userEmail);
+        UserInfo GetUserDetails(string accessToken, string userEmail, string submittedBy);
     }
 }
