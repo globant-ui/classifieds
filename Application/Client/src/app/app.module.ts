@@ -23,6 +23,7 @@ import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
+import { ProfileComponent } from './createProfile/component/createProfile.component';
 import {mapData} from  './mapData/mapData';
 
 import { FilterComponent } from './filter/components/filter.component';
@@ -60,7 +61,8 @@ type StoreType = {
     FilterComponent,
     LoginComponent,
     ProductInfoComponent,
-    CreateCardComponent
+    CreateCardComponent,
+    ProfileComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
