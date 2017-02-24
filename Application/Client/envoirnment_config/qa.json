@@ -1,0 +1,6 @@
+{
+    "services":{
+      "main":" http://demo0440937.mockable.io/qc"
+    },
+    "environment":"qa"
+}

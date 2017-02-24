@@ -1,0 +1,30 @@
+{
+  "status": "success",
+  "message": null,
+  "details":
+  [
+    {
+      "listName":"Top ten"
+    },
+    {
+      "listName":"Electronics"
+    },
+    {
+      "listName":"Housing"
+    },
+    {
+      "listName":"Automotive"
+    },
+    {
+      "listName":"Furniture"
+    },
+    {
+      "listName":"Other"
+    }
+  ]
+}
+
+
+
+
+

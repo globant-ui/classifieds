@@ -1,0 +1,208 @@
+@import "../../../_common/styles/sass/style";
+
+nav.navbar-inverse{
+  background-color: $darkblue-color;
+  border:none;
+  border-radius: 0;
+  padding: 25px 42px;
+  .navbar-header{
+    .navbar-brand{
+      height:auto;
+      padding: 0;
+    }
+    .search-btn{
+      display: none;
+    }
+  }
+  .collapse{
+    button.closeButton{
+      display:none;
+    }
+    div.userInfo{
+      display:none;
+    }
+    ul.nav{
+      li{
+        color:$white-color;
+        button.green-button{
+          background-color: $green-color;
+          color: $darkblue-color;
+          border-radius: 10px;
+          padding: 5px 15px 5px 10px;
+          font-family: 'Open Sans';
+          font-weight: bold;
+          font-size: 0.714em;
+          margin-right: 20px;
+          border:none;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          span{
+            vertical-align: middle;
+          }
+        }
+        a{
+            padding: 0;
+            .textwishlist{
+              float: right;
+            }
+            .textwishlist, .textProfile{
+              text-transform: uppercase;
+              color: $white-color;
+              @extend %type-open-sans-12-4-text;
+              float: right;
+            }
+            .wishlist{
+              padding:5px 12px 0 0;
+              color: $red-color;
+              float: right;
+            }
+          }
+          .profile-btn{
+            margin:5px 0 0 30px;
+            background: none;
+            border: none;
+            color: $white-color;
+            padding-right: 12px;
+          }
+          .sign-out-btn{
+            margin-left: 20px;
+          }
+      }
+    }
+    .list-group-container{
+      display: none;
+    }
+  }
+}
+.fixed-navbar{
+  .navbar-inverse{
+    @extend .fixed;
+    top: 0;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 460px){
+  nav.navbar-inverse{
+    .container-fluid{
+      position: relative;
+    }
+    .navbar-header{
+      button.navbar-toggle{
+        margin: 0;
+        float:left;
+        border: none;
+      }
+      button.navbar-toggle:hover{
+        background-color: transparent;
+      }
+      a.navbar-brand{
+        margin:8px 0 0 13%;
+        width:50%;
+        img{
+          width:100%;
+        }
+      }
+      .search-btn{
+        display: block;
+        background: none;
+        border: none;
+        color:$white-color;
+        margin: 10px 0 0 0;
+      }
+    }
+    .hamburgerContainer{
+      border: none;
+      border-right: 1px initial $mobile-hamburger-border-color;
+      -webkit-box-shadow: 10px 4px 29px -8px rgba(168,168,168,0.68);
+      -moz-box-shadow: 10px 4px 29px -8px rgba(168,168,168,0.68);
+      box-shadow: 10px 4px 29px -8px rgba(168,168,168,0.68);
+      background-color: $white-color;
+      /*color: $darkblue-color;*/
+      position: absolute;
+      width: 112%;
+      top: 0;
+      left: -27px;
+      padding: 15px;
+      button.closeButton{
+        display: block;
+        border: none;
+        background: transparent;
+      }
+      div.userInfo{
+        border-bottom: 4px solid $mobile-hamburger-devider;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        display: block;
+        margin-left: -15px;
+        padding: 15px;
+        div.imageContainer{
+          border: 4px solid $mobile-hamburger-devider;
+          border-radius: 50%;
+          width: 30%;
+          text-align: center;
+          overflow: hidden;
+          display: inline-block;
+        }
+        div.dataContainer{
+          width: 60%;
+          display: inline-block;
+          height: 90px;
+          vertical-align: top;
+          padding: 20px;
+        }
+      }
+      ul.nav{
+        display: inline-block;
+        padding-left: 15px;
+        border-bottom: 4px solid $mobile-hamburger-devider;
+        width: 100%;
+        li{
+          padding-bottom: 20px;
+          .menu-btn{
+            display: none;
+          }
+          button.green-button{
+            margin-top: 10px;
+          }
+          a{
+            .textwishlist, .wishlist{
+              margin-top: 10px;
+              float: none;
+            }
+            .wishlist{
+              float: left;
+              margin-top:0;
+            }
+            .textwishlist, .textProfile{
+              color: $darkblue-color;
+            }
+            .profile-btn{
+              margin:0 12px 0 0;
+              color: $darkblue-color;
+            }
+          }
+        }
+      }
+      .list-group-container{
+        display: block;
+        margin-left: -15px;
+        .listing-group{
+          margin-bottom: 0;
+          color: $primary-button-text-color;
+          .panel-default{
+            border:none;
+            .panel-heading{
+              background-color: transparent;
+              border-bottom: 4px solid $mobile-hamburger-devider;
+              h4.panel-title{
+                a{
+                  display: block;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

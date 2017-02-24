@@ -1,0 +1,63 @@
+@import "../../styles/sass/style";
+
+.navbar{
+  .search-button{
+    font-family: 'Open Sans';
+    float:left;
+    color: $primary-text-color;
+    position: relative;
+    .popup-loader {
+      background: url('../../../../assets/img/loading.gif') center center no-repeat;
+        height: 25px;
+        width: auto;
+        min-width: 25px;
+        position: absolute;
+        top: 5px;
+        right: 35px;
+    }
+    input{
+      border:none;
+      border-radius: 20px;
+      background: $white-color;
+      @include placeholder-color($primary-text-color);
+      /*text-transform: capitalize;*/
+      padding:18px;
+      vertical-align: top;
+      height: 24px;
+    }
+    button.icon-search-icon{
+      border: none;
+      background: $green-color;
+      border-radius: 17px;
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      padding: 9px;
+      color: $white-color;
+    }
+    .autoSuggestion{
+      position: absolute;
+      background-color: $white-color;
+      border-bottom-right-radius: 15px;
+      border-bottom-left-radius: 15px;
+      margin-top: -15px;
+      z-index: -1;
+      width: 100%;
+      ul{
+        margin: 0;
+        padding: 0;
+        li{
+          padding: 15px;
+          list-style-type: none;
+          border-bottom: 1px solid $light-grey-button-border;
+        }
+        li:first-child{
+          padding-top: 30px;
+        }
+        li:last-child{
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+ "services": {
+  "main": " http://demo0440937.mockable.io/dev"
+ },
+  "auth": {
+    "active": false,
+    "type": "oaut2",
+    "google_login": "https://accounts.google.com/o/oauth2/auth",
+    "google_tokeninfo": "https://www.googleapis.com/oauth2/v3/tokeninfo",
+    "google_userinfo": "https://www.googleapis.com/oauth2/v2/userinfo",
+    "redirect_uri": "http://localhost:3000",
+    "client_id": "707223437243-mjonk287edkln9gd3e496hv227vqj736.apps.googleusercontent.com",
+    "scope": "email profile https://www.googleapis.com/auth/admin.directory.user.readonly https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/plus.me",
+    "access_type": "offline",
+    "response_type": "code",
+    "prompt": "select_account",
+    "expires": 480,
+    "getToken":"https://www.googleapis.com/oauth2/v4/token?grant_type=authorization_code"
+  },
+  "classifieds":{
+    "services":{
+      "searchUrl" :"http://in-it0289/SearchAPI/api/Search/GetFullTextSearch?searchText=",
+      "searchAutoSuggestionUrl" : "http://in-it0289/MasterDataAPI/api/category/GetCategorySuggetion?categoryText=",
+      "filterCategoryUrl" :"http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category="
+    } 
+  },
+ "environment": "dev"
+}
