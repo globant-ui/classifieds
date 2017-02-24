@@ -20,8 +20,8 @@ export class SearchComponent {
     @Output() searchCategory: EventEmitter<any> = new EventEmitter<any>();
     @Output() getSelectedFilter: EventEmitter<any> = new EventEmitter<any>();
 
-    private searchUrl = 'http://in-it0289/SearchAPI/api/Search/GetFullTextSearch?searchText=';
-    private searchAutoSuggestionUrl = "http://in-it0289/MasterDataAPI/api/category/GetCategorySuggetion?categoryText=";
+    private searchUrl = '';
+    private searchAutoSuggestionUrl = "";
     private searchCategoryByStringUrl:any;
     private searchCategorySuggestionUrl:string;
     private delayTimer  : any = null;
@@ -32,7 +32,10 @@ export class SearchComponent {
 
     constructor( public appState: AppState,
                  private _settingsService: SettingsService,
-                 private _cservice:CService) {}
+                 private _cservice:CService) {
+                     this.searchUrl = _settingsService.getPath('searchUrl');
+                     this.searchAutoSuggestionUrl =_settingsService.getPath('searchAutoSuggestionUrl');
+                 }
 
     onKeyUp( event: any, text: string ) {
         if (text.length >= 3) {

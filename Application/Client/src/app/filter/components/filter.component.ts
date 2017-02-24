@@ -19,7 +19,7 @@ let tpls = require('../tpls/filter.component.html').toString();
 export class FilterComponent {
 
   private filterData : any;
-  private filterCategoryUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=';
+  private filterCategoryUrl = "";
   private categoryUrl:any;
   public filterCategoryData:any;
   public isActive:boolean = false;
@@ -27,7 +27,12 @@ export class FilterComponent {
   @Input() selectedFilter;
   @Output() getSelectedFilterOption: EventEmitter<any> = new EventEmitter <any>();
 
-  constructor(public appState: AppState,private _settingsService: SettingsService,private _cservice:CService) {}
+  constructor(public appState: AppState,
+              private _settingsService: SettingsService,
+              private _cservice:CService) {
+
+                this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
+              }
 
   ngOnInit()
   {
