@@ -18,6 +18,15 @@ let tpls = require('../tpls/product-info.html').toString();
 
 export class ProductInfoComponent {
   localState = { value: '' };
+
+  @Input() showProductInfoPage;
+
+  private productId : any;
+  private productInfoData: any;
+  private productDetails: any;
+  //private productData: any;
+  private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
+
   constructor(private _route: ActivatedRoute,
               public appState: AppState,
               private _settingsService: SettingsService,
@@ -26,26 +35,25 @@ export class ProductInfoComponent {
               public  _cservice:CService) {
 
     this._route.params.subscribe(params => {
-      this.productId = +params['id'];
+      this.productId = params['id'];
+      console.log(this.productId);
     });
   }
 
-  @Input() showProductInfoPage;
-
-  private productId : number;
-  private productInfoData: any;
-  private ProductInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
-
   ngOnInit() {
-    console.log("product info");
-
   }
 
-  getInitialCards (){
-    this._cservice.observableGetHttp(this.ProductInfoUrl +this.productId ,null,false)
+  ngAfterViewInit(){
+    this.getProductInfo();
+  }
+
+  getProductInfo (){
+    this.productDetails = this.productInfoUrl+this.productId;
+    this._cservice.observableGetHttp(this.productDetails ,null,false)
       .subscribe((res:Response)=> {
           this.productInfoData = res;
-            console.log('-----------------',this.productInfoData);
+          //this.productInfoData =this.productData;
+          console.log(this.productInfoData);
         },
         error => {
           console.log("error in response");

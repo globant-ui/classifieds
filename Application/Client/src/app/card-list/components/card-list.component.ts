@@ -1,6 +1,7 @@
 import { Component,Input,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import { SettingsService } from '../../_common/services/setting.service';
+import { LoaderComponent } from '../../_common/loader/components/loader.component';
 import {Router} from '@angular/router';
 
 let styles = require('../styles/card-list.component.scss').toString();
@@ -19,11 +20,17 @@ export class CardListComponent{
 
     @Input() cards;
 
-    ngOnInit(){
+    private isLoading:boolean = false;
+    
+    ngOnInit() {
         console.log('all = ',this.cards);
     }
+        
+    loading( flag ) {
+        this.isLoading = flag;
+    }
+
    showProductInfo(id){
-      console.log("--------------------------------",this.cards);
      this.showProductInfoPage = true;
      this._router.navigate(['productInfo',id]);
   }

@@ -1,9 +1,11 @@
-import { Component,ViewChildren,OnInit, HostListener, Inject, ElementRef } from '@angular/core';
+import { Component,ViewChildren,OnInit, HostListener, Inject, ElementRef,ViewChild ,Input} from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../_common/services/http.service';
+import { SearchComponent } from '../../_common/search/components/search.component';
+import { CardListComponent } from '../../card-list/components/card-list.component';
 import 'rxjs/Rx';
 
 
@@ -23,6 +25,7 @@ export class HomeComponent implements OnInit {
   private  data : any;
   private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
   private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
+  private cardsByCategoryUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=';
   private selectedFilter: string = '';
   public initialCardData: any;
   public bannerData: any;
@@ -32,7 +35,11 @@ export class HomeComponent implements OnInit {
   private affixEl:any;
   private affixElOffsetTop: number;
 
-  // @ViewChildren("cheader") CHeader;
+
+  //@ViewChildren("cheader") CHeader;
+  @ViewChild(SearchComponent) searchComponent;
+  @ViewChild( CardListComponent) cardListComponent;
+
 
   constructor(
       public appState: AppState,
@@ -44,7 +51,6 @@ export class HomeComponent implements OnInit {
     this.baseUrl=this._settingsService.getBaseUrl();
     this.getInitialCards();
     this.getBannerListing();
-
     this.getAffixElOffsetTop();
   }
   getAffixElOffsetTop(){
@@ -52,10 +58,12 @@ export class HomeComponent implements OnInit {
     this.affixElOffsetTop = this.affixEl.offsetTop;
     //console.log('off = ',this.affixElOffsetTop);
   }
-  getInitialCards (){
+
+  getInitialCards () {
     this._cservice.observableGetHttp(this.cardUrl,null,false)
       .subscribe((res:Response)=> {
-          this.initialCardData = res;
+            this.searchComponent.setFilter( 'TOP TEN' );
+            this.initialCardData = res;
         },
         error => {
           console.log("error in response");
@@ -63,6 +71,34 @@ export class HomeComponent implements OnInit {
         ()=>{
           console.log("Finally");
         })
+  }
+
+  getSelectedFilterOption( selectedFilter ) {
+    this.getCards( selectedFilter );
+  }
+
+  getCards( categoryName ) {
+    this.cardListComponent.loading( true );
+    let url;
+    if( categoryName == 'Top ten') {
+      url = this.cardUrl;
+      this.searchComponent.setFilter( 'TOP TEN' );
+    } else {
+      url = this.cardsByCategoryUrl + categoryName;
+      this.searchComponent.setFilter( categoryName );
+    }
+
+    this._cservice.observableGetHttp(url, null, false)
+    .subscribe((res:Response)=> {
+          this.cardListComponent.loading( false );
+          this.initialCardData = res;
+      },
+      error => {
+        console.log("error in response");
+      },
+      ()=>{
+        console.log("Finally");
+      })
   }
 
    getBannerListing (){
@@ -78,9 +114,6 @@ export class HomeComponent implements OnInit {
          })
    }
 
-    showOutput(category){
-        this.initialCardData = category;
-    }
     getSelectedFilter(selectedOpt){
       this.selectedFilter = selectedOpt;
     }
