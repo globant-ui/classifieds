@@ -1,11 +1,7 @@
-﻿using Microsoft.Practices.Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using Classifieds.ListingsAPI.Resolver;
-using Classifieds.Listings.BusinessServices;
-using Classifieds.Listings.Repository;
+﻿using System.Web.Http;
+using Classifieds.IOC;
+using System.Web.Http.Cors;
+using System.Configuration;
 
 namespace Classifieds.ListingsAPI
 {
@@ -13,11 +9,13 @@ namespace Classifieds.ListingsAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            //CORS enabled globaly need to configure server url environment
+            var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["CorsUrl"], "*", "*");
+            cors.SupportsCredentials = true;
+            config.EnableCors(cors);
+
             // Web API configuration and services
-            var container = new UnityContainer();
-            container.RegisterType<IListingService, ListingService>(new HierarchicalLifetimeManager());
-            container.RegisterType<IListingRepository, ListingRepository>(new HierarchicalLifetimeManager());
-            config.DependencyResolver = new UnityResolver(container);
+            UnityConfig.RegisterComponents(config);
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -26,6 +24,6 @@ namespace Classifieds.ListingsAPI
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-        }
+        }   
     }
 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using Microsoft.Practices.Unity;
-using Classifieds.Search.BusinessServices;
-using Classifieds.Search.Repository;
-using Classifieds.SearchAPI.Resolver;
+﻿using System.Web.Http;
+using Classifieds.IOC;
+using System.Web.Http.Cors;
+using System.Configuration;
 
 namespace Classifieds.SearchAPI
 {
@@ -13,17 +9,18 @@ namespace Classifieds.SearchAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            //CORS enabled globaly need to configure server url environment
+            var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["CorsUrl"], "*", "*");
+            cors.SupportsCredentials = true;
+            config.EnableCors(cors);
             // Web API configuration and services
-            var container = new UnityContainer();
-            container.RegisterType<ISearchService, SearchService>(new HierarchicalLifetimeManager());
-            container.RegisterType<ISearchRepository, SearchRepository>(new HierarchicalLifetimeManager());
-            config.DependencyResolver = new UnityResolver(container);
-
+            UnityConfig.RegisterComponents(config);
+           
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "Default",
+                name: "Search",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );

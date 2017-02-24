@@ -1,45 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Classifieds.Search.BusinessEntities;
+using Classifieds.Listings.BusinessEntities;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using MongoDB.Driver.Linq;
 
 namespace Classifieds.Search.Repository
 {
-    public class SearchRepository : ISearchRepository
+    public class SearchRepository<TEntity> : DBRepository, ISearchRepository<TEntity> where TEntity:Listing
     {
-        private const string CONNECTION_STRING = "mongodb://localhost";
-
-        private const string DATABASE = "classifiedDB";
-        private const string COLLECTION_Classifieds = "classified";
-
-        private MongoClient client = null;
-        private MongoServer server = null;
-        private MongoDatabase db = null;
-        private MongoCollection<Classified> classifieds = null;
-
-        public SearchRepository()
+        MongoCollection<TEntity> Classifieds
         {
-            client = new MongoClient(CONNECTION_STRING);
-            server = client.GetServer();
-            db = server.GetDatabase(DATABASE);
-            classifieds = db.GetCollection<Classified>(COLLECTION_Classifieds);
+            get
+            {
+                return Database.GetCollection<TEntity>(typeof(TEntity).Name);
+            }
         }
 
-        public List<Classified> FullTextSearch(string searchText)
+        /// <summary>
+        /// Performs search operation based on search text
+        /// </summary>
+        /// <param name="searchText">search query</param>
+        /// <param name="startIndex">Start Page no</param>
+        /// <param name="pageCount">No of results included</param>
+        /// <param name="isLast">Whether last page</param>
+        /// <returns>Collection of listings</returns>
+        public List<TEntity> FullTextSearch(string searchText, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                List<Classified> result = new List<Classified>();
-                result = this.classifieds.Find(Query.Text(searchText)).ToList();
-                return result;
+                int skip;
+                if (isLast)
+                {
+                    int count = Convert.ToInt32(Classifieds.Find(Query.Text(searchText)).Count());
+                    skip = GetLastPageSkipValue(pageCount, count);
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+                List<TEntity> searchResult = Classifieds.Find(Query.Text(searchText))
+                                                        .Select(p => p)
+                                                        .Skip(skip)
+                                                        .Take(pageCount)
+                                                        .ToList();
+                return searchResult;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        #region private methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageCount"></param>
+        /// <param name="rowCount"></param>
+        /// <returns></returns>
+        private int GetLastPageSkipValue(int pageCount, int rowCount)
+        {
+            int temp;
+            if (rowCount % pageCount == 0)
+            {
+                temp = rowCount / pageCount - 1;
+            }
+            else
+            {
+                temp = rowCount / pageCount;
+            }
+            return temp * pageCount;
+        }
+        #endregion  
     }
 }

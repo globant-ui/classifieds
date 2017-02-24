@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBRepository.cs" />
+    <Compile Include="IDBRepository.cs" />
     <Compile Include="IListingRepository.cs" />
     <Compile Include="ListingRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

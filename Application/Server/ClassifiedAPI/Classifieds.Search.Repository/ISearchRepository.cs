@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Classifieds.Search.BusinessEntities;
+﻿using System.Collections.Generic;
+using Classifieds.Listings.BusinessEntities;
 
 namespace Classifieds.Search.Repository
 {
-    public interface ISearchRepository
+    public interface ISearchRepository<TEntity> where TEntity : Listing
     {
-        List<Classified> FullTextSearch(string searchText);
+        List<TEntity> FullTextSearch(string searchText, int startIndex, int pageCount, bool isLast);        
     }
 }

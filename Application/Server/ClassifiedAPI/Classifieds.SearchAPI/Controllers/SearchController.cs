@@ -3,9 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using Classifieds.Search.BusinessEntities;
+using System.Net.Http;
+using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
-#endregion  
+using Classifieds.Common;
+using Classifieds.Common.Repositories;
+
+#endregion
 
 namespace Classifieds.SearchAPI.Controllers
 {
@@ -21,15 +25,24 @@ namespace Classifieds.SearchAPI.Controllers
     public class SearchController : ApiController
     {
         #region Private Variable
-        private ISearchService _searchService;
-        #endregion 
+        private readonly ISearchService _searchService;
+        private readonly ILogger _logger;
+        private readonly ICommonRepository _commonRepository;
+        private string _userEmail = string.Empty;
+        #endregion
 
         #region Constructor
         /// <summary>
-        /// The class constructor. </summary>
-        public SearchController(ISearchService searchService)
+        /// 
+        /// </summary>
+        /// <param name="searchService"></param>
+        /// <param name="logger"></param>
+        /// <param name="commonRepository"></param>
+        public SearchController(ISearchService searchService,ILogger logger, ICommonRepository commonRepository)
         {
             _searchService = searchService;
+            _logger = logger;
+            _commonRepository = commonRepository;
         }
         #endregion
 
@@ -37,20 +50,45 @@ namespace Classifieds.SearchAPI.Controllers
         /// <summary>
         /// GetFulltext search on title, description and category
         /// </summary>
-        /// <param name="searchText"></param>
-        /// <returns>SearchResult</returns>
-        public List<Classified> GetFullTextSearch(string searchText)
+        /// <param name="searchText">Search text</param>
+        /// <param name="startIndex">Start Page no</param>
+        /// <param name="pageCount">No of results included</param>
+        /// <param name="isLast">Whether last page</param>
+        /// <returns>Collection of listings</returns>
+        public List<Listing> GetFullTextSearch(string searchText, int startIndex = 1, int pageCount = 10, bool isLast = false)
         {
             try
             {
-                return _searchService.FullTextSearch(searchText).ToList();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                if (startIndex < 0 || pageCount <= 0)
+                {
+                    string param = startIndex < 0 ? "Start Index" : "Page Count";
+                    throw new Exception(param + "passed cannot be negative!");
+                }
+                return _searchService.FullTextSearch(searchText, startIndex, pageCount, isLast).ToList();
             }
             catch (Exception ex)
             {
-                //log exception
+                _logger.Log(ex, _userEmail);
                 throw ex;
             }
 
+        }
+        #endregion
+
+        #region private methods
+        private string GetUserEmail()
+        {
+            IEnumerable<string> headerValues;
+            HttpRequestMessage message = Request ?? new HttpRequestMessage();
+            message.Headers.TryGetValues("UserEmail", out headerValues);
+            string headerVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
+            return headerVal;
         }
         #endregion
     }

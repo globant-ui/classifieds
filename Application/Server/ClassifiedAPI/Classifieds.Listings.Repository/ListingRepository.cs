@@ -1,33 +1,97 @@
 ﻿using Classifieds.Listings.BusinessEntities;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using MongoDB.Bson;
 
 namespace Classifieds.Listings.Repository
 {
-    public class ListingRepository : DBRepository,IListingRepository
+    public class ListingRepository<TEntity> : DBRepository, IListingRepository<TEntity> where TEntity : Listing
     {
-        //private const string COLLECTION_Classifieds = "Listing";
-        private string COLLECTION_Classifieds = ConfigurationManager.AppSettings["ListingCollection"];
-        MongoCollection<Listing> classifieds
+        #region Private Variables
+        private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["ListingCollection"];
+        private readonly IDBRepository _dbRepository;
+        private enum Status
         {
-            get { return Database.GetCollection<Listing>(COLLECTION_Classifieds); }
+            Active,
+            Closed,
+            Expired
+        };
+        private MongoCollection<TEntity> Classifieds
+        {
+            get { return _dbRepository.GetCollection<TEntity>(_collectionClassifieds); }
         }
-        public List<Listing> GetListingById(string id)
+        #endregion
+
+        #region Constructor
+        public ListingRepository(IDBRepository dbRepository)
+        {
+            _dbRepository = dbRepository;
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Returns a listing based on listing id
+        /// </summary>
+        /// <param name="id">listing id</param>
+        /// <returns>listing</returns>
+        public TEntity GetListingById(string id)
         {
             try
             {
-                var partialRresult = this.classifieds.FindAll() 
-                                        .Where(p => p._id == id)
-                                        .ToList();
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var partialRresult = Classifieds
+                    .Find(query).SingleOrDefault(p => p.Status == Status.Active.ToString());
 
-                List<Listing> result = partialRresult.Count > 0 ? partialRresult.ToList() : null;
 
-                return result;
+                //TEntity result = partialRresult; // partialRresult.Count() > 0 ? partialRresult : null;
+
+                return partialRresult;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Returns a collection of listings based on sub category
+        /// </summary>
+        /// <param name="subCategory">listing Sub Category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
+        /// <returns>Collection of listings</returns>
+        public List<TEntity> GetListingsBySubCategory(string subCategory, int startIndex, int pageCount, bool isLast)
+        {
+            try
+            {
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds.FindAll()
+                   .Where(p => (p.SubCategory == subCategory) && (p.Status == Status.Active.ToString()))
+                    .Count();
+                    skip = GetLastPageSkipValue(pageCount, count);
+
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+
+                List<TEntity> listings = Classifieds.FindAll()
+                                            .Where(p => (p.SubCategory == subCategory) && (p.Status == Status.Active.ToString()))
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
+                                            .ToList();
+                listings = listings.Count > 0 ? listings.ToList() : null;
+                return listings;
             }
             catch (Exception ex)
             {
@@ -39,36 +103,50 @@ namespace Classifieds.Listings.Repository
         /// Returns a collection of listings based on category
         /// </summary>
         /// <param name="category">listing category</param>
+        /// <param name="startIndex">start index for page</param>
+        /// <param name="pageCount">No of listings to include in result</param>
+        /// <param name="isLast">Whether last page</param>
         /// <returns>Collection of listings</returns>
-        public List<Listing> GetListingsByCategory(string category)
+        public List<TEntity> GetListingsByCategory(string category, int startIndex, int pageCount, bool isLast)
         {
             try
             {
-                List<Listing> result = this.classifieds.FindAll()
-                                            .Where(p => p.ListingCategory == category)
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds.FindAll()
+                    .Where(p => (p.ListingCategory == category) && (p.Status == Status.Active.ToString()))
+                    .Count();
+                    skip = GetLastPageSkipValue(pageCount, count);
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+                List<TEntity> listings = Classifieds.FindAll()
+                                            .Where(p => (p.ListingCategory == category) && (p.Status == Status.Active.ToString()))
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
                                             .ToList();
-                return result;
+                return listings;
             }
             catch (MongoException ex)
             {
-                return null;
+                throw ex;
             }
         }
 
         /// <summary>
         /// Insert a new listing object into the database
         /// </summary>
-        /// <param name="object">listing object</param>
+        /// <param name="listing">listing object</param>
         /// <returns>return newly added listing object</returns>
-        public Listing Add(Listing listing)
+        public TEntity Add(TEntity listing)
         {
             try
             {
-                var result = this.classifieds.Save(listing);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-                    //Trace.TraceError(result.LastErrorMessage);    
-                }
+                Classifieds.Save(listing);
                 return listing;
             }
             catch (Exception ex)
@@ -81,44 +159,37 @@ namespace Classifieds.Listings.Repository
         /// Update existing listing object based on id from the database
         /// </summary>
         /// <param name="id">Listing Id</param>
-        /// <param name="object">listing object </param>
+        /// <param name="listObj">listing object </param>
         /// <returns>return updated listing object</returns>
-        public Listing Update(string id, Listing listObj)
+        public TEntity Update(string id, TEntity listObj)
         {
             try
             {
-                var query = Query<Listing>.EQ(p => p._id, id);
-                var update = Update<Listing>.Set(p => p.Title, listObj.Title)
-                                             .Set(p => p.ListingType, listObj.ListingType)
-                                             .Set(p => p.ListingCategory, listObj.ListingCategory)
-                                             .Set(p => p.Brand, listObj.Brand)
-                                             .Set(p => p.Price, listObj.Price)
-                                             .Set(p => p.YearOfPurchase, listObj.YearOfPurchase)
-                                             .Set(p => p.ExpiryDate, listObj.ExpiryDate)
-                                             .Set(p => p.Status, listObj.Status)
-                                             .Set(p => p.Submittedby, listObj.Submittedby)
-                                             .Set(p => p.SubmittedDate, listObj.SubmittedDate)
-                                             .Set(p => p.IdealFor, listObj.IdealFor)
-                                             .Set(p => p.Furnished, listObj.Furnished)
-                                             .Set(p => p.FuelType, listObj.FuelType)
-                                             .Set(p => p.KmDriven, listObj.KmDriven)
-                                             .Set(p => p.YearofMake, listObj.YearofMake)
-                                             .Set(p => p.Dimensions, listObj.Dimensions)
-                                             .Set(p => p.TypeofUse, listObj.TypeofUse)
-                                             .Set(p => p.Photos, listObj.Photos)
-                                             .Set(p => p.Address, listObj.Address)
-                                             .Set(p => p.ContactName, listObj.ContactName)
-                                             .Set(p => p.ContactNo, listObj.ContactNo)
-                                             .Set(p => p.Details, listObj.Details)
-                                             .Set(p => p.Configuration, listObj.Configuration);
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var update = Update<TEntity>.Set(p => p.Title, listObj.Title)
+                    .Set(p => p.ListingType, listObj.ListingType)
+                    .Set(p => p.ListingCategory, listObj.ListingCategory)
+                    .Set(p => p.Brand, listObj.Brand)
+                    .Set(p => p.Price, listObj.Price)
+                    .Set(p => p.YearOfPurchase, listObj.YearOfPurchase)
+                    .Set(p => p.Status, listObj.Status)
+                    .Set(p => p.SubmittedBy, listObj.SubmittedBy)
+                    .Set(p => p.SubmittedDate, listObj.SubmittedDate)
+                    .Set(p => p.IdealFor, listObj.IdealFor)
+                    .Set(p => p.Furnished, listObj.Furnished)
+                    .Set(p => p.FuelType, listObj.FuelType)
+                    .Set(p => p.KmDriven, listObj.KmDriven)
+                    .Set(p => p.Dimensions, listObj.Dimensions)
+                    .Set(p => p.TypeofUse, listObj.TypeofUse)
+                    .Set(p => p.Photos, listObj.Photos)
+                    .Set(p => p.Address, listObj.Address)
+                    .Set(p => p.Details, listObj.Details)
+                    .Set(p => p.SubCategory, listObj.SubCategory)
+                    .Set(p => p.Type, listObj.Type)
+                    .Set(p => p.Negotiable, listObj.Negotiable)
+                    .Set(p => p.IsPublished, listObj.IsPublished);
 
-
-                var result = this.classifieds.Update(query, update);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                {
-                    //Trace.TraceError(result.LastErrorMessage);
-                }
-
+                Classifieds.Update(query, update);
                 return listObj;
             }
             catch (Exception ex)
@@ -135,17 +206,216 @@ namespace Classifieds.Listings.Repository
         public void Delete(string id)
         {
             try
-            {                
-                var query = Query<Listing>.EQ(p => p._id, id.ToString());
-                var result = this.classifieds.Remove(query);
-                if (result.DocumentsAffected == 0 && result.HasLastErrorMessage)
-                { //Trace.TraceError(result.LastErrorMessage);
-                }
+            {
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                Classifieds.Remove(query);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Returns top listing object collection
+        /// </summary>
+        /// <param name="noOfRecords">integer value for retrieving number of records for listing collection</param>
+        /// <returns>Listing collection</returns>
+        public List<TEntity> GetTopListings(int noOfRecords)
+        {
+            try
+            {
+                SortByBuilder sortBuilder = new SortByBuilder();
+                sortBuilder.Descending("_id");
+                var result = Classifieds.FindAllAs<TEntity>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #region GetListingsByEmail
+        /// <summary>
+        /// Returns a listing based on listing Email
+        /// </summary>
+        /// <param name="email">User email</param>
+        /// <param name="startIndex">startIndex</param>
+        /// <param name="pageCount">pageCount</param>
+        /// <param name="isLast">isLast</param>
+        /// <returns>Listing Email</returns>
+        public List<TEntity> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast)
+        {
+            try
+            {
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds
+                   .FindAll()
+                    .Count(p => p.SubmittedBy == email);
+                    skip = GetLastPageSkipValue(pageCount, count);
+
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+
+                List<TEntity> listings = Classifieds.FindAll()
+                                            .Where(p => p.SubmittedBy == email)
+                                            .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
+                                            .ToList();
+                listings = listings.Count > 0 ? listings.ToList() : null;
+                return listings;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByEmail
+
+        #region GetListingsByCategoryAndSubCategory
+        /// <summary>
+        /// Returns a listing based on listing Email
+        /// </summary>
+        /// <param name="category">Listing category</param>
+        /// <param name="subCategory">Listing subCategory</param>
+        /// <param name="email">User email</param>
+        /// <param name="startIndex">startIndex</param>
+        /// <param name="pageCount">pageCount</param>
+        /// <param name="isLast">isLast</param>
+        /// <returns>Listing Email</returns>
+        public List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast)
+        {
+            try
+            {
+                int skip;
+                if (isLast)
+                {
+                    int count = Classifieds
+                   .FindAll()
+                    .Count(p => (p.ListingCategory == category) && (p.SubCategory == subCategory) && (p.SubmittedBy != email) && (p.Status == Status.Active.ToString()));
+                    skip = GetLastPageSkipValue(pageCount, count);
+
+                }
+                else
+                {
+                    skip = startIndex - 1;
+                }
+                List<TEntity> result = Classifieds.FindAll()
+                                            .Where(p => (p.ListingCategory == category) && (p.SubCategory == subCategory) && (p.SubmittedBy != email) && (p.Status == Status.Active.ToString()))
+                                             .Select(p => p)
+                                            .Skip(skip)
+                                            .Take(pageCount)
+                                            .ToList();
+                result = result.Count > 0 ? result.ToList() : null;
+                return result;
+            }
+            catch (MongoException ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion GetListingsByCategoryAndSubCategory
+
+        #region CLoseListing
+
+        /// <summary>
+        /// Update Close listing  based on id from the database
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listObj">listing object </param>
+        /// <returns>return updated listing object</returns>
+        public TEntity CLoseListing(string id, TEntity listObj)
+        {
+            try
+            {
+                var query = Query<TEntity>.EQ(p => p._id, id);
+                var update = Update<TEntity>.Set(p => p.Status, listObj.Status);
+                Classifieds.Update(query, update);
+                return listObj;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion CLoseListing
+
+        /// <summary>
+        /// Returns listing object collection for given listing ids
+        /// </summary>
+        /// <param name="listingIds">array of listing ids</param>
+        /// <returns>Listing collection</returns>
+        public List<TEntity> GetMyWishList(string[] listingIds)
+        {
+            try
+            {
+                if (listingIds != null)
+                {
+                    ObjectId[] newObjectId = listingIds.Select(item => ObjectId.Parse(item)).ToArray();
+                    var query = Query.In("_id", BsonArray.Create(newObjectId));
+                    SortByBuilder sortBuilder = new SortByBuilder();
+                    sortBuilder.Descending("_id");
+                    var listings = Classifieds.Find(query).SetSortOrder(sortBuilder);
+                    return listings.ToList();
+                }
+                return null; 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Returns recommended listing collection for given tag
+        /// </summary>
+        /// <param name="tag">array of listing ids</param>
+        /// <returns>Listing collection</returns>
+        public List<TEntity> GetRecommendedList(Tags tag)
+        {
+            try
+            {
+                var finalQuery = Query.And(Query.In("Address", BsonArray.Create(tag.Location)),Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
+                var listings = Classifieds.Find(finalQuery);
+                return listings.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageCount"></param>
+        /// <param name="rowCount"></param>
+        /// <returns></returns>
+        private int GetLastPageSkipValue(int pageCount, int rowCount)
+        {
+            int temp;
+            if (rowCount % pageCount == 0)
+            {
+                temp = rowCount / pageCount - 1;
+            }
+            else
+            {
+                temp = rowCount / pageCount;
+            }
+            return temp * pageCount;
+        }
+        #endregion
     }
 }
