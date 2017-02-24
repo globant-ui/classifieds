@@ -61,6 +61,10 @@
   @include only-text-type($font-size-22, $open-sans, $font-weight-600);
 }
 
+%type-open-sans-10-6-text {
+  @include only-text-type($font-size-10, $open-sans, $font-weight-600);
+}
+
 //bold
 %type-open-sans-18-7-text {
   @include only-text-type($font-size-18, $open-sans, $font-weight-700);

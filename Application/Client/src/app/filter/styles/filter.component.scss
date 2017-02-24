@@ -1,10 +1,12 @@
 @import "../../_common/styles/sass/style";
 
 .navbar{
+  margin-bottom: 0;
   .nav.navbar-nav.filter{
     font-family: 'Open Sans', sans-serif;
     float: right;
     li{
+      margin-right:7px;
       a{
         color: $primary-text-color;
         font: 0.857em 'Open Sans', sans-serif;
@@ -28,6 +30,9 @@
         margin-top:-40px;
         border-radius:15px;
       }
+    }
+    li:last-child{
+      margin-right:0;
     }
   }
 }
