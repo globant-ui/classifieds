@@ -91,6 +91,10 @@ namespace Classifieds.UserServiceAPI.Controllers
         {
             try
             {
+                if (userEmail == null)
+                {
+                    throw new ArgumentNullException();
+                }
                 _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
@@ -116,6 +120,10 @@ namespace Classifieds.UserServiceAPI.Controllers
         {
             try
             {
+                if (userProfile == null)
+                {
+                    throw new ArgumentNullException();
+                }
                 _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
@@ -141,6 +149,10 @@ namespace Classifieds.UserServiceAPI.Controllers
         {
             try
             {
+                if (userEmail == null)
+                {
+                    throw new ArgumentNullException();
+                }
                 _userEmail = GetUserEmailFromHeader();
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 if (!(authResult.Equals("200")))
