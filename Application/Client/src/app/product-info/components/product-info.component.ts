@@ -46,11 +46,8 @@ export class ProductInfoComponent {
   }
 
   ngOnInit() {
-    //this.type = this.productInfoData.Listing.SubCategory + '-' + this.productInfoData.Listing.ListingCategory;
-  }
+    this.type = "";
 
-  loadSimilarList(){
-    console.log("show similar listiing data");
   }
 
   transformDate(date) {
@@ -62,6 +59,12 @@ export class ProductInfoComponent {
 
   ngAfterViewInit(){
     this.getProductInfo();
+   // console.log(this.productInfoData.Listing);
+  //  this.type = this.productInfoData.Listing.SubCategory + '-' + this.productInfoData.Listing.ListingCategory;
+  }
+
+  showSimilarListing(){
+    console.log('inside similar listing');
   }
 
   getProductInfo (){
@@ -69,6 +72,8 @@ export class ProductInfoComponent {
     this._cservice.observableGetHttp(this.productDetails ,null,false)
       .subscribe((res:Response)=> {
           this.productInfoData = res;
+          console.log(this.productInfoData.Listing);
+          this.type = this.productInfoData.Listing.SubCategory + '-' + this.productInfoData.Listing.ListingCategory;
           console.log(this.productInfoData);
           this.transformDate(this.productInfoData.SubmittedDate);
         },
