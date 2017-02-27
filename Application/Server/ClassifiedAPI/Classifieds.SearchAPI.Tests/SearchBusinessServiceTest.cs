@@ -37,9 +37,6 @@ namespace Classifieds.SearchAPI.Tests
                 SubCategory = "test",
                 Title = "test",
                 Address = "AAA",
-                ContactNo = "1111",
-                ContactName = "AAA AAA",
-                Configuration = "NA",
                 Details = "for rupees 20,000,000,000",
                 Brand = "test",
                 Price = 123,
@@ -51,7 +48,6 @@ namespace Classifieds.SearchAPI.Tests
                 Furnished = "test",
                 FuelType = "test",
                 KmDriven = 123,
-                YearofMake = 123,
                 Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
                 TypeofUse = "test",
                 Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }

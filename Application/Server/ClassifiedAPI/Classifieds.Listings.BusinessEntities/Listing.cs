@@ -21,10 +21,6 @@ namespace Classifieds.Listings.BusinessEntities
         public string ListingCategory { get; set; }
         public string SubCategory { get; set; }
         public string Title { get; set; }
-        public string Address { get; set; }
-        public string ContactNo { get; set; }
-        public string ContactName { get; set; }
-        public string Configuration { get; set; }
         public string Details { get; set; }
         public string Brand { get; set; }
         public Int32 Price { get; set; }
@@ -37,11 +33,14 @@ namespace Classifieds.Listings.BusinessEntities
         public string Furnished { get; set; }
         public string FuelType { get; set; }
         public Int32 KmDriven { get; set; }
-        public Int32 YearofMake { get; set; }
         public Dimension Dimensions { get; set; }
         public string TypeofUse { get; set; }
         public string Type { get; set; }
-        public string Model { get; set; }
+        public string Rooms { get; set; }
+        public string Country { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string Address { get; set; }
         public bool Negotiable { get; set; }
         public bool IsPublished { get; set; }
         public string[] Photos { get; set; }
@@ -52,4 +51,15 @@ namespace Classifieds.Listings.BusinessEntities
         public string Width { get; set; }
         public string Height { get; set; }
     }
+
+    public class ProductInfo
+    {
+        public Listing Listing;
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Designation { get; set; }
+        public string Contact { get; set; }
+        public string Photo { get; set; }
+    }
+   
 }
