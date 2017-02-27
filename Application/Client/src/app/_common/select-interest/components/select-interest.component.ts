@@ -36,7 +36,7 @@ private enabledDropdown : boolean = true;
 private selectInterestPopUpFlag : boolean = true;
 private isValid : boolean = true;
 private disabledCheckbox : boolean = false;
- private session : Session;
+private session : Session;
 
   constructor(
                  private _settingsService: SettingsService,
@@ -45,7 +45,6 @@ private disabledCheckbox : boolean = false;
 
   ngOnInit(){
       this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
-      console.log('session obj interest = ',this.emailId);
     }
 
     ngAfterViewInit(){
@@ -77,19 +76,18 @@ private disabledCheckbox : boolean = false;
                 }
             },
             error => {
-                console.log("error in response");
+                console.log("error in response",error);
             });
     }
 
 //to select an item from dropdown
     selectInterest(val) {
         this.obj.SubCategory.push(val);
+        //to duplicate element allowed in tag logic
         this.obj.SubCategory = this.obj.SubCategory.reduce(function (a, b) {
             if (a.indexOf(b) < 0) a.push(b);
             return a;
         }, []);
-        console.log("---------", this.obj.SubCategory)
-        console.log("this.obj.SubCategory=====", this.obj.SubCategory)
         this.enabledDropdown = false;
         this.isValid = false;
         this.interestResult = [];
@@ -127,9 +125,9 @@ private disabledCheckbox : boolean = false;
                 }
                 
             }
-             console.log("----ff", this.obj);
         } 
-        //post call
+
+    //post call
     PostData(obj){
         if(obj.Location.length === 0){
             obj.Location.push("Pune","Banglore");
@@ -139,7 +137,7 @@ private disabledCheckbox : boolean = false;
                 console.log("postcall response",res)
             },
             error => {
-                console.log("error in response");
+                console.log("error in response",error);
             });
             $("#myModal").modal("hide");
    
