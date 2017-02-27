@@ -6,8 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Classifieds.UserService.BusinessEntities
 {
     public class ClassifiedsUser
-    {
-
+    {  
         /// <summary>
         /// Class Name: ClassifiedsUser.cs
         /// Purpose: Used as a property / DTO class to hold and pass property values.
@@ -24,11 +23,10 @@ namespace Classifieds.UserService.BusinessEntities
         public string Mobile { get; set; }
         public string Location { get; set; }
         public string[] WishList { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
         public Tags Tags;
         public Alert[] Alert;
     }
-
     public class Tags
     {
         public string[] SubCategory { get; set; }
