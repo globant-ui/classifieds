@@ -6,7 +6,7 @@ export class mapData{
   constructor() {
   }
 
-  mapCardData(selectedCategory,form) {
+  mapCardData(form) {
     console.log(form);
       let today = new Date();
       let locale = "en-us";
@@ -17,12 +17,15 @@ export class mapData{
          "Width": form.get('DimensionWidth').value,
          "Height": form.get('DimensionHeight').value
       }:{};
+
+      let address = (form.get('area') && form.get('city') && form.get('state') && form.get('country')) ? form.get('area').value + '-' + form.get('city').value + '-' + form.get('state').value + '-' + form.get('country').value : '';
+      debugger;
       let data = {   
         "ListingType": (form.get('cardType'))?form.get('cardType').value:'',
-        "ListingCategory": selectedCategory,
+        "ListingCategory": (form.get('category'))?form.get('category').value:'',
         "SubCategory": (form.get('subCategory'))?form.get('subCategory').value:'',
         "Title": (form.get('title'))?form.get('title').value:'',
-        "Address": "",
+        "Address": address,
         "ContactNo": "",
         "ContactName": "",
         "Configuration": "",

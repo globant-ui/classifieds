@@ -2,6 +2,8 @@ import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
 import {mapData} from  '../../mapData/mapData';
+import { ActivatedRoute } from '@angular/router';
+import {SettingsService} from '../../_common/services/setting.service';
 
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
@@ -13,7 +15,7 @@ let styles = require('../styles/createCard.scss').toString();
     selector:'create-card',
     template: tpls,
     styles: [styles],
-    providers: [apiPaths]
+    providers: [apiPaths,SettingsService]
 })
 export class CreateCardComponent implements OnInit {
     public myForm: FormGroup;
@@ -28,30 +30,54 @@ export class CreateCardComponent implements OnInit {
     public type: string = '';
     public filters;
     public textBoxes = [];
+    public productId: string;
+    public action: string = 'Create';
+    public productInfo = {};
     
-    constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData){
-        console.log("constructor createCard");
-        this.isActive = '';
-        this.isCompleted = [];
-        this.endPoints.push("SELECT","UPLOAD","ADD INFO","DONE");
-        this.type = 'Cars-Automotive';
-        this.filters = [];
-    }
-
-    ngOnInit() {
-        // the long way
+    constructor(private httpService:CService,
+                private apiPath:apiPaths,
+                private data:mapData,
+                private _route: ActivatedRoute,
+                private _settingsService: SettingsService,
+                ){
+        var that = this;
         this.myForm = new FormGroup({
             cardType: new FormControl('', [<any>Validators.required]),
             category: new FormControl('', [<any>Validators.required]),
             subCategory: new FormControl('', [<any>Validators.required]),
             //cardImages: new FormControl('', [<any>Validators.required]),
             title: new FormControl('', [<any>Validators.required]),
+            area: new FormControl('', [<any>Validators.required]),
+            city: new FormControl('', [<any>Validators.required]),
+            state: new FormControl('', [<any>Validators.required]),
+            country: new FormControl('', [<any>Validators.required]),
             shortDesc: new FormControl('', [<any>Validators.required]),
             negotiable: new FormControl('', [<any>Validators.required]),
             price: new FormControl('', [<any>Validators.required]),
             location: new FormControl('', [<any>Validators.required])
             
         });
+        this._route.params.subscribe(params => {
+            that.productId = params['id'];
+            if(that.productId !== undefined){
+                console.log("comes here anyway");
+                that.action = 'Edit';
+                that.getProductData(that.productId);
+            }
+            //console.log(that.productInfo);
+        });
+        this.isActive = '';
+        this.isCompleted = [];
+        this.endPoints.push("SELECT","UPLOAD","ADD INFO","DONE");
+        this.type = 'Cars-Automotive';
+        this.filters = [];
+
+        
+    }
+
+    ngOnInit() {
+        // the long way
+        
         this.getCategories();
     }
 
@@ -124,6 +150,25 @@ export class CreateCardComponent implements OnInit {
             that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
         });
 
+        if(this.action== 'Edit'){
+            this.filters.Filters.forEach(function(element){
+            console.log(element)
+            let key = element["FilterName"];
+            let value = that.productInfo["Listing"][element["FilterName"]];
+            console.log(that.productInfo["Listing"][element["FilterName"]])
+            //that.myForm.patchValue({ key : value});
+            //debugger;
+            });
+        
+            this.textBoxes.forEach(function(element){
+                console.log(element)
+                let key = element["FilterName"];
+                let value = that.productInfo["Listing"][key];
+                that.myForm.patchValue({ key : value});
+                //debugger;
+            });
+        }
+        
         console.log(this.filters)
         console.log(this.textBoxes);
         console.log(this.myForm);
@@ -168,12 +213,19 @@ export class CreateCardComponent implements OnInit {
        this.isActive = this.endPoints[3];
        
        console.log(this.isCompleted + '********************' + this.isActive);
-
-       let cardData = this.data.mapCardData(this.selectedCategory,this.myForm);
-       debugger;
+       this.myForm.patchValue({category:this.selectedCategory});
+            
+       let cardData = this.data.mapCardData(this.myForm);
+       
        if(action == 'create'){
            cardData.IsPublished = true;
        }
+       this.uploadedImages.forEach(function(value,key){
+           let imageDetails = {};
+           imageDetails["ImageName"] = "Photo"+key;
+           imageDetails["Image"] =  value;
+           cardData.Photos.push(imageDetails);
+       });
        
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
@@ -181,10 +233,13 @@ export class CreateCardComponent implements OnInit {
          },
          error => {
            console.log("error in response");
+
          },
          ()=>{
            console.log("Finally");
+
          })
+        
         this.submitted = true;
         
     }
@@ -202,6 +257,49 @@ export class CreateCardComponent implements OnInit {
         console.log("comes here when subcategory updated")
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
         
+    }
+
+    getProductData(productId){
+        let productInfoUrl = this._settingsService.getPath('productInfoUrl')+productId;
+        let that = this;            
+        this.httpService.observableGetHttp(productInfoUrl,null,false)
+        .subscribe((res)=> {
+            that.productInfo = res;
+            console.log(that.productInfo);
+            that.myForm.patchValue({cardType:that.productInfo["Listing"].ListingType});
+            that.myForm.patchValue({category:that.productInfo["Listing"].ListingCategory});
+            that.myForm.patchValue({subCategory:that.productInfo["Listing"].SubCategory});
+            that.myForm.patchValue({title:that.productInfo["Listing"].Title});
+            that.myForm.patchValue({location:that.productInfo["Listing"].City});
+            that.myForm.patchValue({shortDesc:that.productInfo["Listing"].Details});
+            that.myForm.patchValue({price:that.productInfo["Listing"].Price});
+            that.myForm.patchValue({negotiable:that.productInfo["Listing"].Negotiable});
+            that.getFilters();
+
+            },
+            error => {
+            console.log("error in response");
+            },
+            ()=>{
+            console.log("Finally");
+            })
+    }
+
+    updateCard(){
+
+        let cardData = this.data.mapCardData(this.myForm);
+        let url = this.apiPath.UPDATE_CARD + this.productId;
+        this.httpService.observablePutHttp(url,cardData,null,false)
+       .subscribe((res)=> {
+           console.log("comes here in result",res);
+         },
+         error => {
+           console.log("error in response");
+         },
+         ()=>{
+           console.log("Finally");
+         })
+        console.log("update card");
     }
     
 }
