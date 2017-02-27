@@ -39,12 +39,11 @@
           </a>
         </li>
         <li>
-          <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="profile" data-toggle="dropdown"(click)="profileButton()">
+            <button class="btn btn-default" type="button" id="profile" (click)="profileButton()">
                 <span class="icon-profile profile-btn"></span>
                 <span class="textProfile">my profile</span>
             </button>
-            <ul *ngIf = "signOutHideShow">
+            <ul class="signOutContainer" *ngIf = "signOutHideShow">
               <li>
                 <button class="green-button sign-out-btn" >
                   <span class="icon-flag"></span>
@@ -52,7 +51,6 @@
                 </button>
               </li>
             </ul>
-          </div>
         </li>
       </ul>
       <div class="list-group-container">

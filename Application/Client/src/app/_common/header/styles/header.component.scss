@@ -70,8 +70,11 @@ nav.header{
               color: $white-color;
               padding-right: 12px;
             }
+          }
+          ul.signOutContainer{
+            padding:0;
             .sign-out-btn{
-              margin-left: 20px;
+              margin: 0;
             }
           }
       }
