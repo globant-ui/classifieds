@@ -44,22 +44,15 @@
                 <span class="icon-profile profile-btn"></span>
                 <span class="textProfile">my profile</span>
             </button>
-            <!--<ul class="dropdown-menu" role="menu" aria-labelledby="profile" >
+            <ul *ngIf = "signOutHideShow">
               <li>
                 <button class="green-button sign-out-btn" >
                   <span class="icon-flag"></span>
                   <span (click)="doLogout()">Sign Out</span>
                 </button>
               </li>
-            </ul>-->
-            <h1>hhhhhh</h1>
+            </ul>
           </div>
-        </li>
-        <li>
-          <button class="green-button sign-out-btn">
-            <span class="icon-flag"></span>
-            <span (click)="doLogout()">Sign Out</span>
-          </button>
         </li>
       </ul>
       <div class="list-group-container">

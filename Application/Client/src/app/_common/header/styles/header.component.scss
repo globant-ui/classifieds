@@ -24,6 +24,7 @@ nav.header{
     ul.nav{
       li{
         color:$white-color;
+        list-style: none;
         button.green-button{
           background-color: $green-color;
           color: $darkblue-color;
