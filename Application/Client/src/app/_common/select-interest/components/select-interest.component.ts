@@ -24,8 +24,8 @@ let tpls = require('../tpls/select-interest.component.html').toString();
 export class SelectInterestComponent implements OnInit, AfterViewInit  {
 
 private delayTimer  : any = null;
-private subCategoryUrl:string = "http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=";
-private selectInterestUrl:string = "http://in-it0289/UserAPI/api/User/AddTag?userEmail=";
+private subCategoryUrl:string = "";
+private selectInterestUrl:string = "";
 private interestResult:any ;
 private obj = {
   'SubCategory': [],
@@ -41,7 +41,10 @@ private session : Session;
   constructor(
                  private _settingsService: SettingsService,
                  private _cservice:CService,
-                 private _cookieService:CookieService) {}
+                 private _cookieService:CookieService) {
+                        this.subCategoryUrl = _settingsService.getPath('subCategoryUrl');
+                        this.selectInterestUrl = _settingsService.getPath('searchUrl');
+                 }
 
   ngOnInit(){
       this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
