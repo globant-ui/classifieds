@@ -50,7 +50,7 @@ namespace Classifieds.SearchAPI.Tests
                 KmDriven = 123,
                 Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
                 TypeofUse = "test",
-                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new ListingImages[] { }
             };
 
             var classifiedList = new List<Listing>();

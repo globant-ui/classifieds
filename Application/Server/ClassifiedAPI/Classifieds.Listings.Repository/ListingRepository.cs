@@ -385,7 +385,7 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                var finalQuery = Query.And(Query.In("Address", BsonArray.Create(tag.Location)),Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
+                var finalQuery = Query.And(Query.In("City", BsonArray.Create(tag.Location)),Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
                 var listings = Classifieds.Find(finalQuery);
                 return listings.ToList();
             }

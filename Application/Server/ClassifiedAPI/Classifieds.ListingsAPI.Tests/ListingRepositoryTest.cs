@@ -58,7 +58,7 @@ namespace Classifieds.ListingsAPI.Tests
                 Type = "2 BHK",
                 IsPublished = true,
                 Negotiable = true,
-                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new ListingImages[] { }
             };
             return listObject;
         }

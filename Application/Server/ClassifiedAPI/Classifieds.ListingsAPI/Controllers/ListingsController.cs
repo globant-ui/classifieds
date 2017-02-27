@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common.Repositories;
 using Classifieds.Listings.BusinessServices.ServiceAgent;
+using System.Drawing;
+using System.IO;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -78,7 +80,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     {
                         productInfo.UserName = userDetails.UserName;
                         productInfo.Email = userDetails.UserEmail;
-                        productInfo.Contact = userDetails.Mobile;
+                        productInfo.ContactNo = userDetails.Mobile;
                         productInfo.Designation = userDetails.Designation;
                         productInfo.Photo = userDetails.Image;
                     }
@@ -459,6 +461,15 @@ namespace Classifieds.ListingsAPI.Controllers
             message.Headers.TryGetValues("AccessToken", out headerValues);
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
+        }
+
+        private byte[] ImageToByteArray(Image img)
+        {
+            using (MemoryStream mStream = new MemoryStream())
+            {
+                img.Save(mStream, img.RawFormat);
+                return mStream.ToArray();
+            }
         }
         #endregion
     }

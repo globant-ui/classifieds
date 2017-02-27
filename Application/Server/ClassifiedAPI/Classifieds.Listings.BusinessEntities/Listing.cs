@@ -43,7 +43,7 @@ namespace Classifieds.Listings.BusinessEntities
         public string Address { get; set; }
         public bool Negotiable { get; set; }
         public bool IsPublished { get; set; }
-        public string[] Photos { get; set; }
+        public ListingImages[] Photos { get; set; }
     }
     public class Dimension
     {
@@ -58,8 +58,14 @@ namespace Classifieds.Listings.BusinessEntities
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Designation { get; set; }
-        public string Contact { get; set; }
-        public string Photo { get; set; }
+        public string ContactNo { get; set; }
+        public byte[] Photo { get; set; }
     }
-   
+
+    public class ListingImages
+    {
+        public string ImageName { get; set; }
+        public Byte[] Image { get; set; }        
+    }
+
 }
