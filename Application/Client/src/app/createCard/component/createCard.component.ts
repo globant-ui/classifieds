@@ -195,8 +195,7 @@ export class CreateCardComponent implements OnInit {
     }
 
     isAddInfoCompleted() {
-        console.log(this.myForm)
-        if(this.myForm.get('title').value!='' && this.myForm.get('price').value!='' && this.myForm.get('shortDesc').value!='' && this.myForm.get('location').value!=''){
+        if(this.myForm.get('title').value !== '' && this.myForm.get('price').value !== '' && this.myForm.get('shortDesc').value !== '' && this.myForm.get('location').value !== ''){
             this.isCompleted.push(this.endPoints[1]);
         }
         this.isActive = this.endPoints[2];

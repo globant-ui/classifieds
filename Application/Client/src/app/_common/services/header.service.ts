@@ -3,9 +3,9 @@ import {Headers} from '@angular/http';
 import {CookieService} from 'angular2-cookie/core';
 
 @Injectable()
-export class HeadersService {
-  private sessionObj;
-  public headers;
+export class HeaderService {
+  private sessionObj: Object;
+  public headers: Headers;
   constructor( private _cookieService:CookieService) {
   }
 

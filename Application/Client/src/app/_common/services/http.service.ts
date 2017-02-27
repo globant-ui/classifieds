@@ -3,7 +3,7 @@ import {Response, Http, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 
-import {HeadersService} from './headers.service';
+import {HeaderService} from './header.service';
 
 
 declare var $: any;
@@ -16,7 +16,7 @@ export class CService {
   private sessionObj;
 
   
-  constructor( public _http: Http,public headers:HeadersService) {
+  constructor( public _http: Http,public headers:HeaderService) {
   }
 
 
