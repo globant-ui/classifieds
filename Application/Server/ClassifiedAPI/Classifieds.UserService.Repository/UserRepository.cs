@@ -9,6 +9,7 @@ namespace Classifieds.UserService.Repository
 {
     public class UserRepository<TEntity> : DBRepository, IUserRepository<TEntity> where TEntity : ClassifiedsUser
     {
+       
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["UserCollection"];
         private readonly IDBRepository _dbRepository;
@@ -79,9 +80,8 @@ namespace Classifieds.UserService.Repository
         {
             try
             {
-                var result = Classifieds.FindAll()
-                                   .Where(p => p.UserEmail == userEmail)
-                                   .ToList();
+                var query = Query<TEntity>.EQ(p => p.UserEmail, userEmail);
+                var result = Classifieds.Find(query);
                 return result.FirstOrDefault();
             }
             catch (Exception ex)
