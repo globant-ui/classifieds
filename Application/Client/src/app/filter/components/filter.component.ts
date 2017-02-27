@@ -17,9 +17,8 @@ let tpls = require('../tpls/filter.component.html').toString();
 })
 
 export class FilterComponent {
-
   private filterData : any;
-  private filterCategoryUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=';
+  private filterCategoryUrl = "";
   private categoryUrl:any;
   public filterCategoryData:any;
   public isActive:boolean = false;
@@ -27,13 +26,18 @@ export class FilterComponent {
   @Input() selectedFilter;
   @Output() getSelectedFilterOption: EventEmitter<any> = new EventEmitter <any>();
 
-  constructor(public appState: AppState,private _settingsService: SettingsService,private _cservice:CService) {}
+  constructor(public appState: AppState,
+              private _settingsService: SettingsService,
+              private _cservice:CService) {
+
+                this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
+              }
 
   ngOnInit()
   {
     this.filterData = this._settingsService.getFilterListingData();
-    let filterData = this.filterData;
-    for (let item of filterData) {
+   this.filterData = this.filterData;
+    for (let item of this.filterData) {
       if(item.listName==='Top ten'){item.isActive = true;}
     }
   }
@@ -57,13 +61,27 @@ export class FilterComponent {
   }
 
   selectedOption(category, index) {
-    let filterData = this.filterData;
+     this.filterData = this.filterData;
     
-    for (let item of filterData) {
+    for (let item of  this.filterData) {
       item.isActive = false;
     }
-
-    filterData[index].isActive = true;
+     this.filterData[index].isActive = true;
     this.getSelectedFilterOption.emit( category );
   }
-}
+
+  getCardsByCategory(category)
+  {
+    this.categoryUrl = this.filterCategoryUrl+category;
+    this._cservice.observableGetHttp(this.categoryUrl,null,false)
+      .subscribe((res:Response)=> {
+          //console.log('res = ',res);
+          //this.filterCategory.emit(res);
+        },   error => {
+          console.log("error in response");
+        },
+        ()=>{
+          console.log("Finally");
+        })
+  }}
+

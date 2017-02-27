@@ -1,0 +1,87 @@
+
+//normal
+%type-arvo-regular-38-4-text {
+  @include only-text-type($font-size-38, $arvo-regular, $font-weight-400);
+}
+
+%type-open-sans-14-4-text {
+  @include only-text-type($font-size-base, $open-sans, $font-weight-400);
+}
+
+%type-arvo-regular-20-4-text {
+  @include only-text-type($font-size-20, $arvo-regular, $font-weight-400);
+}
+
+%type-arvo-regular-30-4-text {
+  @include only-text-type($font-size-30, $arvo-regular, $font-weight-400);
+}
+
+%type-open-sans-15-4-text {
+  @include only-text-type($font-size-15, $open-sans, $font-weight-400);
+}
+
+%type-open-sans-12-4-text {
+  @include only-text-type($font-size-12, $open-sans, $font-weight-400);
+}
+
+%type-open-sans-10-4-text{
+  @include only-text-type($font-size-10, $open-sans, $font-weight-400);
+}
+
+//semibold
+%type-open-sans-14-6-text {
+  @include only-text-type($font-size-base, $open-sans, $font-weight-600);
+}
+
+%type-open-sans-10-6-text {
+  @include only-text-type($font-size-10, $open-sans, $font-weight-600);
+}
+
+%type-open-sans-9-6-text {
+  @include only-text-type($font-size-9, $open-sans, $font-weight-600);
+}
+
+%type-open-sans-12-6-text {
+  @include only-text-type($font-size-12, $open-sans, $font-weight-600);
+}
+
+%type-open-sans-12-1-text {
+  @include only-text-type($font-size-12, $open-sans, $font-weight-100);
+}
+
+%type-open-sans-11-6-text {
+  @include only-text-type($font-size-11, $open-sans, $font-weight-600);
+}
+
+%type-open-sans-16-6-text {
+  @include only-text-type($font-size-16, $open-sans, $font-weight-600);
+}
+
+%type-open-sans-22-6-text {
+  @include only-text-type($font-size-22, $open-sans, $font-weight-600);
+}
+
+%type-open-sans-10-6-text {
+  @include only-text-type($font-size-10, $open-sans, $font-weight-600);
+}
+
+//bold
+%type-open-sans-18-7-text {
+  @include only-text-type($font-size-18, $open-sans, $font-weight-700);
+}
+
+%type-open-sans-15-7-text {
+  @include only-text-type($font-size-18, $open-sans, $font-weight-700);
+}
+
+%type-open-sans-12-7-text {
+  @include only-text-type($font-size-12, $open-sans, $font-weight-700);
+}
+
+%type-open-sans-10-7-text {
+  @include only-text-type($font-size-10, $open-sans, $font-weight-700);
+}
+
+
+
+
