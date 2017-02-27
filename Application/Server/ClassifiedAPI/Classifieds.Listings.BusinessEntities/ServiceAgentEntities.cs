@@ -25,7 +25,7 @@ namespace Classifieds.Listings.BusinessEntities
         public string Mobile { get; set; }
         public string Location { get; set; }
         public string[] WishList { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
         public Tags Tags;
     }
 }
