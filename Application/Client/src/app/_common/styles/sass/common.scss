@@ -61,3 +61,28 @@ body{
 .no-padding-right {
   padding-right: 0;
 }
+
+// blue tag
+
+.blue-tag{
+   
+           li{
+           margin: 10px 6px;
+           display: inline-block;
+            
+            a{              
+              @extend %type-open-sans-10-9-text;
+              color: $white-color;
+              background-color: $darkblue-color;
+              border: 1px solid $darkblue-color;
+              padding: 8px 25px;
+              text-transform: uppercase;
+
+              &:hover {
+                background-color: $darkblue-color;
+              }
+
+              }
+          }
+}
+
