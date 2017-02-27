@@ -78,7 +78,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     {
                         productInfo.UserName = userDetails.UserName;
                         productInfo.Email = userDetails.UserEmail;
-                        productInfo.Contact = userDetails.Mobile;
+                        productInfo.ContactNo = userDetails.Mobile;
                         productInfo.Designation = userDetails.Designation;
                         productInfo.Photo = userDetails.Image;
                     }
