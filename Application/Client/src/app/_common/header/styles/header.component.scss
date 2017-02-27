@@ -1,10 +1,10 @@
 @import "../../../_common/styles/sass/style";
 
-nav.navbar-inverse{
+nav.header{
   background-color: $darkblue-color;
   border:none;
   border-radius: 0;
-  padding: 25px 42px;
+  padding: 25px 55px;
   .navbar-header{
     .navbar-brand{
       height:auto;
@@ -29,9 +29,7 @@ nav.navbar-inverse{
           color: $darkblue-color;
           border-radius: 10px;
           padding: 5px 15px 5px 10px;
-          font-family: 'Open Sans';
-          font-weight: bold;
-          font-size: 0.714em;
+          @extend %type-open-sans-10-7-text;
           margin-right: 20px;
           border:none;
           text-transform: uppercase;
@@ -43,13 +41,10 @@ nav.navbar-inverse{
         a{
             padding: 0;
             .textwishlist{
-              float: right;
-            }
-            .textwishlist, .textProfile{
               text-transform: uppercase;
               color: $white-color;
-              @extend %type-open-sans-12-4-text;
               float: right;
+              @extend %type-open-sans-12-6-text;
             }
             .wishlist{
               padding:5px 12px 0 0;
@@ -57,15 +52,26 @@ nav.navbar-inverse{
               float: right;
             }
           }
-          .profile-btn{
-            margin:5px 0 0 30px;
+          #profile{
             background: none;
             border: none;
-            color: $white-color;
-            padding-right: 12px;
-          }
-          .sign-out-btn{
-            margin-left: 20px;
+            color: #ffffff;
+            padding: 0;
+            .textProfile{
+              text-transform: uppercase;
+              color: $white-color;
+              @extend %type-open-sans-12-6-text;
+            }
+            .profile-btn{
+              margin:5px 0 0 15px;
+              background: none;
+              border: none;
+              color: $white-color;
+              padding-right: 12px;
+            }
+            .sign-out-btn{
+              margin-left: 20px;
+            }
           }
       }
     }

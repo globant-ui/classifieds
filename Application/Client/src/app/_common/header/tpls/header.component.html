@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse header">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" [class.open]="!isCollapsed" (click)="isCollapsed = !isCollapsed">
@@ -39,10 +39,20 @@
           </a>
         </li>
         <li>
-          <a href="#">
-            <span class="icon-profile profile-btn"></span>
-            <span class="textProfile">my profile</span>
-          </a>
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="profile" data-toggle="dropdown">
+                <span class="icon-profile profile-btn"></span>
+                <span class="textProfile">my profile</span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="profile">
+              <li>
+                <button class="green-button sign-out-btn">
+                  <span class="icon-flag"></span>
+                  <span (click)="doLogout()">Sign Out</span>
+                </button>
+              </li>
+            </ul>
+          </div>
         </li>
         <li>
           <button class="green-button sign-out-btn">
