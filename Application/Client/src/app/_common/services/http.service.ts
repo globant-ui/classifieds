@@ -16,7 +16,7 @@ export class CService {
   constructor(public _http: Http, private _cookieService: CookieService) {
   }
 
-  private getHeaders(): Headers {
+  public getHeaders(): Headers {
 
     let headers = new Headers();
       this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
