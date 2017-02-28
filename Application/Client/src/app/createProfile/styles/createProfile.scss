@@ -38,7 +38,7 @@
 	p {
 		@extend %type-open-sans-14-9-text;
 		color: $primary-text-color;		
-    	padding: 20px 0;
+    padding: 20px 0;
 
 		span {
 			color: $darkblue-color;
@@ -57,22 +57,17 @@
 	  }
 }
 
-.pad-topbot-17 {
-  padding: 17px 0;
-}
+p.my-sub {
+    border-bottom: 1px solid $tag-border-color;
+    @extend %type-open-sans-14-9-text;
+    text-transform: capitalize;
+    color: $darkblue-color;
+    padding: 10px 0 20px;
 
-.pad-topbot-20 {
-  padding: 20px 0;
-}
-
-.pad-bot-20 {
-	padding-bottom: 20px;
-}
-
-.pad-bot-35 {
-	padding-bottom: 35px;
-}
-
-.no-padding {
-  padding: 0;
+    .category {
+      @extend %type-open-sans-10-6-text;
+      padding-right: 16px;
+      text-transform: uppercase;     
+      color: $primary-text-color; 
+    }
 }
