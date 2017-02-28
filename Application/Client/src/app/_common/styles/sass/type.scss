@@ -28,6 +28,9 @@
   @include only-text-type($font-size-10, $open-sans, $font-weight-400);
 }
 
+%type-open-sans-22-4-text{
+  @include only-text-type($font-size-22, $open-sans, $font-weight-400);
+}
 //semibold
 %type-open-sans-14-6-text {
   @include only-text-type($font-size-base, $open-sans, $font-weight-600);
@@ -80,6 +83,10 @@
 
 %type-open-sans-10-7-text {
   @include only-text-type($font-size-10, $open-sans, $font-weight-700);
+}
+
+%type-arvo-regular-36-4-text {
+  @include only-text-type($font-size-36, $arvo-regular, $font-weight-400);
 }
 
 

@@ -16,10 +16,11 @@ export class CService {
   constructor(public _http: Http, private _cookieService: CookieService) {
   }
 
-  private getHeaders(): Headers {
+  public getHeaders(): Headers {
 
     let headers = new Headers();
       this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
+
       headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
       if(this.sessionObj!=undefined){
         headers.append('AccessToken',this.sessionObj.token);
