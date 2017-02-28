@@ -39,7 +39,7 @@ export class mapData{
         "IdealFor": (form.get('IdealFor'))?form.get('IdealFor').value:'',
         "Furnished": (form.get('Furnished'))?form.get('Furnished').value:'',
         "FuelType": (form.get('FuelType'))?form.get('FuelType').value:'',
-        "KmDriven": (form.get('KMDriven'))?form.get('KMDriven').value:'',
+        "KmDriven": (form.get('KmDriven'))?form.get('KmDriven').value:'',
         "YearofMake": 0,
         "Dimensions": dimensions,
         "TypeofUse": "",

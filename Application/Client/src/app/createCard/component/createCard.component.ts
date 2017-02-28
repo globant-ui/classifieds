@@ -124,7 +124,7 @@ export class CreateCardComponent implements OnInit {
         if(year!=-1){
             this.textBoxes.push(this.filters.Filters.splice( year, 1 )[0]);
         }
-        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName=="KMDriven");
+        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName=="KmDriven");
         if(kmDriven!=-1){
             this.textBoxes.push(this.filters.Filters.splice( kmDriven, 1 )[0]);
         }
@@ -293,6 +293,8 @@ export class CreateCardComponent implements OnInit {
 
     updateCard(){
         let cardData = this.data.mapCardData(this.myForm);
+        console.log(cardData);
+        debugger;
         let url = this.apiPath.UPDATE_CARD + this.productId;
         this.httpService.observablePutHttp(url,cardData,null,false)
        .subscribe((res)=> {
