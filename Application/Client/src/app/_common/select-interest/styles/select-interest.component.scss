@@ -1,0 +1,95 @@
+@import "../../styles/sass/style";
+
+.selectInterest{
+	.container{
+		.modal{
+			.modal-dialog{
+				.modal-content{
+					//background: $light-grey-border;
+					.modal-body{
+						height: auto;
+						//color: $primary-text-color;
+						padding: 0;
+						h4.modal-title{
+						    margin: 40px 0;
+						    font-size: 1.089em;
+						}
+						.tagInput{
+							    margin-bottom: 40px;
+    							padding: 0 10%;
+							input{
+								//background-color: $createListing-item-bgcolor;
+								padding: 10px;
+								margin-top: 0;
+								//border: 2px solid $createListing-item-border-color;
+								border-radius: 5px;
+								//color: $primary-text-color;
+								font-size: 1em;
+								width: 100%;
+							}
+						}
+						.autoSuggestion{
+							margin-bottom: 40px;
+    						padding: 0 10%;
+							ul{
+								padding-left: 10px;
+								li{
+									list-style-type: none;
+								}
+							}
+						}
+						.selectedTags{
+							margin-bottom: 40px;
+    						padding: 0 10%;
+    						.pager{
+    							text-align: left;
+    							li{
+    								span{
+    									padding-left: 25px;
+    								}
+    								a{
+    									//background-color: $darkblue-color;
+    									//color: $white-color;
+    									font-size: 0.714em;
+    								}
+    							}
+    						}
+						}
+						.prefLocation{
+							margin-bottom: 40px;
+    						padding: 0 10%;
+    						label{
+    							//color: $createListing-complete-active-text-color;
+    							padding-right: 20px;
+    						}
+    						label:first-child{
+    							//color: $primary-text-color;
+    						}
+						}
+						.btn-container{
+							//background: $white-color;
+							display: flex;
+							.skip-text{
+								padding:15px 0 0 10%; 
+								flex:2;
+								text-decoration: underline;
+								//color: $primary-text-color;
+								font-size: 1.142em;
+							}
+							.done-btn{
+								//background: $green-color;
+//color: $white-color;
+								font-weight: bold;
+								text-transform: uppercase;
+								border:none;
+							    border-bottom-right-radius: 5px;
+		    					border-radius: 0;
+		    					padding:15px 35px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

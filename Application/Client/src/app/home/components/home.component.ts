@@ -6,6 +6,7 @@ import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../_common/services/http.service';
 import { SearchComponent } from '../../_common/search/components/search.component';
 import { CardListComponent } from '../../card-list/components/card-list.component';
+import { SelectInterestComponent } from '../../_common/select-interest/components/select-interest.component';
 import 'rxjs/Rx';
 
 
@@ -34,7 +35,6 @@ export class HomeComponent implements OnInit {
   private topNavbar:any;
   private affixEl:any;
   private affixElOffsetTop: number;
-
 
   //@ViewChildren("cheader") CHeader;
   @ViewChild(SearchComponent) searchComponent;
