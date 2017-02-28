@@ -1,5 +1,5 @@
 @import "../../_common/styles/sass/style";
-@import "../../_common/styles/sass/style";
+//@import "../../_common/styles/sass/style";
 
 .breadcrumb-wraper {
   .breadcrumb {
@@ -59,18 +59,18 @@
 
 .profile-details {
    @extend %type-open-sans-14-6-text;
-   color: $primary-text-color;  	
+   color: $primary-text-color;
 
    .person-name {
    		@extend %type-open-sans-16-6-text;
    		color: $profile-name;
 	}
-	
+
 }
 
 .profile-interest {
 	padding: 10px 0 10px;
-  
+
 	  .pager, .blue-tag {
 	    text-align: left;
 	  }

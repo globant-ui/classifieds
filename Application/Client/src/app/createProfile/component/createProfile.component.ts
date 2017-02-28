@@ -17,12 +17,17 @@ let styles = require('../styles/createProfile.scss').toString();
 })
 export class ProfileComponent implements OnInit {
 
-    constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData){
+    private GetUserProfileUrl = 'http://in-it0289/Userapi/api/user/GetUserProfile?userEmail=';
 
+    constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData){
     }
 
     ngOnInit() {
-        console.log("in profile component");
+        this.getProfileData();
+    }
+
+    getProfileData(){
+
     }
 
 
