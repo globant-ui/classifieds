@@ -61,3 +61,15 @@ body{
 .no-padding-right {
   padding-right: 0;
 }
+
+//input and select
+
+input, select{
+  background-color: $createListing-item-bgcolor;
+  padding: 10px;
+  margin-top: 0;
+  border: 2px solid $createListing-item-border-color;
+  border-radius: 5px;
+  color: $primary-text-color;
+  @extend %type-open-sans-14-4-text;
+}
