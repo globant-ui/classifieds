@@ -273,6 +273,12 @@ export class CreateCardComponent implements OnInit {
             that.myForm.patchValue({location:that.productInfo["Listing"].City});
             that.myForm.patchValue({shortDesc:that.productInfo["Listing"].Details});
             that.myForm.patchValue({price:that.productInfo["Listing"].Price});
+            // that.myForm.patchValue({city:that.productInfo["Listing"].City});
+            // that.myForm.patchValue({area:that.productInfo["Listing"].address.split("-")[0]});
+            
+            // that.myForm.patchValue({city:that.productInfo["Listing"].City});
+            // that.myForm.patchValue({country:that.productInfo["Listing"].Country});
+            
             that.myForm.patchValue({negotiable:that.productInfo["Listing"].Negotiable});
             that.getFilters();
 
@@ -286,7 +292,6 @@ export class CreateCardComponent implements OnInit {
     }
 
     updateCard(){
-
         let cardData = this.data.mapCardData(this.myForm);
         let url = this.apiPath.UPDATE_CARD + this.productId;
         this.httpService.observablePutHttp(url,cardData,null,false)
@@ -298,8 +303,7 @@ export class CreateCardComponent implements OnInit {
          },
          ()=>{
            console.log("Finally");
-         })
-        console.log("update card");
+         });
     }
     
 }
