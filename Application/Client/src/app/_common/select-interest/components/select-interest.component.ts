@@ -52,7 +52,7 @@ private session : Session;
 
   ngAfterViewInit() {
       this.session = new Session(this._cookieService.getObject('SESSION_PORTAL'));
-      if (this.session['isFirstTimeLogin']==true) {
+      if (this.session['isFirstTimeLogin']) {
           $("#myModal").modal("show");
       }
   } 

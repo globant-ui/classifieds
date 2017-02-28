@@ -14,10 +14,6 @@ import '@angular/forms';
 import '@angular/http';
 import '@angular/router';
 
-//bootstrap and jQuery
-import 'jquery';
-import 'bootstrap/dist/js/bootstrap';
-
 // AngularClass
 import '@angularclass/hmr';
 
