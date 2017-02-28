@@ -65,9 +65,14 @@ body{
 // blue tag
 
 .blue-tag{
+
+    padding-left: 0;
+    margin: 20px 0;
+    text-align: center;
+    list-style: none;
    
            li{
-           margin: 10px 6px;
+           margin: 10px 10px 10px 0;
            display: inline-block;
             
             a{              
@@ -75,8 +80,10 @@ body{
               color: $white-color;
               background-color: $darkblue-color;
               border: 1px solid $darkblue-color;
-              padding: 8px 25px;
+              padding: 8px 23px;
               text-transform: uppercase;
+              display: inline-block;
+              border-radius: 15px;
 
               &:hover {
                 background-color: $darkblue-color;
@@ -84,5 +91,17 @@ body{
 
               }
           }
+}
+
+//input and select
+
+input, select{
+  background-color: $createListing-item-bgcolor;
+  padding: 10px;
+  margin-top: 0;
+  border: 2px solid $createListing-item-border-color;
+  border-radius: 5px;
+  color: $primary-text-color;
+  @extend %type-open-sans-14-4-text;
 }
 

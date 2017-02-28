@@ -5,6 +5,7 @@ import {mapData} from  '../../mapData/mapData';
 
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
+import {CookieService} from 'angular2-cookie/core';
 
 let tpls = require('../tpls/createCard.html').toString();
 let styles = require('../styles/createCard.scss').toString();
@@ -28,14 +29,16 @@ export class CreateCardComponent implements OnInit {
     public type: string = '';
     public filters;
     public textBoxes = [];
+    private sessionObj;
     
-    constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData){
+    constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData,private _cookieService:CookieService){
         console.log("constructor createCard");
         this.isActive = '';
         this.isCompleted = [];
         this.endPoints.push("SELECT","UPLOAD","ADD INFO","DONE");
         this.type = 'Cars-Automotive';
         this.filters = [];
+        this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
     }
 
     ngOnInit() {
@@ -49,8 +52,8 @@ export class CreateCardComponent implements OnInit {
             shortDesc: new FormControl('', [<any>Validators.required]),
             negotiable: new FormControl('', [<any>Validators.required]),
             price: new FormControl('', [<any>Validators.required]),
-            location: new FormControl('', [<any>Validators.required])
-            
+            location: new FormControl('', [<any>Validators.required]),
+            submittedBy: new FormControl('', [])
         });
         this.getCategories();
     }
@@ -168,9 +171,11 @@ export class CreateCardComponent implements OnInit {
        this.isActive = this.endPoints[3];
        
        console.log(this.isCompleted + '********************' + this.isActive);
-
-       let cardData = this.data.mapCardData(this.selectedCategory,this.myForm);
-       debugger;
+       
+       this.myForm.patchValue({category:this.selectedCategory});
+       this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
+       
+       let cardData = this.data.mapCardData(this.myForm);
        if(action == 'create'){
            cardData.IsPublished = true;
        }
@@ -190,8 +195,7 @@ export class CreateCardComponent implements OnInit {
     }
 
     isAddInfoCompleted() {
-        console.log(this.myForm)
-        if(this.myForm.get('title').value!='' && this.myForm.get('price').value!='' && this.myForm.get('shortDesc').value!='' && this.myForm.get('negotiable').value!='' && this.myForm.get('location').value!=''){
+        if(this.myForm.get('title').value !== '' && this.myForm.get('price').value !== '' && this.myForm.get('shortDesc').value !== '' && this.myForm.get('location').value !== ''){
             this.isCompleted.push(this.endPoints[1]);
         }
         this.isActive = this.endPoints[2];

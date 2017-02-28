@@ -7,7 +7,7 @@
   <div class="row">
     <div class="listing" *ngFor="let card of similarListing;let i = index;">
       <div class="col-xs-6 col-md-12 col-lg-12 noPadding">
-        <template [ngIf]="i<2">
+        <template [ngIf]="i<4">
             <img src="../../../../assets/img/similarListing.png" />
             <div class="listingContent">
               <span class="title"><h5>{{card.Title}}</h5></span>

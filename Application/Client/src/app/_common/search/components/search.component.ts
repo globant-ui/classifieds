@@ -67,7 +67,7 @@ export class SearchComponent {
             });
     }
   
-    searchCategoryByString( str ) {
+    searchCategoryByString( str: string) {
         if (str.length >= 3) {
             this.searchCategoryByStringUrl = this.searchUrl + str;
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
