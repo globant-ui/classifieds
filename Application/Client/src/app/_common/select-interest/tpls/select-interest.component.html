@@ -18,8 +18,8 @@
             </div>
             <div class="selectedTags">
               <ul class="pager">
-                <li>
-                  <a *ngFor="let res of obj.SubCategory;let i=index;">
+                <li *ngFor="let res of obj.SubCategory;let i=index;">
+                  <a>
                     {{res}}
                 <span class="glyphicon glyphicon-remove" (click)="deleteIntrest(i, res)"></span>
                 </a>
