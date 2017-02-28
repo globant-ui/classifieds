@@ -7,11 +7,9 @@ export class mapData{
   }
 
   mapCardData(form) {
-    console.log(form);
       let today = new Date();
       let locale = "en-us";
       let cardCreatedDate = today.getDate() + '-' + today.toLocaleString(locale, { month: "short" })  + '-' + today.getFullYear();
-      //let DimensionHeight = 
       let dimensions = (form.get('DimensionLength') && form.get('DimensionHeight') && form.get('DimensionWidth'))? {
          "Length": form.get('DimensionLength').value,
          "Width": form.get('DimensionWidth').value,
@@ -25,29 +23,27 @@ export class mapData{
         "SubCategory": (form.get('subCategory'))?form.get('subCategory').value:'',
         "Title": (form.get('title'))?form.get('title').value:'',
         "Address": address,
-        "ContactNo": "",
-        "ContactName": "",
-        "Configuration": "",
         "Details": (form.get('shortDesc'))?form.get('shortDesc').value:'',
         "Brand": (form.get('Brand'))?form.get('Brand').value:'',
-        "Price": (form.get('price'))?form.get('price').value:'',
+        "Price": (form.get('price'))?form.get('price').value:0,
         "YearOfPurchase": (form.get('Year'))?form.get('Year').value:'',
-        "ExpiryDate": "",
         "Status": "",
-        "SubmittedBy": "",
         "SubmittedDate": cardCreatedDate,
         "IdealFor": (form.get('IdealFor'))?form.get('IdealFor').value:'',
         "Furnished": (form.get('Furnished'))?form.get('Furnished').value:'',
         "FuelType": (form.get('FuelType'))?form.get('FuelType').value:'',
-        "KmDriven": (form.get('KmDriven'))?form.get('KmDriven').value:'',
-        "YearofMake": 0,
+        "KmDriven": (form.get('KmDriven'))?form.get('KmDriven').value:0,
         "Dimensions": dimensions,
         "TypeofUse": "",
         "Type": (form.get('Type'))?form.get('Type').value:'',
-        "Model": "NA",
-        "Negotiable": form.get('negotiable').value,
+        "Negotiable": (form.get('negotiable'))?form.get('negotiable').value:false,
         "IsPublished": false,
-        "Photos": []
+        "Photos": [],
+        "SubmittedBy": (form.get('submittedBy'))?form.get('submittedBy').value:false,
+        "Rooms": (form.get('Rooms'))?form.get('Rooms').value:'',
+        "State": (form.get('State'))?form.get('State').value:'',
+        "Country": (form.get('Country'))?form.get('Country').value:'',
+        "City": (form.get('City'))?form.get('City').value:''
       };
       return data;
 

@@ -1,7 +1,7 @@
 <div class="createCardContainer">
-  <div class="container">
+  <div class="container"><!-- 
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-12"> -->
         <div class="row">
           <div class="col-lg-2 col-md-2 col-xs-2">
               <progress-bar [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
@@ -9,6 +9,7 @@
           <div class="col-lg-10 col-md-10 col-xs-10">
               <form [formGroup]="myForm" novalidate>
                   {{action}} Card
+                  <input hidden #submittedBy formControlName="submittedBy" value="{{submittedBy}}">
                   <div class="row form-group">
                     <div class="col-lg-3 col-md-3 col-xs-12"> 
                       <label class="uppercaseText">i want to</label>
@@ -128,7 +129,7 @@
                   </div>
                   <div class="row form-group">
                     <div class="col-lg-5 col-md-5 col-xs-12">
-                        <input #price formControlName="price" name="price" class="fullWidth form-control" type="text" id="price" placeholder="Price" required />
+                        <input #price formControlName="price" name="price" class="fullWidth" type="text" id="price" placeholder="Price" required />
                         <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
                           Price is required
                         </div>-->
@@ -194,7 +195,7 @@
               <img src="../../../../assets/img/arrow-right-circle.png">
             </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </div><!-- 
+    </div> 
+  </div>-->
 </div>
