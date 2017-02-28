@@ -66,13 +66,8 @@ type StoreType = {
     LoaderComponent,
     SelectInterestComponent,
     ProductInfoComponent,
-<<<<<<< HEAD
     CreateCardComponent,
     ProfileComponent
-=======
-    CreateCardComponent
-
->>>>>>> e93c219b783a1bfa1fc733f6c316b316a4044adf
   ],
   imports: [ // import Angular's modules
     BrowserModule,

@@ -60,6 +60,10 @@
   @include only-text-type($font-size-12, $open-sans, $font-weight-700);
 }
 
+%type-open-sans-14-1-text {
+  @include only-text-type($font-size-base, $open-sans, $font-weight-100);
+}
+
 //semibold
 %type-open-sans-14-6-text {
   @include only-text-type($font-size-base, $open-sans, $font-weight-600);
