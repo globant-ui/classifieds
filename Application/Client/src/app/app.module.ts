@@ -29,8 +29,7 @@ import {mapData} from  './mapData/mapData';
 import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
-
-
+import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
 
 
 /*ng2-bootstrap*/
@@ -65,9 +64,15 @@ type StoreType = {
     FilterComponent,
     LoginComponent,
     LoaderComponent,
+    SelectInterestComponent,
     ProductInfoComponent,
+<<<<<<< HEAD
     CreateCardComponent,
     ProfileComponent
+=======
+    CreateCardComponent
+
+>>>>>>> e93c219b783a1bfa1fc733f6c316b316a4044adf
   ],
   imports: [ // import Angular's modules
     BrowserModule,

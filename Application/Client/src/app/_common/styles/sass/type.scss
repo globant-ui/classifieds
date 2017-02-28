@@ -83,6 +83,15 @@
   @include only-text-type($font-size-18, $open-sans, $font-weight-700);
 }
 
+
+%type-open-sans-22-4-text{
+  @include only-text-type($font-size-22, $open-sans, $font-weight-400);
+}
+
 %type-open-sans-22-6-text {
   @include only-text-type($font-size-22, $open-sans, $font-weight-600);
+}
+
+%type-arvo-regular-36-4-text {
+  @include only-text-type($font-size-36, $arvo-regular, $font-weight-400);
 }
