@@ -26,7 +26,7 @@ export class mapData{
         "Details": (form.get('shortDesc'))?form.get('shortDesc').value:'',
         "Brand": (form.get('Brand'))?form.get('Brand').value:'',
         "Price": (form.get('price'))?form.get('price').value:0,
-        "YearOfPurchase": (form.get('Year'))?form.get('Year').value:'',
+        "YearOfPurchase": (form.get('YearOfPurchase'))?form.get('YearOfPurchase').value:'',
         "Status": "",
         "SubmittedDate": cardCreatedDate,
         "IdealFor": (form.get('IdealFor'))?form.get('IdealFor').value:'',
@@ -41,9 +41,9 @@ export class mapData{
         "Photos": [],
         "SubmittedBy": (form.get('submittedBy'))?form.get('submittedBy').value:false,
         "Rooms": (form.get('Rooms'))?form.get('Rooms').value:'',
-        "State": (form.get('State'))?form.get('State').value:'',
-        "Country": (form.get('Country'))?form.get('Country').value:'',
-        "City": (form.get('City'))?form.get('City').value:''
+        "State": (form.get('state'))?form.get('state').value:'',
+        "Country": (form.get('country'))?form.get('country').value:'',
+        "City": (form.get('city'))?form.get('city').value:''
       };
       return data;
 

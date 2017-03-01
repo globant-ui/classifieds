@@ -48,7 +48,6 @@ export class CreateCardComponent implements OnInit {
             cardType: new FormControl('', [<any>Validators.required]),
             category: new FormControl('', [<any>Validators.required]),
             subCategory: new FormControl('', [<any>Validators.required]),
-            //cardImages: new FormControl('', [<any>Validators.required]),
             title: new FormControl('', [<any>Validators.required]),
             area: new FormControl('', [<any>Validators.required]),
             city: new FormControl('', [<any>Validators.required]),
@@ -80,7 +79,6 @@ export class CreateCardComponent implements OnInit {
     }
 
     ngOnInit() {
-        // the long way
         
         this.getCategories();
     }
@@ -124,7 +122,7 @@ export class CreateCardComponent implements OnInit {
         console.log("filterss",filters);
         let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName=="Sale/Rent");
         this.filters.Filters.splice( removeSaleRent, 1 )[0]
-        let year = this.filters.Filters.findIndex(x => x.FilterName=="Year");
+        let year = this.filters.Filters.findIndex(x => x.FilterName=="YearOfPurchase");
         if(year!=-1){
             this.textBoxes.push(this.filters.Filters.splice( year, 1 )[0]);
         }
@@ -145,7 +143,6 @@ export class CreateCardComponent implements OnInit {
         if(dimensionWidth!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionWidth, 1 )[0]);
         }
-        // console.log(this.myForm);
         let that = this;
         this.filters.Filters.forEach(function(element) {
             that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
@@ -154,41 +151,18 @@ export class CreateCardComponent implements OnInit {
             that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
         });
 
-        if(this.action== 'Edit'){
-            this.filters.Filters.forEach(function(element){
-            console.log(element)
-            let key = element["FilterName"];
-            let value = that.productInfo["Listing"][element["FilterName"]];
-            console.log(that.productInfo["Listing"][element["FilterName"]])
-            //that.myForm.patchValue({ key : value});
-            //debugger;
-            });
-        
-            this.textBoxes.forEach(function(element){
-                console.log(element)
-                let key = element["FilterName"];
-                let value = that.productInfo["Listing"][key];
-                that.myForm.patchValue({ key : value});
-                //debugger;
-            });
+        if(this.action === 'Edit'){
+            
         }
-        
-        console.log(this.filters)
-        console.log(this.textBoxes);
-        console.log(this.myForm);
 
     }
 
     reloadSubcategories(category){
         this.selectedCategory = category.ListingCategory;
-        this.subcategories = category.SubCategory;
-        
+        this.subcategories = category.SubCategory;  
     }
 
     fileNameChanged(event){
-        // console.log(this.myForm.get('cardType').value);
-        // console.log(this.myForm.get('subCategory').value);
-        // console.log(this.selectedCategory);
         
         if(this.myForm.get('cardType').value!='' && this.myForm.get('subCategory').value!='' && this.selectedCategory!=''){
             this.isCompleted.push(this.endPoints[0]);
@@ -278,15 +252,14 @@ export class CreateCardComponent implements OnInit {
             that.myForm.patchValue({location:that.productInfo["Listing"].City});
             that.myForm.patchValue({shortDesc:that.productInfo["Listing"].Details});
             that.myForm.patchValue({price:that.productInfo["Listing"].Price});
-            // that.myForm.patchValue({city:that.productInfo["Listing"].City});
-            // that.myForm.patchValue({area:that.productInfo["Listing"].address.split("-")[0]});
-            
-            // that.myForm.patchValue({city:that.productInfo["Listing"].City});
-            // that.myForm.patchValue({country:that.productInfo["Listing"].Country});
-            
+            that.myForm.patchValue({area:that.productInfo["Listing"].Address.split("-")[0]});
+            that.myForm.patchValue({city:that.productInfo["Listing"].City});
+            that.myForm.patchValue({state:that.productInfo["Listing"].State});
+            that.myForm.patchValue({country:that.productInfo["Listing"].Country});
             that.myForm.patchValue({negotiable:that.productInfo["Listing"].Negotiable});
+            
             that.getFilters();
-
+            
             },
             error => {
             console.log("error in response");
@@ -298,8 +271,6 @@ export class CreateCardComponent implements OnInit {
 
     updateCard(){
         let cardData = this.data.mapCardData(this.myForm);
-        console.log(cardData);
-        debugger;
         let url = this.apiPath.UPDATE_CARD + this.productId;
         this.httpService.observablePutHttp(url,cardData,null,false)
        .subscribe((res)=> {
