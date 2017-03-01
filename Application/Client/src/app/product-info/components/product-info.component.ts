@@ -28,16 +28,13 @@ export class ProductInfoComponent {
   private productInfoData: any;
   private productDetails: any;
   public postedDate : any;
-  public productSubcategory:any;
-  private ProductCategoryData: any;
   public isClicked: boolean = false;
   public type: any;
   public subcategoryData = [];
 
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
-  private filterSubCategoryUrl = 'http://in-it0289/MasterDataAPI/api/Category/GetAllFiltersBySubCategory?subCategory=';
- //private productImageUrl = 'http://in-it0054:51868/api/DocumentUpload/Get';
-  //private  productImages: any;
+  // private filterSubCategoryUrl = 'http://in-it0289/MasterDataAPI/api/Category/GetAllFiltersBySubCategory?subCategory=';
+
 
   constructor(private _route: ActivatedRoute,
               public _datepipe: DatePipe,
@@ -81,8 +78,8 @@ export class ProductInfoComponent {
           this.productInfoData = res;
           console.log(this.productInfoData);
           this.type = this.productInfoData.Listing.SubCategory + '-' + this.productInfoData.Listing.ListingCategory;
+          this.subcategoryData = this.productInfoData.Fields;
           this.transformDate(this.productInfoData.SubmittedDate);
-        //  this.getProductFilters(this.productInfoData.Listing.SubCategory);
         },
         error => {
           console.log("error in response");
@@ -91,33 +88,5 @@ export class ProductInfoComponent {
           console.log("Finally");
         })
   }
-
-  // getProductFilters(subCategory){
-  //   let productSubcategoryUrl = this.filterSubCategoryUrl+subCategory;
-  //   console.log("---------------------------------------",this.productSubcategory);
-  //   this._cservice.observableGetHttp(productSubcategoryUrl, null, false)
-  //     .subscribe((res:Response)=> {
-  //       this.ProductCategoryData = res;
-  //       console.log("********************",this.ProductCategoryData);
-  //       let filtersArray = this.ProductCategoryData['Filters'];
-  //         let selectedSubcategory ={
-  //           filetrKey : '',
-  //           fiiletValue : ''
-  //         }
-  //     console.log(filtersArray[0]['FilterName']);
-  //       for(let i=0; i < filtersArray.length;i++){
-  //         selectedSubcategory.filetrKey = filtersArray[i]['FilterName'];
-  //         selectedSubcategory.fiiletValue = this.productInfoData.Listing[filtersArray[i]['FilterName']];
-  //         this.subcategoryData.push(selectedSubcategory);
-  //       }
-  //       console.log(this.subcategoryData);
-  //     },
-  //     error =>{
-  //     console.log("error in response");
-  //     },
-  //       () => {
-  //     console.log("finally");
-  //     })
-  //   }
 
   }

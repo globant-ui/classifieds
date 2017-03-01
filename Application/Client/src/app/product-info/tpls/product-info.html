@@ -40,9 +40,8 @@
       <div class="col-xs-12 col-md-12 clearfix">
         <h5 class="textCustom">{{productInfoData.Listing.Details}}</h5>
       </div>
-      <div class="clearfix typeBrandDetails">
-        <div class="col-xs-6 col-md-6"><p><span>TYPE:</span> Psdjdjfjgjgkfjfb</p></div>
-        <div class="col-xs-6 col-md-6"><p><span>BRAND:</span> Psdjdjfjgjgkfjfb</p></div>
+      <div class="clearfix typeBrandDetails" *ngFor ='let field of subcategoryData '>
+        <div class="col-xs-6 col-md-6"><p><span>{{field.FieldName}}:</span>{{field.FieldValue}}</p></div>
       </div>
       <div class="col-xs-12 col-md-12 clearfix userDetailsSpacing no-padding-left">
         <div class="col-xs-12 col-md-8">
@@ -52,9 +51,8 @@
         </div>
         <div class="col-xs-12 col-md-4 no-padding-right">
           <button type="button"
-                  class="btn btn-primary btn-round-lg btn-lg contactButton"
-               (click)="isClicked=!isClicked">CONTACT</button>
-          <div class="hidden contact-number"  [ngClass]="{show:isClicked}">{{productInfoData.Contact}}</div>
+                  class="btn btn-primary btn-round-lg btn-lg contactButton" (click)="isClicked === !isClicked">CONTACT</button>
+          <div class="contact-number" [hidden]="!isClicked">{{productInfoData.Contact}}</div>
         </div>
       </div>
 
