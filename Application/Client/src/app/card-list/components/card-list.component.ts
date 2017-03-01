@@ -2,6 +2,7 @@ import { Component,Input,OnInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import { SettingsService } from '../../_common/services/setting.service';
 import { LoaderComponent } from '../../_common/loader/components/loader.component';
+import { PopUpMessageComponent } from '../../_common/loader/';
 import {Router} from '@angular/router';
 
 let styles = require('../styles/card-list.component.scss').toString();
