@@ -1,6 +1,5 @@
 @import "../../_common/styles/sass/style";
 
-
 .breadcrumb-wraper {
   .breadcrumb {
     background: none;
@@ -25,19 +24,19 @@
 
 .profile-details {
    @extend %type-open-sans-14-1-text;
-   color: $primary-text-color;  	
+   color: $primary-text-color;
 
    .person-name {
    		@extend %type-open-sans-16-6-text;
    		color: $profile-name;
 	}
-	
+
 }
 
 .profile-text {
 	p {
 		@extend %type-open-sans-14-9-text;
-		color: $primary-text-color;		
+		color: $primary-text-color;
     padding: 20px 0;
 
 		span {
@@ -50,9 +49,8 @@
 
 .profile-interest {
 	padding: 10px 0 10px;
-	border-bottom: 1px solid $tag-border-color;	
-  
-	  .pager, .blue-tag {
+	border-bottom: 1px solid $tag-border-color;
+  	  .pager, .blue-tag {
 	    text-align: left;
 	  }
 }
