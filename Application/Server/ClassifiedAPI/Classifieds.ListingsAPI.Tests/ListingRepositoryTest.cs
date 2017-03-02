@@ -53,12 +53,14 @@ namespace Classifieds.ListingsAPI.Tests
                 Furnished = "yes",
                 FuelType = "test",
                 KmDriven = 5000,
-                Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
+                DimensionLength = "9",
+                DimensionWidth = "16'",
+                DimensionHeight = "10'",
                 TypeofUse = "test",
                 Type = "2 BHK",
                 IsPublished = true,
                 Negotiable = true,
-                Photos = new[] { "/Photos/Merc2016.jpg", "/Photos/Merc2016.jpg" }
+                Photos = new ListingImages[] { }
             };
             return listObject;
         }
