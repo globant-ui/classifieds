@@ -18,5 +18,6 @@ namespace Classifieds.UserService.BusinessServices
         bool DeleteFromWishList(string userEmail, string listingId);
         string[] GetUserWishList(string userEmail);
         Tags GetRecommondedTagList(string userEmail);
+        void UpdateImagePath(string userEmail, string imgPath);
     }
 }

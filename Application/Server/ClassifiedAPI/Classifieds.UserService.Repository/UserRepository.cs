@@ -274,6 +274,26 @@ namespace Classifieds.UserService.Repository
             }
         }
 
+        /// <summary>
+        /// Update Image Path in User profile
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="imgPath"></param>
+        /// <returns>returns taglist</returns>
+        public void UpdateImagePath(string userEmail,string imgPath)
+        {
+            try
+            {
+                var query = Query<ClassifiedsUser>.EQ(p => p.UserEmail, userEmail);
+                var update = Update<ClassifiedsUser>
+                    .Set(p => p.Image, imgPath);
+                Classifieds.Update(query, update);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion
 

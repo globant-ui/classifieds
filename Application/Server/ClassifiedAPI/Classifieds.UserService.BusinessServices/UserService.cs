@@ -215,6 +215,22 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        /// <summary>
+        /// Update User Image path
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="imgPath"></param>
+        public void UpdateImagePath(string userEmail, string imgPath)
+        {
+            try
+            {
+                 _userRepository.UpdateImagePath(userEmail, imgPath);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion
 
