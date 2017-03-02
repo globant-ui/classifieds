@@ -46,10 +46,7 @@ namespace Classifieds.Listings.Repository
                 var query = Query<TEntity>.EQ(p => p._id, id);
                 var partialRresult = Classifieds
                     .Find(query).SingleOrDefault(p => p.Status == Status.Active.ToString());
-
-
-                //TEntity result = partialRresult; // partialRresult.Count() > 0 ? partialRresult : null;
-
+                
                 return partialRresult;
             }
             catch (Exception ex)
@@ -179,7 +176,9 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.Furnished, listObj.Furnished)
                     .Set(p => p.FuelType, listObj.FuelType)
                     .Set(p => p.KmDriven, listObj.KmDriven)
-                    .Set(p => p.Dimensions, listObj.Dimensions)
+                    .Set(p => p.DimensionLength, listObj.DimensionLength)
+                    .Set(p => p.DimensionWidth, listObj.DimensionWidth)
+                    .Set(p => p.DimensionHeight, listObj.DimensionHeight)
                     .Set(p => p.TypeofUse, listObj.TypeofUse)
                     .Set(p => p.Photos, listObj.Photos)
                     .Set(p => p.Address, listObj.Address)
