@@ -8,6 +8,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Configuration;
 
 namespace Classifieds.UserServiceAPI.Controllers
 {
@@ -83,9 +86,10 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
         }
         /// <summary>
-        /// Get user profile including user tags, wish list, subscriptions.
+        /// Get user profile including user tags, wish list, Alert.
         /// </summary>
         /// <param name="userEmail"></param>
+        /// <returns>Response containing user details json object</returns>
         [HttpGet]
         public ClassifiedsUser GetUserProfile(string userEmail)
         {
@@ -172,6 +176,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tagName"></param>
+        /// <returns>boolen true as success</returns>
         [HttpDelete]
         public bool DeleteTag(string userEmail,string tagName)
         {
@@ -196,7 +201,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="alert"></param>
-        /// <returns></returns>
+        /// <returns>boolen true as success</returns>
         [HttpPost]
         public bool AddAlert(string userEmail, Alert alert)
         {
@@ -319,7 +324,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// Add user recommonded TagList
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <returns>boolen true as success</returns>
+        /// <returns>user Tag object</returns>
         public Tags GetRecommondedTagList(string userEmail)
         {
             try
@@ -341,6 +346,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <summary>
         /// Insert new Subscription item into the database
         /// </summary>
+        /// <param name="subscriptionObj"></param>
         /// <returns>newly added Subscription object</returns>
         public HttpResponseMessage AddSubscription(Subscription subscriptionObj)
         {
@@ -391,6 +397,80 @@ namespace Classifieds.UserServiceAPI.Controllers
             }
 
             return result;
+        }
+        /// <summary>
+        /// Post User profile Image
+        /// </summary>
+        /// <returns></returns>
+        public async Task<HttpResponseMessage> PostUserImage()
+        {
+            
+            try
+            {
+                //string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmailFromHeader();
+                //if (!(authResult.Equals("200")))
+                //{
+                //    throw new Exception(authResult);
+                //}
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                var httpRequest = HttpContext.Current.Request;
+                foreach (string file in httpRequest.Files)
+                {
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+                    var postedFile = httpRequest.Files[file];
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+                        int imageSize = Convert.ToInt32(ConfigurationManager.AppSettings["ImageSize"]);
+                        int maxContentLength = 1024 * 1024 * imageSize; //Size = 1 MB  
+
+                        IList<string> allowedFileExtensions = new List<string>();
+                        string[] imgExt= ConfigurationManager.AppSettings["ImageExtList"].Split(',');
+                        allowedFileExtensions = imgExt.ToList();
+
+                        var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
+                        var extension = ext.ToLower();
+                        if (!allowedFileExtensions.Contains(extension))
+                        {
+
+                            var message = string.Format("Please Upload image of type "+ ConfigurationManager.AppSettings["ImageExtList"].ToString());
+                            dict.Add("error", message);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, dict);
+                        }
+                        else if (postedFile.ContentLength > maxContentLength)
+                        {
+                            var message = string.Format("Please Upload a file upto "+ ConfigurationManager.AppSettings["ImageSize"] + " MB");
+                            dict.Add("error", message);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, dict);
+                        }
+                        else
+                        {
+                            string[] loginNameParts = _userEmail.Split('@');
+                            string userName = loginNameParts[0];
+                            var filePath = ConfigurationManager.AppSettings["BasePathProfileImage"].ToString() + userName + "\\";//+ postedFile.FileName;
+                            if (!System.IO.Directory.Exists(filePath))
+                            {
+                                System.IO.Directory.CreateDirectory(filePath);
+                            }
+                            postedFile.SaveAs(filePath + userName + extension);
+                            _userService.UpdateImagePath(_userEmail, filePath + userName + extension);
+
+                        }
+                    }
+
+                    var resMessage = string.Format("User Profile Image Updated Successfully.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Created, resMessage); ;
+                }
+                var res = string.Format("Please Upload a image.");
+                dict.Add("error", res);
+                return Request.CreateResponse(HttpStatusCode.NotFound, dict);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
         }
         #endregion
 
