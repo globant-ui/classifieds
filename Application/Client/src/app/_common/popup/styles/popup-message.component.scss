@@ -1,11 +1,11 @@
 @import "../../styles/sass/style";
 
-.popupContainer{
-	padding:30px;
-	button{
-		display: inline-block;
-	}
-	.modal{
+// .popupContainer{
+// 	padding:30px;
+// 	button{
+// 		display: inline-block;
+// 	}
+	.popupContainer{
 		text-align: center;
 		padding: 20px;
 		.modal-dialog{
@@ -52,4 +52,4 @@
 			}
 		}
 	}
-}
+// }

@@ -1,8 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit,ViewChild} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
 import {mapData} from  '../../mapData/mapData';
-
+import { PopUpMessageComponent } from '../../_common/popup/';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
 import {CookieService} from 'angular2-cookie/core';
@@ -17,6 +17,9 @@ let styles = require('../styles/createCard.scss').toString();
     providers: [apiPaths]
 })
 export class CreateCardComponent implements OnInit {
+    
+    @ViewChild('PopUpMessageComponent') popUpMessageComponent;
+
     public myForm: FormGroup;
     public submitted: boolean;
     public selectedCategory: string = 'Automotive';
@@ -30,6 +33,8 @@ export class CreateCardComponent implements OnInit {
     public filters;
     public textBoxes = [];
     private sessionObj;
+    private showPopupMessage: boolean = false;
+    private showPopupDivMessage: string = '';
     
     constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData,private _cookieService:CookieService){
         console.log("constructor createCard");
@@ -169,7 +174,8 @@ export class CreateCardComponent implements OnInit {
        console.log(this.myForm)
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
-       
+       this.showPopupMessage = !this.showPopupMessage;
+       this.showPopupDivMessage = 'listing';
        console.log(this.isCompleted + '********************' + this.isActive);
        
        this.myForm.patchValue({category:this.selectedCategory});
@@ -180,16 +186,21 @@ export class CreateCardComponent implements OnInit {
            cardData.IsPublished = true;
        }
        
-       this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
-       .subscribe((res)=> {
-           console.log("comes here in result",res);
-         },
-         error => {
-           console.log("error in response");
-         },
-         ()=>{
-           console.log("Finally");
-         })
+    //    this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
+    //    .subscribe((res)=> {
+    //        console.log("comes here in result",res);
+    //         if(res['_id'].length != 0){
+    //             console.log("length in create card for id",res['_id'])
+    //             this.showPopupMessage = true;
+    //         }
+    //      },
+    //      error => {
+    //        console.log("error in response");
+    //        this.showPopupMessage = false;;
+    //      },
+    //      ()=>{
+    //        console.log("Finally");
+    //      })
         this.submitted = true;
         
     }

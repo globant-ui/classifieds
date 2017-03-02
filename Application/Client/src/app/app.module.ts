@@ -32,7 +32,7 @@ import { SelectInterestComponent } from './_common/select-interest/components/se
 import { PopUpMessageComponent } from './_common/popup';
 
 /*ng2-bootstrap*/
-import { ModalModule } from 'ng2-bootstrap/modal';
+import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
 
 const APP_PROVIDERS = [
@@ -49,6 +49,7 @@ type StoreType = {
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
+
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
