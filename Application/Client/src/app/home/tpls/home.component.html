@@ -1,4 +1,4 @@
-<!-- <banner [categories]='bannerData'></banner> -->
+<banner [categories]='bannerData'></banner>
 <nav class="navbar searchFilterContainerWrapper" id="cheader1" [ngClass]="{'fixed':navIsFixed}">
    <div class="searchFilterContainer">
         <search (searchCategory)="getCards($event)"
@@ -11,8 +11,8 @@
 </nav>
 <card-list [cards]='initialCardData'></card-list>
 <select-interest></select-interest>
-<!--html popup code
-<!-<div class="popupContainer">
+<!--html popup code -->
+<!--<div class="popupContainer">
 	<button data-toggle="modal" data-target="#card">Successfull Card Creation</button>
 	<div id="card" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
