@@ -24,7 +24,6 @@ export class ProductInfoComponent {
   private productId : any;
   private productInfoData: any;
   private productDetails: any;
-  //private productData: any;
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
 
   constructor(private _route: ActivatedRoute,
