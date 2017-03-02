@@ -48,7 +48,9 @@ namespace Classifieds.SearchAPI.Tests
                 Furnished = "test",
                 FuelType = "test",
                 KmDriven = 123,
-                Dimensions = new Dimension { Length = "9'9", Width = "16'", Height = "8'" },
+                DimensionLength = "9",
+                DimensionWidth = "16'",
+                DimensionHeight = "10'",
                 TypeofUse = "test",
                 Photos = new ListingImages[] { }
             };

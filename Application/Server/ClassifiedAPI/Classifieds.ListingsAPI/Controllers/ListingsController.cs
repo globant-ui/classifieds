@@ -71,19 +71,46 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
                 ProductInfo productInfo = new ProductInfo();
-                productInfo.Listing = _listingService.GetListingById(id); ;
-                if (!string.IsNullOrEmpty(productInfo.Listing.SubmittedBy))
+                productInfo.Listing = _listingService.GetListingById(id);
+                if (productInfo.Listing != null)
                 {
-                    var userDetails = _webApiServiceAgent.GetUserDetails(_accessToken, _userEmail,
-                        productInfo.Listing.SubmittedBy);
-                    if (userDetails != null)
+                    #region Get Users details who submitted this listing card
+                    if (!string.IsNullOrEmpty(productInfo.Listing.SubmittedBy))
                     {
-                        productInfo.UserName = userDetails.UserName;
-                        productInfo.Email = userDetails.UserEmail;
-                        productInfo.ContactNo = userDetails.Mobile;
-                        productInfo.Designation = userDetails.Designation;
-                        productInfo.Photo = userDetails.Image;
+                        var userDetails = _webApiServiceAgent.GetUserDetails(_accessToken, _userEmail, productInfo.Listing.SubmittedBy);
+                        if (userDetails != null)
+                        {
+                            productInfo.UserName = userDetails.UserName;
+                            productInfo.Email = userDetails.UserEmail;
+                            productInfo.ContactNo = userDetails.Mobile;
+                            productInfo.Designation = userDetails.Designation;
+                            productInfo.Photo = userDetails.Image;
+                        }
                     }
+                    #endregion
+
+                    #region To retrieve subcategory specific field name and their values within this listing card
+                    if (!string.IsNullOrEmpty(productInfo.Listing.SubCategory))
+                    {
+                        var filters = _webApiServiceAgent.GetFilters(_accessToken, _userEmail, productInfo.Listing.SubCategory);
+                        if (filters != null)
+                        {
+                            filters = filters.Where(flt => flt != "Sale/Rent").ToArray();
+                            Fields[] fields = new Fields[filters.Length];
+                            for (int item = 0; item < filters.Length; item++)
+                            {
+                                fields[item] = new Fields();
+                                fields[item].FieldName = filters[item].ToString();
+                                var properties = productInfo.Listing.GetType().GetProperty(filters[item]);
+                                if (properties != null)
+                                {
+                                    fields[item].FieldValue = Convert.ToString(properties.GetValue(productInfo.Listing));
+                                }                                
+                            }                            
+                            productInfo.Fields = fields;
+                        }
+                    }
+                    #endregion
                 }
                 return productInfo;
             }
@@ -191,12 +218,14 @@ namespace Classifieds.ListingsAPI.Controllers
             return result;
         }
 
+
         /// <summary>
         /// Update listing item for given Id
         /// </summary>
         /// <param name="id">Listing Id</param>
         /// <param name="listing">Listing Object</param>
         /// <returns></returns>
+        [HttpPut]
         public HttpResponseMessage Put(string id, Listing listing)
         {
             HttpResponseMessage result;
@@ -211,6 +240,8 @@ namespace Classifieds.ListingsAPI.Controllers
 
                 var classified = _listingService.UpdateListing(id, listing);
                 result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+                var newItemUrl = Url.Link("Listings", new { id = classified._id });
+                result.Headers.Location = new Uri(newItemUrl);
             }
             catch (Exception ex)
             {

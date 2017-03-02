@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Classifieds.Listings.BusinessEntities;
+using System.Collections.Generic;
 
 namespace Classifieds.Listings.BusinessServices.ServiceAgent
 {
@@ -13,7 +14,8 @@ namespace Classifieds.Listings.BusinessServices.ServiceAgent
         private readonly string _baseAddress = ConfigurationManager.AppSettings["BaseAddress"];
         private readonly string _userWishListApi = ConfigurationManager.AppSettings["UserWishListAPI"];
         private readonly string _userRecommondedTagListApi = ConfigurationManager.AppSettings["UserRecommondedTagListAPI"];
-        private readonly string _userProfileApi = ConfigurationManager.AppSettings["UserProfileAPI"]; 
+        private readonly string _userProfileApi = ConfigurationManager.AppSettings["UserProfileAPI"];
+        private readonly string _filtersNameOnlyAPI = ConfigurationManager.AppSettings["FiltersNameOnlyAPI"];
 
         #endregion
 
@@ -70,6 +72,23 @@ namespace Classifieds.Listings.BusinessServices.ServiceAgent
                 userDetails = response.Content.ReadAsAsync<UserInfo>().Result;
             }
             return userDetails;
+        }
+
+        public string[] GetFilters(string accessToken, string userEmail, string subCategory)
+        {
+            var filter = new string[] { };
+
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(_baseAddress);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("AccessToken", accessToken);
+            client.DefaultRequestHeaders.Add("UserEmail", userEmail);
+            HttpResponseMessage response = client.GetAsync(_filtersNameOnlyAPI + subCategory).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                filter = response.Content.ReadAsAsync<string[]>().Result;
+            }
+            return filter;
         }
     }
 
