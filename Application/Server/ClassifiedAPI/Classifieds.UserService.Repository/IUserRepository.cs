@@ -16,5 +16,6 @@ namespace Classifieds.UserService.Repository
         bool DeleteFromWishList(string userEmail, string listingId);
         string[] GetUserWishList(string userEmail);
         Tags GetRecommondedTagList(string userEmail);
+        void UpdateImagePath(string userEmail, string imgPath);
     }
 }
