@@ -74,8 +74,6 @@ namespace Classifieds.ListingsAPI.Controllers
                 productInfo.Listing = _listingService.GetListingById(id);
                 if (productInfo.Listing != null)
                 {
-                    productInfo.Listing.Photos = null; //For time being we set it to null as approach is not finalized i.e. bitarray or scality s3 server 
-
                     #region Get Users details who submitted this listing card
                     if (!string.IsNullOrEmpty(productInfo.Listing.SubmittedBy))
                     {
