@@ -39,20 +39,10 @@
           </a>
         </li>
         <li>
-          <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="profile" data-toggle="dropdown">
-                <span class="icon-profile profile-btn"></span>
-                <span class="textProfile">my profile</span>
-            </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="profile">
-              <li>
-                <button class="green-button sign-out-btn">
-                  <span class="icon-flag"></span>
-                  <span (click)="doLogout()">Sign Out</span>
-                </button>
-              </li>
-            </ul>
-          </div>
+          <a>
+            <span class="icon-profile profile-btn"></span>
+            <span class="textProfile" [routerLink]="['profile']">my profile</span>
+          </a>
         </li>
         <li>
           <button class="green-button sign-out-btn">
