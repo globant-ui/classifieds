@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class mapData{
-  
+
   constructor() {
   }
 
@@ -17,7 +17,8 @@ export class mapData{
 //       }:{};
 
       let address = (form.get('area') && form.get('city') && form.get('state') && form.get('country')) ? form.get('area').value + '-' + form.get('city').value + '-' + form.get('state').value + '-' + form.get('country').value : '';
-      let data = {   
+      let data = {
+
         "ListingType": (form.get('cardType'))?form.get('cardType').value:'',
         "ListingCategory": (form.get('category'))?form.get('category').value:'',
         "SubCategory": (form.get('subCategory'))?form.get('subCategory').value:'',
@@ -50,7 +51,7 @@ export class mapData{
       return data;
 
   }
-  
+
 }
 
 
