@@ -28,7 +28,12 @@ $createListing-complete-default-bgcolor: #ffc80a;
 $createListing-save-close-text-color: #4e4e4e;
 $profile-name: #000000;
 $subcribeMe-button-bg-color:#ebebeb;
+$error-subcribe-background-color: #eeeeee;
+$no-result-text-color: #757575;
+$no-result-subtext-color: #6c6c6c;
 $tag-border-color: #cccccc;
+$tag-grey-border: #e1e1e1;
+
 
 //typography
 $arvo-italic: 'ArvoItalic';
@@ -49,6 +54,7 @@ $font-weight-900:                900; // 900
 $font-size-base: 14px;
 $font-size-38: 2.7142em;   //38px
 $font-size-36: 2.571em;    // 36px
+$font-size-34: 2.4285em;    //34px
 $font-size-32: 2.285em;       // 32px
 $font-size-30: 2.142em;   // 30px
 $font-size-28: 2em;    // 28px
@@ -61,7 +67,7 @@ $font-size-16: 1.142em;     // 16px
 $font-size-15: 1.0714em;  // 15px
 $font-size-14: $font-size-base;   // 14px
 $font-size-13: 0.9285em;   // 13px
-$font-size-12: 0.8571rem;   // 12px
+$font-size-12: 0.8571em;   // 12px
 $font-size-11: 0.7857em; // 11px
 $font-size-10: 0.7142em; // 10px
 $font-size-9: 0.6428em;  //9px
