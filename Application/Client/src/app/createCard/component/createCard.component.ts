@@ -30,7 +30,7 @@ export class CreateCardComponent implements OnInit {
     public filters;
     public textBoxes = [];
     private sessionObj;
-    
+
     constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData,private _cookieService:CookieService){
         console.log("constructor createCard");
         this.isActive = '';
@@ -92,7 +92,7 @@ export class CreateCardComponent implements OnInit {
     loadFilters(){
         this.textBoxes = [];
         console.log(this.filters)
-        
+
         let filters = this.filters;
         console.log("filterss",filters);
         let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName=="Sale/Rent");
@@ -118,7 +118,6 @@ export class CreateCardComponent implements OnInit {
         if(dimensionWidth!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionWidth, 1 )[0]);
         }
-        // console.log(this.myForm);
         let that = this;
         this.filters.Filters.forEach(function(element) {
             that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
@@ -136,21 +135,21 @@ export class CreateCardComponent implements OnInit {
     reloadSubcategories(category){
         this.selectedCategory = category.ListingCategory;
         this.subcategories = category.SubCategory;
-        
+
     }
 
     fileNameChanged(event){
         // console.log(this.myForm.get('cardType').value);
         // console.log(this.myForm.get('subCategory').value);
         // console.log(this.selectedCategory);
-        
+
         if(this.myForm.get('cardType').value!='' && this.myForm.get('subCategory').value!='' && this.selectedCategory!=''){
             this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
-        
+
         console.log(this.isCompleted + 'this is completed nd active' + this.isActive);
-        
+
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
             var reader = new FileReader();
@@ -160,26 +159,26 @@ export class CreateCardComponent implements OnInit {
             }
 
             reader.readAsDataURL(event.target.files[0]);
-        } 
+        }
     }
-        
+
     }
 
     createCard(action){
        console.log(this.myForm)
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
-       
+
        console.log(this.isCompleted + '********************' + this.isActive);
-       
+
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
-       
+
        let cardData = this.data.mapCardData(this.myForm);
        if(action == 'create'){
            cardData.IsPublished = true;
        }
-       
+
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
            console.log("comes here in result",res);
@@ -191,7 +190,7 @@ export class CreateCardComponent implements OnInit {
            console.log("Finally");
          })
         this.submitted = true;
-        
+
     }
 
     isAddInfoCompleted() {
@@ -205,8 +204,8 @@ export class CreateCardComponent implements OnInit {
     subCategoryUpdated(){
         console.log("comes here when subcategory updated")
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
-        
+
     }
-    
+
 }
 

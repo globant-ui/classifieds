@@ -22,6 +22,9 @@ export class ProfileComponent implements OnInit {
     private userEmail:any;
     private userDetails: any;
     private userProfileData : any = {};
+    private tagData: any = [];
+    private subscribeCat:any = [];
+    private SubscribeSubCat:any = [];
 
     constructor(private _cservice:CService,
                 private apiPath:apiPaths,
@@ -45,6 +48,10 @@ export class ProfileComponent implements OnInit {
       this._cservice.observableGetHttp(this.userDetails ,null,false)
         .subscribe((res:Response)=> {
             this.userProfileData = res;
+            this.subscribeCat = this.userProfileData.Alert;
+            this.SubscribeSubCat =  this.userProfileData.Alert;
+            this.tagData = this.userProfileData.Tags.SubCategory;
+            console.log(this.tagData);
             console.log(this.userProfileData);
           },
           error => {
