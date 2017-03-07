@@ -12,7 +12,7 @@
 
 </div>
 <div class="container-fluid">
-<div class="container">
+<div class="container new-myprofile-wrapper">
   <div class="row">
     <div class="col-lg-3 profile-details">
       <div class="profile-image">
@@ -44,30 +44,37 @@
 
     <div class="col-lg-4">
       <h3>My Subscribtion</h3>
-      <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
-      <p class="my-sub">
-       <span class="category">category</span>
-       <span class="sub-category pad-right-20">
-         {{res.Category}}</span>
-       <span class="category">subcategory</span>
-       <span class="sub-category">{{res.SubCategory}}</span>
-        <span class="pull-right">
-        <button class="green-circle-button">
-          <i class="fa fa-close"></i>
-        </button>
+      <div class="my-sub-icon pull-right">
+        <span class="">
+          <img src="../../../../assets/img/unsubcribe-tag.png" />
         </span>
-       </p>
+        </div>
+
+
+        <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
+        <p class="my-sub">
+         <span class="category">category</span>
+         <span class="sub-category pad-right-20">
+           {{res.Category}}</span>
+         <span class="category">subcategory</span>
+         <span class="sub-category">{{res.SubCategory}}</span>
+          <span class="pull-right">
+          <button class="green-circle-button">
+            <i class="fa fa-close"></i>
+          </button>
+          </span>
+         </p>
+
+      </div>
+      </div>
 
     </div>
-    </div>
-
   </div>
-</div>
-</div>
+  </div>
 
 
 
-<!--&lt;!&ndash; edit profile changes start here &ndash;&gt;-->
+  <!-- edit profile changes start here -->
 <!--<h2>Edit my profile</h2>-->
 <!--<div class="container-fluid">-->
 <!--<div class="container edit-profile-wrapper">-->
