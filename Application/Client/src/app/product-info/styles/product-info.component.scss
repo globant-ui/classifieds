@@ -68,7 +68,7 @@
   }
 
   .mobileViewCarousel {
-    .largeViewSpacing {
+    /*.largeViewSpacing {
       margin-bottom: 30px;
     }
 
@@ -87,6 +87,15 @@
       width: 116px; height: 115px; margin: 0 19.7px; float: left;
       img {
         width: 116px; height: 115px;
+      }
+    }*/
+    carousel{
+      margin:20px;
+      slide{
+        img{
+          width: 570px;
+          height: 559px;
+        }
       }
     }
   }
