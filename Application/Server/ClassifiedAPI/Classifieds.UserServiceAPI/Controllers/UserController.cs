@@ -105,7 +105,13 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                return _userService.GetUserProfile(userEmail);
+                ClassifiedsUser objUser= new ClassifiedsUser();
+                objUser = _userService.GetUserProfile(userEmail);
+                if (!String.IsNullOrEmpty(objUser.Image))
+                {
+                    objUser.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + objUser.Image;
+                }
+                return objUser;
             }
             catch (Exception ex)
             {
@@ -407,12 +413,12 @@ namespace Classifieds.UserServiceAPI.Controllers
             
             try
             {
-                //string authResult = _commonRepository.IsAuthenticated(Request);
+                string authResult = _commonRepository.IsAuthenticated(Request);
                 _userEmail = GetUserEmailFromHeader();
-                //if (!(authResult.Equals("200")))
-                //{
-                //    throw new Exception(authResult);
-                //}
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
                 Dictionary<string, object> dict = new Dictionary<string, object>();
                 var httpRequest = HttpContext.Current.Request;
                 foreach (string file in httpRequest.Files)
@@ -448,13 +454,15 @@ namespace Classifieds.UserServiceAPI.Controllers
                         {
                             string[] loginNameParts = _userEmail.Split('@');
                             string userName = loginNameParts[0];
-                            var filePath = ConfigurationManager.AppSettings["BasePathProfileImage"].ToString() + userName + "\\";//+ postedFile.FileName;
-                            if (!System.IO.Directory.Exists(filePath))
+                            string path = HttpContext.Current.Server.MapPath("~/");
+                            path= path + ConfigurationManager.AppSettings["BasePathProfileImage"].ToString();
+                            path = path+userName + @"\";//+ postedFile.FileName;
+                            if (!System.IO.Directory.Exists(path))
                             {
-                                System.IO.Directory.CreateDirectory(filePath);
+                                System.IO.Directory.CreateDirectory(path);
                             }
-                            postedFile.SaveAs(filePath + userName + extension);
-                            _userService.UpdateImagePath(_userEmail, filePath + userName + extension);
+                            postedFile.SaveAs(path + userName + extension);
+                            _userService.UpdateImagePath(_userEmail, ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString()+ userName +"/"+ userName + extension);
 
                         }
                     }

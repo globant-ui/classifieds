@@ -55,7 +55,7 @@ namespace Classifieds.Listings.BusinessEntities
         public string Email { get; set; }
         public string Designation { get; set; }
         public string ContactNo { get; set; }
-        public byte[] Photo { get; set; }
+        public string Photo { get; set; }
         public Fields[] Fields { get; set; }
     }
 

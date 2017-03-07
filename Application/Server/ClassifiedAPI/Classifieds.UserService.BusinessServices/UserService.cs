@@ -64,7 +64,9 @@ namespace Classifieds.UserService.BusinessServices
         {
             try
             {
-                return _userRepository.GetUserProfile(userEmail);
+                ClassifiedsUser _user=new ClassifiedsUser();
+                _user= _userRepository.GetUserProfile(userEmail);
+                return _user;
             }
             catch (Exception ex)
             {
