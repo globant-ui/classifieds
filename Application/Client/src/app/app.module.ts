@@ -32,6 +32,7 @@ import { SearchComponent } from './_common/search/components/search.component';
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap/modal';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
+import { CarouselModule } from 'ng2-bootstrap/carousel';
 
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
