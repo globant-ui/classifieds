@@ -1,11 +1,193 @@
 <banner [categories]='bannerData'></banner>
 <nav class="navbar searchFilterContainerWrapper" id="cheader1" [ngClass]="{'fixed':navIsFixed}">
    <div class="searchFilterContainer">
-        <search (searchCategory)="showOutput($event)"
-                (getSelectedFilter)="getSelectedFilter($event)"></search>
+        <search (searchCategory)="getCards($event)"
+                (getSelectedFilter)="getSelectedFilter($event)"
+                ></search>
         <filter [selectedFilter]="selectedFilter"
-                (filterCategory)="showOutput($event)"
-                (getInitialCards) = "getInitialCards($event)"></filter>
+                (getSelectedFilterOption)="getSelectedFilterOption($event)">
+        </filter>
    </div>
 </nav>
 <card-list [cards]='initialCardData'></card-list>
+<select-interest></select-interest>
+<!--html popup code -->
+<!--<div class="popupContainer">
+	<button data-toggle="modal" data-target="#card">Successfull Card Creation</button>
+	<div id="card" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	      	<img src="../../../../assets/img/success.png">
+	      	<div class="successMessage">
+		        <p class="firstP">Congratulations!</p>
+				<p>Your listing has been accepted!</p>
+			</div>
+			<p class="contentP">wdjkcndk;fnv;kdfv; dflv df vf vldfklvfk’lv lkfv df v’lf vlefvlf vl fvl eflv mflv mefv mf vlmf vlfq vlf v fvl flv flv lefv lf vlmef vf vlf v v lv efvmkerbhefnkl,qaf jm,. m, hbjn</p>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">View Listing</button>
+	      </div>
+	    </div>
+
+	  </div>
+	</div>
+
+	<button data-toggle="modal" data-target="#profile">Successfull Profile Update</button>
+	<div id="profile" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		      		<div class="successMessage">
+				        <p class="firstP">Congratulations!</p>
+						<p>Your profile has been updated!</p>
+					</div>
+					<p class="contentP">wdjkcndk;fnv;kdfv; dflv df vf vldfklvfk’lv lkfv df v’lf vlefvlf vl fvl eflv mflv mefv mf vlmf vlfq vlf v fvl flv flv lefv lf vlmef vf vlf v v lv efvmkerbhefnkl,qaf jm,. m, hbjn</p>
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		</div>
+	</div>
+	<button data-toggle="modal" data-target="#subscribe">Successfull Subcription</button>
+	<div id="subscribe" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		      		<div class="successMessage">
+				        <p class="firstP">Congratulations!</p>
+						<p>Your subscription has been added!</p>
+					</div>
+					<p class="contentP">wdjkcndk;fnv;kdfv; dflv df vf vldfklvfk’lv lkfv df v’lf vlefvlf vl fvl eflv mflv mefv mf vlmf vlfq vlf v fvl flv flv lefv lf vlmef vf vlf v v lv efvmkerbhefnkl,qaf jm,. m, hbjn</p>
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		</div>
+	</div>
+	<button data-toggle="modal" data-target="#myModal">My Profile Popup</button>
+	<div id="subscribe" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+		    	<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">My Wishlist</h4>
+      			</div>
+			    <div class="modal-body">
+			    </div>
+		    </div>
+		</div>
+	</div>
+</div>-->
+<!-- footer Html-->
+<footer>
+  <div class="row footerContainer">
+    <div class="col-lg-4">
+        <p>Subscribe and get notified about new listings</p>
+    </div>
+    <div class="col-lg-4">
+        <img src="../../../../assets/img/globantLogo.png" />
+        <p>© 2016 powered by Globant. <u>Terms and conditions</u></p>
+    </div>
+    <div class="col-lg-4 buttonContainer">
+        <button>Subcribe me</button>
+    </div>
+  </div>
+</footer>
+<!-- listing not found Html -->
+<div class="listingNotFoundContainerWrapper">
+	<div class="listingNotFoundContainer">
+		<div class="row">
+			<div class="col-xs-12">
+				<img src="../../../../assets/img/iconBubbles.png" class="bubbleImage">
+				<p class="firstP">OOPS! No results found!</p>
+				<p>Try a different search or subscribe to alerts for new listings in this category.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="dropodownWrapper">
+				<div class="col-xs-12 col-md-6 col-lg-6">
+					<div class="categoryDropdown">
+						<select class="categoryDropdownSelect">
+						    <option selected disabled>Category</option>
+						    <option>Housing</option>
+						    <option>Automotive</option>
+						  </select>
+						<img src="../../../../assets/img/downArrow.png" />
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-6 col-lg-6">
+					<div class="subcategoryDropdown">
+						<select class="subcategoryDropdownSelect">
+						    <option selected disabled>Subcategory</option>
+						    <option>Car</option>
+						    <option>Motarcycle</option>
+						  </select>
+						<img src="../../../../assets/img/downArrow.png" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="checkboxWrapper">
+					<div class="checkboxEmail">
+		            	<label>
+		            		<input type="checkbox" name="email" checked> email
+		            	</label>
+		            </div>
+		            <div class="checkboxSms">
+		            	<label>
+		            		<input type="checkbox" name="Sms" checked> Sms
+		            	</label>
+		            </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="buttonWrapper">
+					<button type="button" class="btn btn-default">Subcribe Me</button> 
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Subscribe Html -->
+<div class="subscribeContainerWrapper">
+	<div class="subscribeContainer">
+		<img src="../../../../assets/img/subscribeIcon.png" class="bubbleImage">
+		<h1>Subscribe</h1>
+		<p>and get notified about new listings</p>
+		<div class="dropodownWrapper">
+			<div class="categoryDropdown">
+				<select class="categoryDropdownSelect">
+				    <option selected disabled>Category</option>
+				    <option>Housing</option>
+				    <option>Automotive</option>
+				  </select>
+				<img src="../../../../assets/img/downArrow.png" />
+			</div>
+			<div class="subcategoryDropdown">
+				<select class="subcategoryDropdownSelect">
+				    <option selected disabled>Subcategory</option>
+				    <option>Car</option>
+				    <option>Motarcycle</option>
+				  </select>
+				<img src="../../../../assets/img/downArrow.png" />
+			</div>
+		</div>
+		<div class="checkboxWrapper">
+			<div class="checkboxEmail">
+            	<label>
+            		<input type="checkbox" name="email" checked> email
+            	</label>
+            </div>
+            <div class="checkboxSms">
+            	<label>
+            		<input type="checkbox" name="Sms" checked> Sms
+            	</label>
+            </div>
+		</div>
+		<div class="buttonWrapper">
+			<button type="button" class="btn btn-default">Subcribe Me</button> 
+		</div>
+	</div>
+</div>
+
