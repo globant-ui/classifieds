@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse header">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" [class.open]="!isCollapsed" (click)="isCollapsed = !isCollapsed">
@@ -39,9 +39,9 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a>
             <span class="icon-profile profile-btn"></span>
-            <span class="textProfile">my profile</span>
+            <span class="textProfile" [routerLink]="['profile']">my profile</span>
           </a>
         </li>
         <li>

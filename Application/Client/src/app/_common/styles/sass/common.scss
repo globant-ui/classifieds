@@ -54,6 +54,10 @@ body{
   width: 100%;
 }
 
+.no-padding {
+  padding: 0;
+}
+
 .no-padding-left {
   padding-left: 0;
 }
@@ -61,3 +65,72 @@ body{
 .no-padding-right {
   padding-right: 0;
 }
+
+.pad-topbot-17 {
+  padding: 17px 0;
+}
+
+.pad-topbot-20 {
+  padding: 20px 0;
+}
+
+.pad-bot-20 {
+  padding-bottom: 20px;
+}
+
+.pad-bot-35 {
+  padding-bottom: 35px;
+}
+
+.pad-right-20 {
+  padding-right: 20px;
+}
+
+.pad-top-40 {
+  padding-top: 40px;
+}
+
+
+// blue tag
+
+.blue-tag{
+
+    padding-left: 0;
+    margin: 20px 0;
+    text-align: center;
+    list-style: none;
+   
+           li{
+           margin: 10px 10px 10px 0;
+           display: inline-block;
+            
+            a{              
+              @extend %type-open-sans-10-9-text;
+              color: $white-color;
+              background-color: $darkblue-color;
+              border: 1px solid $darkblue-color;
+              padding: 8px 23px;
+              text-transform: uppercase;
+              display: inline-block;
+              border-radius: 15px;
+
+              &:hover {
+                background-color: $darkblue-color;
+              }
+
+              }
+          }
+}
+
+//input and select
+
+input, select{
+  background-color: $createListing-item-bgcolor;
+  padding: 10px;
+  margin-top: 0;
+  border: 2px solid $createListing-item-border-color;
+  border-radius: 5px;
+  color: $primary-text-color;
+  @extend %type-open-sans-14-4-text;
+}
+

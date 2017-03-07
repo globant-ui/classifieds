@@ -19,15 +19,15 @@ let tpls = require('../tpls/login.html').toString();
 })
 export class LoginComponent implements OnInit{
 
-  public UserInformation: UserInformation;
-  private windowHandle: any;
-  private intervalLength = 100;
-  private loopCount = 600;
-  private  intervalId = null;
-  private session : Session;
-  private  code : any;
-  private  validateUrl = 'http://in-it0289/UserApi/api/User/RegisterUser';
-  private activeSession:boolean = false;
+    public UserInformation: UserInformation;
+    private windowHandle: any;
+    private intervalLength = 100;
+    private loopCount = 600;
+    private  intervalId = null;
+    private session : Session;
+    private  code : any;
+    private  validateUrl = 'http://in-it0289/UserApi/api/User/RegisterUser';
+    private activeSession:boolean = false;
 
 
   @ViewChild('childModal') public childModal:ModalDirective;
@@ -175,6 +175,7 @@ export class LoginComponent implements OnInit{
           console.log('valid use AT = ',validUser.AccessToken);
           console.log('valid use email = ',validUser.UserEmail);
           this.session.set( 'authenticated', true );
+          this.session.set( 'isFirstTimeLogin', validUser.IsFirstTimeLogin );
           this.session.set( 'token', validUser.AccessToken);
           this.session.set( 'useremail', validUser.UserEmail);
           //this.session.set( 'username', userGoogle['name'] );
@@ -189,7 +190,6 @@ export class LoginComponent implements OnInit{
           console.log("Finally");
         })
   }
-
 
 }
 

@@ -1,4 +1,5 @@
 <div class="search-button">
+    <div *ngIf = "isLoading" class = "popup-loader"></div>
     <input type="text" placeholder="search" #box 
            (keyup) = "onKeyUp($event,box.value)" 
            [(ngModel)]="searchCategoryByStr">
