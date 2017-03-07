@@ -68,25 +68,13 @@
   }
 
   .mobileViewCarousel {
-    .largeViewSpacing {
-      margin-bottom: 30px;
-    }
-
-    .largeView {
-      margin: 0 15.7%;
-    }
-
-    .smallViewsArrow {
-      width: 41px; height: 40px; background-color: transparent; margin: 0 15px; float: left;
-      img {
-        width: 41px; height: 40px; margin-top: 40px;
-      }
-    }
-
-    .smallViews {
-      width: 116px; height: 115px; margin: 0 19.7px; float: left;
-      img {
-        width: 116px; height: 115px;
+    carousel{
+      margin:20px;
+      slide{
+        img{
+          width: 570px;
+          height: 559px;
+        }
       }
     }
   }
