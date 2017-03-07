@@ -47,7 +47,6 @@ export class ProductInfoComponent {
 
     this._route.params.subscribe(params => {
       this.productId = params['id'];
-      console.log(this.productId);
     });
   }
 
@@ -59,7 +58,6 @@ export class ProductInfoComponent {
   transformDate(date) {
     this.productInfoData.SubmittedDate=new Date();
     this.postedDate =this._datepipe.transform(this.productInfoData.SubmittedDate, 'yyyy-MM-dd');
-    console.log(this.postedDate);
   }
 
 
@@ -68,7 +66,7 @@ export class ProductInfoComponent {
   }
 
   showSimilarListing(){
-    console.log('inside similar listing');
+
   }
 
   getProductInfo (){
@@ -76,7 +74,6 @@ export class ProductInfoComponent {
     this._cservice.observableGetHttp(this.productDetails ,null,false)
       .subscribe((res:Response)=> {
           this.productInfoData = res;
-          console.log(this.productInfoData);
           this.type = this.productInfoData.Listing.SubCategory + '-' + this.productInfoData.Listing.ListingCategory;
           this.subcategoryData = this.productInfoData.Fields;
           this.transformDate(this.productInfoData.SubmittedDate);
