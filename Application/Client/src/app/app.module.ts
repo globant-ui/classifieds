@@ -71,7 +71,8 @@ type StoreType = {
     HttpModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
