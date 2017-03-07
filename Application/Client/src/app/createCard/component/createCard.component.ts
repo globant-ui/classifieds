@@ -174,7 +174,7 @@ export class CreateCardComponent implements OnInit {
        console.log(this.myForm)
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
-       this.showPopupMessage = !this.showPopupMessage;
+       this.showPopupMessage = true;
        this.showPopupDivMessage = 'listing';
        console.log(this.isCompleted + '********************' + this.isActive);
        
