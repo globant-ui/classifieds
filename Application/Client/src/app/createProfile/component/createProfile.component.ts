@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
+import {SettingsService} from '../../_common/services/setting.service';
 import {mapData} from  '../../mapData/mapData';
 import { ActivatedRoute } from '@angular/router';
 import {Base64Service} from '../../_common/services/base64.service';
@@ -14,7 +15,7 @@ let styles = require('../styles/createProfile.scss').toString();
     selector:'create-profile',
     template: tpls,
     styles: [styles],
-    providers: [apiPaths]
+    providers: [apiPaths, SettingsService]
 })
 export class ProfileComponent implements OnInit {
 
@@ -24,12 +25,15 @@ export class ProfileComponent implements OnInit {
     private userProfileData : any = {};
     private tagData: any = [];
     private subscribeCat:any = [];
+    private UserImage: any;
     private SubscribeSubCat:any = [];
+    private UserProfileImage = this._settingService.settings;
 
     constructor(private _cservice:CService,
                 private apiPath:apiPaths,
                 private data:mapData,
                 private _route:ActivatedRoute,
+                private _settingService : SettingsService,
                 public _base64service:Base64Service){
     }
 
@@ -39,6 +43,7 @@ export class ProfileComponent implements OnInit {
         //this._base64service.decode(params['usermail']);
         this.userEmail = atob(params['usermail']);
         this.getProfileData(this.userEmail);
+        console.log(this.UserProfileImage , 'UserProfileImage');
       });
 
     }
@@ -51,7 +56,10 @@ export class ProfileComponent implements OnInit {
             this.subscribeCat = this.userProfileData.Alert;
             this.SubscribeSubCat =  this.userProfileData.Alert;
             this.tagData = this.userProfileData.Tags.SubCategory;
-            console.log(this.tagData);
+            var replacedUrl = this.userProfileData.Image;
+            this.UserImage = "file://in-it0289/in-it0289/Photos/avadhut.lakule/avadhut.lakule.jpg"
+              //this.UserProfileImage.userImage.domain +replacedUrl.replace(/\\/g,"/");
+            console.log(this.UserImage);
             console.log(this.userProfileData);
           },
           error => {
