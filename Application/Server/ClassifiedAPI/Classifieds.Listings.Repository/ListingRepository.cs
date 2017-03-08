@@ -46,7 +46,7 @@ namespace Classifieds.Listings.Repository
                 var query = Query<TEntity>.EQ(p => p._id, id);
                 var partialRresult = Classifieds
                     .Find(query).SingleOrDefault(p => p.Status == Status.Active.ToString());
-                
+
                 return partialRresult;
             }
             catch (Exception ex)
@@ -226,7 +226,7 @@ namespace Classifieds.Listings.Repository
             {
                 SortByBuilder sortBuilder = new SortByBuilder();
                 sortBuilder.Descending("_id");
-                var result = Classifieds.FindAllAs<TEntity>().SetSortOrder(sortBuilder).SetLimit(noOfRecords);
+                var result = Classifieds.FindAllAs<TEntity>().SetSortOrder(sortBuilder).SetLimit(noOfRecords).Where(p => p.Status == Status.Active.ToString());
                 return result.ToList();
             }
             catch (Exception ex)
@@ -364,10 +364,10 @@ namespace Classifieds.Listings.Repository
                     var query = Query.In("_id", BsonArray.Create(newObjectId));
                     SortByBuilder sortBuilder = new SortByBuilder();
                     sortBuilder.Descending("_id");
-                    var listings = Classifieds.Find(query).SetSortOrder(sortBuilder);
+                    var listings = Classifieds.Find(query).SetSortOrder(sortBuilder).Where(p => p.Status == Status.Active.ToString());
                     return listings.ToList();
                 }
-                return null; 
+                return null;
             }
             catch (Exception ex)
             {
@@ -384,8 +384,8 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                var finalQuery = Query.And(Query.In("City", BsonArray.Create(tag.Location)),Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
-                var listings = Classifieds.Find(finalQuery);
+                var finalQuery = Query.And(Query.In("City", BsonArray.Create(tag.Location)), Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
+                var listings = Classifieds.Find(finalQuery).Where(p => p.Status == Status.Active.ToString());
                 return listings.ToList();
             }
             catch (Exception ex)
