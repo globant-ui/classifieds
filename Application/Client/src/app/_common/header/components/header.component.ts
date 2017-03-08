@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit{
   public isCollapsed:boolean = true;
   private session : Session;
   private activeSession:boolean = false;
+  private wishlistFlag: boolean = false;
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
               private _cookieService:CookieService){}
@@ -42,6 +43,10 @@ export class HeaderComponent implements OnInit{
     this._authenticationWindowService.doLogOut();
   }
 
+  wishlistPopup() {
+    console.log("wishlistPopup click");
+    this.wishlistFlag = true;
+  }
 
 }
 

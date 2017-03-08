@@ -32,11 +32,11 @@
             <span>create</span>
           </button>
         </li>
-        <li>
-          <a href="#">
+        <li (click)="wishlistPopup()">
+          <!--<a href="#">-->
             <span class="textwishlist">my wishlist</span>
             <span class="icon-like-icon wishlist"></span>
-          </a>
+          <!--</a>-->
         </li>
         <li>
           <a>
@@ -136,3 +136,4 @@
     </div>
   </div>
 </nav>
+<wishlist *ngIf = "wishlistFlag"></wishlist>

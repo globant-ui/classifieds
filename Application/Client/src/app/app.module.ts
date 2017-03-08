@@ -30,7 +30,7 @@ import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
 import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
-
+import { WishListComponent } from './_common/wishlist/components/wishlist.component';
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap/modal';
@@ -67,7 +67,8 @@ type StoreType = {
     SelectInterestComponent,
     ProductInfoComponent,
     CreateCardComponent,
-    ProfileComponent
+    ProfileComponent,
+    WishListComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,

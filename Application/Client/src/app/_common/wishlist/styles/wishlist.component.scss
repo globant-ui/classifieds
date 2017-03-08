@@ -1,0 +1,49 @@
+@import "../../styles/sass/style";
+
+.wishListPopupContainer{
+	text-align: center;
+	padding: 20px;
+	.modal-dialog{
+		width: 750px;
+		.modal-content{
+			background-color: $white-color !important;
+			color: $primary-text-color;
+			.modal-header{
+				h4{
+					color:$black-color;
+					@extend %type-open-sans-22-4-text;
+				}
+			}
+			.modal-body{
+				padding:45px 90px !important;
+				.successMessage{
+					p{
+						color: $createListing-text-color;
+						@extend %type-arvo-regular-36-4-text;
+					}
+				}
+				img, .successMessage{
+					margin-bottom: 45px;
+				}
+				p{
+					@extend %type-open-sans-14-4-text;
+				}
+				p.contentP{
+					width: 400px;
+					margin: 0 auto;
+				}
+				button{
+					margin-top: 45px;
+					padding: 25px 40px;
+					border-radius: 30px;
+					background: $white-color;
+					border: 3px solid $createListing-complete-default-bgcolor;
+					text-transform: uppercase;
+					letter-spacing: 3px;
+					@extend %type-open-sans-12-7-text;
+					color: $createListing-complete-active-text-color;
+				}
+			}
+		}
+	}
+}
