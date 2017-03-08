@@ -38,7 +38,7 @@
             <span class="icon-like-icon wishlist"></span>
           </a>
         </li>
-        <li>
+        <!--<li>
           <a>
             <span class="icon-profile profile-btn"></span>
             <span class="textProfile" [routerLink]="['profile']">my profile</span>
@@ -49,7 +49,24 @@
             <span class="icon-flag"></span>
             <span (click)="doLogout()">Sign Out</span>
           </button>
-        </li>
+        </li>-->
+          <li>
+                <span class="textProfile" (click)="UserProfileNameButton()">{{ UserFirstName }}</span>
+              <ul class="signOutContainer" *ngIf = "UserProfileButton" >
+                <li>
+                    <button class="btn btn-default" type="button" id="profile">
+                      <span class="icon-profile profile-btn"></span>
+                      <span class="textProfile" [routerLink]="['profile']">my profile</span>
+                    </button>
+                </li>
+                <li>
+                  <button class="green-button sign-out-btn" >
+                    <span class="icon-flag"></span>
+                    <span (click)="doLogout()">Sign Out</span>
+                  </button>
+                </li>
+              </ul>
+          </li>
       </ul>
       <div class="list-group-container">
         <div class="panel-group listing-group">

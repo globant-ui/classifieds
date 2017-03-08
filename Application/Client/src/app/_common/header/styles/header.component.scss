@@ -23,8 +23,15 @@ nav.header{
       display:none;
     }
     ul.nav{
+         ul.signOutContainer{
+            padding:0;
+            .sign-out-btn{
+              margin: 0;
+            }
+          }
       li{
         color:$white-color;
+        list-style-type: none;
         button.green-button{
           background-color: $green-color;
           color: $darkblue-color;

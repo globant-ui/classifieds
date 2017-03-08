@@ -18,12 +18,17 @@ export class HeaderComponent implements OnInit{
   public isCollapsed:boolean = true;
   private session : Session;
   private activeSession:boolean = false;
+  private UserFirstName: string = "";
+  private UserProfileButton: boolean = false;
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
               private _cookieService:CookieService){}
 
   ngOnInit(){
     this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
+    //make 1st word capital n use only name
+    this.UserFirstName = this.session['useremail'];
+    this.UserFirstName = this.UserFirstName.charAt(0).toUpperCase() + this.UserFirstName.slice(1).split(".")[0];
     this.activeSession = (this.session && this.session.isValid());
     if(!this.activeSession){
       this.doLogout();
@@ -42,6 +47,9 @@ export class HeaderComponent implements OnInit{
     this._authenticationWindowService.doLogOut();
   }
 
+  UserProfileNameButton(){
+  this.UserProfileButton = !this.UserProfileButton;
+  }
 
 }
 
