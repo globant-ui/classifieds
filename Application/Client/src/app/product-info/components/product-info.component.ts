@@ -34,7 +34,6 @@ export class ProductInfoComponent {
 
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
 
-
   constructor(private _route: ActivatedRoute,
               public _datepipe: DatePipe,
               public appState: AppState,
@@ -59,7 +58,6 @@ export class ProductInfoComponent {
     this.postedDate =this._datepipe.transform(this.productInfoData.SubmittedDate, 'yyyy-MM-dd');
   }
 
-
   ngAfterViewInit(){
     this.getProductInfo();
   }
@@ -82,8 +80,3 @@ export class ProductInfoComponent {
         })
   }
   }
-
-
-
-
-}
