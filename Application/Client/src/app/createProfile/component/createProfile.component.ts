@@ -25,12 +25,9 @@ export class ProfileComponent implements OnInit {
     private tagData: any = [];
     private subscribeCat:any = [];
     private UserImage: any;
-    private SubscribeSubCat:any = [];
     private UserProfileImage = this._settingService.settings;
 
     constructor(private _cservice:CService,
-                private apiPath:apiPaths,
-                private data:mapData,
                 private _route:ActivatedRoute,
                 private _settingService : SettingsService,
                 public _base64service:Base64Service){
@@ -50,7 +47,6 @@ export class ProfileComponent implements OnInit {
       this._cservice.observableGetHttp(this.userDetails ,null,false)
         .subscribe((res:Response)=> {
             this.userProfileData = res;
-            console.log(this.userProfileData);
             this.subscribeCat = this.userProfileData.Alert;
             this.tagData = this.userProfileData.Tags.SubCategory;
             this.UserImage = this.userProfileData.Image;
