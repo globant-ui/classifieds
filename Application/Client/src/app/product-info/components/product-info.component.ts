@@ -33,7 +33,6 @@ export class ProductInfoComponent {
   public subcategoryData = [];
 
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
-  // private filterSubCategoryUrl = 'http://in-it0289/MasterDataAPI/api/Category/GetAllFiltersBySubCategory?subCategory=';
 
 
   constructor(private _route: ActivatedRoute,
@@ -65,10 +64,6 @@ export class ProductInfoComponent {
     this.getProductInfo();
   }
 
-  showSimilarListing(){
-
-  }
-
   getProductInfo (){
     this.productDetails = this.productInfoUrl+this.productId;
     this._cservice.observableGetHttp(this.productDetails ,null,false)
@@ -88,7 +83,7 @@ export class ProductInfoComponent {
   }
   }
 
-  
+
 
 
 }
