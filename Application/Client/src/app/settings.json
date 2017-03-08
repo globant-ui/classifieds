@@ -3,7 +3,7 @@
   "main": " http://demo0440937.mockable.io/dev"
  },
   "userImage":{
-    "domain": "file://in-it0289"
+    "domain": "http://in-it0289"
   },
   "auth": {
     "active": false,

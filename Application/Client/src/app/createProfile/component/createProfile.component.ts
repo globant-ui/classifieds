@@ -1,5 +1,4 @@
 import { Component, OnInit} from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import {mapData} from  '../../mapData/mapData';
@@ -40,10 +39,8 @@ export class ProfileComponent implements OnInit {
     ngOnInit() {
       var self = this;
       this._route.params.subscribe(params => {
-        //this._base64service.decode(params['usermail']);
         this.userEmail = atob(params['usermail']);
         this.getProfileData(this.userEmail);
-        console.log(this.UserProfileImage , 'UserProfileImage');
       });
 
     }
@@ -53,14 +50,10 @@ export class ProfileComponent implements OnInit {
       this._cservice.observableGetHttp(this.userDetails ,null,false)
         .subscribe((res:Response)=> {
             this.userProfileData = res;
-            this.subscribeCat = this.userProfileData.Alert;
-            this.SubscribeSubCat =  this.userProfileData.Alert;
-            this.tagData = this.userProfileData.Tags.SubCategory;
-            var replacedUrl = this.userProfileData.Image;
-            this.UserImage = "file://in-it0289/in-it0289/Photos/avadhut.lakule/avadhut.lakule.jpg"
-              //this.UserProfileImage.userImage.domain +replacedUrl.replace(/\\/g,"/");
-            console.log(this.UserImage);
             console.log(this.userProfileData);
+            this.subscribeCat = this.userProfileData.Alert;
+            this.tagData = this.userProfileData.Tags.SubCategory;
+            this.UserImage = this.userProfileData.Image;
           },
           error => {
             console.log("error in response");

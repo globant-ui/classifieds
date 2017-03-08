@@ -32,10 +32,9 @@ export class CreateCardComponent implements OnInit {
     private sessionObj;
 
     constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData,private _cookieService:CookieService){
-        console.log("constructor createCard");
         this.isActive = '';
         this.isCompleted = [];
-        this.endPoints.push("SELECT","UPLOAD","ADD INFO","DONE");
+        this.endPoints.push('SELECT','UPLOAD','ADD','INFO','DONE');
         this.type = 'Cars-Automotive';
         this.filters = [];
         this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
@@ -74,12 +73,12 @@ export class CreateCardComponent implements OnInit {
     }
 
     getFilters(){
-       let url = (this.myForm.get('subCategory').value!=undefined) ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
-       let that = this;
+       let url = (this.myForm.get('subCategory').value!==undefined) ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
+       let self = this;
        this.httpService.observableGetHttp(url,null,false)
        .subscribe((res)=> {
-           that.filters = res;
-           that.loadFilters();
+           self.filters = res;
+           self.loadFilters();
          },
          error => {
            console.log("error in response");
@@ -91,44 +90,38 @@ export class CreateCardComponent implements OnInit {
 
     loadFilters(){
         this.textBoxes = [];
-        console.log(this.filters)
 
         let filters = this.filters;
-        console.log("filterss",filters);
-        let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName=="Sale/Rent");
+        let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName==='Sale/Rent');
         this.filters.Filters.splice( removeSaleRent, 1 )[0]
-        let year = this.filters.Filters.findIndex(x => x.FilterName=="Year");
+        let year = this.filters.Filters.findIndex(x => x.FilterName=='Year');
         if(year!=-1){
             this.textBoxes.push(this.filters.Filters.splice( year, 1 )[0]);
         }
-        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName=="KMDriven");
+        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName==='KMDriven');
         if(kmDriven!=-1){
             this.textBoxes.push(this.filters.Filters.splice( kmDriven, 1 )[0]);
         }
         //for dimensions
-        let dimensionLength = this.filters.Filters.findIndex(x => x.FilterName=="DimensionLength");
+        let dimensionLength = this.filters.Filters.findIndex(x => x.FilterName==='DimensionLength');
         if(dimensionLength!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionLength, 1 )[0]);
         }
-        let dimensionHeight = this.filters.Filters.findIndex(x => x.FilterName=="DimensionHeight");
+        let dimensionHeight = this.filters.Filters.findIndex(x => x.FilterName==='DimensionHeight');
         if(dimensionHeight!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionHeight, 1 )[0]);
         }
-        let dimensionWidth = this.filters.Filters.findIndex(x => x.FilterName=="DimensionWidth");
+        let dimensionWidth = this.filters.Filters.findIndex(x => x.FilterName==='DimensionWidth');
         if(dimensionWidth!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionWidth, 1 )[0]);
         }
-        let that = this;
+        let self = this;
         this.filters.Filters.forEach(function(element) {
-            that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
+            self.myForm.addControl(element.FilterName,new FormControl('', Validators.required));
         });
         this.textBoxes.forEach(function(element){
-            that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
+            self.myForm.addControl(element.FilterName,new FormControl('', Validators.required));
         });
-
-        console.log(this.filters)
-        console.log(this.textBoxes);
-        console.log(this.myForm);
 
     }
 
@@ -139,16 +132,11 @@ export class CreateCardComponent implements OnInit {
     }
 
     fileNameChanged(event){
-        // console.log(this.myForm.get('cardType').value);
-        // console.log(this.myForm.get('subCategory').value);
-        // console.log(this.selectedCategory);
 
         if(this.myForm.get('cardType').value!='' && this.myForm.get('subCategory').value!='' && this.selectedCategory!=''){
             this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
-
-        console.log(this.isCompleted + 'this is completed nd active' + this.isActive);
 
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
@@ -165,11 +153,9 @@ export class CreateCardComponent implements OnInit {
     }
 
     createCard(action){
-       console.log(this.myForm)
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
 
-       console.log(this.isCompleted + '********************' + this.isActive);
 
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
@@ -181,7 +167,6 @@ export class CreateCardComponent implements OnInit {
 
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
-           console.log("comes here in result",res);
          },
          error => {
            console.log("error in response");
@@ -198,11 +183,9 @@ export class CreateCardComponent implements OnInit {
             this.isCompleted.push(this.endPoints[1]);
         }
         this.isActive = this.endPoints[2];
-        console.log(this.isCompleted + '--------' + this.isActive);
     }
 
     subCategoryUpdated(){
-        console.log("comes here when subcategory updated")
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
 
     }

@@ -1,5 +1,8 @@
 <ol class="progress">
-    <li *ngFor="let endPoint of endPoints;let i=index" [class.is-complete]="isCompleted.indexOf(endPoint) > -1" [class.is-active]="isActive==endPoint" [attr.data-step]="(isCompleted.indexOf(endPoint) > -1)?(showTick):(i+1)" >
+    <li *ngFor="let endPoint of endPoints;let i=index"
+        [class.is-complete]="isCompleted.indexOf(endPoint) > -1"
+        [class.is-active]="isActive===endPoint"
+        [attr.data-step]="(isCompleted.indexOf(endPoint) > -1)?(showTick):(i+1)" >
       {{endPoint}}
     </li>
 </ol>
