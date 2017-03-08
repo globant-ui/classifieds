@@ -59,19 +59,18 @@ export class CreateCardComponent implements OnInit {
             location: new FormControl('', [<any>Validators.required]),
             submittedBy: new FormControl('', [])
         });
-        var that = this;
+        var self = this;
 
         this._route.params.subscribe(params => {
-            that.productId = params['id'];
-            if(that.productId !== undefined){
-                console.log("comes here anyway");
-                that.action = 'Edit';
-                that.getProductData(that.productId);
+            self.productId = params['id'];
+            if(self.productId !== undefined){
+                self.action = 'Edit';
+                self.getProductData(self.productId);
             }
         });
         this.isActive = '';
         this.isCompleted = [];
-        this.endPoints.push("SELECT","UPLOAD","ADD INFO","DONE");
+        this.endPoints.push('SELECT','UPLOAD','ADD','INFO','DONE');
         this.type = 'Car-Automotive';
         this.filters = [];
         this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
@@ -84,15 +83,10 @@ export class CreateCardComponent implements OnInit {
     }
 
     getCategories(){
-      var that = this;
+      var self = this;
        this.httpService.observableGetHttp(this.apiPath.GET_ALL_CATEGORIES,null,false)
        .subscribe((res)=> {
-           console.log(res);
-
-          // this.categories = res;
-
-           that.subcategories = res[0].SubCategory;
-           debugger;
+           self.subcategories = res[0].SubCategory;
          },
          error => {
            console.log("error in response");
@@ -103,15 +97,12 @@ export class CreateCardComponent implements OnInit {
     }
 
     getFilters(){
-
        let url = (this.myForm.get('subCategory').value!=undefined) ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
-       let that = this;
-      debugger;
+       let self = this;
        this.httpService.observableGetHttp(url,null,false)
        .subscribe((res)=> {
-           that.filters = res;
-
-           that.loadFilters();
+           self.filters = res;
+           self.loadFilters();
          },
          error => {
            console.log("error in response");
@@ -123,45 +114,37 @@ export class CreateCardComponent implements OnInit {
 
     loadFilters(){
         this.textBoxes = [];
-        console.log(this.filters)
-
         let filters = this.filters;
-        console.log("filterss",filters);
-        let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName=="Sale/Rent");
+        let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName==='Sale/Rent');
         this.filters.Filters.splice( removeSaleRent, 1 )[0]
-        let year = this.filters.Filters.findIndex(x => x.FilterName=="YearOfPurchase");
+        let year = this.filters.Filters.findIndex(x => x.FilterName==='YearOfPurchase');
         if(year!=-1){
             this.textBoxes.push(this.filters.Filters.splice( year, 1 )[0]);
         }
-        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName=="KmDriven");
+        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName==='KmDriven');
         if(kmDriven!=-1){
             this.textBoxes.push(this.filters.Filters.splice( kmDriven, 1 )[0]);
         }
         //for dimensions
-        let dimensionLength = this.filters.Filters.findIndex(x => x.FilterName=="DimensionLength");
+        let dimensionLength = this.filters.Filters.findIndex(x => x.FilterName==='DimensionLength');
         if(dimensionLength!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionLength, 1 )[0]);
         }
-        let dimensionHeight = this.filters.Filters.findIndex(x => x.FilterName=="DimensionHeight");
+        let dimensionHeight = this.filters.Filters.findIndex(x => x.FilterName==='DimensionHeight');
         if(dimensionHeight!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionHeight, 1 )[0]);
         }
-        let dimensionWidth = this.filters.Filters.findIndex(x => x.FilterName=="DimensionWidth");
+        let dimensionWidth = this.filters.Filters.findIndex(x => x.FilterName==='DimensionWidth');
         if(dimensionWidth!=-1){
             this.textBoxes.push(this.filters.Filters.splice( dimensionWidth, 1 )[0]);
         }
-        let that = this;
+        let self = this;
         this.filters.Filters.forEach(function(element) {
-            that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
+            self.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
         });
         this.textBoxes.forEach(function(element){
-            that.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
+            self.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
         });
-
-        if(this.action === 'Edit'){
-
-        }
-
     }
 
     reloadSubcategories(category){
@@ -193,30 +176,24 @@ export class CreateCardComponent implements OnInit {
     }
 
     createCard(action){
-       console.log(this.myForm)
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
-
-       console.log(this.isCompleted + '********************' + this.isActive);
-
-
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
 
        let cardData = this.data.mapCardData(this.myForm);
-       if(action == 'create'){
+       if(action === 'create'){
            cardData.IsPublished = true;
        }
        this.uploadedImages.forEach(function(value,key){
            let imageDetails = {};
-           imageDetails["ImageName"] = "Photo"+key;
-           imageDetails["Image"] =  value;
+           imageDetails['ImageName'] = 'Photo'+key;
+           imageDetails['Image'] =  value;
            cardData.Photos.push(imageDetails);
        });
 
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
-           console.log("comes here in result",res);
          },
          error => {
            console.log("error in response");
@@ -240,32 +217,30 @@ export class CreateCardComponent implements OnInit {
     }
 
     subCategoryUpdated(){
-        console.log("comes here when subcategory updated")
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
-
     }
 
     getProductData(productId){
         let productInfoUrl = this._settingsService.getPath('productInfoUrl')+productId;
-        let that = this;
+        let self = this;
         this.httpService.observableGetHttp(productInfoUrl,null,false)
         .subscribe((res)=> {
-            that.productInfo = res;
-            console.log(that.productInfo);
-            that.myForm.patchValue({cardType:that.productInfo["Listing"].ListingType});
-            that.myForm.patchValue({category:that.productInfo["Listing"].ListingCategory});
-            that.myForm.patchValue({subCategory:that.productInfo["Listing"].SubCategory});
-            that.myForm.patchValue({title:that.productInfo["Listing"].Title});
-            that.myForm.patchValue({location:that.productInfo["Listing"].City});
-            that.myForm.patchValue({shortDesc:that.productInfo["Listing"].Details});
-            that.myForm.patchValue({price:that.productInfo["Listing"].Price});
-            that.myForm.patchValue({area:that.productInfo["Listing"].Address.split("-")[0]});
-            that.myForm.patchValue({city:that.productInfo["Listing"].City});
-            that.myForm.patchValue({state:that.productInfo["Listing"].State});
-            that.myForm.patchValue({country:that.productInfo["Listing"].Country});
-            that.myForm.patchValue({negotiable:that.productInfo["Listing"].Negotiable});
+            self.productInfo = res;
+            console.log(self.productInfo);
+            self.myForm.patchValue({cardType:self.productInfo['Listing'].ListingType});
+            self.myForm.patchValue({category:self.productInfo['Listing'].ListingCategory});
+            self.myForm.patchValue({subCategory:self.productInfo['Listing'].SubCategory});
+            self.myForm.patchValue({title:self.productInfo['Listing'].Title});
+            self.myForm.patchValue({location:self.productInfo['Listing'].City});
+            self.myForm.patchValue({shortDesc:self.productInfo['Listing'].Details});
+            self.myForm.patchValue({price:self.productInfo['Listing'].Price});
+            self.myForm.patchValue({area:self.productInfo['Listing'].Address.split("-")[0]});
+            self.myForm.patchValue({city:self.productInfo['Listing'].City});
+            self.myForm.patchValue({state:self.productInfo['Listing'].State});
+            self.myForm.patchValue({country:self.productInfo['Listing'].Country});
+            self.myForm.patchValue({negotiable:self.productInfo['Listing'].Negotiable});
 
-            that.getFilters();
+            self.getFilters();
 
             },
             error => {
