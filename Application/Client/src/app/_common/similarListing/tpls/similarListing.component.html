@@ -1,5 +1,6 @@
+<div class="similarListingContainer">
 <div class="similarListings">
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-xs-12">
       <h3>Similar Listings</h3>
     </div>
@@ -16,7 +17,7 @@
         </template>
       </div>
     </div>
-  </div>
+  </div> -->
   <!--<div class="listing">
       <img src="../../../../assets/img/similarListing.png" />
       <div class="listingContent">
@@ -24,4 +25,23 @@
         <span class="price pull-right">RS 60000</span>
       </div>
   </div>-->
+  <div class="row">
+    <div class="col-sm-12">
+        <h3>Similar Listing</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-3" *ngFor="let card of similarListing;let i = index;">
+      <div class="thumbnail">
+        <template [ngIf]="i<4">
+          <img src="../../../../assets/img/similarListing.png" alt="...">
+          <div class="listingContent caption">
+            <span class="title"><h5>{{card.Title}}</h5></span>
+            <span class="price pull-right">{{card.Price}}</span>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
