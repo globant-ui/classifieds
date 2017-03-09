@@ -3,12 +3,12 @@
 .progress {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 50px;
   display: table;
   table-layout: fixed;
   width: 100%;
-  color: $white-color;
-  background: transparent;
+  color: $white-color !important;
+  background: transparent !important;
   height: 700px !important;
 
   > li {
@@ -27,6 +27,7 @@
       background: $createListing-complete-default-bgcolor;
       width: 3em;
       height: 3em;
+      color: $white-color !important;
       text-align: center; //IE8 doesn't inherit this style
       margin-bottom: 0.25em;
       line-height: 3em;
