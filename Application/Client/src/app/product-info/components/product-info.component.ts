@@ -33,8 +33,6 @@ export class ProductInfoComponent {
   public subcategoryData = [];
 
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
-  // private filterSubCategoryUrl = 'http://in-it0289/MasterDataAPI/api/Category/GetAllFiltersBySubCategory?subCategory=';
-
 
   constructor(private _route: ActivatedRoute,
               public _datepipe: DatePipe,
@@ -60,13 +58,8 @@ export class ProductInfoComponent {
     this.postedDate =this._datepipe.transform(this.productInfoData.SubmittedDate, 'yyyy-MM-dd');
   }
 
-
   ngAfterViewInit(){
     this.getProductInfo();
-  }
-
-  showSimilarListing(){
-
   }
 
   getProductInfo (){
@@ -87,8 +80,3 @@ export class ProductInfoComponent {
         })
   }
   }
-
-  
-
-
-}
