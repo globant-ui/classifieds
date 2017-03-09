@@ -30,9 +30,7 @@ export class WishListComponent implements OnInit, AfterViewInit  {
                         //this.selectInterestUrl = _settingsService.getPath('searchUrl');
                  }
 
-  ngOnInit() {
-     
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.showChildModal();
