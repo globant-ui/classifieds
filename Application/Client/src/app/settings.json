@@ -23,7 +23,9 @@
       "searchAutoSuggestionUrl" : "http://in-it0289/MasterDataAPI/api/category/GetCategorySuggetion?categoryText=",
       "filterCategoryUrl" :"http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=",
       "subCategoryUrl":"http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=",
-      "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail="
+      "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail=",
+      "favoriteUrl":"http://in-it0289/UserApi/api/User/AddToWishList?userEmail=",
+      "GetUserWishList":"http://in-it0289/UserApi/api/User/GetUserWishList?userEmail="
     } 
   },
  "environment": "dev"
