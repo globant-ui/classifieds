@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 
 namespace Classifieds.Listings.Repository
@@ -393,7 +394,29 @@ namespace Classifieds.Listings.Repository
                 throw ex;
             }
         }
-        #endregion
+        public void UpdateImagePath(string listingId, ListingImages[] photos)
+        {
+            try
+            {
+                foreach (var t in photos)
+                {
+                    var result = Query<TEntity>.ElemMatch(p => p.Photos, builder => Query<ListingImages>.EQ(sc => sc.ImageName, t.ImageName));
+                    var isExist= Classifieds.Find(result).ToList();
+                    if (isExist.Count == 0)
+                    {
+                        var queryBuilder = Query<TEntity>.EQ(p => p._id, listingId);
+                        var update = Update<TEntity>.Push(p => p.Photos, t);
+                        Classifieds.Update(queryBuilder, update);
+                    }
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+       #endregion
 
         #region private methods
         /// <summary>
