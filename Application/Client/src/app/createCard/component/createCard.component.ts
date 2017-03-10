@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
-import {mapData} from  '../../mapData/mapData';
+import {MapData} from  '../../mapData/mapData';
 import { ActivatedRoute } from '@angular/router';
 import {SettingsService} from '../../_common/services/setting.service';
 
@@ -39,7 +39,7 @@ export class CreateCardComponent implements OnInit {
 
     constructor(private httpService:CService,
                 private apiPath:apiPaths,
-                private data:mapData,
+                private data:MapData,
                 private _route: ActivatedRoute,
                 private _settingsService: SettingsService,
                 private _cookieService:CookieService

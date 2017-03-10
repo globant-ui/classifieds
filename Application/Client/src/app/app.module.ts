@@ -1,6 +1,8 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
+import {CookieService} from 'angular2-cookie/core';
+import {CService} from "./_common/services/http.service";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
@@ -11,7 +13,7 @@ import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
-import { HomeComponent } from './home/components/home.component';
+import { HomeComponent } from './home/component/home.component';
 import { ProgressComponent } from './_common/progress/components/progress.component';
 
 import { HeaderComponent } from './_common/header/components/header.component';
@@ -20,12 +22,12 @@ import { SimilarListingComponent } from './_common/similarListing/components/sim
 import { CardListComponent } from './card-list/components/card-list.component';
 import { BannerComponent } from './banner/components/banner.component';
 import { ProductInfoComponent } from './product-info/components/product-info.component';
-import {CookieService} from 'angular2-cookie/core';
-import {CService} from "./_common/services/http.service";
+
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
 import { ProfileComponent } from './createProfile/component/createProfile.component';
-import {mapData} from  './mapData/mapData';
+import { MyListingsComponent } from './myListings/component/myListings.component';
+import { MapData} from  './mapData/mapData';
 
 import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
@@ -69,7 +71,8 @@ type StoreType = {
     SelectInterestComponent,
     ProductInfoComponent,
     CreateCardComponent,
-    ProfileComponent
+    ProfileComponent,
+    MyListingsComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -85,7 +88,7 @@ type StoreType = {
     ENV_PROVIDERS,
     APP_PROVIDERS,
     CService,
-    mapData,
+    MapData,
     CookieService,
     DatePipe
   ]

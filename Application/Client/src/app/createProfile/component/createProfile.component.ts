@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
-import {mapData} from  '../../mapData/mapData';
+import {MapData} from  '../../mapData/mapData';
 
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
 
     private GetUserProfileUrl = 'http://in-it0289/Userapi/api/user/GetUserProfile?userEmail=';
 
-    constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData){
+    constructor(private httpService:CService,private apiPath:apiPaths,private data:MapData){
     }
 
     ngOnInit() {
