@@ -14,7 +14,9 @@ export const ROUTES: Routes = [
   {path: 'productInfo', component: ProductInfoComponent},
   {path: 'productInfo/:id', component: ProductInfoComponent},
   {path: 'createCard', component: CreateCardComponent},
+  {path: 'createCard/:id', component: CreateCardComponent},
   {path: 'profile', component: ProfileComponent},
+
 
 ];
 
