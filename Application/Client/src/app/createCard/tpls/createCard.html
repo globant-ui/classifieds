@@ -1,7 +1,5 @@
 <div class="createCardContainer">
-  <div class="container"><!-- 
-    <div class="row">
-      <div class="col-lg-12"> -->
+  <div class="container">
         <div class="row">
           <div class="col-lg-2 col-md-2 col-xs-2">
               <progress-bar [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
@@ -149,18 +147,10 @@
               </form>
           </div>
         </div>
-        <div class="row NavigationContainer">
-            <div class="col-lg-1 navigationArrowContainer leftAlign">
-              <img src="../../../../assets/img/arrow-left-circle.png">
-            </div>
-            <div class="col-lg-10 marginClass">
-              <similar-listing [type]="type" (similarListingLoaded)="getFilters()"></similar-listing>
-            </div>      
-            <div class="col-lg-1 navigationArrowContainer rightAlign">
-              <img src="../../../../assets/img/arrow-right-circle.png">
-            </div>
-        </div>
-      </div><!-- 
-    </div> 
-  </div>-->
+  </div>
+  <div class="row">
+      <div class="col-lg-12">
+        <similar-listing [type]="type" (similarListingLoaded)="getFilters()"></similar-listing>
+      </div>
+  </div>
 </div>
