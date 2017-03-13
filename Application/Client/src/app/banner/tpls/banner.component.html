@@ -8,17 +8,17 @@
       <div class="container-fluid">
         <div class="bannerwrapper">
           <ul class="nav navbar-nav">
-              <li *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory">
+              <li *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory"  id="accordion" role="tablist" aria-multiselectable="true">
                   <div class="img-icon">
                       <img src="../../../../assets/img/mobile-icon/{{category.Image}}" />
                   </div>
-                  <div class="categoryTitle">{{category.ListingCategory}} </div>
+                  <div class="categoryTitle"><a data-toggle="collapse" data-parent="#accordion" href="{{category.ListingCategory}}" aria-expanded="true" aria-controls="">{{category.ListingCategory}}</a> </div>
                   <span class="spriteimage {{category.ListingCategory}}Icon"></span>
-                  <ul class="hoverlistWrapper" *ngIf="showSubCategory">
+                  <ul class="hoverlistWrapper" *ngIf="showSubCategory"  id="{{category.ListingCategory}}" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
                       <li *ngFor="let sub of category.SubCategory"><a>{{sub}}</a></li>
                   </ul>
                   <button>EXPLORE</button>
-                  <a href="#" class="expandListIcon"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                  <a class="expandListIcon"><span class="glyphicon glyphicon-chevron-down"></span></a> 
               </li>
           </ul>
         </div>
