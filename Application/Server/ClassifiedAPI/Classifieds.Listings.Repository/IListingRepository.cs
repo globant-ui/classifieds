@@ -17,5 +17,6 @@ namespace Classifieds.Listings.Repository
         TEntity CLoseListing(string id, TEntity entity);
         List<TEntity> GetMyWishList(string[] id);
         List<TEntity> GetRecommendedList(Tags tag);
+        void UpdateImagePath(string listingId, ListingImages[] photos);
     }
 }

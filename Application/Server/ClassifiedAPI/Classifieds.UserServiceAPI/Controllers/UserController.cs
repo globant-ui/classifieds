@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Configuration;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace Classifieds.UserServiceAPI.Controllers
 {
@@ -256,10 +258,10 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// Add to wishList update UserProfile
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="listinId"></param>
+        /// <param name="listingId"></param>
         /// <returns>boolen true as success</returns>
         [HttpPost]
-        public bool AddToWishList(string userEmail, string listinId)
+        public bool AddToWishList(string userEmail, string listingId)
         {
             try
             {
@@ -269,7 +271,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                return _userService.AddtoWishList(userEmail, listinId);
+                return _userService.AddtoWishList(userEmail, listingId);
             }
             catch (Exception ex)
             {
@@ -281,10 +283,10 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// Delete listing id from wishList and update UserProfile
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="listinId"></param>
+        /// <param name="listingId"></param>
         /// <returns>boolen true as success</returns>
         [HttpDelete]
-        public bool DeleteFromWishList(string userEmail, string listinId)
+        public bool DeleteFromWishList(string userEmail, string listingId)
         {
             try
             {
@@ -294,7 +296,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                return _userService.DeleteFromWishList(userEmail, listinId);
+                return _userService.DeleteFromWishList(userEmail, listingId);
             }
             catch (Exception ex)
             {
@@ -480,14 +482,15 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw;
             }
         }
+      
         #endregion
 
-        #region Private methods
-        /// <summary>
-        /// Returns user email string
-        /// </summary>
-        /// <param name="user">ClassifiedsUser object</param>
-        /// <returns>string</returns>
+            #region Private methods
+            /// <summary>
+            /// Returns user email string
+            /// </summary>
+            /// <param name="user">ClassifiedsUser object</param>
+            /// <returns>string</returns>
         private string GetUserEmail(ClassifiedsUser user)
         {
             string result = string.Empty;
@@ -512,4 +515,5 @@ namespace Classifieds.UserServiceAPI.Controllers
         #endregion
 
     }
+  
 }

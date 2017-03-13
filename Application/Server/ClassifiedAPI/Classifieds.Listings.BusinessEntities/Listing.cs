@@ -62,7 +62,7 @@ namespace Classifieds.Listings.BusinessEntities
     public class ListingImages
     {
         public string ImageName { get; set; }
-        public Byte[] Image { get; set; }        
+        public string Image { get; set; }        
     }
 
     public class Fields
