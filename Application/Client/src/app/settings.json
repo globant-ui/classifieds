@@ -25,7 +25,8 @@
       "subCategoryUrl":"http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=",
       "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail=",
       "favoriteUrl":"http://in-it0289/UserApi/api/User/AddToWishList?userEmail=",
-      "GetUserWishList":"http://in-it0289/UserApi/api/User/GetUserWishList?userEmail="
+      "GetUserWishList":"http://in-it0289/UserApi/api/User/GetUserWishList?userEmail=",
+      "DeleteUserWishListUrl": "http://in-it0289/UserApi/api/User/DeleteFromWishList?userEmail="
     } 
   },
  "environment": "dev"
