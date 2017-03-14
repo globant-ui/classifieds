@@ -17,6 +17,39 @@
     text-decoration: underline;
   }
 
+  .carousel.slide{
+      .carousel-control .icon-next:before {
+           //Reset the icon
+           content: " ";
+           //Give layout
+           display:block;
+           //Your image as background
+           background:url("../../../assets/img/arrow-right-circle.png") no-repeat;
+           //To show full image set the dimensions
+           width:41px;
+           height:40px;
+      }
+      .carousel-control .icon-prev:before {
+           //Reset the icon
+           content: " ";
+           //Give layout
+           display:block;
+           //Your image as background
+           background:url("../../../assets/img/arrow-left-circle.png") no-repeat;
+           //To show full image set the dimensions
+           width:41px;
+           height:40px;
+      }
+      .carousel-indicators{
+        li.active{
+          background-color: $green-color !important;
+        }
+        li{
+          border: 1px solid $green-color !important;
+        }
+      }
+    }
+
   .img-circle {
     border-radius: 50%;
   }
