@@ -1,5 +1,6 @@
 # @AngularClass
 
+*.js
 # Logs
 logs
 *.log
