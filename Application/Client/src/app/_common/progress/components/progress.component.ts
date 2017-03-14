@@ -12,15 +12,15 @@ export class ProgressComponent implements OnChanges{
 
   @Input()
   endPoints;
-  
+
   @Input()
   isCompleted;
-  
+
   @Input()
   isActive:string;
 
   public showTick = '&#10003;';
-  
+
   constructor(){
     console.log(this.endPoints);
     console.log(this.isCompleted);
@@ -29,11 +29,8 @@ export class ProgressComponent implements OnChanges{
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}){
-    console.log("changes");
-    console.log(changes);
-    
   }
 
-    
+
 }
 
