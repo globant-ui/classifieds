@@ -1,10 +1,4 @@
 @import "../../_common/styles/sass/style";
-.isFaveSelected {
-		color :red;
-		background-color:yellow;
-		border:1px solid grey; 
-		}
-
 .cardList{
 	padding-left: 55px !important;
 	padding-right: 55px !important;
@@ -78,15 +72,16 @@
 						text-transform: uppercase;
 						span{
 							margin-right: 5px;
-							
+							&:first-child{
+								float: left;
+							}
+							&:last-child{
+								float: right;
+							}
 						}
-						
-						&:first-child{
-							float: left;
-						}
-						&:last-child{
-							float: right;
-						}
+						.isFaveSelected {
+								color: $red-color !important;
+							}
 					}
 				}
 			}
