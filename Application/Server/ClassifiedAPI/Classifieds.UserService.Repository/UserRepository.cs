@@ -234,7 +234,7 @@ namespace Classifieds.UserService.Repository
         {
             try
             {
-                var result = Classifieds.Update(Query.EQ("UserEmail", listingId),
+                var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),
                 Update.PullWrapped("WishList", listingId));
                 return result.UpdatedExisting;
             }

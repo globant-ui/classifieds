@@ -18,5 +18,6 @@ namespace Classifieds.Listings.BusinessServices
         Listing CLoseListing(string id, Listing entity);
         List<Listing> GetMyWishList(string[] listingIds);
         List<Listing> GetRecommendedList(Tags tags);
+        void UpdateImagePath(string listingId, ListingImages[] photos);
     }
 }

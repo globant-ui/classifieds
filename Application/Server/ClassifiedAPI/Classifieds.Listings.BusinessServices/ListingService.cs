@@ -249,6 +249,19 @@ namespace Classifieds.Listings.BusinessServices
                 throw ex;
             }
         }
+
+        public void UpdateImagePath(string listingId, ListingImages[] photos)
+        {
+            try
+            {
+                _listingRepository.UpdateImagePath(listingId, photos);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

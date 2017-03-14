@@ -11,6 +11,10 @@ using Classifieds.Common.Repositories;
 using Classifieds.Listings.BusinessServices.ServiceAgent;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
+using System.Web;
+using Classifieds.ListingsAPI.Helpers;
+using System.Configuration;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -205,6 +209,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 }
                 listing.Status = Status.Active.ToString();
                 listing.SubmittedDate = DateTime.Now;
+                listing.Photos = CreateImagePath(listing).ToArray();
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Created, classified);
                 var newItemUrl = Url.Link("Listings", new { id = classified._id });
@@ -468,6 +473,60 @@ namespace Classifieds.ListingsAPI.Controllers
         }
 
         #endregion PutCLoseListing
+        /// <summary>
+        /// This method will add images to existing images array.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ListingImages>> PostListingImages(string listingId)
+        {
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+
+                if (Request.Content.IsMimeMultipartContent())
+                {
+                    string path = HttpContext.Current.Server.MapPath("~/");
+                    path = path + ConfigurationManager.AppSettings["ListingImagePath"].ToString();
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                    }
+                    string uploadPath = HttpContext.Current.Server.MapPath("~"+ConfigurationManager.AppSettings["ListingImagePath"].ToString());
+                    StreamProvider streamProvider = new StreamProvider(uploadPath);
+                    await Request.Content.ReadAsMultipartAsync(streamProvider);
+
+                    List<ListingImages> lstImages = new List<ListingImages>();
+                    foreach (var file in streamProvider.FileData)
+                    {
+                        FileInfo fi = new FileInfo(file.LocalFileName);
+                        ListingImages objImage = new ListingImages();
+                        objImage.ImageName = fi.Name;
+                        objImage.Image = ConfigurationManager.AppSettings["ListingImagePath"].ToString()+ fi.Name;
+                        lstImages.Add(objImage);
+                    }
+                    ListingImages[] imgArr = new ListingImages[] {};
+                    imgArr = lstImages.ToArray();
+                    //we can pass ImageList array and save in database
+                    _listingService.UpdateImagePath(listingId, imgArr);
+                    return lstImages;
+                }
+                else
+                {
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
+                    throw new HttpResponseException(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+       }
 
         #endregion
 
@@ -493,15 +552,49 @@ namespace Classifieds.ListingsAPI.Controllers
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
         }
-
-        private byte[] ImageToByteArray(Image img)
+        private List<ListingImages> CreateImagePath(Listing listing)
         {
-            using (MemoryStream mStream = new MemoryStream())
+            try
             {
-                img.Save(mStream, img.RawFormat);
-                return mStream.ToArray();
+                
+                if (Request.Content.IsMimeMultipartContent())
+                {
+                    string path = HttpContext.Current.Server.MapPath("~/");
+                    path = path + ConfigurationManager.AppSettings["ListingImagePath"].ToString()+listing.ListingCategory+"/"+listing.SubCategory;
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                    }
+                    string uploadPath = HttpContext.Current.Server.MapPath("~" + ConfigurationManager.AppSettings["ListingImagePath"].ToString() + listing.ListingCategory + "/" + listing.SubCategory);
+                    StreamProvider streamProvider = new StreamProvider(uploadPath);
+                    Request.Content.ReadAsMultipartAsync(streamProvider);
+
+                    List<ListingImages> lstImages = new List<ListingImages>();
+                    foreach (var file in streamProvider.FileData)
+                    {
+                        FileInfo fi = new FileInfo(file.LocalFileName);
+                        ListingImages objImage = new ListingImages();
+                        objImage.ImageName = fi.Name;
+                        objImage.Image = path + fi.Name;
+                        lstImages.Add(objImage);
+                    }
+                    ListingImages[] imgArr = new ListingImages[] { };
+                    imgArr = lstImages.ToArray();
+                    return lstImages;
+                }
+                else
+                {
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
+                    throw new HttpResponseException(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
             }
         }
+
         #endregion
     }
 }
