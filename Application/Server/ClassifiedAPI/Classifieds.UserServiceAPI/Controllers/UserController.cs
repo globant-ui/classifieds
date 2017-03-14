@@ -256,10 +256,10 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// Add to wishList update UserProfile
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="listinId"></param>
+        /// <param name="listingId"></param>
         /// <returns>boolen true as success</returns>
         [HttpPost]
-        public bool AddToWishList(string userEmail, string listinId)
+        public bool AddToWishList(string userEmail, string listingId)
         {
             try
             {
@@ -269,7 +269,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-                return _userService.AddtoWishList(userEmail, listinId);
+                return _userService.AddtoWishList(userEmail, listingId);
             }
             catch (Exception ex)
             {
