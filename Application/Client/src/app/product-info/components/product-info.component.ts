@@ -50,6 +50,7 @@ export class ProductInfoComponent {
 
   ngOnInit() {
     this.type = "";
+    this.showSimilarListing();
 
   }
 
@@ -60,6 +61,9 @@ export class ProductInfoComponent {
 
   ngAfterViewInit(){
     this.getProductInfo();
+  }
+  showSimilarListing(){
+
   }
 
   getProductInfo (){
