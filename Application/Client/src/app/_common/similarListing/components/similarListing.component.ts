@@ -28,6 +28,7 @@ export class SimilarListingComponent implements OnChanges{
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}){
     this.getSimilarListing();
+
   }
 
   getSimilarListing(){
