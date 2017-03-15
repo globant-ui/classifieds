@@ -30,7 +30,7 @@
             border-left:2px solid $light-grey-border;
             padding: 25px 0 15px;
             text-align: center;
-            @extend %type-open-sans-9-6-text;
+            @extend %type-open-sans-10-6-text;
             color: $primary-button-text-color;
             .img-icon{
               display: none;
@@ -90,7 +90,7 @@
                 a{
                   text-decoration: underline;
                   color:  $darkblue-color;
-                  @extend %type-open-sans-10-4-text;
+                  @extend %type-open-sans-12-4-text;
                 }
               }
             }
@@ -117,7 +117,7 @@
   clear: both;
 }
 
-@media (min-width: 376px) and (max-width: 460px){
+@media (min-width: 320px) and (max-width: 460px){
   .container.banner-container{
     padding: 0;
     .row.banner-row{
@@ -131,7 +131,7 @@
       }
       .container-fluid{
         .bannerwrapper{
-          ul.navbar-nav{
+          /*ul.navbar-nav{
             margin: 10px 0;
             li{
               width:100%;
@@ -153,7 +153,7 @@
                 float: left;
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
-              /*@extend %type-open-sans-10-6-text;*/
+              /*@extend %type-open-sans-10-6-text;
                 font-size:$font-size-10;
                 font-weight: 600;
               }
@@ -189,9 +189,57 @@
                 float: left;
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
-                /*@extend %type-open-sans-10-6-text;*/
+                /*@extend %type-open-sans-10-6-text;
                 font-size:$font-size-10;
                 font-weight: 600;
+              }
+            }
+          }*/
+          accordion{
+            accordion-group{
+              .panel{
+                border: none;
+                margin-bottom: 5px;
+                text-align: left;
+                color: $primary-button-text-color;
+                background-color: $filter-background-color;
+                .panel-heading{
+                  background-color: $filter-background-color;
+                  .img-icon{
+                      display: inline-block;
+                      padding: 5px 10px 5px 10px;
+                      img{
+                          margin-right: 15px;
+                      }
+                  }
+                  .categoryTitle{
+                      display: inline-block;
+                     /*@extend %type-open-sans-10-6-text;*/
+                      font-size:$font-size-10;
+                      font-weight: 600;
+                      text-transform: uppercase;
+                  }
+                  i{
+                      padding: 18px;
+                  }
+                }
+                .panel-body{
+                  border: none;
+                  padding-top: 0;
+                  ul.accordionWrapper{
+                    padding-left: 0;
+                    margin-bottom: 0;
+                    li{
+                        color: $darkblue-color;
+                        /*@extend %type-open-sans-12-4-text;*/
+                        font-size:$font-size-12;
+                        text-transform: uppercase;
+                        list-style-type: none;
+                        border-top: 1px solid $accordion-border-color;
+                        padding: 15px 15px 15px 0; 
+                    }
+                  }
+                }
               }
             }
           }
@@ -200,7 +248,7 @@
     }
   }
 }
-@media (min-width: 320px) and (max-width: 375px){
+/*@media (min-width: 320px) and (max-width: 375px){
   .container{
     padding: 0;
     .row.banner-row{
@@ -235,7 +283,7 @@
                 float: left;
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
-                /*@extend %type-open-sans-12-6-text;*/
+                /*@extend %type-open-sans-12-6-text;
                 font-size:$font-size-12;
                 font-weight: 600;
               }
@@ -274,7 +322,7 @@
                 float: left;
                 padding: 20px 0 0 15px;
                 text-transform: uppercase;
-                /*@extend %type-open-sans-12-6-text;*/
+                /*@extend %type-open-sans-12-6-text;
                 font-size:$font-size-12;
                 font-weight: 600;
               }
@@ -284,4 +332,4 @@
       }
     }
   }
-}
+}*/

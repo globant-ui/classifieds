@@ -7,20 +7,31 @@
     <nav class="navbar">
       <div class="container-fluid">
         <div class="bannerwrapper">
-          <ul class="nav navbar-nav">
-              <li *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory"  id="accordion" role="tablist" aria-multiselectable="true">
-                  <div class="img-icon">
-                      <img src="../../../../assets/img/mobile-icon/{{category.Image}}" />
-                  </div>
-                  <div class="categoryTitle"><a data-toggle="collapse" data-parent="#accordion" href="{{category.ListingCategory}}" aria-expanded="true" aria-controls="">{{category.ListingCategory}}</a> </div>
+          <ul class="nav navbar-nav visible-md visible-lg">
+              <li *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory">
+                  <div class="categoryTitle">{{category.ListingCategory}}</div>
                   <span class="spriteimage {{category.ListingCategory}}Icon"></span>
-                  <ul class="hoverlistWrapper" *ngIf="showSubCategory"  id="{{category.ListingCategory}}" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                  <ul class="hoverlistWrapper" *ngIf="showSubCategory">
                       <li *ngFor="let sub of category.SubCategory"><a>{{sub}}</a></li>
                   </ul>
                   <button>EXPLORE</button>
-                  <a class="expandListIcon"><span class="glyphicon glyphicon-chevron-down"></span></a> 
               </li>
           </ul>
+          <accordion class="visible-xs visible-sm">
+            <accordion-group #group *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory">
+              <div accordion-heading>
+                <div class="img-icon">
+                      <img src="../../../../assets/img/mobile-icon/{{category.Image}}" />
+                </div>
+                <div class="categoryTitle">{{category.ListingCategory}}</div>
+                <i class="pull-right float-xs-right glyphicon"
+                   [ngClass]="{'glyphicon-chevron-up': group?.isOpen, 'glyphicon-chevron-down': !group?.isOpen}"></i>
+              </div>
+              <ul class="accordionWrapper" *ngIf="showSubCategory">
+                  <li *ngFor="let sub of category.SubCategory"><a>{{sub}}</a></li>
+              </ul>
+            </accordion-group>
+          </accordion>
         </div>
       </div>
     </nav>
