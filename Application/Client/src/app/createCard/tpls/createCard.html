@@ -1,26 +1,24 @@
 <div class="createCardContainer">
-  <div class="container"><!-- 
-    <div class="row">
-      <div class="col-lg-12"> -->
+  <div class="container">
         <div class="row">
           <div class="col-lg-2 col-md-2 col-xs-2">
               <progress-bar [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
           </div>
           <div class="col-lg-10 col-md-10 col-xs-10">
               <form [formGroup]="myForm" novalidate>
+                  {{action}} Card
                   <input hidden #submittedBy formControlName="submittedBy" value="{{submittedBy}}">
-                  
                   <div class="row form-group">
-                    <div class="col-lg-3 col-md-3 col-xs-12"> 
+                    <div class="col-lg-3 col-md-3 col-xs-12">
                       <label class="uppercaseText">i want to</label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                       <fieldset id="typeListing">
                         <label class="radio-inline">
-                          <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="checked">sale
+                          <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="cardType=='sale'">sale
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="cardType" formControlName="cardType" value="rent">rent
+                          <input type="radio" name="cardType" formControlName="cardType" value="rent" checked="cardType=='rent'">rent
                         </label>
                       </fieldset>
                     </div>
@@ -43,13 +41,13 @@
                       </ul>
                     </div>
                     <div class="row form-group">
-                      <div class="col-xs-12 col-md-4 col-lg-4"> 
+                      <div class="col-xs-12 col-md-4 col-lg-4">
                         <label class="uppercaseText">select the sub-category</label>
                       </div>
                       <div class="col-xs-12 col-md-8 col-lg-8">
                         <fieldset id="sub-category">
-                          <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories"> 
-                            <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}" (change)="subCategoryUpdated()">{{subCategory}}
+                          <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories">
+                            <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}" (change)="subCategoryUpdated()" checked="subCategory===productInfo['Listing'].SubCategory">{{subCategory}}
                           </label>
                         </fieldset>
                       </div>
@@ -84,13 +82,45 @@
                         <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
                             Title is required
                         </div>
-                        
+
+                    </div>
+
+                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
+                        <input #area formControlName="area" class="fullWidth" type="text" name="area" placeholder="Area" required />
+                        <div [hidden]="myForm.controls.area.valid || (myForm.controls.area.pristine && !submitted)" class="alert alert-danger">
+                            Area is required
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
+                        <input #city formControlName="city" class="fullWidth" type="text" name="city" placeholder="City" required />
+                        <div [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)" class="alert alert-danger">
+                            City is required
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
+                        <input #state formControlName="state" class="fullWidth" type="text" name="state" placeholder="State" required />
+                        <div [hidden]="myForm.controls.state.valid || (myForm.controls.state.pristine && !submitted)" class="alert alert-danger">
+                            State is required
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
+                        <input #country formControlName="country" class="fullWidth" type="text" name="country" placeholder="Country" required />
+                        <div [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)" class="alert alert-danger">
+                            Country is required
+                        </div>
+
                     </div>
                     <div class="col-lg-5 col-md-5 col-xs-12">
                         <select #location class="locationSelect fullWidth" formControlName="location">
-                          <option selected disabled>Location</option>
-                          <option>Pune</option>
-                          <option>Banglore</option>
+                          <option selected="{{action=='Create'}}" disabled>Location</option>
+                          <option selected="productInfo['Listing'].City === 'Pune'">Pune</option>
+                          <option selected="productInfo['Listing'].City === 'Bangalore'">Banglore</option>
                         </select>
                         <div class="glyphicon glyphicon-chevron-down downArrow"></div>
                     </div>
@@ -116,12 +146,12 @@
                         </div>
                     </div>
                   </div>
-                  <div class="row form-group" *ngIf="filters.Filters">
+                    <div class="row form-group" *ngIf="filters.Filters">
                       <div class="col-lg-10 col-md-10 col-xs-12 marginBottom">
                         <div class="row">
                           <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of filters.Filters">
-                            <select class="typeSelect fullWidth" name="{{filter.FilterName}}" formControlName="{{filter.FilterName}}" >
-                              <option selected disabled>{{filter.FilterName}}</option>
+                            <select class="typeSelect fullWidth" name="{{filter.FilterName}}" [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName" formControlName="{{filter.FilterName}}" >
+                              <option selected="{{(action === 'Create' && action !== 'Edit')?true:null}}" disabled>{{filter.FilterName}}</option>
                               <option *ngFor="let FilterValues of filter.FilterValues" value="{{FilterValues}}">{{FilterValues}}</option>
                             </select>
                             <div class="glyphicon glyphicon-chevron-down downArrow"></div>
@@ -133,34 +163,29 @@
                       <div class="col-lg-10 col-md-10 col-xs-12">
                         <div class="row">
                           <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of textBoxes">
-                            <input class="typeSelect fullWidth" type="text" name="{{filter.FilterName}}" formControlName="{{filter.FilterName}}" placeholder="{{filter.FilterName}}" />
+                            <input class="typeSelect fullWidth" type="text" name="{{filter.FilterName}}" formControlName="{{filter.FilterName}}" placeholder="{{filter.FilterName}}" [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName" />
                           </div>
                         </div>
                       </div>
                   </div>
                   <div class="row form-group buttonRow">
-                      <div class="col-lg-6 col-md-6 col-xs-12 marginBottom">
+                      <div class="col-lg-6 col-md-6 col-xs-12 marginBottom" *ngIf="action=='Create'">
                           <button class="capitalText tempSavebutton" (click)="createCard('saveClose')">Save and close</button>
                       </div>
-                      <div class="col-lg-6 col-md-6 col-xs-12">
+                      <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Create'">
                           <button class="uppercaseText publishButton" (click)="createCard('create')"> publish </button>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Edit'">
+                          <button class="uppercaseText publishButton" (click)="updateCard()"> Update </button>
                       </div>
                   </div>
               </form>
           </div>
         </div>
-        <div class="row NavigationContainer">
-            <div class="col-lg-1 navigationArrowContainer leftAlign">
-              <img src="../../../../assets/img/arrow-left-circle.png">
-            </div>
-            <div class="col-lg-10 marginClass">
-              <similar-listing [type]="type" (similarListingLoaded)="getFilters()"></similar-listing>
-            </div>      
-            <div class="col-lg-1 navigationArrowContainer rightAlign">
-              <img src="../../../../assets/img/arrow-right-circle.png">
-            </div>
-        </div>
-      </div><!-- 
-    </div> 
-  </div>-->
+  </div>
+  <div class="row">
+      <div class="col-lg-12">
+        <similar-listing [type]="type" (similarListingLoaded)="getFilters()"></similar-listing>
+      </div>
+  </div>
 </div>

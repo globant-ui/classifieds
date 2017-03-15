@@ -1,5 +1,6 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
@@ -36,6 +37,7 @@ import { SelectInterestComponent } from './_common/select-interest/components/se
 import { ModalModule } from 'ng2-bootstrap/modal';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
 import { AccordionModule } from 'ng2-bootstrap/accordion';
+import { CarouselModule } from 'ng2-bootstrap/carousel';
 
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -78,14 +80,16 @@ type StoreType = {
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
-    AccordionModule.forRoot()
+    AccordionModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
     CService,
     mapData,
-    CookieService
+    CookieService,
+    DatePipe
   ]
 })
 export class AppModule {

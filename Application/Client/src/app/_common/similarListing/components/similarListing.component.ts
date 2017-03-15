@@ -15,33 +15,28 @@ export class SimilarListingComponent implements OnChanges{
 
   @Input()
   type;
-  
+
   @Output()
   similarListingLoaded:EventEmitter<string> = new EventEmitter();
-  
+
 
   public similarListing;
 
   constructor(private httpService:CService,private apiPath:apiPaths){
-    
+
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}){
-    console.log("changes");
-    console.log(changes); 
     this.getSimilarListing();
+
   }
 
   getSimilarListing(){
-    console.log("type is",this.type)
-    //let filter = '';
     let pathUrl= '';
     let filter = this.type.split("-");
-    
     pathUrl = this.apiPath.SIMILAR_LISTING + '?subCategory='+filter[0]+'&category='+filter[1];
     this.httpService.observableGetHttp(pathUrl,null,false)
     .subscribe((res)=> {
-        console.log("similar",res);
         this.similarListing = res;
       },
       error => {
@@ -52,7 +47,7 @@ export class SimilarListingComponent implements OnChanges{
         this.similarListingLoaded.emit('loaded');
       })
   }
-  
-    
+
+
 }
 

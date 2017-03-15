@@ -3,17 +3,16 @@
 %type-arvo-regular-38-4-text {
   @include only-text-type($font-size-38, $arvo-regular, $font-weight-400);
 }
-
-%type-open-sans-14-4-text {
-  @include only-text-type($font-size-base, $open-sans, $font-weight-400);
-}
-
 %type-arvo-regular-20-4-text {
   @include only-text-type($font-size-20, $arvo-regular, $font-weight-400);
 }
 
 %type-arvo-regular-30-4-text {
   @include only-text-type($font-size-30, $arvo-regular, $font-weight-400);
+}
+
+%type-open-sans-14-4-text {
+  @include only-text-type($font-size-base, $open-sans, $font-weight-400);
 }
 
 %type-open-sans-15-4-text {
