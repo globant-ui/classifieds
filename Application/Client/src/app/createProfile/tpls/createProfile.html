@@ -1,107 +1,101 @@
-<div class="container-fluid" *ngIf="userProfileData">
+<div class="container-fluid">
   <div class="breadcrumb-wraper">
     <ol class="breadcrumb col-lg-11">
       <li><a>Home</a></li>
       <li><a>my profile</a></li>
-      <li class="active"></li>
+      <li class="active">{{userProfileData.UserName}}</li>
     </ol>
     <div class="edit-profile-link col-lg-1">
-    <a>Edit Profile</a>
-  </div>
+      <a (click)="ShowEditProfile()">Edit Profile</a>
+    </div>
   </div>
 
 </div>
+
+
 <div class="container-fluid">
-<div class="container new-myprofile-wrapper">
-  <div class="row">
-    <div class="col-lg-3 profile-details">
-      <div class="profile-image">
-        <!--<img class="img-circle" data-src="{{UserImage}}"/>-->
+  <div class="container new-myprofile-wrapper">
+    <div class="row">
+      <div class="col-lg-3 profile-details">
+        <div class="profile-image">
+          <img class="img-circle" data-src="{{UserImage}}"/>
+        </div>
+        <div class="person-name pad-topbot-20">{{userProfileData.UserName}}</div>
+        <div class="pad-bot-35">{{userProfileData.Designation}}, {{userProfileData.Location}}</div>
+        <div class="pad-bot-20"><i class="fa fa-phone"></i>{{userProfileData.Mobile}}</div>
+        <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
+        <div class="col-lg-1"></div>
       </div>
-
-      <div class="person-name pad-topbot-20">{{userProfileData.UserName}}</div>
-      <div class="pad-bot-35">{{userProfileData.Designation}}, {{userProfileData.Location}}</div>
-      <div class="pad-bot-20"><i class="fa fa-phone"></i>{{userProfileData.Mobile}}</div>
-      <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
-
       <div class="col-lg-1"></div>
-    </div>
-    <div class="col-lg-1"></div>
 
-    <div class="col-lg-4">
-      <div class="col-lg-11 profile-text">
-        <h3>My Interests</h3>
+      <div class="col-lg-4">
+        <div class="col-lg-11 profile-text">
+          <h3>My Interests</h3>
           <div class="profile-interest">
             <ul class="blue-tag">
               <li *ngFor="let res of tagData;let i=index;"><a>{{res}}</a></li>
-         <!--<li  *ngFor="let tag of userProfileData.Tags.SubCategory"><a>{{tag}}</a></li>-->
             </ul>
           </div>
           <p>Viwe listing from : <span>All locations</span></p>
-          </div>
-          <div class="col-lg-1"></div>
-    </div>
+        </div>
+        <div class="col-lg-1"></div>
+      </div>
 
-    <div class="col-lg-4">
-      <h3>My subscription</h3>
-      <div class="my-sub-icon pull-right">
+      <div class="col-lg-4">
+        <h3>My subscription</h3>
+        <div class="my-sub-icon pull-right">
         <span class="">
           <img src="../../../../assets/img/unsubcribe-tag.png" />
         </span>
         </div>
-
-
         <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
-        <p class="my-sub">
-         <span class="category">category</span>
-         <span class="sub-category pad-right-20">
+          <p class="my-sub">
+            <span class="category">category</span>
+            <span class="sub-category pad-right-20">
            {{res.Category}}</span>
-         <span class="category">subcategory</span>
-         <span class="sub-category">{{res.SubCategory}}</span>
-          <span class="pull-right">
+            <span class="category">subcategory</span>
+            <span class="sub-category">{{res.SubCategory}}</span>
+            <span class="pull-right">
           <button class="green-circle-button">
             <i class="fa fa-close"></i>
           </button>
           </span>
-         </p>
-
+          </p>
+        </div>
       </div>
-      </div>
-
     </div>
-  <my-listings [userEmail]="userEmail"></my-listings>
   </div>
-  </div>
+</div>
 
 
 
-  <!-- edit profile changes start here -->
-<!--<h2>Edit my profile</h2>-->
-<!--<div class="container-fluid">-->
-<!--<div class="container edit-profile-wrapper">-->
-  <!--<div class="row">-->
-    <!--<div class="col-lg-3 profile-details">-->
-      <!--<div class="profile-image">-->
-      <!--&lt;!&ndash;<div class="edit-icon"><i class="icon-Mobile_EditIcon"></i></div>&ndash;&gt;-->
-      <!--<div class="edit-icon">-->
-        <!--<button class="green-circle-button">-->
-          <!--<i class="icon-Mobile_EditIcon"></i>-->
-        <!--</button>-->
+
+<!--<div class="container-fluid" >-->
+  <!--<h2>Edit my profile</h2>-->
+  <!--<div class="container edit-profile-wrapper">-->
+    <!--<div class="row">-->
+      <!--<div class="col-lg-3 profile-details">-->
+        <!--<div class="profile-image">-->
+          <!--&lt;!&ndash;<div class="edit-icon"><i class="icon-Mobile_EditIcon"></i></div>&ndash;&gt;-->
+          <!--<div class="edit-icon">-->
+            <!--<button class="green-circle-button">-->
+              <!--<i class="icon-Mobile_EditIcon"></i>-->
+            <!--</button>-->
+          <!--</div>-->
+          <!--<img class="img-circle" src="../../../../assets/img/my-profile.jpg" />-->
+        <!--</div>-->
+
+        <!--<div class="person-name pad-topbot-20">{{userProfileData.UserName}}</div>-->
+        <!--<div class="pad-bot-35 text-deco-underline">Senior Developer, Bangalore</div>-->
+        <!--<div class="pad-bot-20 text-deco-underline"><i class="fa fa-phone"></i>+1 567-678-4590</div>-->
+        <!--<div><i class="fa fa-envelope"></i>Ruslanlatypov@gmail.com</div>-->
+        <!--<div class="col-lg-1"></div>-->
       <!--</div>-->
-        <!--<img class="img-circle" src="../../../../assets/img/my-profile.jpg" />-->
-      <!--</div>-->
-
-      <!--<div class="person-name pad-topbot-20">Firstaame Lastname</div>-->
-      <!--<div class="pad-bot-35 text-deco-underline">Senior Developer, Bangalore</div>-->
-      <!--<div class="pad-bot-20 text-deco-underline"><i class="fa fa-phone"></i>+1 567-678-4590</div>-->
-      <!--<div><i class="fa fa-envelope"></i>Ruslanlatypov@gmail.com</div>-->
       <!--<div class="col-lg-1"></div>-->
-    <!--</div>-->
-    <!--<div class="col-lg-1"></div>-->
 
-    <!--<div class="col-lg-4">-->
-      <!--<div class="col-lg-11 profile-text">-->
-        <!--<h3>My Interests</h3>-->
+      <!--<div class="col-lg-4">-->
+        <!--<div class="col-lg-11 profile-text">-->
+          <!--<h3>My Interests</h3>-->
           <!--<div class="profile-interest">-->
             <!--<ul class="blue-tag grey-tag">-->
               <!--<li><a href="#">Carr<i class="fa fa-close"></i></a></li>-->
@@ -119,97 +113,60 @@
               <!--<input class="full-width" type="text" name="add tag" placeholder="Add tag" />-->
             <!--</div>-->
           <!--</div>-->
-          <!--</div>-->
-          <!--<div class="col-lg-1"></div>-->
-    <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-1"></div>-->
+      <!--</div>-->
 
-    <!--<div class="col-lg-4">-->
-      <!--<h3>My Subscribtion</h3>-->
+      <!--<div class="col-lg-4">-->
+        <!--<h3>My Subscribtion</h3>-->
 
-      <!--<div class="my-sub-icon pull-right">-->
+        <!--<div class="my-sub-icon pull-right">-->
        <!--<span class="">-->
         <!--<img src="../../../../assets/img/unsubcribe-tag.png" />-->
        <!--</span>-->
+        <!--</div>-->
+
+        <!--<div class="my-sub-main">-->
+          <!--<p class="my-sub">-->
+            <!--<span class="category">category</span>-->
+            <!--<span class="sub-category pad-right-20">Automotive</span>-->
+            <!--<span class="category">subcategory</span>-->
+            <!--<span class="sub-category">car</span>-->
+            <!--<span class="pull-right">-->
+        <!--<button class="green-circle-button">-->
+          <!--<i class="fa fa-close"></i>-->
+        <!--</button>-->
+       <!--</span>-->
+          <!--</p>-->
+        <!--</div>-->
       <!--</div>-->
-
-      <!--<div class="my-sub-main">-->
-      <!--<p class="my-sub">-->
-       <!--<span class="category">category</span>-->
-       <!--<span class="sub-category pad-right-20">Automotive</span>-->
-       <!--<span class="category">subcategory</span>-->
-       <!--<span class="sub-category">car</span>-->
-       <!--<span class="pull-right">-->
-        <!--<button class="green-circle-button">-->
-          <!--<i class="fa fa-close"></i>-->
-        <!--</button>-->
-       <!--</span>-->
-      <!--</p>-->
-
-      <!--<p class="my-sub">-->
-       <!--<span class="category">category</span>-->
-       <!--<span class="sub-category pad-right-20">Automotive</span>-->
-       <!--<span class="category">subcategory</span>-->
-       <!--<span class="sub-category">car</span>-->
-       <!--<span class="pull-right">-->
-        <!--<button class="green-circle-button">-->
-          <!--<i class="fa fa-close"></i>-->
-        <!--</button>-->
-       <!--</span>-->
-      <!--</p>-->
-
-      <!--<p class="my-sub">-->
-       <!--<span class="category">category</span>-->
-       <!--<span class="sub-category pad-right-20">Automotive</span>-->
-       <!--<span class="category">subcategory</span>-->
-       <!--<span class="sub-category">car</span>-->
-       <!--<span class="pull-right">-->
-        <!--<button class="green-circle-button">-->
-          <!--<i class="fa fa-close"></i>-->
-        <!--</button>-->
-       <!--</span>-->
-      <!--</p>-->
-
-      <!--<p class="my-sub">-->
-       <!--<span class="category">category</span>-->
-       <!--<span class="sub-category pad-right-20">Automotive</span>-->
-       <!--<span class="category">subcategory</span>-->
-       <!--<span class="sub-category">car</span>-->
-       <!--<span class="pull-right">-->
-        <!--<button class="green-circle-button">-->
-          <!--<i class="fa fa-close"></i>-->
-        <!--</button>-->
-       <!--</span>-->
-      <!--</p>-->
-
     <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
 
-  <!--<div class="row">-->
-    <!--<div class="col-lg-4"></div>-->
-    <!--<div class="col-lg-8 edit-profile-text">-->
+    <!--<div class="row">-->
+      <!--<div class="col-lg-4"></div>-->
+      <!--<div class="col-lg-8 edit-profile-text">-->
         <!--<p>Preffered loaction:-->
           <!--<span>-->
             <!--<input type="checkbox" name="Pune" value="Pune">-->
             <!--<label class="radio-inline">Pune</label>-->
           <!--</span>-->
 
-           <!--<span>-->
+          <!--<span>-->
              <!--<input type="checkbox" name="Banglore" value="Banglore">-->
              <!--<label class="radio-inline">Banglore</label>-->
            <!--</span>-->
 
-           <!--<span>-->
+          <!--<span>-->
              <!--<input type="checkbox" name="All loactions" value="All loactions">-->
              <!--<label class="radio-inline">All loactions</label>-->
            <!--</span>-->
 
-           <!--<span class="pull-right">-->
+          <!--<span class="pull-right">-->
              <!--<button class="green-button">Save & close</button>-->
            <!--</span>-->
-      <!--</p>-->
+        <!--</p>-->
+      <!--</div>-->
     <!--</div>-->
   <!--</div>-->
-
 <!--</div>-->
-<!--</div>-->
+<my-listings [userEmail]="userEmail"></my-listings>

@@ -55,6 +55,5 @@ export class ProfileComponent implements OnInit {
           console.log("Finally");
         })
   }
-
 }
 
