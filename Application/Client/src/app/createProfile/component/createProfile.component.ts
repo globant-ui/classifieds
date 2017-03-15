@@ -1,7 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import {CService} from  '../../_common/services/http.service';
 import {SettingsService} from '../../_common/services/setting.service';
-import {mapData} from  '../../mapData/mapData';
 import { ActivatedRoute } from '@angular/router';
 import {Base64Service} from '../../_common/services/base64.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';

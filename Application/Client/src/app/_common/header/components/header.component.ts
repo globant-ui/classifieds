@@ -29,7 +29,6 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit(){
     this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
-    console.log("session email",this.session);
     this.activeSession = (this.session && this.session.isValid());
     if(!this.activeSession){
       this.doLogout();
@@ -37,16 +36,15 @@ export class HeaderComponent implements OnInit{
   }
 
     public collapsed(event:any):void {
-        console.log(event);
+
     }
 
     public expanded(event:any):void {
-        console.log(event);
+
     }
 
     showUserProfile(){
     let usermail =btoa(this.session.useremail);
-    //this._base64Service.encode(usermail)
     this._route.navigate(['profile' ,usermail]);
     }
 
