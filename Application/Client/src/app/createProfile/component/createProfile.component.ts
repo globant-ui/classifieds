@@ -25,6 +25,8 @@ export class ProfileComponent implements OnInit {
     private tagData: any = [];
     private subscribeCat:any = [];
     private UserImage: any;
+    private openEditProfile: boolean = false;
+    private closeViewProfile:boolean = true;
     private UserProfileImage = this._settingService.settings;
 
     constructor(private _cservice:CService,
@@ -58,6 +60,10 @@ export class ProfileComponent implements OnInit {
             console.log("Finally");
           })
     }
+  ShowEditProfile(){
+    this.openEditProfile = true;
+    this.closeViewProfile = false;
+  }
 
 }
 
