@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-3" *ngFor="let card of similarListing;let i = index;">
+      <div class="col-xs-6 col-sm-6 col-md-3" *ngFor="let card of userListingData;let i = index;">
         <div class="thumbnail">
           <template [ngIf]="i<4">
             <img src="../../../../assets/img/similarListing.png" alt="...">

@@ -3,6 +3,7 @@ import {AuthenticationWindowService} from '../../authentication/services/authent
 import {SettingsService} from '../../services/setting.service';
 import {Session} from '../../authentication/entity/session.entity';
 import {CookieService} from 'angular2-cookie/core';
+import {Router} from '@angular/router';
 
 let styles = require('../styles/header.component.scss').toString();
 let tpls = require('../tpls/header.component.html').toString();
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnInit{
   private activeSession:boolean = false;
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
+              private _route:Router,
               private _cookieService:CookieService){}
 
   ngOnInit(){
@@ -37,6 +39,12 @@ export class HeaderComponent implements OnInit{
     public expanded(event:any):void {
         console.log(event);
     }
+
+  showUserProfile(){
+    let usermail =btoa(this.session.useremail);
+    //this._base64Service.encode(usermail)
+    this._route.navigate(['profile' ,usermail]);
+  }
 
   doLogout(){
     this._authenticationWindowService.doLogOut();
