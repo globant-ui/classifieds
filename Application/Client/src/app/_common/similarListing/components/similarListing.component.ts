@@ -23,12 +23,12 @@ export class SimilarListingComponent implements OnChanges{
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}){
     this.getSimilarListing();
+
   }
 
   getSimilarListing(){
     let pathUrl= '';
     let filter = this.type.split("-");
-
     pathUrl = this.apiPath.SIMILAR_LISTING + '?subCategory='+filter[0]+'&category='+filter[1];
     this.httpService.observableGetHttp(pathUrl,null,false)
     .subscribe((res)=> {

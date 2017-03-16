@@ -2,6 +2,8 @@ import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
 import {mapData} from  '../../mapData/mapData';
+import { ActivatedRoute } from '@angular/router';
+import {SettingsService} from '../../_common/services/setting.service';
 
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
@@ -14,7 +16,7 @@ let styles = require('../styles/createCard.scss').toString();
     selector:'create-card',
     template: tpls,
     styles: [styles],
-    providers: [apiPaths]
+    providers: [apiPaths,SettingsService]
 })
 export class CreateCardComponent implements OnInit {
     public myForm: FormGroup;
@@ -29,40 +31,62 @@ export class CreateCardComponent implements OnInit {
     public type: string = '';
     public filters;
     public textBoxes = [];
-    private sessionObj;
+    public productId: string;
+    public action: string = 'Create';
+    public productInfo = {};
+    public sessionObj;
 
-    constructor(private httpService:CService,private apiPath:apiPaths,private data:mapData,private _cookieService:CookieService){
+    constructor(private httpService:CService,
+                private apiPath:apiPaths,
+                private data:mapData,
+                private _route: ActivatedRoute,
+                private _settingsService: SettingsService,
+                private _cookieService:CookieService
+                ){
+        var self = this;
+
+        this._route.params.subscribe(params => {
+            self.productId = params['id'];
+            if(self.productId !== undefined){
+                self.action = 'Edit';
+                self.getProductData(self.productId);
+            }
+        });
         this.isActive = '';
         this.isCompleted = [];
         this.endPoints.push('SELECT','UPLOAD','ADD','INFO','DONE');
-        this.type = 'Cars-Automotive';
+        this.type = 'Car-Automotive';
         this.filters = [];
         this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
+
     }
 
     ngOnInit() {
-        // the long way
-        this.myForm = new FormGroup({
-            cardType: new FormControl('', [<any>Validators.required]),
-            category: new FormControl('', [<any>Validators.required]),
-            subCategory: new FormControl('', [<any>Validators.required]),
-            //cardImages: new FormControl('', [<any>Validators.required]),
-            title: new FormControl('', [<any>Validators.required]),
-            shortDesc: new FormControl('', [<any>Validators.required]),
-            negotiable: new FormControl('', [<any>Validators.required]),
-            price: new FormControl('', [<any>Validators.required]),
-            location: new FormControl('', [<any>Validators.required]),
-            submittedBy: new FormControl('', [])
-        });
+      this.myForm = new FormGroup({
+        cardType: new FormControl('', [<any>Validators.required]),
+        category: new FormControl('', [<any>Validators.required]),
+        subCategory: new FormControl('', [<any>Validators.required]),
+        title: new FormControl('', [<any>Validators.required]),
+        area: new FormControl('', [<any>Validators.required]),
+        city: new FormControl('', [<any>Validators.required]),
+        state: new FormControl('', [<any>Validators.required]),
+        country: new FormControl('', [<any>Validators.required]),
+        shortDesc: new FormControl('', [<any>Validators.required]),
+        negotiable: new FormControl('', [<any>Validators.required]),
+        price: new FormControl('', [<any>Validators.required]),
+        location: new FormControl('', [<any>Validators.required]),
+        submittedBy: new FormControl('', [])
+      });
         this.getCategories();
     }
 
     getCategories(){
+      var self = this;
        this.httpService.observableGetHttp(this.apiPath.GET_ALL_CATEGORIES,null,false)
        .subscribe((res)=> {
-           console.log(res);
-           this.categories = res;
-           this.subcategories = this.categories[0].SubCategory;
+
+           self.categories = res;
+           self.subcategories = self.categories[0].SubCategory;
          },
          error => {
            console.log("error in response");
@@ -73,7 +97,7 @@ export class CreateCardComponent implements OnInit {
     }
 
     getFilters(){
-       let url = (this.myForm.get('subCategory').value!==undefined) ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
+       let url = (this.myForm.get('subCategory').value!=undefined && this.myForm.get('subCategory').value!='') ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
        let self = this;
        this.httpService.observableGetHttp(url,null,false)
        .subscribe((res)=> {
@@ -89,16 +113,15 @@ export class CreateCardComponent implements OnInit {
     }
 
     loadFilters(){
-        this.textBoxes = [];
-
+        this.textBoxes = []
         let filters = this.filters;
         let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName==='Sale/Rent');
         this.filters.Filters.splice( removeSaleRent, 1 )[0]
-        let year = this.filters.Filters.findIndex(x => x.FilterName=='Year');
+        let year = this.filters.Filters.findIndex(x => x.FilterName==='YearOfPurchase');
         if(year!=-1){
             this.textBoxes.push(this.filters.Filters.splice( year, 1 )[0]);
         }
-        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName==='KMDriven');
+        let kmDriven = this.filters.Filters.findIndex(x => x.FilterName==='KmDriven');
         if(kmDriven!=-1){
             this.textBoxes.push(this.filters.Filters.splice( kmDriven, 1 )[0]);
         }
@@ -117,18 +140,16 @@ export class CreateCardComponent implements OnInit {
         }
         let self = this;
         this.filters.Filters.forEach(function(element) {
-            self.myForm.addControl(element.FilterName,new FormControl('', Validators.required));
+            self.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
         });
         this.textBoxes.forEach(function(element){
-            self.myForm.addControl(element.FilterName,new FormControl('', Validators.required));
+            self.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
         });
-
     }
 
     reloadSubcategories(category){
         this.selectedCategory = category.ListingCategory;
         this.subcategories = category.SubCategory;
-
     }
 
     fileNameChanged(event){
@@ -155,27 +176,31 @@ export class CreateCardComponent implements OnInit {
     createCard(action){
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
-
-
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
 
        let cardData = this.data.mapCardData(this.myForm);
-       if(action == 'create'){
+       if(action === 'create'){
            cardData.IsPublished = true;
        }
-
+       this.uploadedImages.forEach(function(value,key){
+           let imageDetails = {};
+           imageDetails['ImageName'] = 'Photo'+key;
+           imageDetails['Image'] =  value;
+           cardData.Photos.push(imageDetails);
+       });
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
          },
          error => {
            console.log("error in response");
+
          },
          ()=>{
            console.log("Finally");
-         })
-          this.submitted = true;
 
+         })
+        this.submitted = true;
     }
 
     isAddInfoCompleted() {
@@ -187,7 +212,54 @@ export class CreateCardComponent implements OnInit {
 
     subCategoryUpdated(){
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
+        this.getFilters();
+    }
 
+    getProductData(productId){
+        let productInfoUrl = this._settingsService.getPath('productInfoUrl')+productId;
+        let self = this;
+        this.httpService.observableGetHttp(productInfoUrl,null,false)
+        .subscribe((res)=> {
+            self.productInfo = res;
+            console.log(self.productInfo);
+            self.myForm.patchValue({cardType:self.productInfo['Listing'].ListingType});
+            self.myForm.patchValue({category:self.productInfo['Listing'].ListingCategory});
+            self.myForm.patchValue({subCategory:self.productInfo['Listing'].SubCategory});
+            self.myForm.patchValue({title:self.productInfo['Listing'].Title});
+            self.myForm.patchValue({location:self.productInfo['Listing'].City});
+            self.myForm.patchValue({shortDesc:self.productInfo['Listing'].Details});
+            self.myForm.patchValue({price:self.productInfo['Listing'].Price});
+            self.myForm.patchValue({area:self.productInfo['Listing'].Address.split("-")[0]});
+            self.myForm.patchValue({city:self.productInfo['Listing'].City});
+            self.myForm.patchValue({state:self.productInfo['Listing'].State});
+            self.myForm.patchValue({country:self.productInfo['Listing'].Country});
+            self.myForm.patchValue({negotiable:self.productInfo['Listing'].Negotiable});
+
+            self.getFilters();
+
+            },
+            error => {
+            console.log("error in response");
+            },
+            ()=>{
+            console.log("Finally");
+            })
+    }
+
+    updateCard(){
+        let cardData = this.data.mapCardData(this.myForm);
+        cardData["_id"] = this.productId;
+        let url = this.apiPath.UPDATE_CARD + this.productId;
+        this.httpService.observablePutHttp(url,cardData,null,false)
+       .subscribe((res)=> {
+           console.log("comes here in result",res);
+         },
+         error => {
+           console.log("error in response");
+         },
+         ()=>{
+           console.log("Finally");
+         });
     }
 
 }
