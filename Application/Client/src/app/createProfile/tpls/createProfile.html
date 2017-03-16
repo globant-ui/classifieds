@@ -51,7 +51,7 @@
         </div>
 
 
-        <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
+      <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
         <p class="my-sub">
          <span class="category">category</span>
          <span class="sub-category pad-right-20">
@@ -64,8 +64,7 @@
           </button>
           </span>
          </p>
-
-      </div>
+        </div>
       </div>
 
     </div>
@@ -84,13 +83,13 @@
           <i class="icon-Mobile_EditIcon"></i>
         </button>
       </div>
-        <img class="img-circle" src="../../../../assets/img/my-profile.jpg" />
+        <img class="img-circle" data-src="{{UserImage}}"/>
       </div>
 
-      <div class="person-name pad-topbot-20">Firstaame Lastname</div>
-      <div class="pad-bot-35 text-deco-underline">Senior Developer, Bangalore</div>
-      <div class="pad-bot-20 text-deco-underline"><i class="fa fa-phone"></i>+1 567-678-4590</div>
-      <div><i class="fa fa-envelope"></i>Ruslanlatypov@gmail.com</div>
+      <div class="person-name pad-topbot-20">{{userProfileData.UserName}}</div>
+      <div class="pad-bot-35 text-deco-underline">{{userProfileData.Designation}}, {{userProfileData.Location}}</div>
+      <div class="pad-bot-20 text-deco-underline"><i class="fa fa-phone"></i>{{userProfileData.Mobile}}</div>
+      <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
       <div class="col-lg-1"></div>
     </div>
     <div class="col-lg-1"></div>
@@ -100,15 +99,7 @@
         <h3>My Interests</h3>
           <div class="profile-interest">
             <ul class="blue-tag grey-tag">
-              <li><a href="#">Carr<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Motorbike<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Car<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Carr<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Motorbike<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Car<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Carr<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Motorbike<i class="fa fa-close"></i></a></li>
-              <li><a href="#">Car<i class="fa fa-close"></i></a></li>
+              <li *ngFor="let res of tagData;let i=index;"><a>{{res}}<i class="fa fa-close"></i></a></li>
             </ul>
 
             <div class="input-add-tag">
@@ -121,62 +112,25 @@
 
     <div class="col-lg-4">
       <h3>My Subscribtion</h3>
-
       <div class="my-sub-icon pull-right">
        <span class="">
         <img src="../../../../assets/img/unsubcribe-tag.png" />
        </span>
       </div>
 
-      <div class="my-sub-main">
+      <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
       <p class="my-sub">
-       <span class="category">category</span>
-       <span class="sub-category pad-right-20">Automotive</span>
-       <span class="category">subcategory</span>
-       <span class="sub-category">car</span>
-       <span class="pull-right">
-        <button class="green-circle-button">
-          <i class="fa fa-close"></i>
-        </button>
-       </span>
+        <span class="category">category</span>
+        <span class="sub-category pad-right-20">
+           {{res.Category}}</span>
+        <span class="category">subcategory</span>
+        <span class="sub-category">{{res.SubCategory}}</span>
+        <span class="pull-right">
+          <button class="green-circle-button">
+            <i class="fa fa-close"></i>
+          </button>
+        </span>
       </p>
-
-      <p class="my-sub">
-       <span class="category">category</span>
-       <span class="sub-category pad-right-20">Automotive</span>
-       <span class="category">subcategory</span>
-       <span class="sub-category">car</span>
-       <span class="pull-right">
-        <button class="green-circle-button">
-          <i class="fa fa-close"></i>
-        </button>
-       </span>
-      </p>
-
-      <p class="my-sub">
-       <span class="category">category</span>
-       <span class="sub-category pad-right-20">Automotive</span>
-       <span class="category">subcategory</span>
-       <span class="sub-category">car</span>
-       <span class="pull-right">
-        <button class="green-circle-button">
-          <i class="fa fa-close"></i>
-        </button>
-       </span>
-      </p>
-
-      <p class="my-sub">
-       <span class="category">category</span>
-       <span class="sub-category pad-right-20">Automotive</span>
-       <span class="category">subcategory</span>
-       <span class="sub-category">car</span>
-       <span class="pull-right">
-        <button class="green-circle-button">
-          <i class="fa fa-close"></i>
-        </button>
-       </span>
-      </p>
-
     </div>
     </div>
   </div>
