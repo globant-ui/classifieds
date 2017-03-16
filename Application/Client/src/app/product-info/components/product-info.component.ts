@@ -31,7 +31,6 @@ export class ProductInfoComponent {
   public isClicked: boolean = false;
   public type: any;
   public subcategoryData = [];
-
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
 
   constructor(private _route: ActivatedRoute,

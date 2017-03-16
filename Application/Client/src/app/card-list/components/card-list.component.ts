@@ -21,17 +21,12 @@ export class CardListComponent{
     @Input() cards;
 
     private isLoading:boolean = false;
-    
-    ngOnInit() {
-        console.log('all = ',this.cards);
-    }
-        
+
     loading( flag ) {
         this.isLoading = flag;
     }
 
    showProductInfo(id){
-     this.showProductInfoPage = true;
      this._router.navigate(['productInfo',id]);
   }
 }
