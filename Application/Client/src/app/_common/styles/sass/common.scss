@@ -134,3 +134,28 @@ input, select{
   @extend %type-open-sans-14-4-text;
 }
 
+.green-button {
+    padding: 15px 25px;
+    border-radius: 30px;
+    background: $green-color;
+    color: $white-color;
+    border: none;
+    text-transform: uppercase;
+}
+
+.green-circle-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $green-color;
+    color: $white-color;
+    color: $white-color;
+    border: none;
+}
+
+@media (max-width: $screen-xs-max) {
+  .green-button {
+    width: 100%;
+    margin: 20px 0;
+  }
+}
