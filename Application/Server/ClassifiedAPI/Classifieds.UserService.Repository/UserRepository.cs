@@ -210,9 +210,15 @@ namespace Classifieds.UserService.Repository
         {
             try
             {
-                var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),
-                Update.PushWrapped("WishList", listingId));
-                return result.UpdatedExisting;
+                //check listingId is existed or not in Wishlist array.                
+                var query = Query.And(Query.EQ("WishList",listingId), Query.EQ("UserEmail", userEmail));
+                var items = Classifieds.Find(query).ToList();
+                if (items.Count == 0)
+                {
+                    var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),Update.PushWrapped("WishList", listingId));
+                    return result.UpdatedExisting;
+                }
+                return false;
             }
             catch (Exception ex)
             {

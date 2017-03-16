@@ -50,7 +50,7 @@ namespace Classifieds.Listings.BusinessEntities
   
     public class ProductInfo
     {
-        public Listing Listing;
+        public ListingCommonFields Listing;
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Designation { get; set; }
@@ -77,5 +77,26 @@ namespace Classifieds.Listings.BusinessEntities
         public string FieldValue { get; set; }
     }
 
+    public class ListingCommonFields
+    {
+        public string _id { get; set; } 
+        public string ListingType { get; set; }
+        public string ListingCategory { get; set; }
+        public string SubCategory { get; set; }
+        public string Title { get; set; }
+        public string Details { get; set; }       
+        public Int32 Price { get; set; }       
+        public string Status { get; set; }
+        public string SubmittedBy { get; set; }
+        [BsonDateTimeOptions(Representation = BsonType.DateTime)]
+        public DateTime SubmittedDate { get; set; }       
+        public string Country { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string Address { get; set; }
+        public bool Negotiable { get; set; }
+        public bool IsPublished { get; set; }
+        public ListingImages[] Photos { get; set; }
+    }
 
 }
