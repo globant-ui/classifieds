@@ -484,7 +484,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_CloseListingTest()
         {
             // Arrange
-            _mockService.Setup(x => x.CLoseListing(It.IsAny<string>(), It.IsAny<Listing>()))
+            _mockService.Setup(x => x.CloseListing(It.IsAny<string>(), It.IsAny<Listing>()))
                 .Returns(GetListObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
@@ -499,7 +499,7 @@ namespace Classifieds.ListingsAPI.Tests
             // Act     
             var listObject = GetListObject();
             var updatedStatus = new Listing() { Status = listObject.Status };
-            var contentResult = _controller.PutCLoseListing(listObject._id, updatedStatus);
+            var contentResult = _controller.PutCloseListing(listObject._id, updatedStatus);
 
             //Assert
             Assert.IsNotNull(contentResult);

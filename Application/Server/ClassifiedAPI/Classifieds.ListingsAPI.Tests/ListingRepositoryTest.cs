@@ -446,7 +446,7 @@ namespace Classifieds.ListingsAPI.Tests
             Assert.IsNotNull(result._id);
             result.Status = "Closed";
 
-            var updatedresult = _listingRepo.CLoseListing(result._id, result);
+            var updatedresult = _listingRepo.CloseListing(result._id, result);
             Assert.IsNotNull(updatedresult);
 
             Assert.AreEqual(result.Title, updatedresult.Title);
@@ -460,7 +460,7 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_CloseListingTest_NullId_ThrowException()
         {
-            var result = _listingRepo.CLoseListing(null, null);
+            var result = _listingRepo.CloseListing(null, null);
             Assert.IsNull(result);
         }
 
