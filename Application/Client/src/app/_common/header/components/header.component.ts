@@ -35,13 +35,9 @@ export class HeaderComponent implements OnInit{
     }
   }
 
-    public collapsed(event:any):void {
+    public collapsed(event:any):void {}
 
-    }
-
-    public expanded(event:any):void {
-
-    }
+    public expanded(event:any):void {}
 
     showUserProfile(){
     let usermail =btoa(this.session.useremail);

@@ -22,8 +22,6 @@ export class CardListComponent{
 
     private isLoading:boolean = false;
 
-    ngOnInit() {}
-
     loading( flag ) {
         this.isLoading = flag;
     }

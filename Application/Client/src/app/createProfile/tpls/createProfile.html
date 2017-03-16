@@ -87,8 +87,11 @@
       </div>
 
       <div class="person-name pad-topbot-20">{{userProfileData.UserName}}</div>
-      <div class="pad-bot-35 text-deco-underline">{{userProfileData.Designation}}, {{userProfileData.Location}}</div>
-      <div class="pad-bot-20 text-deco-underline"><i class="fa fa-phone"></i>{{userProfileData.Mobile}}</div>
+      <div class="pad-bot-35 text-deco-underline"></div>
+      <input [(ngModel)] = "userProfileData.Designation">
+      <input [(ngModel)] = " userProfileData.Location">
+      <div class="pad-bot-20 text-deco-underline"><i class="fa fa-phone"></i>
+        <input [(ngModel)]="userProfileData.Mobile"></div>
       <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
       <div class="col-lg-1"></div>
     </div>
@@ -126,7 +129,7 @@
         <span class="category">subcategory</span>
         <span class="sub-category">{{res.SubCategory}}</span>
         <span class="pull-right">
-          <button class="green-circle-button">
+          <button class="green-circle-button" (click)="deleteSub(1,$event)">
             <i class="fa fa-close"></i>
           </button>
         </span>
@@ -155,7 +158,7 @@
            </span>
 
            <span class="pull-right">
-             <button class="green-button">Save & close</button>
+             <button class="green-button" (click)="UpdateProfileData($event)">Save & close</button>
            </span>
       </p>
     </div>

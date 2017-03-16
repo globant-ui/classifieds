@@ -4,7 +4,7 @@ import {SettingsService} from '../../_common/services/setting.service';
 import { ActivatedRoute } from '@angular/router';
 import {Base64Service} from '../../_common/services/base64.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
-import {Response} from '@angular/http';
+import {Http,Response,Headers} from '@angular/http';
 
 let tpls = require('../tpls/createProfile.html').toString();
 let styles = require('../styles/createProfile.scss').toString();
@@ -17,7 +17,9 @@ let styles = require('../styles/createProfile.scss').toString();
 })
 export class ProfileComponent implements OnInit {
 
-    private GetUserProfileUrl = 'http://in-it0289/Userapi/api/user/GetUserProfile?userEmail=';
+    private getUserProfileUrl = 'http://in-it0289/Userapi/api/user/GetUserProfile?userEmail=';
+    private updateUserProfile = 'http://in-it0289/Userapi/api/User/UpdateUserProfile';
+    private deleteSubScription = 'http://in-it0289/Userapi/api/user/DeleteSubscription';
     private userEmail:any;
     private userDetails: any;
     private userProfileData : any = {};
@@ -28,7 +30,7 @@ export class ProfileComponent implements OnInit {
     private closeViewProfile:boolean = true;
     private UserProfileImage = this._settingService.settings;
 
-    constructor(private _cservice:CService,
+    constructor(private httpService:CService,
                 private _route:ActivatedRoute,
                 private _settingService : SettingsService,
                 public _base64service:Base64Service){
@@ -44,11 +46,13 @@ export class ProfileComponent implements OnInit {
     }
 
     getProfileData(userMail){
-      this.userDetails = this.GetUserProfileUrl+this.userEmail;
-      this._cservice.observableGetHttp(this.userDetails ,null,false)
+      this.userDetails = this.getUserProfileUrl+this.userEmail;
+      this.httpService.observableGetHttp(this.userDetails ,null,false)
         .subscribe((res:Response)=> {
             this.userProfileData = res;
+            console.log("Profile Data",this.userProfileData);
             this.subscribeCat = this.userProfileData.Alert;
+            console.log("subscribeData",this.subscribeCat);
             this.tagData = this.userProfileData.Tags.SubCategory;
             this.UserImage = this.userProfileData.Image;
           },
@@ -59,10 +63,43 @@ export class ProfileComponent implements OnInit {
             console.log("Finally");
           })
     }
-  ShowEditProfile(){
-    this.openEditProfile = true;
-    this.closeViewProfile = false;
-  }
+
+    ShowEditProfile(){
+      this.openEditProfile = true;
+      this.closeViewProfile = false;
+    }
+
+    UpdateProfileData(){
+      let updatedData = this.userProfileData;
+      let url = this.updateUserProfile;
+      this.httpService.observablePutHttp(url,updatedData,null,false)
+        .subscribe((res)=> {
+            console.log("comes here in result",res);
+          },
+          error => {
+            console.log("error in response");
+          },
+          ()=>{
+            console.log("Finally");
+          });
+    }
+
+    deleteSub(event){
+      console.log("delete",event);
+      this.subscribeCat = this.subscribeCat.splice();
+      let UpdatedAlert = this.subscribeCat;
+      let url = this.deleteSubScription+UpdatedAlert;
+      this.httpService.observableDeleteHttp(url,null,false)
+        .subscribe((res)=>{
+        console.log("deleted the subsscription",res);
+        },
+          error =>{
+          console.log("error in responese");
+          },
+          ()=>{
+            console.log("finally");
+          });
+    }
 
 }
 
