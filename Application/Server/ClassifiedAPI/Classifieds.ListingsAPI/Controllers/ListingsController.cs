@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Classifieds.ListingsAPI.Helpers;
 using System.Configuration;
+using System.Reflection;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -75,9 +76,24 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
                 ProductInfo productInfo = new ProductInfo();
-                productInfo.Listing = _listingService.GetListingById(id);
-                if (productInfo.Listing != null)
+                var listing = _listingService.GetListingById(id);
+                if (listing != null)
                 {
+                    #region Select common fields of listing entity and avoid redundant ones. Auto mapping/copy of one object to another(Dynamic object cloning) i.e. set all properies of 'ListingCommonFields' from 'Listing' entity. 
+                    productInfo.Listing = new ListingCommonFields();
+                    Type t = productInfo.Listing.GetType();
+                    PropertyInfo[] propertyArray = t.GetProperties();
+                    Object dynamicObject = t.InvokeMember("", BindingFlags.CreateInstance, null, productInfo.Listing, null);
+                    foreach (PropertyInfo pi in propertyArray)
+                    {
+                        if (pi.CanWrite)
+                        {
+                            pi.SetValue(dynamicObject, listing.GetType().GetProperty(pi.Name).GetValue(listing), null);
+                        }
+                    }
+                    productInfo.Listing = (ListingCommonFields)dynamicObject;
+                    #endregion
+
                     #region Get Users details who submitted this listing card
                     if (!string.IsNullOrEmpty(productInfo.Listing.SubmittedBy))
                     {
@@ -105,10 +121,10 @@ namespace Classifieds.ListingsAPI.Controllers
                             {
                                 fields[item] = new Fields();
                                 fields[item].FieldName = filters[item].ToString();
-                                var properties = productInfo.Listing.GetType().GetProperty(filters[item]);
+                                var properties = listing.GetType().GetProperty(filters[item]);
                                 if (properties != null)
                                 {
-                                    fields[item].FieldValue = Convert.ToString(properties.GetValue(productInfo.Listing));
+                                    fields[item].FieldValue = Convert.ToString(properties.GetValue(listing));
                                 }                                
                             }                            
                             productInfo.Fields = fields;
@@ -209,7 +225,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 }
                 listing.Status = Status.Active.ToString();
                 listing.SubmittedDate = DateTime.Now;
-                listing.Photos = CreateImagePath(listing).ToArray();
+                //listing.Photos = CreateImagePath(listing).ToArray();
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Created, classified);
                 var newItemUrl = Url.Link("Listings", new { id = classified._id });
