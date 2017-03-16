@@ -6,11 +6,11 @@
           </div>
           <div class="col-lg-10 col-md-10 col-xs-10">
               <form [formGroup]="myForm" novalidate>
-                  {{action}} Card
+                  <!-- {{action}} Card -->
                   <input hidden #submittedBy formControlName="submittedBy" value="{{submittedBy}}">
-                  <div class="row form-group">
+                  <div class="row form-group ">
                     <div class="col-lg-3 col-md-3 col-xs-12">
-                      <label class="uppercaseText">i want to</label>
+                      <label class="uppercaseText typeListinglabel">i want to</label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                       <fieldset id="typeListing">
@@ -29,7 +29,7 @@
                     </div>
                   </div>
                   <div class="row form-group">
-                      <ul class="nav navbar-nav">
+                      <ul class="nav navbar-nav categoryUl">
                         <li *ngFor="let category of categories">
                           <div class="col-xs-4 noPadding">
                             <div class="img-icon" (click)="reloadSubcategories(category)">
@@ -42,7 +42,7 @@
                     </div>
                     <div class="row form-group">
                       <div class="col-xs-12 col-md-4 col-lg-4">
-                        <label class="uppercaseText">select the sub-category</label>
+                        <label class="uppercaseText subCategoryLabel">select the sub-category</label>
                       </div>
                       <div class="col-xs-12 col-md-8 col-lg-8">
                         <fieldset id="sub-category">
@@ -65,7 +65,7 @@
                                 <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
                                     <img src="{{img}}">
                                 </div>
-                                <div class="img-icon noPadding">
+                                <div id="addPhoto" class="img-icon noPadding">
                                     <label for="image-upload" class="imageUpload">
                                         <img src="../../../../assets/img/addImage.png" />
                                     </label>
@@ -77,76 +77,134 @@
                     </div>
                   </div>
                   <div class="row form-group">
-                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
+                    <div class="col-lg-4 col-md-4 col-xs-12 marginBottom">
                         <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
-                        <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
+                        <!-- <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
                             Title is required
-                        </div>
-
+                        </div> -->
                     </div>
 
-                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
-                        <input #area formControlName="area" class="fullWidth" type="text" name="area" placeholder="Area" required />
-                        <div [hidden]="myForm.controls.area.valid || (myForm.controls.area.pristine && !submitted)" class="alert alert-danger">
-                            Area is required
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
-                        <input #city formControlName="city" class="fullWidth" type="text" name="city" placeholder="City" required />
-                        <div [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)" class="alert alert-danger">
-                            City is required
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
-                        <input #state formControlName="state" class="fullWidth" type="text" name="state" placeholder="State" required />
-                        <div [hidden]="myForm.controls.state.valid || (myForm.controls.state.pristine && !submitted)" class="alert alert-danger">
-                            State is required
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-5 col-md-5 col-xs-12 marginBottom">
-                        <input #country formControlName="country" class="fullWidth" type="text" name="country" placeholder="Country" required />
-                        <div [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)" class="alert alert-danger">
-                            Country is required
-                        </div>
-
-                    </div>
-                    <div class="col-lg-5 col-md-5 col-xs-12">
-                        <select #location class="locationSelect fullWidth" formControlName="location">
+                    <div class="col-lg-4 col-md-4 col-xs-12 marginBottom">
+                        <!-- <select #location class="locationSelect fullWidth" formControlName="location">
                           <option selected="{{action=='Create'}}" disabled>Location</option>
                           <option selected="productInfo['Listing'].City === 'Pune'">Pune</option>
                           <option selected="productInfo['Listing'].City === 'Bangalore'">Banglore</option>
-                        </select>
-                        <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </select> -->
+                        <input #location formControlName="location" name="location" class="fullWidth" type="text" id="location" placeholder="Location" required />
+                        <!-- <div class="glyphicon glyphicon-chevron-down downArrow"></div> -->
                     </div>
-                  </div>
-                  <div class="row form-group">
-                    <div class="col-lg-5 col-md-5 col-xs-12">
+
+                    <div class="col-lg-4 col-md-4 col-xs-12 marginBottom">
                         <input #price formControlName="price" name="price" class="fullWidth" type="text" id="price" placeholder="Price" required />
                         <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
                           Price is required
                         </div>-->
                     </div>
-                    <div class="col-lg-5 col-md-5 col-xs-12">
-                        <div class="checkbox">
-                          <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> Negotaible</label>
-                        </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-lg-10 col-md-10 col-xs-12 marginBottom">
+                        <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
+                        <!-- <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
+                            Short Description is required.
+                        </div> -->
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-xs-12">
+                      <div class="checkbox">
+                        <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> Negotaible</label>
+                      </div>
                     </div>
                   </div>
                   <div class="row form-group">
-                    <div class="col-lg-10 col-md-10 col-xs-12">
-                        <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
-                        <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
-                            Short Description is required.
+                    <div class="col-lg-11 col-md-11 col-xs-12">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.area.valid || (myForm.controls.area.pristine && !submitted)" class="alert alert-danger">
+                                Area is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
                         </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)" class="alert alert-danger">
+                                City is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.state.valid || (myForm.controls.state.pristine && !submitted)" class="alert alert-danger">
+                                State is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)" class="alert alert-danger">
+                                Country is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                    <div class="row form-group" *ngIf="filters.Filters">
+                  <div class="row form-group">
+                    <div class="col-lg-11 col-md-11 col-xs-12">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.area.valid || (myForm.controls.area.pristine && !submitted)" class="alert alert-danger">
+                                Area is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)" class="alert alert-danger">
+                                City is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.state.valid || (myForm.controls.state.pristine && !submitted)" class="alert alert-danger">
+                                State is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
+                            <select #location class="fullWidth" formControlName="location">
+                              <option selected disabled>Type</option>
+                            </select>
+                            <!-- <div [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)" class="alert alert-danger">
+                                Country is required
+                            </div> -->
+                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row form-group" *ngIf="filters.Filters">
                       <div class="col-lg-10 col-md-10 col-xs-12 marginBottom">
                         <div class="row">
                           <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of filters.Filters">

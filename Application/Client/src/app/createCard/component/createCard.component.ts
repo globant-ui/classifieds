@@ -86,7 +86,8 @@ export class CreateCardComponent implements OnInit {
       var self = this;
        this.httpService.observableGetHttp(this.apiPath.GET_ALL_CATEGORIES,null,false)
        .subscribe((res)=> {
-           self.subcategories = res[0].SubCategory;
+           this.categories = res;
+           this.subcategories = this.categories[0].SubCategory;
          },
          error => {
            console.log("error in response");
