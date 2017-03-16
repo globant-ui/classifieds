@@ -26,6 +26,8 @@ namespace Classifieds.Listings.BusinessServices
         #endregion
 
         #region Public Methods
+
+        #region GetListingById
         /// <summary>
         /// Returns the collection of listing for given id
         /// </summary>
@@ -43,6 +45,10 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
+        #endregion
+
+        #region GetListingsBySubCategory
+
         /// <summary>
         /// Returns the listings for given sub category
         /// </summary>
@@ -55,13 +61,17 @@ namespace Classifieds.Listings.BusinessServices
         {
             try
             {
-                return _listingRepository.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast).ToList();
+                return _listingRepository.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        #endregion
+
+        #region GetListingsByCategory
 
         /// <summary>
         /// service method returns collection of listings based on category
@@ -83,56 +93,9 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
-        /// <summary>
-        /// Create new listing item into the database
-        /// </summary>
-        /// <param name="listing">Listing Object</param>
-        /// <returns></returns>
-        public Listing CreateListing(Listing listing)
-        {
-            try
-            {
-                return _listingRepository.Add(listing);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Update listing item for given Id
-        /// </summary>
-        /// <param name="id">Listing Id</param>
-        /// <param name="listing">Listing Object</param>
-        /// <returns></returns>
-        public Listing UpdateListing(string id, Listing listing)
-        {
-            try
-            {
-                return _listingRepository.Update(id, listing);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Delete listing item for given Id
-        /// </summary>
-        /// <param name="id">Listing Id</param>
-        public void DeleteListing(string id)
-        {
-            try
-            {
-                _listingRepository.Delete(id);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        #endregion
+        
+        #region GetTopListings
 
         /// <summary>
         /// Returns top listings from database  
@@ -151,6 +114,8 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
+        #endregion
+
         #region GetListingsByEmail
         /// <summary>
         /// Returns the collection of listing for given email
@@ -164,7 +129,7 @@ namespace Classifieds.Listings.BusinessServices
         {
             try
             {
-                return _listingRepository.GetListingsByEmail(email, startIndex, pageCount, isLast).ToList();
+                return _listingRepository.GetListingsByEmail(email, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {
@@ -199,27 +164,7 @@ namespace Classifieds.Listings.BusinessServices
 
         #endregion GetListingsByCategoryAndSubCategory
 
-        #region CLoseListing
-
-        /// <summary>
-        /// Update listing status for given Id
-        /// </summary>
-        /// <param name="id">Listing Id</param>
-        /// <param name="listing">Listing Object</param>
-        /// <returns></returns>
-        public Listing CLoseListing(string id, Listing listing)
-        {
-            try
-            {
-                return _listingRepository.CLoseListing(id, listing);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        #endregion CLoseListing
+        #region GetMyWishlist
 
         /// <summary>
         /// Returns the collection of listing for given listing Ids
@@ -238,6 +183,10 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
+        #endregion
+
+        #region GetRecommendedList
+
         public List<Listing> GetRecommendedList(Tags tags)
         {
             try
@@ -250,6 +199,70 @@ namespace Classifieds.Listings.BusinessServices
             }
         }
 
+        #endregion
+
+        #region CreateListing
+        /// <summary>
+        /// Create new listing item into the database
+        /// </summary>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public Listing CreateListing(Listing listing)
+        {
+            try
+            {
+                return _listingRepository.Add(listing);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region UpdateListing
+        /// <summary>
+        /// Update listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public Listing UpdateListing(string id, Listing listing)
+        {
+            try
+            {
+                return _listingRepository.Update(id, listing);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region DeleteListing
+        /// <summary>
+        /// Delete listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        public void DeleteListing(string id)
+        {
+            try
+            {
+                _listingRepository.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region UpdateImagePath
+
         public void UpdateImagePath(string listingId, ListingImages[] photos)
         {
             try
@@ -261,6 +274,30 @@ namespace Classifieds.Listings.BusinessServices
                 throw ex;
             }
         }
+
+        #endregion
+
+        #region CloseListing
+
+        /// <summary>
+        /// Update listing status for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public Listing CloseListing(string id, Listing listing)
+        {
+            try
+            {
+                return _listingRepository.CloseListing(id, listing);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion CloseListing
 
         #endregion
     }

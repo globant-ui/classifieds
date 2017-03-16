@@ -59,6 +59,10 @@ namespace Classifieds.ListingsAPI.Controllers
         #endregion
 
         #region Public Methods
+
+        #region Get Methods
+
+        #region GetListingById
         /// <summary>
         /// Returns the listing for given id
         /// </summary>
@@ -140,7 +144,9 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
 
+        #region GetListingsBySubCategory
         /// <summary>
         /// Returns the listings for given sub category
         /// </summary>
@@ -165,7 +171,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast).ToList();
+                return _listingService.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {
@@ -173,6 +179,10 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
+
+        #endregion
+
+        #region GetListingsByCategory
 
         /// <summary>
         /// Returns the listings for given category
@@ -198,7 +208,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByCategory(category, startIndex, pageCount, isLast).ToList();
+                return _listingService.GetListingsByCategory(category, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {
@@ -207,99 +217,9 @@ namespace Classifieds.ListingsAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Insert new listing item into the database
-        /// </summary>
-        /// <param name="listing">Listing Object</param>
-        /// <returns></returns>
-        public HttpResponseMessage Post(Listing listing)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                listing.Status = Status.Active.ToString();
-                listing.SubmittedDate = DateTime.Now;
-                //listing.Photos = CreateImagePath(listing).ToArray();
-                var classified = _listingService.CreateListing(listing);
-                result = Request.CreateResponse(HttpStatusCode.Created, classified);
-                var newItemUrl = Url.Link("Listings", new { id = classified._id });
-                result.Headers.Location = new Uri(newItemUrl);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-            return result;
-        }
+        #endregion
 
-
-        /// <summary>
-        /// Update listing item for given Id
-        /// </summary>
-        /// <param name="id">Listing Id</param>
-        /// <param name="listing">Listing Object</param>
-        /// <returns></returns>
-        [HttpPut]
-        public HttpResponseMessage Put(string id, Listing listing)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-
-                var classified = _listingService.UpdateListing(id, listing);
-                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
-                var newItemUrl = Url.Link("Listings", new { id = classified._id });
-                result.Headers.Location = new Uri(newItemUrl);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Delete listing item for given Id
-        /// </summary>
-        /// <param name="id">Listing Id</param>
-        /// <returns></returns>
-        public HttpResponseMessage Delete(string id)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-
-                _listingService.DeleteListing(id);
-                result = Request.CreateResponse(HttpStatusCode.NoContent);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-            return result;
-        }
-
+        #region GetTopListings
         /// <summary>
         /// Returns top listings from database  
         /// </summary>
@@ -324,6 +244,8 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
+
+        #endregion
 
         #region GetListingsByEmail
 
@@ -351,7 +273,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByEmail(email, startIndex, pageCount, isLast).ToList();
+                return _listingService.GetListingsByEmail(email, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {
@@ -389,7 +311,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, _userEmail, startIndex, pageCount, isLast).ToList();
+                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, _userEmail, startIndex, pageCount, isLast);
             }
             catch (Exception ex)
             {
@@ -400,6 +322,7 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion GetListingsByCategoryAndSubCategory
 
+        #region GetMyWishlist
         /// <summary>
         /// Returns User wish list collection from database  
         /// </summary>
@@ -429,6 +352,9 @@ namespace Classifieds.ListingsAPI.Controllers
             }
         }
 
+        #endregion
+
+        #region GetRecommendedList
         /// <summary>
         /// Returns users recommended listings from database  
         /// </summary>
@@ -457,7 +383,84 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
-        #region PutCLoseListing
+
+        #endregion
+
+        #endregion
+
+        #region Post, Put, Delete
+
+        #region Post Listing
+        /// <summary>
+        /// Insert new listing item into the database
+        /// </summary>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public HttpResponseMessage Post(Listing listing)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                listing.Status = Status.Active.ToString();
+                listing.SubmittedDate = DateTime.Now;
+                //listing.Photos = CreateImagePath(listing).ToArray();
+                var classified = _listingService.CreateListing(listing);
+                result = Request.CreateResponse(HttpStatusCode.Created, classified);
+                var newItemUrl = Url.Link("Listings", new { id = classified._id });
+                result.Headers.Location = new Uri(newItemUrl);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Put (Update Listing) 
+        /// <summary>
+        /// Update listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        [HttpPut]
+        public HttpResponseMessage Put(string id, Listing listing)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+
+                var classified = _listingService.UpdateListing(id, listing);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+                var newItemUrl = Url.Link("Listings", new { id = classified._id });
+                result.Headers.Location = new Uri(newItemUrl);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region PutCloseListing
 
         /// <summary>
         /// Update listing status for given Id
@@ -465,7 +468,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="id">Listing Id</param>
         /// <param name="listing">Listing Object</param>
         /// <returns></returns>
-        public HttpResponseMessage PutCLoseListing(string id, Listing listing)
+        public HttpResponseMessage PutCloseListing(string id, Listing listing)
         {
             HttpResponseMessage result;
             try
@@ -477,7 +480,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
                 listing.Status = Status.Closed.ToString();
-                var classified = _listingService.CLoseListing(id, listing);
+                var classified = _listingService.CloseListing(id, listing);
                 result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
@@ -489,6 +492,41 @@ namespace Classifieds.ListingsAPI.Controllers
         }
 
         #endregion PutCLoseListing
+
+        #region Delete Listing
+        /// <summary>
+        /// Delete listing item for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <returns></returns>
+        public HttpResponseMessage Delete(string id)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+
+                _listingService.DeleteListing(id);
+                result = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region PostListingImages
         /// <summary>
         /// This method will add images to existing images array.
         /// </summary>
@@ -543,6 +581,8 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
        }
+
+        #endregion
 
         #endregion
 
