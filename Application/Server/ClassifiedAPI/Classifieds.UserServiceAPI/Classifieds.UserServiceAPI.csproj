@@ -166,6 +166,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\UserService.pubxml" />
+    <None Include="Properties\PublishProfiles\UsserAPI.pubxml" />
     <None Include="Properties\PublishProfiles\utest.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

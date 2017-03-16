@@ -9,12 +9,13 @@ using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common.Repositories;
 using Classifieds.Listings.BusinessServices.ServiceAgent;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using Classifieds.ListingsAPI.Helpers;
 using System.Configuration;
+using System.Web.Script.Serialization;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -209,7 +210,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 }
                 listing.Status = Status.Active.ToString();
                 listing.SubmittedDate = DateTime.Now;
-                listing.Photos = CreateImagePath(listing).ToArray();
+                //listing.Photos = CreateImagePath(listing).ToArray();
                 var classified = _listingService.CreateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Created, classified);
                 var newItemUrl = Url.Link("Listings", new { id = classified._id });
@@ -473,6 +474,93 @@ namespace Classifieds.ListingsAPI.Controllers
         }
 
         #endregion PutCLoseListing
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<HttpResponseMessage> PostListing()
+        {
+            try
+            {
+                bool listingFound = false;
+                HttpResponseMessage result = new HttpResponseMessage();
+
+                //request authentication
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+
+                if (Request.Content.IsMimeMultipartContent())
+                {
+                    Listing listing;
+                    //Image handling
+                    string path = HttpContext.Current.Server.MapPath("~/");
+                    path = path + ConfigurationManager.AppSettings["ListingImagePath"].ToString();
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    path = ConfigurationManager.AppSettings["ListingImagePath"].ToString();
+                    string uploadPath = HttpContext.Current.Server.MapPath("~" + path);
+                    StreamProvider provider = new StreamProvider(uploadPath);
+                    try
+                    {
+                        var imageInfo =  await Request.Content.ReadAsMultipartAsync(provider)
+                            .ContinueWith(t =>
+                              {
+                                  if (t.IsFaulted || t.IsCanceled)
+                                  {
+                                      throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                                  }
+                                  var fileInfo = provider.FileData.Select(i =>
+                                  {
+                                      var info = new FileInfo(i.LocalFileName);
+                                      return new ListingImages(info.Name, path + info.Name);
+                                  });
+                                  return fileInfo;
+                              });
+
+                        // Form data i.e. text handling 
+                        foreach (var key in provider.FormData.AllKeys)
+                        {
+                            foreach (var val in provider.FormData.GetValues(key))
+                            {
+                                listingFound = true;
+                                string jsonStr = provider.FormData.Get(key);
+                                JavaScriptSerializer j = new JavaScriptSerializer();
+                                var a = j.Deserialize(jsonStr, typeof(object));
+                                listing = LoadListingObject((Dictionary<string,object>)a);
+                                listing.Status = Status.Active.ToString();
+                                listing.SubmittedDate = DateTime.Now;
+                                listing.Photos = imageInfo.ToArray<ListingImages>();
+                                var classified = _listingService.CreateListing(listing);
+                                result = Request.CreateResponse(HttpStatusCode.Created, classified);
+                            }
+                        }
+                        return result;
+                    }
+                    catch (System.Exception e)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
+                    }
+                }
+                else
+                {
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
+                    throw new HttpResponseException(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
         /// <summary>
         /// This method will add images to existing images array.
         /// </summary>
@@ -504,9 +592,9 @@ namespace Classifieds.ListingsAPI.Controllers
                     foreach (var file in streamProvider.FileData)
                     {
                         FileInfo fi = new FileInfo(file.LocalFileName);
-                        ListingImages objImage = new ListingImages();
-                        objImage.ImageName = fi.Name;
-                        objImage.Image = ConfigurationManager.AppSettings["ListingImagePath"].ToString()+ fi.Name;
+                        ListingImages objImage = new ListingImages(fi.Name, ConfigurationManager.AppSettings["ListingImagePath"].ToString() + fi.Name);
+                        //objImage.ImageName = fi.Name;
+                        //objImage.Image = ConfigurationManager.AppSettings["ListingImagePath"].ToString()+ fi.Name;
                         lstImages.Add(objImage);
                     }
                     ListingImages[] imgArr = new ListingImages[] {};
@@ -543,7 +631,38 @@ namespace Classifieds.ListingsAPI.Controllers
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
         }
-
+        private Listing LoadListingObject(Dictionary<string,object> o)
+        {
+            Listing listing = new Listing();
+            listing.Address = o["Address"].ToString();
+            listing.Brand = o["Brand"].ToString();
+            listing.City = o["City"].ToString();
+            listing.Country = o["Country"].ToString();
+            listing.Details = o["Details"].ToString();
+            listing.DimensionHeight = o["DimensionHeight"].ToString();
+            listing.DimensionLength = o["DimensionLength"].ToString();
+            listing.DimensionWidth = o["DimensionWidth"].ToString();
+            listing.FuelType = o["FuelType"].ToString();
+            listing.Furnished = o["Furnished"].ToString();
+            listing.IdealFor = o["IdealFor"].ToString();
+            listing.IsPublished = Convert.ToBoolean(o["IsPublished"]);
+            listing.KmDriven = Convert.ToInt32(o["KmDriven"]);
+            listing.ListingCategory = o["ListingCategory"].ToString();
+            listing.ListingType = o["ListingType"].ToString();
+            listing.Negotiable = Convert.ToBoolean(o["Negotiable"]);
+            listing.Price = Convert.ToInt32(o["Price"]);
+            listing.Rooms = o["Rooms"].ToString();
+            listing.State = o["State"].ToString();
+            listing.Status = "Active";
+            listing.SubCategory = o["SubCategory"].ToString();
+            listing.SubmittedBy = o["SubmittedBy"].ToString();
+            listing.SubmittedDate = DateTime.Now;
+            listing.Title = o["Title"].ToString();
+            listing.Type = o["Type"].ToString();
+            listing.TypeofUse = o["TypeofUse"].ToString();
+            listing.YearOfPurchase = Convert.ToInt32(o["YearOfPurchase"]);
+            return listing;
+        }
         private string GetAccessToken()
         {
             IEnumerable<string> headerValues;
@@ -573,9 +692,9 @@ namespace Classifieds.ListingsAPI.Controllers
                     foreach (var file in streamProvider.FileData)
                     {
                         FileInfo fi = new FileInfo(file.LocalFileName);
-                        ListingImages objImage = new ListingImages();
-                        objImage.ImageName = fi.Name;
-                        objImage.Image = path + fi.Name;
+                        ListingImages objImage = new ListingImages(fi.Name, path + fi.Name);
+                        //objImage.ImageName = fi.Name;
+                        //objImage.Image = path + fi.Name;
                         lstImages.Add(objImage);
                     }
                     ListingImages[] imgArr = new ListingImages[] { };

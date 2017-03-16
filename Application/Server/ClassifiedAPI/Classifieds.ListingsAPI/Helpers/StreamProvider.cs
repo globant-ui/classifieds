@@ -27,10 +27,9 @@ namespace Classifieds.ListingsAPI.Helpers
         public override string GetLocalFileName(HttpContentHeaders headers)
         {
             string fileName = headers.ContentDisposition.FileName;
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                fileName = Guid.NewGuid().ToString() + ".data";
-            }
+            var ext = fileName.Substring(fileName.LastIndexOf('.')).ToLower();
+            var name = fileName.Substring(0, fileName.LastIndexOf('.'));
+            fileName = name + "_" + Guid.NewGuid().ToString() + ext;
             return fileName.Replace("\"", string.Empty);
         }
     }
