@@ -38,6 +38,7 @@ import { SelectInterestComponent } from './_common/select-interest/components/se
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap/modal';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
+import { AccordionModule } from 'ng2-bootstrap/accordion';
 import { CarouselModule } from 'ng2-bootstrap/carousel';
 
 const APP_PROVIDERS = [
@@ -82,6 +83,7 @@ type StoreType = {
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
+    AccordionModule.forRoot(),
     CarouselModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
