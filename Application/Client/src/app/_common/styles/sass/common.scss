@@ -104,12 +104,12 @@ input.full-width {
     list-style: none;
     max-height: 141px;
     overflow-y: auto;
-   
+
            li{
            margin: 10px 10px 10px 0;
            display: inline-block;
-            
-            a{              
+
+            a{
               @extend %type-open-sans-10-9-text;
               color: $white-color;
               background-color: $darkblue-color;
@@ -158,20 +158,18 @@ input, select{
     color: $white-color;
     border: none;
 }
-
 // grey-tag-withcross
-
 .grey-tag{
 
         li{
-                       
-            a{              
+
+            a{
               @extend %type-open-sans-10-9-text;
               color: $tag-grey-border;
               background-color: $createListing-item-bgcolor;
               border: 1px solid $tag-grey-border;
               padding: 8px 13px;
-              
+
               &:hover {
                 background-color: $createListing-item-bgcolor;
               }
@@ -182,4 +180,10 @@ input, select{
 
               }
           }
+}
+@media (max-width: $screen-xs-max) {
+  .green-button {
+    width: 100%;
+    margin: 20px 0;
+  }
 }
