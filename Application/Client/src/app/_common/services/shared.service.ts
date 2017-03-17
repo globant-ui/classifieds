@@ -63,17 +63,5 @@ private emailId : string = '';
         return this.getWishListData; 
     }
 
-     getSelectedFilterOption( selectedFilter ) {
-         debugger;
-         console.log("00000000",selectedFilter)
-    this.getCards( selectedFilter );
-  }
-     getCards( categoryName ) {
-         
-         console.log("ggggggggggg",categoryName)
-     let url;
-      url = this.cardsByCategoryUrl + categoryName;
-    }
-
  }
 //http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=Electronics
