@@ -4,9 +4,19 @@
       <div class="modal-header">
 		  	<h4 class="modal-title">My Wishlist</h4>
       </div>
-		<div class="modal-body">
-			kkkkkk		
-		</div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-3">
+              <div class="thumbnail" *ngFor = "let wishlist of getSelectedWishListObj">
+                  <img src="../../../../assets/img/similarListing.png" alt="...">
+                      <div class="listingContent caption">
+                          <span class="title"><h5>{{wishlist.Price}}</h5></span>
+                          <span class="price pull-right">{{wishlist.Title}}</span>
+                      </div>
+              </div>
+            </div>
+          </div>
+      </div>
     </div>
   </div>
 </div>

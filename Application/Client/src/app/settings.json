@@ -24,7 +24,10 @@
       "filterCategoryUrl" :"http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=",
       "productInfoUrl": "http://in-it0289/ListingAPI/api/Listings/GetListingById?id=",
       "subCategoryUrl":"http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=",
-      "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail="
+      "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail=",
+      "GetUserWishList":"http://in-it0289/UserAPI/api/User/GetUserWishList?userEmail=",
+      "cardUrl":"http://in-it0289/ListingAPI/api/Listings/GetTopListings",
+      "cardsByCategoryUrl" : "http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category="
     } 
   },
  "environment": "dev"

@@ -1,5 +1,5 @@
 
-import { Component, ViewEncapsulation,ViewChildren } from '@angular/core';
+import { Component, ViewEncapsulation,ViewChildren,Input} from '@angular/core';
 import { AppState } from './app.service';
 import  {SettingsService} from  './_common/services/setting.service';
 
@@ -10,7 +10,7 @@ import  {SettingsService} from  './_common/services/setting.service';
   styleUrls: [
     './app.component.css'
   ],
-  template: `<main>
+  template: `<main >
               <header></header>
             <router-outlet></router-outlet></main>`
 })
@@ -18,6 +18,8 @@ export class AppComponent {
   angularclassLogo = 'assets/img/angularclass-avatar.png';
   name = 'Angular 2 Webpack Starter';
   url = 'https://twitter.com/AngularClass';
+
+@Input() data1;
 
   @ViewChildren("cheader") CHeader;
 
@@ -27,7 +29,7 @@ export class AppComponent {
 
 
   ngOnInit() {
-
+console.log("main app",this.data1)
   }
 
 }

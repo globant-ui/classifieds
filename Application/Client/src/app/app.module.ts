@@ -22,6 +22,7 @@ import { BannerComponent } from './banner/components/banner.component';
 import { ProductInfoComponent } from './product-info/components/product-info.component';
 import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
+import {SharedService} from "./_common/services/shared.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
 import { ProfileComponent } from './createProfile/component/createProfile.component';
@@ -32,6 +33,7 @@ import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
 import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
 import { WishListComponent } from './_common/wishlist/components/wishlist.component';
+import  {SettingsService} from  './_common/services/setting.service';
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap/modal';
@@ -88,7 +90,9 @@ type StoreType = {
     CService,
     mapData,
     CookieService,
-    DatePipe
+    DatePipe,
+    SharedService,
+    SettingsService
   ]
 })
 export class AppModule {

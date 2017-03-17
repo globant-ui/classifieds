@@ -1,4 +1,4 @@
-import { Component,Input,OnInit } from '@angular/core';
+import { Component,Input,OnInit,AfterViewInit } from '@angular/core';
 import { AppState } from '../../app.service';
 import { SettingsService } from '../../_common/services/setting.service';
 import { LoaderComponent } from '../../_common/loader/components/loader.component';
@@ -16,7 +16,7 @@ let tpls = require('../tpls/card-list.component.html').toString();
 export class CardListComponent{
 
     public showProductInfoPage: boolean = false;
-    constructor(public appState: AppState, private _settingsService : SettingsService, private _router:Router) {}
+    constructor(public appState: AppState, private _settingsService : SettingsService, private _router:Router) {  console.log('all = ',this.cards);}
 
     @Input() cards;
 
@@ -26,6 +26,10 @@ export class CardListComponent{
         console.log('all = ',this.cards);
     }
         
+    ngAfterViewInit(){
+        console.log('all = ',this.cards);
+    }
+
     loading( flag ) {
         this.isLoading = flag;
     }
