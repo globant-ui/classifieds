@@ -2,6 +2,9 @@
  "services": {
   "main": " http://demo0440937.mockable.io/dev"
  },
+  "userImage":{
+    "domain": "http://in-it0289"
+  },
   "auth": {
     "active": false,
     "type": "oaut2",
@@ -22,9 +25,10 @@
       "searchUrl" :"http://in-it0289/SearchAPI/api/Search/GetFullTextSearch?searchText=",
       "searchAutoSuggestionUrl" : "http://in-it0289/MasterDataAPI/api/category/GetCategorySuggetion?categoryText=",
       "filterCategoryUrl" :"http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=",
+      "productInfoUrl": "http://in-it0289/ListingAPI/api/Listings/GetListingById?id=",
       "subCategoryUrl":"http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=",
       "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail="
-    } 
+    }
   },
  "environment": "dev"
 }
