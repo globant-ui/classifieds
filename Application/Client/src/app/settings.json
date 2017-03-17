@@ -2,6 +2,9 @@
  "services": {
   "main": " http://demo0440937.mockable.io/dev"
  },
+  "userImage":{
+    "domain": "http://in-it0289"
+  },
   "auth": {
     "active": false,
     "type": "oaut2",
@@ -25,7 +28,7 @@
       "productInfoUrl": "http://in-it0289/ListingAPI/api/Listings/GetListingById?id=",
       "subCategoryUrl":"http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=",
       "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail="
-    } 
+    }
   },
  "environment": "dev"
 }

@@ -160,7 +160,9 @@
 }
 
 @media (min-width: 320px) and (max-width: 460px){
-	.container{
+	.cardList{
+		padding: 0 !important;
+		background-color: $white-color;
 		h2.category{
 			margin:15px 0;
 			padding: 0 0 0 15px;
@@ -172,6 +174,7 @@
 		}
 		.card-wrapper{
 			.plain-card-container, .wishlist-container, .create-container, .recommend-container{
+				background-color: $primary-background-color;
 				margin: 0 0 15px;
 				.img-block{
 					width:	100%;

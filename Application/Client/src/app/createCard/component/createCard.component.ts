@@ -31,7 +31,6 @@ export class CreateCardComponent implements OnInit {
     public type: string = '';
     public filters;
     public textBoxes = [];
-
     public productId: string;
     public action: string = 'Create';
     public productInfo = {};
@@ -44,21 +43,6 @@ export class CreateCardComponent implements OnInit {
                 private _settingsService: SettingsService,
                 private _cookieService:CookieService
                 ){
-        this.myForm = new FormGroup({
-            cardType: new FormControl('', [<any>Validators.required]),
-            category: new FormControl('', [<any>Validators.required]),
-            subCategory: new FormControl('', [<any>Validators.required]),
-            title: new FormControl('', [<any>Validators.required]),
-            area: new FormControl('', [<any>Validators.required]),
-            city: new FormControl('', [<any>Validators.required]),
-            state: new FormControl('', [<any>Validators.required]),
-            country: new FormControl('', [<any>Validators.required]),
-            shortDesc: new FormControl('', [<any>Validators.required]),
-            negotiable: new FormControl('', [<any>Validators.required]),
-            price: new FormControl('', [<any>Validators.required]),
-            location: new FormControl('', [<any>Validators.required]),
-            submittedBy: new FormControl('', [])
-        });
         var self = this;
 
         this._route.params.subscribe(params => {
@@ -78,7 +62,21 @@ export class CreateCardComponent implements OnInit {
     }
 
     ngOnInit() {
-
+      this.myForm = new FormGroup({
+        cardType: new FormControl('', [<any>Validators.required]),
+        category: new FormControl('', [<any>Validators.required]),
+        subCategory: new FormControl('', [<any>Validators.required]),
+        title: new FormControl('', [<any>Validators.required]),
+        area: new FormControl('', [<any>Validators.required]),
+        city: new FormControl('', [<any>Validators.required]),
+        state: new FormControl('', [<any>Validators.required]),
+        country: new FormControl('', [<any>Validators.required]),
+        shortDesc: new FormControl('', [<any>Validators.required]),
+        negotiable: new FormControl('', [<any>Validators.required]),
+        price: new FormControl('', [<any>Validators.required]),
+        location: new FormControl('', [<any>Validators.required]),
+        submittedBy: new FormControl('', [])
+      });
         this.getCategories();
     }
 
@@ -86,8 +84,10 @@ export class CreateCardComponent implements OnInit {
       var self = this;
        this.httpService.observableGetHttp(this.apiPath.GET_ALL_CATEGORIES,null,false)
        .subscribe((res)=> {
-           this.categories = res;
-           this.subcategories = this.categories[0].SubCategory;
+
+           self.categories = res;
+           self.subcategories = self.categories[0].SubCategory;
+
          },
          error => {
            console.log("error in response");
@@ -98,7 +98,7 @@ export class CreateCardComponent implements OnInit {
     }
 
     getFilters(){
-       let url = (this.myForm.get('subCategory').value!=undefined) ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
+       let url = (this.myForm.get('subCategory').value!=undefined && this.myForm.get('subCategory').value!='') ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
        let self = this;
        this.httpService.observableGetHttp(url,null,false)
        .subscribe((res)=> {
@@ -114,7 +114,7 @@ export class CreateCardComponent implements OnInit {
     }
 
     loadFilters(){
-        this.textBoxes = [];
+        this.textBoxes = []
         let filters = this.filters;
         let removeSaleRent = this.filters.Filters.findIndex(x => x.FilterName==='Sale/Rent');
         this.filters.Filters.splice( removeSaleRent, 1 )[0]
@@ -160,8 +160,6 @@ export class CreateCardComponent implements OnInit {
         }
         this.isActive = this.endPoints[1];
 
-        console.log(this.isCompleted + 'this is completed nd active' + this.isActive);
-
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
             var reader = new FileReader();
@@ -192,7 +190,6 @@ export class CreateCardComponent implements OnInit {
            imageDetails['Image'] =  value;
            cardData.Photos.push(imageDetails);
        });
-
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
          },
@@ -204,9 +201,7 @@ export class CreateCardComponent implements OnInit {
            console.log("Finally");
 
          })
-
         this.submitted = true;
-
     }
 
     isAddInfoCompleted() {
@@ -214,11 +209,11 @@ export class CreateCardComponent implements OnInit {
             this.isCompleted.push(this.endPoints[1]);
         }
         this.isActive = this.endPoints[2];
-        console.log(this.isCompleted + '--------' + this.isActive);
     }
 
     subCategoryUpdated(){
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
+        this.getFilters();
     }
 
     getProductData(productId){

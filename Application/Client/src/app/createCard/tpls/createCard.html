@@ -61,11 +61,11 @@
                     <div class="row">
                         <ul class="nav navbar-nav">
                           <li>
-                              <div class="col-lg-12 col-md-12 col-xs-4">
-                                <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
+                              <div class="col-lg-12 col-md-12 col-xs-12">
+                                <div class="img-icon noPadding addPhotoDiv" *ngFor="let img of uploadedImages">
                                     <img src="{{img}}">
                                 </div>
-                                <div id="addPhoto" class="img-icon noPadding">
+                                <div class="img-icon noPadding addPhotoDiv">
                                     <label for="image-upload" class="imageUpload">
                                         <img src="../../../../assets/img/addImage.png" />
                                     </label>
@@ -114,100 +114,11 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row form-group">
-                    <div class="col-lg-11 col-md-11 col-xs-12">
-                      <div class="row">
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.area.valid || (myForm.controls.area.pristine && !submitted)" class="alert alert-danger">
-                                Area is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)" class="alert alert-danger">
-                                City is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.state.valid || (myForm.controls.state.pristine && !submitted)" class="alert alert-danger">
-                                State is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)" class="alert alert-danger">
-                                Country is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row form-group">
-                    <div class="col-lg-11 col-md-11 col-xs-12">
-                      <div class="row">
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.area.valid || (myForm.controls.area.pristine && !submitted)" class="alert alert-danger">
-                                Area is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.city.valid || (myForm.controls.city.pristine && !submitted)" class="alert alert-danger">
-                                City is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.state.valid || (myForm.controls.state.pristine && !submitted)" class="alert alert-danger">
-                                State is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-xs-12 marginBottom">
-                            <select #location class="fullWidth" formControlName="location">
-                              <option selected disabled>Type</option>
-                            </select>
-                            <!-- <div [hidden]="myForm.controls.country.valid || (myForm.controls.country.pristine && !submitted)" class="alert alert-danger">
-                                Country is required
-                            </div> -->
-                            <div class="glyphicon glyphicon-chevron-down downArrow"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                   
                   <div class="row form-group" *ngIf="filters.Filters">
-                      <div class="col-lg-10 col-md-10 col-xs-12 marginBottom">
+                      <div class="col-lg-11 col-md-11 col-xs-12 marginBottom">
                         <div class="row">
-                          <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of filters.Filters">
+                          <div class="col-lg-3 col-md-3 col-xs-12 marginBottom" *ngFor="let filter of filters.Filters">
                             <select class="typeSelect fullWidth" name="{{filter.FilterName}}" [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName" formControlName="{{filter.FilterName}}" >
                               <option selected="{{(action === 'Create' && action !== 'Edit')?true:null}}" disabled>{{filter.FilterName}}</option>
                               <option *ngFor="let FilterValues of filter.FilterValues" value="{{FilterValues}}">{{FilterValues}}</option>
@@ -218,9 +129,9 @@
                       </div>
                   </div>
                   <div class="row form-group" *ngIf="textBoxes">
-                      <div class="col-lg-10 col-md-10 col-xs-12">
+                      <div class="col-lg-11 col-md-11 col-xs-12">
                         <div class="row">
-                          <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of textBoxes">
+                          <div class="col-lg-3 col-md-3 col-xs-12 marginBottom" *ngFor="let filter of textBoxes">
                             <input class="typeSelect fullWidth" type="text" name="{{filter.FilterName}}" formControlName="{{filter.FilterName}}" placeholder="{{filter.FilterName}}" [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName" />
                           </div>
                         </div>
