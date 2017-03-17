@@ -1,10 +1,10 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit,ViewChild} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
 import {mapData} from  '../../mapData/mapData';
+import { PopUpMessageComponent } from '../../_common/popup/';
 import { ActivatedRoute } from '@angular/router';
 import {SettingsService} from '../../_common/services/setting.service';
-
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
 import {CookieService} from 'angular2-cookie/core';
@@ -19,6 +19,9 @@ let styles = require('../styles/createCard.scss').toString();
     providers: [apiPaths,SettingsService]
 })
 export class CreateCardComponent implements OnInit {
+    
+    @ViewChild('PopUpMessageComponent') popUpMessageComponent;
+
     public myForm: FormGroup;
     public submitted: boolean;
     public selectedCategory: string = 'Automotive';
@@ -31,6 +34,8 @@ export class CreateCardComponent implements OnInit {
     public type: string = '';
     public filters;
     public textBoxes = [];
+    private showPopupMessage: boolean = false;
+    private showPopupDivMessage: string = '';
     public productId: string;
     public action: string = 'Create';
     public productInfo = {};
@@ -176,6 +181,7 @@ export class CreateCardComponent implements OnInit {
     createCard(action){
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
+       console.log(this.isCompleted + '********************' + this.isActive);
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
 
@@ -183,6 +189,7 @@ export class CreateCardComponent implements OnInit {
        if(action === 'create'){
            cardData.IsPublished = true;
        }
+
        this.uploadedImages.forEach(function(value,key){
            let imageDetails = {};
            imageDetails['ImageName'] = 'Photo'+key;
@@ -191,8 +198,14 @@ export class CreateCardComponent implements OnInit {
        });
        this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
        .subscribe((res)=> {
+            if(res['_id'].length != 0){
+                 console.log("length in create card for id",res['_id'])
+                 this.showPopupMessage = true;
+                 this.showPopupDivMessage = 'listing';
+            }
          },
          error => {
+             this.showPopupMessage = false;
            console.log("error in response");
 
          },
