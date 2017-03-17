@@ -36,7 +36,6 @@ export class HomeComponent implements OnInit {
   private affixEl:any;
   private affixElOffsetTop: number;
 
-  //@ViewChildren("cheader") CHeader;
   @ViewChild(SearchComponent) searchComponent;
   @ViewChild( CardListComponent) cardListComponent;
 
@@ -63,7 +62,6 @@ export class HomeComponent implements OnInit {
   getAffixElOffsetTop(){
     this.affixEl = this.el.nativeElement.querySelector('#cheader1');
     this.affixElOffsetTop = this.affixEl.offsetTop;
-    //console.log('off = ',this.affixElOffsetTop);
   }
 
   getInitialCards () {

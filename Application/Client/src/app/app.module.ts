@@ -23,6 +23,7 @@ import { ProductInfoComponent } from './product-info/components/product-info.com
 import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
 import {SharedService} from "./_common/services/shared.service";
+import {Base64Service} from "./_common/services/base64.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
 import { ProfileComponent } from './createProfile/component/createProfile.component';
@@ -34,10 +35,12 @@ import { LoaderComponent } from './_common/loader/components/loader.component';
 import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
 import { WishListComponent } from './_common/wishlist/components/wishlist.component';
 import  {SettingsService} from  './_common/services/setting.service';
+import { PopUpMessageComponent } from './_common/popup';
 
 /*ng2-bootstrap*/
-import { ModalModule } from 'ng2-bootstrap/modal';
+import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
+import { AccordionModule } from 'ng2-bootstrap/accordion';
 import { CarouselModule } from 'ng2-bootstrap/carousel';
 
 const APP_PROVIDERS = [
@@ -54,6 +57,7 @@ type StoreType = {
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
+
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
@@ -72,7 +76,8 @@ type StoreType = {
     ProductInfoComponent,
     CreateCardComponent,
     ProfileComponent,
-    WishListComponent
+    WishListComponent,
+    PopUpMessageComponent,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -82,6 +87,7 @@ type StoreType = {
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
+    AccordionModule.forRoot(),
     CarouselModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
@@ -90,9 +96,10 @@ type StoreType = {
     CService,
     mapData,
     CookieService,
-    DatePipe,
     SharedService,
-    SettingsService
+    SettingsService,
+    Base64Service,
+    DatePipe
   ]
 })
 export class AppModule {
