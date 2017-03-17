@@ -32,10 +32,10 @@ import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
 import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
-
+import { PopUpMessageComponent } from './_common/popup';
 
 /*ng2-bootstrap*/
-import { ModalModule } from 'ng2-bootstrap/modal';
+import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
 import { AccordionModule } from 'ng2-bootstrap/accordion';
 import { CarouselModule } from 'ng2-bootstrap/carousel';
@@ -54,6 +54,7 @@ type StoreType = {
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
+
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
@@ -71,7 +72,9 @@ type StoreType = {
     SelectInterestComponent,
     ProductInfoComponent,
     CreateCardComponent,
+    PopUpMessageComponent,
     ProfileComponent
+
   ],
   imports: [ // import Angular's modules
     BrowserModule,
