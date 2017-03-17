@@ -90,6 +90,9 @@ body{
   padding-top: 40px;
 }
 
+input.full-width {
+  width: 100%;
+}
 
 // blue tag
 
@@ -99,12 +102,14 @@ body{
     margin: 20px 0;
     text-align: center;
     list-style: none;
-   
+    max-height: 141px;
+    overflow-y: auto;
+
            li{
            margin: 10px 10px 10px 0;
            display: inline-block;
-            
-            a{              
+
+            a{
               @extend %type-open-sans-10-9-text;
               color: $white-color;
               background-color: $darkblue-color;
@@ -122,6 +127,7 @@ body{
           }
 }
 
+
 //input and select
 
 input, select{
@@ -134,3 +140,50 @@ input, select{
   @extend %type-open-sans-14-4-text;
 }
 
+.green-button {
+    padding: 15px 25px;
+    border-radius: 30px;
+    background: $green-color;
+    color: $white-color;
+    border: none;
+    text-transform: uppercase;
+}
+
+.green-circle-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $green-color;
+    color: $white-color;
+    color: $white-color;
+    border: none;
+}
+// grey-tag-withcross
+.grey-tag{
+
+        li{
+
+            a{
+              @extend %type-open-sans-10-9-text;
+              color: $tag-grey-border;
+              background-color: $createListing-item-bgcolor;
+              border: 1px solid $tag-grey-border;
+              padding: 8px 13px;
+
+              &:hover {
+                background-color: $createListing-item-bgcolor;
+              }
+
+              i {
+                 padding-left: 10px;
+              }
+
+              }
+          }
+}
+@media (max-width: $screen-xs-max) {
+  .green-button {
+    width: 100%;
+    margin: 20px 0;
+  }
+}

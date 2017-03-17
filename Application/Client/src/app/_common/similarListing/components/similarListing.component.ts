@@ -13,21 +13,17 @@ let tpls = require('../tpls/similarListing.component.html').toString();
 })
 export class SimilarListingComponent implements OnChanges{
 
-  @Input()
-  type;
+  @Input() type;
 
-  @Output()
-  similarListingLoaded:EventEmitter<string> = new EventEmitter();
-
+  @Output() similarListingLoaded:EventEmitter<string> = new EventEmitter();
 
   public similarListing;
 
-  constructor(private httpService:CService,private apiPath:apiPaths){
-
-  }
+  constructor(private httpService:CService,private apiPath:apiPaths){}
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}){
     this.getSimilarListing();
+
   }
 
   getSimilarListing(){

@@ -2,6 +2,9 @@
  "services": {
   "main": " http://demo0440937.mockable.io/dev"
  },
+  "userImage":{
+    "domain": "http://in-it0289"
+  },
   "auth": {
     "active": false,
     "type": "oaut2",
@@ -29,6 +32,7 @@
       "GetUserWishList":"http://in-it0289/UserApi/api/User/GetUserWishList?userEmail=",
       "DeleteUserWishListUrl": "http://in-it0289/UserApi/api/User/DeleteFromWishList?userEmail="
     } 
+
   },
  "environment": "dev"
 }

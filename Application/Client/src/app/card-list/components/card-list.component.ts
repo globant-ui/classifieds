@@ -54,12 +54,13 @@ export class CardListComponent{
         this.GetUserWishList = this.GetUserWishList + this.emailId;
     }
 
-    loading(flag) {
+   
+
+    loading( flag ) {
         this.isLoading = flag;
     }
 
    showProductInfo(id){
-     this.showProductInfoPage = true;
      this._router.navigate(['productInfo',id]);
   }
 
