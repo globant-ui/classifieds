@@ -54,8 +54,7 @@
       <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
         <p class="my-sub">
          <span class="category">category</span>
-         <span class="sub-category pad-right-20">
-           {{res.Category}}</span>
+         <span class="sub-category pad-right-20">{{res.Category}}</span>
          <span class="category">subcategory</span>
          <span class="sub-category">{{res.SubCategory}}</span>
           <span class="pull-right">
@@ -129,7 +128,7 @@
         <span class="category">subcategory</span>
         <span class="sub-category">{{res.SubCategory}}</span>
         <span class="pull-right">
-          <button class="green-circle-button" (click)="deleteSub(1,$event)">
+          <button class="green-circle-button"  (click)="deleteSub(res)">
             <i class="fa fa-close"></i>
           </button>
         </span>

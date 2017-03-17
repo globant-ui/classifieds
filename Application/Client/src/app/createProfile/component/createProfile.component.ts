@@ -5,9 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import {Base64Service} from '../../_common/services/base64.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http,Response,Headers} from '@angular/http';
+// import * as _ from "lodash";
 
 let tpls = require('../tpls/createProfile.html').toString();
 let styles = require('../styles/createProfile.scss').toString();
+
 
 @Component({
     selector:'create-profile',
@@ -19,7 +21,7 @@ export class ProfileComponent implements OnInit {
 
     private getUserProfileUrl = 'http://in-it0289/Userapi/api/user/GetUserProfile?userEmail=';
     private updateUserProfile = 'http://in-it0289/Userapi/api/User/UpdateUserProfile';
-    private deleteSubScription = 'http://in-it0289/Userapi/api/user/DeleteSubscription';
+    private deleteSubScription = 'http://in-it0289/UserAPI/api/User/DeleteAlerts?userEmail=';
     private userEmail:any;
     private userDetails: any;
     private userProfileData : any = {};
@@ -84,17 +86,17 @@ export class ProfileComponent implements OnInit {
           });
     }
 
-    deleteSub(event){
-      console.log("delete",event);
-      this.subscribeCat = this.subscribeCat.splice();
-      let UpdatedAlert = this.subscribeCat;
-      let url = this.deleteSubScription+UpdatedAlert;
-      this.httpService.observableDeleteHttp(url,null,false)
-        .subscribe((res)=>{
-        console.log("deleted the subsscription",res);
-        },
+    deleteSub(res){
+     let UpdatedAlert = JSON.stringify(res);
+      let url = this.deleteSubScription + this.userEmail;
+      this.subscribeCat.push(res);
+      this.httpService.observablePutHttp(url,UpdatedAlert,null,false)
+        .subscribe((response)=>{
+            console.log("deleted the subsscription",response);
+            this.getProfileData(this.userEmail);
+          },
           error =>{
-          console.log("error in responese");
+            console.log("error in responese");
           },
           ()=>{
             console.log("finally");

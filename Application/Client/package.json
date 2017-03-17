@@ -101,6 +101,7 @@
     "file-loader": "^0.9.0",
     "gh-pages": "^0.12.0",
     "gulp": "^3.9.1",
+    "lodash": "^4.17.4",
     "html-webpack-plugin": "^2.21.0",
     "imports-loader": "^0.6.5",
     "install": "^0.6.0",
