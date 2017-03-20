@@ -3,15 +3,19 @@
     <div class="modal-content">
       <div class="modal-header">
 		  	<h4 class="modal-title">My Wishlist</h4>
+         <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-3">
-              <div class="thumbnail" *ngFor = "let wishlist of initialCardData">
+              <div class="thumbnail" *ngFor = "let wishlist of WishListSelectedData">
                   <img src="../../../../assets/img/similarListing.png" alt="...">
                       <div class="listingContent caption">
                           <span class="title"><h5>{{wishlist.Price}}</h5></span>
                           <span class="price pull-right">{{wishlist.Title}}</span>
+                          <span class="price pull-right"(click)="deleteWishList(wishlist)">x</span>
                       </div>
               </div>
             </div>

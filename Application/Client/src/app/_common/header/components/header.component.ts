@@ -41,8 +41,8 @@ export class HeaderComponent implements OnInit{
     public expanded(event:any):void {}
 
     showUserProfile(){
-    let usermail =btoa(this.session.useremail);
-    this._route.navigate(['profile' ,usermail]);
+    // let usermail =btoa(this.session.useremail);
+    // this._route.navigate(['profile' ,usermail]);
     }
 
   doLogout(){

@@ -22,7 +22,6 @@ import { BannerComponent } from './banner/components/banner.component';
 import { ProductInfoComponent } from './product-info/components/product-info.component';
 import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
-import {SharedService} from "./_common/services/shared.service";
 import {Base64Service} from "./_common/services/base64.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
@@ -96,7 +95,6 @@ type StoreType = {
     CService,
     mapData,
     CookieService,
-    SharedService,
     SettingsService,
     Base64Service,
     DatePipe

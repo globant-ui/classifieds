@@ -55,10 +55,6 @@ export class HomeComponent implements OnInit {
     this.getAffixElOffsetTop();
   }
   
-   @HostListener( 'window:click', [ '$event' ] )
-   onclick(event){
-	   console.log("event====>",event)
-   }
   getAffixElOffsetTop(){
     this.affixEl = this.el.nativeElement.querySelector('#cheader1');
     this.affixElOffsetTop = this.affixEl.offsetTop;

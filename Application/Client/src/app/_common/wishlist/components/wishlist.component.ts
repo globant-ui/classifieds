@@ -4,7 +4,6 @@ import {SettingsService} from '../../services/setting.service';
 import { Observable }     from 'rxjs/Observable';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../services/http.service';
-import {SharedService} from  '../../services/shared.service';
 import {CookieService} from 'angular2-cookie/core';
 import 'rxjs/Rx';
 import {Session} from '../../authentication/entity/session.entity';
@@ -23,29 +22,27 @@ export class WishListComponent implements OnInit, AfterViewInit  {
 
 private GetUserWishList:string = '';
 private emailId:string = '';
-private cardUrl : string = '';
-private initialCardData : any;
-private wishListArray : any
-private wishListDataId : any;
-private getSelectedWishListObj:any = [];
-private cardsByCategoryUrl:string;
-private errorMessage:any;
-private restAllCards : any;
+private wishListSelectedUrl : string = '';
+private DeleteUserWishListUrl: string = '';
+private WishListSelectedData : any;
+
 
 @ViewChild('childModal') public childModal:ModalDirective;
 
   constructor(
                  private _settingsService: SettingsService,
                  private _cservice:CService,
-                 private _cookieService:CookieService,
-                 private sharedService:SharedService) {
-                        this.GetUserWishList = _settingsService.getPath('GetUserWishList');
-                        this.cardUrl = _settingsService.getPath('cardUrl');
-                        this.cardsByCategoryUrl = _settingsService.getPath('cardsByCategoryUrl');
-                this.getTopTen(); 
-                this.getWishList();
-                this.getRestAllCards();
-                }
+                 private _cookieService: CookieService) {
+
+    this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
+    this.GetUserWishList = _settingsService.getPath('GetUserWishList') + this.emailId;
+    console.log("this.GetUserWishList", this.GetUserWishList)
+    this.wishListSelectedUrl = _settingsService.getPath('wishListSelectedUrl');
+    this.getUserWishList();
+    this.GetWishList();
+    this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl') + this.emailId + '&listingId=';;
+    console.log("this.DeleteUserWishListUrl", this.DeleteUserWishListUrl)
+  }
 
   ngOnInit() {}
 
@@ -60,27 +57,14 @@ private restAllCards : any;
   public hideChildModal(): void {
     this.childModal.hide();
   }
-//get top ten data
-   getTopTen() {
-     this.sharedService.setData()
-      .subscribe((res: Response) => {
-       if (res['length'] != 0) {
-           this.initialCardData = res;
-           console.log("logged",this.initialCardData)        
-       }
-      },
-       error => {
-         console.log("error in response",error);
-       });
-   }
 
-   //get wishlist selected data
-  getWishList() {
-    this.sharedService.setWishListData()
+  //get the wishlist api call
+  getUserWishList() {
+    this._cservice.observableGetHttp(this.wishListSelectedUrl, null, false)
       .subscribe((res: Response) => {
-        if (res['length'] != 0) {
-          this.wishListArray = res;
-          console.log("datttt0000000000", this.wishListArray)
+        if (res['length'] > 0) {
+          this.WishListSelectedData = res;
+          console.log("this.WishListSelectedData", this.WishListSelectedData)
         }
       },
       error => {
@@ -88,13 +72,27 @@ private restAllCards : any;
       });
   }
 
-  //get rest all data
-  getRestAllCards() {
-    this.sharedService.setRestAllCards()
+  //delete api call
+  deleteWishList(obj) {
+    console.log('obj del id', this.DeleteUserWishListUrl)
+    this._cservice.observableDeleteHttp(this.DeleteUserWishListUrl + obj._id, null, false)
       .subscribe((res: Response) => {
+        console.log("deleted");
+        this.GetWishList();
+        this.getUserWishList();
+      },
+      error => {
+        console.log("error in response", error);
+      });
+  }
+
+  GetWishList() {
+    console.log("this.GetUserWishList", this.GetUserWishList)
+    this._cservice.observableGetHttp(this.GetUserWishList, null, false)
+      .subscribe((res: Response) => {
+        console.log("this.GetUserWishList Response", res);
         if (res['length'] != 0) {
-          this.restAllCards = res;
-          console.log("rest", this.restAllCards)
+          console.log('wishlist--')
         }
       },
       error => {
