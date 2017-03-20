@@ -61,6 +61,12 @@ namespace Classifieds.Listings.BusinessEntities
 
     public class ListingImages
     {
+        public ListingImages(string name, string path)
+        {
+            ImageName = name;
+            Image = path;
+        }
+
         public string ImageName { get; set; }
         public string Image { get; set; }        
     }

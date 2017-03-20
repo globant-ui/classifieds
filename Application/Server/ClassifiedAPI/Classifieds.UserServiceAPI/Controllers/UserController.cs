@@ -229,6 +229,27 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+
+        [HttpPut]
+        public bool DeleteAlerts(string userEmail, Alert alert)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.DeleteAlert(userEmail, alert);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// Add user Alerts by subcategory and Locations, update user profile
         /// </summary>
@@ -465,7 +486,6 @@ namespace Classifieds.UserServiceAPI.Controllers
                             }
                             postedFile.SaveAs(path + userName + extension);
                             _userService.UpdateImagePath(_userEmail, ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString()+ userName +"/"+ userName + extension);
-
                         }
                     }
 

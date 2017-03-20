@@ -106,10 +106,11 @@ namespace Classifieds.UserService.Repository
                 var query = Query<ClassifiedsUser>.EQ(p => p._id, userProfile._id);
                 var update = Update<ClassifiedsUser>
                     .Set(p => p.Designation, userProfile.Designation)
-                    .Set(p => p.Image, userProfile.Image)
+                    //.Set(p => p.Image, userProfile.Image)
                     .Set(p => p.Location, userProfile.Location)
-                    .Set(p => p.UserName, userProfile.UserName)
-                    .Set(p => p.Mobile, userProfile.Mobile);
+                    //.Set(p => p.UserName, userProfile.UserName)
+                    .Set(p => p.Mobile, userProfile.Mobile)
+                    .Set(p => p.Tags, userProfile.Tags);
                 Classifieds.Update(query, update);
                 return userProfile;
             }
