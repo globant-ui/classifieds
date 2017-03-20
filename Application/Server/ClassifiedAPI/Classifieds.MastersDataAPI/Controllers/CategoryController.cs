@@ -1,4 +1,6 @@
-﻿using Classifieds.MastersData.BusinessEntities;
+﻿#region Imports
+
+using Classifieds.MastersData.BusinessEntities;
 using Classifieds.MastersData.BusinessServices;
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Classifieds.Common;
 using Classifieds.Common.Repositories;
+
+#endregion
 
 namespace Classifieds.MastersDataAPI.Controllers
 {
@@ -132,100 +136,6 @@ namespace Classifieds.MastersDataAPI.Controllers
 
         #endregion
 
-        #region PostCategory
-
-        /// <summary>
-        /// Insert new Category item into the database
-        /// </summary>
-        /// <returns>newly added Category object</returns>
-        public HttpResponseMessage Post(Category categoryObj)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                var classified = _masterDataService.CreateCategory(categoryObj);
-                result = Request.CreateResponse(HttpStatusCode.Created, classified);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw;
-            }
-
-            return result;
-        }
-
-        #endregion
-
-        #region UpdateCategory
-        /// <summary>
-        /// Update Category item for given Id
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <param name="categoryObj">value Object</param>
-        /// <returns>updated categoryObj</returns>
-        public HttpResponseMessage Put(string id, Category categoryObj)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                var classified = _masterDataService.UpdateCategory(id, categoryObj);
-                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw;
-            }
-            return result;
-        }
-
-        #endregion
-
-        #region DeleteCategory
-        /// <summary>
-        /// Delete category item for given Id
-        /// </summary>
-        /// <param name="id">Category Id</param>
-        /// <returns>deleted id</returns>
-        public HttpResponseMessage Delete(string id)
-        {
-            HttpResponseMessage result;
-
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                _masterDataService.DeleteCategory(id);
-                result = Request.CreateResponse(HttpStatusCode.NoContent);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw;
-            }
-
-            return result;
-        }
-
-        #endregion
-
         #region GetAllFiltersBySubCategory
         /// <summary>
         /// Returns the All Filters By SubCategory 
@@ -302,6 +212,100 @@ namespace Classifieds.MastersDataAPI.Controllers
                 throw;
             }
         }
+        #endregion
+
+        #region Add (Post) Category
+
+        /// <summary>
+        /// Insert new Category item into the database
+        /// </summary>
+        /// <returns>newly added Category object</returns>
+        public HttpResponseMessage Post(Category categoryObj)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var classified = _masterDataService.CreateCategory(categoryObj);
+                result = Request.CreateResponse(HttpStatusCode.Created, classified);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Update Category
+        /// <summary>
+        /// Update Category item for given Id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="categoryObj">value Object</param>
+        /// <returns>updated categoryObj</returns>
+        public HttpResponseMessage Put(string id, Category categoryObj)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var classified = _masterDataService.UpdateCategory(id, categoryObj);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Delete Category
+        /// <summary>
+        /// Delete category item for given Id
+        /// </summary>
+        /// <param name="id">Category Id</param>
+        /// <returns>deleted id</returns>
+        public HttpResponseMessage Delete(string id)
+        {
+            HttpResponseMessage result;
+
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                _masterDataService.DeleteCategory(id);
+                result = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw;
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region private methods
