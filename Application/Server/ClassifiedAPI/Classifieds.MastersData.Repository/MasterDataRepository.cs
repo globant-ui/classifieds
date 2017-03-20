@@ -1,22 +1,29 @@
-﻿using Classifieds.MastersData.BusinessEntities;
+﻿#region Imports
+using Classifieds.MastersData.BusinessEntities;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-
+#endregion
 namespace Classifieds.MastersData.Repository
 {
     public class MasterDataRepository<TEntity> : DBRepository, IMasterDataRepository<TEntity> where TEntity : Category
     {
-        #region MasterDataRepository
+        #region Private Variable
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["MasterDataCollection"];
         private readonly IDBRepository _dbRepository;
+        #endregion
+
+        #region Constructor
         public MasterDataRepository(IDBRepository dbRepository)
         {
             _dbRepository = dbRepository;
         }
+        #endregion
+
+        #region Classifieds Property
         MongoCollection<TEntity> Classifieds
         {
             get { return _dbRepository.GetCollection<TEntity>(_collectionClassifieds); }
@@ -24,7 +31,7 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
-        #region GetAllCategory
+        #region Get All Category
         /// <summary>
         /// Returns a category 
         /// </summary>
@@ -45,7 +52,7 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
-        #region GetCategoryById
+        #region Get Category By Id
         /// <summary>
         /// Returns a Category based on id
         /// </summary>
@@ -71,7 +78,7 @@ namespace Classifieds.MastersData.Repository
 
         #endregion GetCategoryById
 
-        #region GetCategorySuggestion
+        #region Get Category Suggestion
         /// <summary>
         /// Returns All Categgries matching the imput text.
         /// </summary>
@@ -100,7 +107,7 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
-        #region GetSubCategorySuggetion
+        #region Get SubCategory Suggetion
         /// <summary>
         /// Returns All Categgries matching the imput text.
         /// </summary>
@@ -139,7 +146,69 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
-        #region AddCategory
+        #region Get All Filters By SubCategory
+        /// <summary>
+        /// Returns all filters for specific subcategory with filter name and filter values
+        /// </summary>
+        /// <param name="subCategory">subCategory Name</param>
+        /// <returns></returns>
+        public List<TEntity> GetAllFiltersBySubCategory(string subCategory)
+        {
+            try
+            {
+                var subCategoryQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => Query<SubCategory>.EQ(sc => sc.Name, subCategory));
+                return Classifieds.Find(subCategoryQuery).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Get Filters By FilterName
+        /// <summary>
+        /// Returns all filter values for given FilterName and subcategory
+        /// </summary>
+        /// <param name="subCategory">Subcategory Name</param>
+        /// <param name="filterName">Filter Name</param>
+        /// <returns></returns>
+        public List<TEntity> GetFiltersByFilterName(string subCategory, string filterName)
+        {
+            try
+            {
+                var filterQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => Query<SubCategory>.EQ(sc => sc.Name, subCategory));
+                return Classifieds.Find(filterQuery).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Get Filters Names
+        /// <summary>
+        /// Get filter names only for specific subcategory
+        /// </summary>
+        /// <param name="subCategory">Subcategory Name</param>
+        /// <returns></returns>
+        public List<TEntity> GetFilterNamesOnly(string subCategory)
+        {
+            try
+            {
+                var subCategoryQuery = Query<SubCategory>.EQ(sc => sc.Name, subCategory);
+                var finalQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => subCategoryQuery);
+                return Classifieds.Find(finalQuery).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Add Category
 
         /// <summary>
         /// Insert a new Category object into the database
@@ -161,7 +230,7 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
-        #region Updatecategory
+        #region Update category
 
         /// <summary>
         /// Update existing category object based on id from the database
@@ -191,7 +260,7 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
-        #region DeleteCategory
+        #region Delete Category
         /// <summary>
         /// Delete Category object based on id from the database
         /// </summary>
@@ -212,66 +281,5 @@ namespace Classifieds.MastersData.Repository
 
         #endregion
 
-        #region GetAllFiltersBySubCategory
-        /// <summary>
-        /// Returns all filters for specific subcategory with filter name and filter values
-        /// </summary>
-        /// <param name="subCategory">subCategory Name</param>
-        /// <returns></returns>
-        public List<TEntity> GetAllFiltersBySubCategory(string subCategory)
-        {
-            try
-            {
-                var subCategoryQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => Query<SubCategory>.EQ(sc => sc.Name, subCategory));
-                return Classifieds.Find(subCategoryQuery).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        #endregion
-
-        #region GetFiltersByFilterName
-        /// <summary>
-        /// Returns all filter values for given FilterName and subcategory
-        /// </summary>
-        /// <param name="subCategory">Subcategory Name</param>
-        /// <param name="filterName">Filter Name</param>
-        /// <returns></returns>
-        public List<TEntity> GetFiltersByFilterName(string subCategory, string filterName)
-        {
-            try
-            {
-                var filterQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => Query<SubCategory>.EQ(sc => sc.Name, subCategory));
-                return Classifieds.Find(filterQuery).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        #endregion
-
-        #region GetFiltersNames
-        /// <summary>
-        /// Get filter names only for specific subcategory
-        /// </summary>
-        /// <param name="subCategory">Subcategory Name</param>
-        /// <returns></returns>
-        public List<TEntity> GetFilterNamesOnly(string subCategory)
-        {
-            try
-            {
-                var subCategoryQuery = Query<SubCategory>.EQ(sc => sc.Name, subCategory);
-                var finalQuery = Query<Category>.ElemMatch(p => p.SubCategory, builder => subCategoryQuery);
-                return Classifieds.Find(finalQuery).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        #endregion
     }
 }
