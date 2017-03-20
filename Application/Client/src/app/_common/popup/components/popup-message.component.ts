@@ -35,7 +35,7 @@ ngOnInit() {
 }
 
 ngOnChanges(changes: {[propKey: string]: SimpleChange}){
-   console.log(changes);   
+   console.log(changes);
  }
 
  ngAfterViewInit(){
@@ -49,5 +49,8 @@ ngOnChanges(changes: {[propKey: string]: SimpleChange}){
  viewListingRedirect() {
    this._route.navigate(['home']);
  }
+  redirectToMyProfile(){
+    this._route.navigate(['home']);
+  }
 
-} 
+}

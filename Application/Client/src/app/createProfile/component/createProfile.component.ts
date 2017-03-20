@@ -28,6 +28,8 @@ export class ProfileComponent implements OnInit {
     private tagData: any = [];
     private subscribeCat:any = [];
     private UserImage: any;
+    private showPopupDivMessage:string= '';
+    private showPopupMessage: boolean = false;
     private openEditProfile: boolean = false;
     private closeViewProfile:boolean = true;
     private UserProfileImage = this._settingService.settings;
@@ -77,6 +79,8 @@ export class ProfileComponent implements OnInit {
       this.httpService.observablePutHttp(url,updatedData,null,false)
         .subscribe((res)=> {
             console.log("comes here in result",res);
+            this.showPopupMessage = true;
+            this.showPopupDivMessage = 'profile';
           },
           error => {
             console.log("error in response");
