@@ -9,7 +9,7 @@ namespace Classifieds.UserService.Repository
 {
     public class UserRepository<TEntity> : DBRepository, IUserRepository<TEntity> where TEntity : ClassifiedsUser
     {
-       
+
         #region Private Variables
         private readonly string _collectionClassifieds = ConfigurationManager.AppSettings["UserCollection"];
         private readonly IDBRepository _dbRepository;
@@ -30,6 +30,69 @@ namespace Classifieds.UserService.Repository
         #endregion
 
         #region Public Methods
+
+        #region GetUserProfile
+        /// <summary>
+        /// Get complete userprofile including tags, subscriptions, wishlist
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>userProfile object</returns>
+        public TEntity GetUserProfile(string userEmail)
+        {
+            try
+            {
+                var query = Query<TEntity>.EQ(p => p.UserEmail, userEmail);
+                var result = Classifieds.Find(query);
+                return result.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion GetUserProfile
+
+        #region GetUserWishList
+        /// <summary>
+        /// Get UserWishList
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>string array of Listing id's</returns>
+        public string[] GetUserWishList(string userEmail)
+        {
+            try
+            {
+                var query = Query.EQ("UserEmail", userEmail);
+                var items = Classifieds.Find(query).ToList();
+                return items[0].WishList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetRecommondedTagList
+        /// <summary>
+        /// Get user Recommonded TagList
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>returns taglist</returns>
+        public Tags GetRecommondedTagList(string userEmail)
+        {
+            try
+            {
+                var query = Query.EQ("UserEmail", userEmail);
+                var items = Classifieds.Find(query).ToList();
+                return items[0].Tags;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
 
         #region RegisterUser
 
@@ -69,29 +132,6 @@ namespace Classifieds.UserService.Repository
 
         #endregion RegisterUser
 
-        #region GetUserProfile
-
-        /// <summary>
-        /// Get complete userprofile including tags, subscriptions, wishlist
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <returns>userProfile object</returns>
-        public TEntity GetUserProfile(string userEmail)
-        {
-            try
-            {
-                var query = Query<TEntity>.EQ(p => p.UserEmail, userEmail);
-                var result = Classifieds.Find(query);
-                return result.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        #endregion GetUserProfile
-
         #region UpdateUserProfile
 
         /// <summary>
@@ -122,14 +162,14 @@ namespace Classifieds.UserService.Repository
         }
         #endregion UpdateUserProfile
 
-        #region User Tag Add, Delete
+        #region User AddTag
         /// <summary>
         /// Add user tags
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="tag"></param>
         public void AddTag(string userEmail, Tags tag)
-        { 
+        {
             try
             {
                 AddSubCatToTag(userEmail, tag);
@@ -140,7 +180,9 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
-       
+        #endregion
+
+        #region DeleteTag
         /// <summary>
         /// Delete tags
         /// </summary>
@@ -161,7 +203,7 @@ namespace Classifieds.UserService.Repository
         }
         #endregion
 
-        #region User Alert Add, Delete
+        #region User AddAlert
         /// <summary>
         /// Add Alerts
         /// </summary>
@@ -180,6 +222,9 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
+        #endregion
+
+        #region User DeleteAlert
         /// <summary>
         /// Delete Alerts
         /// </summary>
@@ -200,7 +245,7 @@ namespace Classifieds.UserService.Repository
         }
         #endregion
 
-        #region User WishList Get, Add and Delete
+        #region User AddtoWishList
         /// <summary>
         /// Add to wishList
         /// </summary>
@@ -211,11 +256,11 @@ namespace Classifieds.UserService.Repository
             try
             {
                 //check listingId is existed or not in Wishlist array.                
-                var query = Query.And(Query.EQ("WishList",listingId), Query.EQ("UserEmail", userEmail));
+                var query = Query.And(Query.EQ("WishList", listingId), Query.EQ("UserEmail", userEmail));
                 var items = Classifieds.Find(query).ToList();
                 if (items.Count == 0)
                 {
-                    var result = Classifieds.Update(Query.EQ("UserEmail", userEmail),Update.PushWrapped("WishList", listingId));
+                    var result = Classifieds.Update(Query.EQ("UserEmail", userEmail), Update.PushWrapped("WishList", listingId));
                     return result.UpdatedExisting;
                 }
                 return false;
@@ -225,8 +270,11 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
+        #endregion
+
+        #region DeleteFromWishList
         /// <summary>
-        /// 
+        /// Deletes a listing id from wishlist object
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="listingId"></param>
@@ -244,50 +292,16 @@ namespace Classifieds.UserService.Repository
                 throw ex;
             }
         }
-        /// <summary>
-        /// Get UserWishList
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <returns>string array of Listing id's</returns>
-        public string[] GetUserWishList(string userEmail)
-        {
-            try
-            {
-                var query = Query.EQ("UserEmail", userEmail);
-                var items = Classifieds.Find(query).ToList();
-                return items[0].WishList;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        /// <summary>
-        /// Get user Recommonded TagList
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <returns>returns taglist</returns>
-        public Tags GetRecommondedTagList(string userEmail)
-        {
-            try
-            {
-                var query = Query.EQ("UserEmail", userEmail);
-                var items = Classifieds.Find(query).ToList();
-                return items[0].Tags;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        #endregion
 
+        #region UpdateImagePath
         /// <summary>
         /// Update Image Path in User profile
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="imgPath"></param>
         /// <returns>returns taglist</returns>
-        public void UpdateImagePath(string userEmail,string imgPath)
+        public void UpdateImagePath(string userEmail, string imgPath)
         {
             try
             {
@@ -307,15 +321,20 @@ namespace Classifieds.UserService.Repository
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Updates the DB with sub categories addition to tags object
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
         private void AddSubCatToTag(string userEmail, Tags tag)
         {
-            if (tag.SubCategory != null )
+            if (tag.SubCategory != null)
             {
                 //update tag object and Push item in Subcategory Array
                 foreach (var subcat in tag.SubCategory)
                 {
                     //check tag is existed or not in subcategory array.
-                    var query =Query.And(Query.EQ("Tags.SubCategory", subcat), Query.EQ("UserEmail", userEmail));
+                    var query = Query.And(Query.EQ("Tags.SubCategory", subcat), Query.EQ("UserEmail", userEmail));
                     var items = Classifieds.Find(query).ToList();
                     if (items.Count == 0)
                     {
@@ -324,11 +343,16 @@ namespace Classifieds.UserService.Repository
                     }
                 }
             }
-           
         }
+
+        /// <summary>
+        /// Adds Location to Tags object
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="tag"></param>
         private void AddLocToTag(string userEmail, Tags tag)
         {
-           if (tag.Location!= null)
+            if (tag.Location != null)
             {
                 //update tag object and Push item in Location Array
                 foreach (var location in tag.Location)
@@ -343,7 +367,7 @@ namespace Classifieds.UserService.Repository
                     }
                 }
             }
-          
+
         }
         #endregion
     }
