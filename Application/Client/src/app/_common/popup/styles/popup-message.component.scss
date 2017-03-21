@@ -1,55 +1,76 @@
 @import "../../styles/sass/style";
 
-// .popupContainer{
-// 	padding:30px;
-// 	button{
-// 		display: inline-block;
-// 	}
-	.popupContainer{
-		text-align: center;
-		padding: 20px;
-		.modal-dialog{
-			width: 750px;
-			.modal-content{
-				background-color: $white-color !important;
-				color: $primary-text-color;
-				.modal-header{
-					h4{
-						color:$black-color;
-						@extend %type-open-sans-22-4-text;
+.popupContainer{
+	text-align: center;
+	padding: 20px;
+	.modal-dialog{
+		width: 750px;
+		.modal-content{
+			background-color: $white-color !important;
+			color: $primary-text-color;
+			.modal-header{
+				h4{
+					color:$black-color;
+					@extend %type-open-sans-22-4-text;
+				}
+			}
+			.modal-body{
+				padding:45px 90px !important;
+				.successMessage{
+					p{
+						color: $createListing-text-color;
+						@extend %type-arvo-regular-36-4-text;
 					}
 				}
+				img, .successMessage{
+					margin-bottom: 45px;
+				}
+				p{
+					@extend %type-open-sans-14-4-text;
+				}
+				p.contentP{
+					width: 400px;
+					margin: 0 auto;
+				}
+				button{
+					margin-top: 45px;
+					@extend %type-open-sans-12-7-text;
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max){
+	.popupContainer{
+		.modal-dialog{
+			width: auto;
+			.modal-content{
+				/*.modal-header{
+					h4{
+						/*@extend %type-open-sans-14-4-text;
+						font-size: $font-size-base;
+						font-weight: 400;
+					}
+				}*/
 				.modal-body{
-					padding:45px 90px !important;
+					padding:45px 40px !important;
 					.successMessage{
+						margin-bottom: 30px;
 						p{
-							color: $createListing-text-color;
-							@extend %type-arvo-regular-36-4-text;
+							/*@extend %type-arvo-regular-14-4-text;*/
+							font-family: $arvo-regular;
+							font-size: $font-size-base;
+							font-weight: 400;
 						}
 					}
-					img, .successMessage{
-						margin-bottom: 45px;
-					}
-					p{
-						@extend %type-open-sans-14-4-text;
-					}
 					p.contentP{
-						width: 400px;
-    					margin: 0 auto;
+						display: none;
 					}
 					button{
-						margin-top: 45px;
-						padding: 25px 40px;
-						border-radius: 30px;
-				    	background: $white-color;
-				    	border: 3px solid $createListing-complete-default-bgcolor;
-				    	text-transform: uppercase;
-				    	letter-spacing: 3px;
-						@extend %type-open-sans-12-7-text;
-						color: $createListing-complete-active-text-color;
+						margin-top: 0;
 					}
 				}
 			}
 		}
 	}
-// }
+}
