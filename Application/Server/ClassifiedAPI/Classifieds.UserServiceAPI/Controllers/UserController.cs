@@ -47,6 +47,103 @@ namespace Classifieds.UserServiceAPI.Controllers
         #endregion
 
         #region Public Methods
+
+        #region Get Methods
+
+        #region GetUserProfile
+        /// <summary>
+        /// Get user profile including user tags, wish list, Alert.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>Response containing user details json object</returns>
+        [HttpGet]
+        public ClassifiedsUser GetUserProfile(string userEmail)
+        {
+            try
+            {
+                if (userEmail == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                ClassifiedsUser objUser = new ClassifiedsUser();
+                objUser = _userService.GetUserProfile(userEmail);
+                if (!String.IsNullOrEmpty(objUser.Image))
+                {
+                    objUser.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + objUser.Image;
+                }
+                return objUser;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetUserWishList
+        /// <summary>
+        /// Get user wishlist
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>String Array of Listing Ids</returns>
+        public string[] GetUserWishList(string userEmail)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.GetUserWishList(userEmail);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region GetRecommondedTagList
+        /// <summary>
+        /// Add user recommonded TagList
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>user Tag object</returns>
+        public Tags GetRecommondedTagList(string userEmail)
+        {
+            try
+            {
+                _userEmail = GetUserEmailFromHeader();
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                return _userService.GetRecommondedTagList(userEmail);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Post, Put, Delete
+
+        #region RegisterUser
         /// <summary>
         /// Registers the user if not present in Db
         /// </summary>
@@ -87,41 +184,9 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw new Exception(HttpStatusCode.Conflict.ToString() + " Internal server error");
             }
         }
-        /// <summary>
-        /// Get user profile including user tags, wish list, Alert.
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <returns>Response containing user details json object</returns>
-        [HttpGet]
-        public ClassifiedsUser GetUserProfile(string userEmail)
-        {
-            try
-            {
-                if (userEmail == null)
-                {
-                    throw new ArgumentNullException();
-                }
-                _userEmail = GetUserEmailFromHeader();
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                ClassifiedsUser objUser= new ClassifiedsUser();
-                objUser = _userService.GetUserProfile(userEmail);
-                if (!String.IsNullOrEmpty(objUser.Image))
-                {
-                    objUser.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + objUser.Image;
-                }
-                return objUser;
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
+        #endregion
 
-        }
+        #region UpdateUserProfile
         /// <summary>
         /// update user profile
         /// </summary>
@@ -150,6 +215,9 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
+
+        #region AddTag
         /// <summary>
         /// Add user tag by subcategory and Locations and update user Profile
         /// </summary>
@@ -157,7 +225,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="tag"></param>
         /// <returns>boolen true as success</returns>
         [HttpPost]
-        public Tags AddTag(string userEmail,Tags tag)
+        public Tags AddTag(string userEmail, Tags tag)
         {
             try
             {
@@ -179,6 +247,9 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
+
+        #region DeleteTag
         /// <summary>
         /// Delete User Tag and update user profile
         /// </summary>
@@ -186,7 +257,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <param name="tagName"></param>
         /// <returns>boolen true as success</returns>
         [HttpDelete]
-        public bool DeleteTag(string userEmail,string tagName)
+        public bool DeleteTag(string userEmail, string tagName)
         {
             try
             {
@@ -204,6 +275,9 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
+
+        #region AddAlert
         /// <summary>
         /// Add user Alerts by subcategory and Locations, update user profile
         /// </summary>
@@ -229,7 +303,15 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
 
+        #region DeleteAlerts
+        /// <summary>
+        /// Removes an alert from the Alert array object in User
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        /// <returns></returns>
         [HttpPut]
         public bool DeleteAlerts(string userEmail, Alert alert)
         {
@@ -249,32 +331,9 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Add user Alerts by subcategory and Locations, update user profile
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <param name="alert"></param>
-        /// <returns></returns>
-        [HttpDelete]
-        public bool DeleteAlert(string userEmail, Alert alert)
-        {
-            try
-            {
-                _userEmail = GetUserEmailFromHeader();
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                return _userService.DeleteAlert(userEmail, alert);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-        }
+        #region AddToWishList
         /// <summary>
         /// Add to wishList update UserProfile
         /// </summary>
@@ -300,6 +359,9 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
+
+        #region DeleteFromWishList
         /// <summary>
         /// Delete listing id from wishList and update UserProfile
         /// </summary>
@@ -325,115 +387,16 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw ex;
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Get user wishlist
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <returns>String Array of Listing Ids</returns>
-        public string[] GetUserWishList(string userEmail)
-        {
-            try
-            {
-                _userEmail = GetUserEmailFromHeader();
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                return _userService.GetUserWishList(userEmail);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-        }
-        /// <summary>
-        /// Add user recommonded TagList
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <returns>user Tag object</returns>
-        public Tags GetRecommondedTagList(string userEmail)
-        {
-            try
-            {
-                _userEmail = GetUserEmailFromHeader();
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                return _userService.GetRecommondedTagList(userEmail);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-        }
-        /// <summary>
-        /// Insert new Subscription item into the database
-        /// </summary>
-        /// <param name="subscriptionObj"></param>
-        /// <returns>newly added Subscription object</returns>
-        public HttpResponseMessage AddSubscription(Subscription subscriptionObj)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmailFromHeader();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                subscriptionObj.SubmittedDate = DateTime.Now;
-                var subscription = _userService.AddSubscription(subscriptionObj);
-                result = Request.CreateResponse<Subscription>(HttpStatusCode.Created, subscription);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw;
-            }
-
-            return result;
-        }
-        /// <summary>
-        /// Delete Subscription item for given Id
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <returns>deleted id</returns>
-        public HttpResponseMessage DeleteSubscription(string id)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmailFromHeader();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                _userService.DeleteSubscription(id);
-                result = Request.CreateResponse(HttpStatusCode.NoContent);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw;
-            }
-
-            return result;
-        }
+        #region PostUserImage
         /// <summary>
         /// Post User profile Image
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Task</returns>
         public async Task<HttpResponseMessage> PostUserImage()
         {
-            
+
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -455,21 +418,20 @@ namespace Classifieds.UserServiceAPI.Controllers
                         int maxContentLength = 1024 * 1024 * imageSize; //Size = 1 MB  
 
                         IList<string> allowedFileExtensions = new List<string>();
-                        string[] imgExt= ConfigurationManager.AppSettings["ImageExtList"].Split(',');
+                        string[] imgExt = ConfigurationManager.AppSettings["ImageExtList"].Split(',');
                         allowedFileExtensions = imgExt.ToList();
 
                         var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
                         var extension = ext.ToLower();
                         if (!allowedFileExtensions.Contains(extension))
                         {
-
-                            var message = string.Format("Please Upload image of type "+ ConfigurationManager.AppSettings["ImageExtList"].ToString());
+                            var message = string.Format("Please Upload image of type " + ConfigurationManager.AppSettings["ImageExtList"].ToString());
                             dict.Add("error", message);
                             return Request.CreateResponse(HttpStatusCode.BadRequest, dict);
                         }
                         else if (postedFile.ContentLength > maxContentLength)
                         {
-                            var message = string.Format("Please Upload a file upto "+ ConfigurationManager.AppSettings["ImageSize"] + " MB");
+                            var message = string.Format("Please Upload a file upto " + ConfigurationManager.AppSettings["ImageSize"] + " MB");
                             dict.Add("error", message);
                             return Request.CreateResponse(HttpStatusCode.BadRequest, dict);
                         }
@@ -478,14 +440,14 @@ namespace Classifieds.UserServiceAPI.Controllers
                             string[] loginNameParts = _userEmail.Split('@');
                             string userName = loginNameParts[0];
                             string path = HttpContext.Current.Server.MapPath("~/");
-                            path= path + ConfigurationManager.AppSettings["BasePathProfileImage"].ToString();
-                            path = path+userName + @"\";//+ postedFile.FileName;
+                            path = path + ConfigurationManager.AppSettings["BasePathProfileImage"].ToString();
+                            path = path + userName + @"\";//+ postedFile.FileName;
                             if (!System.IO.Directory.Exists(path))
                             {
                                 System.IO.Directory.CreateDirectory(path);
                             }
                             postedFile.SaveAs(path + userName + extension);
-                            _userService.UpdateImagePath(_userEmail, ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString()+ userName +"/"+ userName + extension);
+                            _userService.UpdateImagePath(_userEmail, ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString() + userName + "/" + userName + extension);
                         }
                     }
 
@@ -502,15 +464,17 @@ namespace Classifieds.UserServiceAPI.Controllers
                 throw;
             }
         }
-      
+        #endregion
         #endregion
 
-            #region Private methods
-            /// <summary>
-            /// Returns user email string
-            /// </summary>
-            /// <param name="user">ClassifiedsUser object</param>
-            /// <returns>string</returns>
+        #endregion
+
+        #region Private methods
+        /// <summary>
+        /// Returns user email string
+        /// </summary>
+        /// <param name="user">ClassifiedsUser object</param>
+        /// <returns>string</returns>
         private string GetUserEmail(ClassifiedsUser user)
         {
             string result = string.Empty;
@@ -533,7 +497,5 @@ namespace Classifieds.UserServiceAPI.Controllers
             return hearderVal;
         }
         #endregion
-
     }
-  
 }

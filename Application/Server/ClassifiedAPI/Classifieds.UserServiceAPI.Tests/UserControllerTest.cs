@@ -80,7 +80,7 @@ namespace Classifieds.UserServiceAPI.Tests
             return subscription;
         }
         #endregion
-        
+
         #region RegisterUserTest
         /// <summary>
         /// Test for successful user registration
@@ -112,124 +112,6 @@ namespace Classifieds.UserServiceAPI.Tests
         }
         #endregion RegisterUserTest
 
-        #region AddSubscriptionTest
-
-        /// <summary>
-        /// test positive scenario for Post Subscription
-        /// </summary>
-        [TestMethod]
-        public void Controller_AddSubscriptionTest()
-        {
-            // Arrange
-            _mockService.Setup(x => x.AddSubscription(It.IsAny<Subscription>()))
-            .Returns(GetSubscription());
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.Request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-            };
-            _controller.Configuration = new HttpConfiguration();
-            _controller.Configuration.Routes.MapHttpRoute(
-                name: "Category",
-                routeTemplate: "api/{controller}/{method}/{id}",
-                defaults: new { id = RouteParameter.Optional });
-
-            _controller.RequestContext.RouteData = new HttpRouteData(
-                route: new HttpRoute(),
-                values: new HttpRouteValueDictionary { { "controller", "Subscription" } });
-
-            // Act
-            var listObj = GetSubscription();
-            var response = _controller.AddSubscription(listObj);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual(true, response.IsSuccessStatusCode);
-        }
-
-        /// <summary>
-        /// test for inserting null Subscription object throws exception
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Controller_PostSubscription_ThrowsException()
-        {
-            _controller.AddSubscription(null);
-        }
-
-        /// <summary>
-        /// test positive scenario for PostCategory and verify response header location
-        /// </summary>
-        [TestMethod]
-        public void Controller_PostcategoryTest_SetsLocationHeader_MockURLHelperVersion()
-        {
-            // This version uses a mock UrlHelper.
-            // Arrange
-            _mockService.Setup(x => x.AddSubscription(It.IsAny<Subscription>()))
-            .Returns(GetSubscription);
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            _controller.Request = new HttpRequestMessage();
-            _controller.Configuration = new HttpConfiguration();
-
-            string locationUrl = "http://localhost/UserAPI/api/user";
-
-            // Create the mock and set up the Link method, which is used to create the Location header.
-            // The mock version returns a fixed string.
-            var mockUrlHelper = new Mock<UrlHelper>();
-            mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.Url = mockUrlHelper.Object;
-
-            // Act
-            Subscription subObj = GetSubscription();
-            var response = _controller.AddSubscription(subObj);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual(true, response.IsSuccessStatusCode);
-        }
-
-        #endregion AddSubscriptionTest
-
-        #region DeleteSubscriptionTestCases
-
-        /// <summary>
-        /// test positive scenario for deleting Subscription
-        /// </summary>
-        [TestMethod]
-        public void Controller_DeleteSubscriptionTest()
-        {
-            // Arrange
-            var dataObject = GetSubscription();
-            _mockService.Setup(x => x.DeleteSubscription(It.IsAny<string>()));
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.Request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri("http://localhost/api/User")
-            };
-            // Act                
-            var response = _controller.DeleteSubscription(dataObject._id);
-
-            //Assert
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-            Assert.AreEqual(true, response.IsSuccessStatusCode);
-        }
-
-        /// <summary>
-        /// test for deleting Subscription object throws exception
-        /// </summary>
-        [ExpectedException(typeof(NullReferenceException))]
-        [TestMethod]
-        public void Controller_DeleteSubscription_ThrowsException()
-        {
-            _controller.DeleteSubscription(null);
-        }
-
-        #endregion DeleteSubscriptionTestCases
-
         #region GetUserProfileTest
         /// <summary>
         /// Test for GetUserProfile valid Scenario
@@ -237,15 +119,15 @@ namespace Classifieds.UserServiceAPI.Tests
         [TestMethod]
         public void Controller_GetUserProfileTest_Valid()
         {
-           _mockService.Setup(x => x.GetUserProfile(It.IsAny<string>()))
-                .Returns(new ClassifiedsUser()
-                {
-                    UserEmail = "amol.pawar@globant.com",
-                    UserName = "Amol Pawar"
-                }
-               );
-           _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-           _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _mockService.Setup(x => x.GetUserProfile(It.IsAny<string>()))
+                 .Returns(new ClassifiedsUser()
+                 {
+                     UserEmail = "amol.pawar@globant.com",
+                     UserName = "Amol Pawar"
+                 }
+                );
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
 
             //Act
             var result = _controller.GetUserProfile("amol.pawar@globant.com");
@@ -292,7 +174,7 @@ namespace Classifieds.UserServiceAPI.Tests
 
             //Act
             _controller.GetUserProfile(null);
-         
+
         }
 
         #endregion GetUserProfileTest
@@ -345,7 +227,7 @@ namespace Classifieds.UserServiceAPI.Tests
 
             //Act
             _controller.UpdateUserProfile(null);
-          
+
         }
         #endregion UpdateUserProfileTest
 
@@ -357,12 +239,12 @@ namespace Classifieds.UserServiceAPI.Tests
         public void Controller_AddTagTest()
         {
             // Arrange
-            _mockService.Setup(x => x.AddTag(It.IsAny<string>(),It.IsAny<Tags>()))
+            _mockService.Setup(x => x.AddTag(It.IsAny<string>(), It.IsAny<Tags>()))
             .Returns(new Tags()
-                    {
-                        SubCategory = new string[] { "SubCategory1", "SubCategory2" },
-                        Location = new string[] { "Location1", "Location2" }
-                    }
+            {
+                SubCategory = new string[] { "SubCategory1", "SubCategory2" },
+                Location = new string[] { "Location1", "Location2" }
+            }
                 );
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
@@ -381,15 +263,15 @@ namespace Classifieds.UserServiceAPI.Tests
                 values: new HttpRouteValueDictionary { { "controller", "User" } });
 
             // Act
-           var result = _controller.AddTag("amol.pawar@globant.com",new Tags()
+            var result = _controller.AddTag("amol.pawar@globant.com", new Tags()
             {
                 SubCategory = new string[] { "SubCategory1", "SubCategory2" },
                 Location = new string[] { "Location1", "Location2" }
             });
-            
+
             // Assert
             Assert.IsNotNull(result.SubCategory);
-            Assert.AreEqual(result.Location.Length,2);
+            Assert.AreEqual(result.Location.Length, 2);
         }
 
         /// <summary>
@@ -421,11 +303,11 @@ namespace Classifieds.UserServiceAPI.Tests
                 RequestUri = new Uri("http://localhost/UserAPI/api/User")
             };
             // Act                
-            var result = _controller.DeleteTag("amol.pawar@globant.com","Cars");
+            var result = _controller.DeleteTag("amol.pawar@globant.com", "Cars");
 
             //Assert
             Assert.IsTrue(result);
-       }
+        }
         /// <summary>
         /// test positive scenario for deleting User Tag
         /// </summary>
@@ -436,7 +318,7 @@ namespace Classifieds.UserServiceAPI.Tests
             // Arrange
             _mockService.Setup(x => x.DeleteTag(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-           
+
             _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -444,7 +326,7 @@ namespace Classifieds.UserServiceAPI.Tests
             };
             // Act                
             _controller.DeleteTag("amol.pawar@globant.com", "Cars");
-           
+
         }
 
         #endregion TagUnitTest
@@ -480,15 +362,15 @@ namespace Classifieds.UserServiceAPI.Tests
             // Act
             var result = _controller.AddAlert("amol.pawar@globant.com", new Alert()
             {
-                Category= "Category",
+                Category = "Category",
                 SubCategory = "SubCategory",
                 IsEmail = true,
-                IsSms= true
+                IsSms = true
             });
 
             // Assert
             Assert.IsTrue(result);
-            
+
         }
 
         /// <summary>
@@ -506,29 +388,7 @@ namespace Classifieds.UserServiceAPI.Tests
                 IsSms = true
             });
         }
-        /// <summary>
-        /// test positive scenario for deleting User Alert
-        /// </summary>
-        [TestMethod]
-        public void Controller_DeleteAlert()
-        {
-            // Arrange
-            _mockService.Setup(x => x.DeleteAlert(It.IsAny<string>(), It.IsAny<Alert>())).Returns(true);
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            
-            // Act                
-            var result = _controller.DeleteAlert("amol.pawar@globant.com", new Alert()
-            {
-                Category = "Category",
-                SubCategory = "SubCategory",
-                IsEmail = true,
-                IsSms = true
-            });
 
-            //Assert
-            Assert.IsTrue(result);
-        }
         /// <summary>
         /// test positive scenario for deleting User Tag
         /// </summary>
@@ -537,9 +397,9 @@ namespace Classifieds.UserServiceAPI.Tests
         public void Controller_DeleteAlert_Exception()
         {
             // Arrange
-           _mockService.Setup(x => x.DeleteTag(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-           _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-           _controller.Request = new HttpRequestMessage
+            _mockService.Setup(x => x.DeleteTag(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+            _controller.Request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
                 RequestUri = new Uri("http://localhost/api/User")
@@ -568,7 +428,7 @@ namespace Classifieds.UserServiceAPI.Tests
             //Assert
             Assert.AreEqual(result.Length, 3);
             Assert.IsNotNull(result);
-       }
+        }
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
         public void Controller_GetUserWishListTest_Exception()
@@ -580,7 +440,7 @@ namespace Classifieds.UserServiceAPI.Tests
                  }
                 );
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-          
+
             //Act
             var result = _controller.GetUserWishList("amol.pawar@globant.com");
 

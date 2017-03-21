@@ -22,7 +22,7 @@ namespace Classifieds.UserService.BusinessServices
 
         #region Public Methods
 
-        #region User Profile Methods
+        #region RegisterUser
         /// <summary>
         /// Registers a classifieds user into the database
         /// </summary>
@@ -35,18 +35,18 @@ namespace Classifieds.UserService.BusinessServices
                 if (user.Tags == null)
                 {
                     Tags objTag = new Tags();
-                    objTag.SubCategory = new string[] {};
-                    objTag.Location = new string[] {};
+                    objTag.SubCategory = new string[] { };
+                    objTag.Location = new string[] { };
                     user.Tags = objTag;
                 }
                 if (user.Alert == null)
                 {
-                    Alert[] objAlert= new Alert[] {};
+                    Alert[] objAlert = new Alert[] { };
                     user.Alert = objAlert;
                 }
                 if (user.WishList == null)
                 {
-                    user.WishList= new string[] {};
+                    user.WishList = new string[] { };
                 }
                 return _userRepository.RegisterUser(user);
             }
@@ -55,6 +55,9 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        #endregion
+
+        #region GetUserProfile
         /// <summary>
         /// Get all user profile details
         /// </summary>
@@ -64,8 +67,8 @@ namespace Classifieds.UserService.BusinessServices
         {
             try
             {
-                ClassifiedsUser _user=new ClassifiedsUser();
-                _user= _userRepository.GetUserProfile(userEmail);
+                ClassifiedsUser _user = new ClassifiedsUser();
+                _user = _userRepository.GetUserProfile(userEmail);
                 return _user;
             }
             catch (Exception ex)
@@ -73,6 +76,9 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        #endregion
+
+        #region UpdateUserProfile
         /// <summary>
         /// Updates user profile.
         /// </summary>
@@ -89,6 +95,9 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        #endregion
+
+        #region AddTag
         /// <summary>
         /// Add user tag
         /// </summary>
@@ -99,7 +108,7 @@ namespace Classifieds.UserService.BusinessServices
         {
             try
             {
-               _userRepository.AddTag(userEmail, tag);
+                _userRepository.AddTag(userEmail, tag);
                 var result = _userRepository.GetUserProfile(userEmail);
                 return result.Tags;
             }
@@ -108,7 +117,9 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        #endregion
 
+        #region DeleteTag
         /// <summary>
         /// Delete tag of user profile
         /// </summary>
@@ -118,13 +129,16 @@ namespace Classifieds.UserService.BusinessServices
         {
             try
             {
-               return  _userRepository.DeleteTag(userEmail, tagName);
+                return _userRepository.DeleteTag(userEmail, tagName);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+        #endregion
+
+        #region AddAlert
         /// <summary>
         /// Add alert for user
         /// </summary>
@@ -141,6 +155,9 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        #endregion
+
+        #region DeleteAlert
         /// <summary>
         /// Add alert for user
         /// </summary>
@@ -150,13 +167,16 @@ namespace Classifieds.UserService.BusinessServices
         {
             try
             {
-              return  _userRepository.DeleteAlert(userEmail, alert);
+                return _userRepository.DeleteAlert(userEmail, alert);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+        #endregion
+
+        #region AddtoWishList
         /// <summary>
         /// Add listing id in to wish List and update User profile.
         /// </summary>
@@ -175,6 +195,9 @@ namespace Classifieds.UserService.BusinessServices
             }
 
         }
+        #endregion
+
+        #region DeleteFromWishList
         /// <summary>
         /// Delete listing id from WishList and update user profile
         /// </summary>
@@ -193,7 +216,9 @@ namespace Classifieds.UserService.BusinessServices
             }
 
         }
+        #endregion
 
+        #region GetUserWishList
         public string[] GetUserWishList(string userEmail)
         {
             try
@@ -205,7 +230,9 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        #endregion
 
+        #region GetRecommondedTagList
         public Tags GetRecommondedTagList(string userEmail)
         {
             try
@@ -217,6 +244,9 @@ namespace Classifieds.UserService.BusinessServices
                 throw ex;
             }
         }
+        #endregion
+
+        #region UpdateImagePath
         /// <summary>
         /// Update User Image path
         /// </summary>
@@ -226,56 +256,14 @@ namespace Classifieds.UserService.BusinessServices
         {
             try
             {
-                 _userRepository.UpdateImagePath(userEmail, imgPath);
+                _userRepository.UpdateImagePath(userEmail, imgPath);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-
         #endregion
-
-        #region AddSubscription
-
-        /// <summary>
-        /// Insert new Subscription item into the database
-        /// </summary>
-        /// <param name="subscriptionObj">Subscription Object</param>
-        /// <returns>Newly added Subscription object</returns>
-        public Subscription AddSubscription(Subscription subscriptionObj)
-        {
-            try
-            {
-                return _subRepository.AddSubscription(subscriptionObj);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        #endregion
-
-        #region DeleteSubscription
-        /// <summary>
-        /// Delete Subscription item for given Id
-        /// </summary>
-        /// <param name="id">Id</param>
-        /// <returns>deleted Id</returns>
-        public void DeleteSubscription(string id)
-        {
-            try
-            {
-                _subRepository.DeleteSubscription(id);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        #endregion DeleteSubscription
 
         #endregion
     }
