@@ -86,3 +86,8 @@
    box-sizing: border-box;
   }
 }
+@media (min-width: 320px) and (max-width: 460px){
+  .progress{
+    padding:50px 25px;
+  }
+}
