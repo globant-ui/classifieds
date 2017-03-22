@@ -1,6 +1,4 @@
 @import "../../_common/styles/sass/style";
-
-
 .cardList{
 	padding-left: 55px !important;
 	padding-right: 55px !important;
@@ -11,7 +9,6 @@
 	
 	.card-wrapper{
 		margin:0;
-		font-family: $arvo-regular;
 		.plain-card-container, .wishlist-container, .create-container, .recommend-container{
 			cursor:pointer;
 			background: $white-color;
@@ -20,9 +17,8 @@
 			margin-bottom: 15px;
 			padding-right: 30px;
 			letter-spacing: 1px;
-			font-family: 'Open Sans', sans-serif;
 			.img-block{
-				width:270px;
+				width:100%;
 				height:180px;
 				img{
 					width: 100%;
@@ -35,7 +31,6 @@
 			.contentdetail{
 				padding: 25px;
 				min-height: 180px;
-				font-family:open sans;
 				h3{
 					padding: 0 0 15px 0;
 					margin: 0;
@@ -43,15 +38,14 @@
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
 					height: $font-size-22*$line-height*$lines-to-show2; /* Fallback for non-webkit */
-					/*margin: 0 auto;*/
-					font-size: $font-size-22;
+					/*margin: 0 auto;
+					font-size: $font-size-22;*/
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show2;
 					-webkit-box-orient: vertical;
 					overflow: hidden;
 					text-overflow: ellipsis;
-					font-family: 'Open Sans', sans-serif;
-					font-weight: 600;
+					@extend %type-open-sans-22-6-text;
 				}
 				p{
 					color: $primary-text-color;
@@ -59,13 +53,12 @@
 					display: -webkit-box;
 					height: $font-size-12*$line-height*$lines-to-show3; /* Fallback for non-webkit */
 					/*margin: 15px auto 0;*/
-					font-size: $font-size-12;
+					@extend %type-open-sans-12-4-text;
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show3;
 					-webkit-box-orient: vertical;
 					overflow: hidden;
 					text-overflow: ellipsis;
-					font-weight: normal;
 				}
 				ul{
 					color: $primary-text-color;
@@ -75,18 +68,20 @@
 					margin:20px 0 0 0;
 					padding: 0;
 					li{
-						font-weight: bold;
+						@extend %type-open-sans-12-7-text;
 						text-transform: uppercase;
-						font-size: 0.857em;
 						span{
 							margin-right: 5px;
+							&:first-child{
+								float: left;
+							}
+							&:last-child{
+								float: right;
+							}
 						}
-						&:first-child{
-							float: left;
-						}
-						&:last-child{
-							float: right;
-						}
+						.isFaveSelected {
+								color: $red-color !important;
+							}
 					}
 				}
 			}
@@ -117,12 +112,12 @@
 				border-radius: 15px;
 				color: $white-color;
 			    padding:5px 15px;
-			    font-size: 0.714em;
+			    font-size: $font-size-10;
 		        text-transform: uppercase;
 				span.icon-flag{
 					color: $green-color;
 					padding-right:5px;
-					font-size: 0.857em;
+					font-size: $font-size-12;
 				}
 				span.recommend{
 					/* display: block; */
@@ -139,7 +134,7 @@
 			text-align: center;
 			min-height: 410px;
 			h2{
-				font-size:2.571em;
+				font-size:$font-size-36;
 				line-height: 46px;
 			    padding: 0 5%;
 			    color: $darkblue-color;
@@ -149,17 +144,15 @@
 				background: $green-color;
 				border:none;
 				text-transform: uppercase;
-				font-family: open sans;
-				font-size: 1.071em;
+				@extend %type-open-sans-15-7-text;
 				line-height:15px;
-				font-weight: bold;
 			    letter-spacing: 3px;
 				border-radius: 15px;
 				padding: 10px 15px;
 				margin:14px 0;
 				span{
 					color: $darkblue-color;
-					font-size: 1.285em;
+					font-size: $font-size-18;
 					padding-right: 5px;
 				}
 			}
@@ -168,18 +161,21 @@
 }
 
 @media (min-width: 320px) and (max-width: 460px){
-	.container{
+	.cardList{
+		padding: 0 !important;
+		background-color: $white-color;
 		h2.category{
 			margin:15px 0;
 			padding: 0 0 0 15px;
 			text-transform: uppercase;
-			font-size: 0.875em;
-			font-weight: bold;
+			font-size: $font-size-12;
+			font-weight: 700;
 			color: $heading-color;
 			display: block;
 		}
 		.card-wrapper{
 			.plain-card-container, .wishlist-container, .create-container, .recommend-container{
+				background-color: $primary-background-color;
 				margin: 0 0 15px;
 				.img-block{
 					width:	100%;
@@ -198,7 +194,7 @@
 						height: $font-size-22*$line-height*$lines-to-show1;
 						-webkit-line-clamp: $lines-to-show1;
 						line-height: 2;
-						font-size: 1em;
+						font-size: $font-size-base;
 						padding-bottom:5px;
 					}
 					ul{
@@ -210,10 +206,10 @@
 							}
 							&:last-child{
 								float: left;
-								font-size: 0.625em;
+								font-size: $font-size-9;
 								span{
 									float: right;
-								    font-size: 1.071em;
+								    font-size: $font-size-15;
 		    						margin-top: -15px;
 								}
 							}

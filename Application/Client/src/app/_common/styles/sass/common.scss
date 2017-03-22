@@ -54,6 +54,10 @@ body{
   width: 100%;
 }
 
+.no-padding {
+  padding: 0;
+}
+
 .no-padding-left {
   padding-left: 0;
 }
@@ -61,6 +65,68 @@ body{
 .no-padding-right {
   padding-right: 0;
 }
+
+.pad-topbot-17 {
+  padding: 17px 0;
+}
+
+.pad-topbot-20 {
+  padding: 20px 0;
+}
+
+.pad-bot-20 {
+  padding-bottom: 20px;
+}
+
+.pad-bot-35 {
+  padding-bottom: 35px;
+}
+
+.pad-right-20 {
+  padding-right: 20px;
+}
+
+.pad-top-40 {
+  padding-top: 40px;
+}
+
+input.full-width {
+  width: 100%;
+}
+
+// blue tag
+
+.blue-tag{
+
+    padding-left: 0;
+    margin: 20px 0;
+    text-align: center;
+    list-style: none;
+    max-height: 141px;
+    overflow-y: auto;
+
+           li{
+           margin: 10px 10px 10px 0;
+           display: inline-block;
+
+            a{
+              @extend %type-open-sans-10-9-text;
+              color: $white-color;
+              background-color: $darkblue-color;
+              border: 1px solid $darkblue-color;
+              padding: 8px 23px;
+              text-transform: uppercase;
+              display: inline-block;
+              border-radius: 15px;
+
+              &:hover {
+                background-color: $darkblue-color;
+              }
+
+              }
+          }
+}
+
 
 //input and select
 
@@ -72,4 +138,52 @@ input, select{
   border-radius: 5px;
   color: $primary-text-color;
   @extend %type-open-sans-14-4-text;
+}
+
+.green-button {
+    padding: 15px 25px;
+    border-radius: 30px;
+    background: $green-color;
+    color: $white-color;
+    border: none;
+    text-transform: uppercase;
+}
+
+.green-circle-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $green-color;
+    color: $white-color;
+    color: $white-color;
+    border: none;
+}
+// grey-tag-withcross
+.grey-tag{
+
+        li{
+
+            a{
+              @extend %type-open-sans-10-9-text;
+              color: $tag-grey-border;
+              background-color: $createListing-item-bgcolor;
+              border: 1px solid $tag-grey-border;
+              padding: 8px 13px;
+
+              &:hover {
+                background-color: $createListing-item-bgcolor;
+              }
+
+              i {
+                 padding-left: 10px;
+              }
+
+              }
+          }
+}
+@media (max-width: $screen-xs-max) {
+  .green-button {
+    width: 100%;
+    margin: 20px 0;
+  }
 }

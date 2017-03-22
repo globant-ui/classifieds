@@ -1,5 +1,6 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
@@ -21,20 +22,24 @@ import { BannerComponent } from './banner/components/banner.component';
 import { ProductInfoComponent } from './product-info/components/product-info.component';
 import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
+import {Base64Service} from "./_common/services/base64.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
+import { ProfileComponent } from './createProfile/component/createProfile.component';
 import {mapData} from  './mapData/mapData';
 
 import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
 import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
-
+import { PopUpMessageComponent } from './_common/popup';
 
 /*ng2-bootstrap*/
-import { ModalModule } from 'ng2-bootstrap/modal';
+import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
+import { AccordionModule } from 'ng2-bootstrap/accordion';
+import { CarouselModule } from 'ng2-bootstrap/carousel';
 
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -50,6 +55,7 @@ type StoreType = {
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
+
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
@@ -66,7 +72,9 @@ type StoreType = {
     LoaderComponent,
     SelectInterestComponent,
     ProductInfoComponent,
-    CreateCardComponent
+    CreateCardComponent,
+    PopUpMessageComponent,
+    ProfileComponent
 
   ],
   imports: [ // import Angular's modules
@@ -77,14 +85,18 @@ type StoreType = {
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
-    DropdownModule.forRoot()
+    DropdownModule.forRoot(),
+    AccordionModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
     CService,
     mapData,
-    CookieService
+    CookieService,
+    Base64Service,
+    DatePipe
   ]
 })
 export class AppModule {

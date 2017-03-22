@@ -1,82 +1,76 @@
 @import "../../styles/sass/style";
 
-.progress {
-	  list-style: none;
-	  margin: 0;
-	  padding: 0;
-	  display: table;
-	  table-layout: fixed;
-	  width: 100%;
-	  color: $white-color;
-	  background: transparent;
-
-	  > li {
-	    position: relative;
-	    display: table-cell;
-	    text-align: center;
-	    font-size: 0.72em;
-	    text-transform: uppercase;
-	    color: $primary-text-color;
-
-	    &:before {
-	      content: attr(data-step);
-	      display: block;
-	      margin: 0 auto;
-	      background: $createListing-complete-default-bgcolor;
-	      width: 3em;
-	      height: 3em;
-	      text-align: center; //IE8 doesn't inherit this style
-	      margin-bottom: 0.25em;
-	      line-height: 3em;
-	      border-radius: 100%;
-	      position: relative;
-	      z-index: 1000;
+.similarListingContainer{
+  padding:0 125px 20px;
+  /*background-color: $createListing-item-bgcolor;*/
+  position: relative;
+   .similarListings{
+   		text-align: center;
+   		h3{
+   			@extend %type-open-sans-22-4-text;
+   			float: left;
+   			margin: 30px 0 20px 0;
+   		} 
+	    .thumbnail{
+	    	background-color: $createListing-item-bgcolor;
+	    	padding: 0;
+	    	border: 0;
+		    img{
+		      width: 100%;
+		    }
+		    .listingContent{
+		    	text-align: left;
+			    span{
+			       display: inline-block;
+			       color: $primary-text-color !important;
+			       padding: 5px;
+			    }
+			    span.title{
+			       @extend %type-open-sans-16-6-text;
+			       color: $heading-color !important;
+			       h5{
+			       		margin: 0;
+			       	}
+			    }
+			    span.price{
+			       @extend %type-open-sans-10-6-text;
+			    }
+		    }
 	    }
-	    &:after {
-	      content: '';
-	      position: absolute;
-	      display: block;
-	      background: $createListing-complete-default-bgcolor;
-	      width: 100%;
-	      height: 0.5em;
-	      top: 1.25em;
-	      left: 50%;
-	      margin-left: 1.5em\9;
-	      z-index: -1;
+   }
+}
+@media (min-width: 320px) and (max-width: 460px){
+	.similarListingContainer{
+		padding: 20px 15px;
+	    .similarListings{
+	    	h3{
+	    		/*@extend %type-open-sans-14-4-text;*/
+		        font-size: $font-size-16;
+		        font-weight: 400;
+	    	}
+		    .thumbnail{
+		      	.listingContent{
+			        text-align: left;
+				    span.title{
+				        width: 140px;
+				        /*@extend %type-open-sans-14-6-text;*/
+				        font-size: $font-size-base;
+				        font-weight: 600;
+				        h5{
+				         margin: 0;
+				        }
+			       	}
+			       	span.price{
+				        margin: 0;
+				        /*@extend %type-open-sans-10-4-text;*/
+				        font-size: $font-size-10;
+				        font-weight: 400;
+				        float: none !important;
+				        display: block;
+				        padding-top: 0;
+			       	}
+		      	}
+		    }
 	    }
-	    &:last-child:after {
-	      display: none;
-	    }
-	    &.is-complete {
-	      color: $createListing-complete-active-text-color;
-	      font-weight: bold;
-
-	      &:before,
-	      &:after {
-	        color: #FFF;
-	        background: $createListing-complete-active-bgcolor;
-	      }
-	    }
-	    &.is-active {
-	      color: $createListing-complete-active-text-color;
-	      font-weight: bold;
-	      
-	      &:before {
-	        color: #FFF;
-	        background: $createListing-complete-active-bgcolor;
-	      }
-	    }
-	  }
-	  .progress__last:after {
-    	display: none!important;
-  	   }
-	  	.progress--medium {
-	    	font-size: 1.5em;
-	  	}
-	  	.progress--large {
-	   	 	font-size: 2em;
-	  	}
-		*, *:after, *:before {
-		 	box-sizing: border-box;
-		}
-	}
+   	}
+}

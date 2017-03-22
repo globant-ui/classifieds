@@ -17,6 +17,56 @@
     text-decoration: underline;
   }
 
+  .product-info-wrapper {
+    margin-bottom: 25px;
+  }
+
+  .carousel-inner {
+    background: #f6f7f9;
+
+    img {
+      width: 100%;
+    } 
+  }
+
+  .carousel.slide{
+      .carousel-control .icon-next:before {
+           //Reset the icon
+           content: " ";
+           //Give layout
+           display:block;
+           //Your image as background
+           background:url("../../../assets/img/arrow-right-circle.png") no-repeat !important;
+           //To show full image set the dimensions
+           width:41px;
+           height:40px;
+      }
+
+      .carousel-control.left, .carousel-control.right {
+        background-image: none;
+      }
+
+      .carousel-control .icon-prev:before {
+           //Reset the icon
+           content: " ";
+           //Give layout
+           display:block;
+           //Your image as background
+           background:url("../../../assets/img/arrow-left-circle.png") no-repeat !important;
+          //To show full image set the dimensions
+           width:41px;
+           height:40px;
+      }
+      .carousel-indicators{
+        li.active{
+          background-color: $green-color !important;
+        }
+        li{
+          border: 1px solid $green-color !important;
+        }
+      }
+    }
+
   .img-circle {
     border-radius: 50%;
   }
@@ -49,6 +99,11 @@
     color: $primary-text-color;
   }
 
+  .typeBrandDetails-wrapper {
+      max-height: 300px;
+      overflow-y: auto;
+  }
+
   .typeBrandDetails {
     font-size: 0.8em;
     padding-top: 15px;
@@ -67,29 +122,17 @@
     margin-bottom: 30px;
   }
 
-  .mobileViewCarousel {
-    .largeViewSpacing {
-      margin-bottom: 30px;
-    }
-
-    .largeView {
-      margin: 0 15.7%;
-    }
-
-    .smallViewsArrow {
-      width: 41px; height: 40px; background-color: transparent; margin: 0 15px; float: left;
-      img {
-        width: 41px; height: 40px; margin-top: 40px;
+  /*.mobileViewCarousel {
+    carousel{
+      margin:20px;
+      slide{
+        img{
+          width: 570px;
+          height: 559px;
+        }
       }
     }
-
-    .smallViews {
-      width: 116px; height: 115px; margin: 0 19.7px; float: left;
-      img {
-        width: 116px; height: 115px;
-      }
-    }
-  }
+  }*/
 
   .orangeIconSpacing {
     margin: 0 10px;
@@ -127,57 +170,28 @@
   }
 
   .userDetailsSpacing {
-    margin-top: 88px;
-  }
-
-  .similarListings {
-    background-color: #eee;
-    h3 {
-      color: #000; margin-left: 8.8%;
-    }
-
-    .similarListingsBottomSpacing {
-      margin-bottom: 56px;
-    }
-
-    .listing.smallArrow {
-      width: 41px; height: 40px; background-color: transparent;
-      img {
-        width: 41px; height: 40px; margin-top: 116px;
-      }
-    }
-
-    .listing {
-      //background-color: $createListing-item-bgcolor;
-      width: 232px;
-      height: 255px;
-      float: left;
-      margin: 0 25px;
-      img {
-        width: 232px;
-        height: 210px;
-      }
-
-      .listingContent {
-        display: inline;
-
-        span {
-          display: inline-block;
-          color: $primary-text-color;
-          padding: 5px;
-        }
-
-        span.title {
-          font-weight: semibold;
-          color: $heading-color;
-        }
-
-        span.price {
-          margin-top: 10px;
-          margin-bottom: 10px;
-          letter-spacing: 2px;
-        }
-      }
-    }
+    margin-top: 50px;
   }
 }
+
+@media (max-width: $screen-xs-max) {
+
+  .productInfoPage {
+
+  .breadcrumb {
+    padding: 20px 30px;
+  }
+
+  .userDetailsSpacing {
+      margin-top: 20px;
+
+      .designerName {    
+        .designation-name {
+            display: block;
+            padding-left: 34%;
+          }
+      }
+    }
+  }
+
+ }
