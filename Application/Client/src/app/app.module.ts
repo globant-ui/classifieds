@@ -37,6 +37,7 @@ import { PopUpMessageComponent } from './_common/popup';
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
+import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { AccordionModule } from 'ng2-bootstrap/accordion';
 import { CarouselModule } from 'ng2-bootstrap/carousel';
 
@@ -84,6 +85,7 @@ type StoreType = {
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
+    DropdownModule.forRoot(),
     AccordionModule.forRoot(),
     CarouselModule.forRoot()
   ],
