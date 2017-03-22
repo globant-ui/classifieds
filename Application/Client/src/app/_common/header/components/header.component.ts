@@ -22,6 +22,8 @@ export class HeaderComponent implements OnInit{
   private session : Session;
   private activeSession:boolean = false;
   private wishlistFlag: boolean = false;
+  private signOutHideShow: boolean = false;
+
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
               private _cookieService:CookieService,
@@ -50,8 +52,10 @@ export class HeaderComponent implements OnInit{
   }
 
   wishlistPopup() {
-    this.wishlistFlag =  !this.wishlistFlag;
+    this.wishlistFlag = !this.wishlistFlag;
   }
-
-}
+ //profile button click
+  profileButton() {
+    this.signOutHideShow = !this.signOutHideShow;
+  }
 

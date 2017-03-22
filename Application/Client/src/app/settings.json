@@ -33,7 +33,9 @@
       "wishListPostUrl":"http://in-it0289/UserApi/api/User/AddToWishList?userEmail=",
       "GetUserWishList":"http://in-it0289/UserApi/api/User/GetUserWishList?userEmail=",
       "DeleteUserWishListUrl": "http://in-it0289/UserApi/api/User/DeleteFromWishList?userEmail=",
-      "wishListSelectedUrl":"http://in-it0289/ListingAPI/api/Listings/GetMyWishlist"
+      "wishListSelectedUrl":"http://in-it0289/ListingAPI/api/Listings/GetMyWishlist",
+      "recommededUrl" : "http://in-it0289/ListingAPI/api/Listings/GetRecommendedList"
+
     } 
 
   },

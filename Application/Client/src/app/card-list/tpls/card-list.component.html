@@ -16,7 +16,7 @@
                     <p>{{card.Details}}</p>
                     <ul>
                         <li>
-                            <span class="icon-clock" ></span>{{card.SubmittedDate}}</li>
+                            <span class="icon-clock" ></span>{{card.SubmittedDate.toString().split('T')[0]}}</li>
                         <li><span class="icon-like-icon" [ngClass]="{'isFaveSelected': card.isInWishList}" (click) = "favorite(card._id, i,card)"></span>RS {{card.Price}}</li>
                     </ul>
                 </div>
