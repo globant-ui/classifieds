@@ -134,3 +134,32 @@ input, select{
   @extend %type-open-sans-14-4-text;
 }
 
+.green-button {
+    padding: 15px 25px;
+    border-radius: 30px;
+    background: $green-color;
+    color: $white-color;
+    border: none;
+    text-transform: uppercase;
+}
+
+.green-circle-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $green-color;
+    color: $white-color;
+    color: $white-color;
+    border: none;
+}
+
+.small-green-button {
+    @extend %type-open-sans-7-9-text;
+    padding: 6px 15px;
+    border-radius: 30px;
+    background: $green-color;
+    color: $white-color;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

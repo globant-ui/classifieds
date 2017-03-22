@@ -4,6 +4,7 @@
   padding:20px 125px;
   background-color: $createListing-item-bgcolor;
   position: relative;
+
    .similarListings{
    		text-align: center;
    		h3{
@@ -13,6 +14,7 @@
 	    .thumbnail{
 	    	padding: 0;
 	    	border: 0;
+	    	overflow-y: hidden;
 		    img{
 		      width: 100%;
 		    }
@@ -37,6 +39,24 @@
 	    }
    }
 }
+
+.similarListingContainerWithArrow {
+	padding:20px 35px;
+}
+
+.galleryArrow {
+	height: 40px;
+	width: 70px !important;
+	padding-top: 170px;
+	cursor: pointer;
+}
+
+.mylisting-edit-icon {
+	position: absolute;
+    right: 0;
+    top: 20px;
+}
+
 @media (min-width: 320px) and (max-width: 460px){
 	.similarListingContainer{
 		padding: 20px 15px;

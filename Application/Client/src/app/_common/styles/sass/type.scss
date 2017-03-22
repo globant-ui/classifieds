@@ -105,3 +105,11 @@
 %type-arvo-regular-36-4-text {
   @include only-text-type($font-size-36, $arvo-regular, $font-weight-400);
 }
+
+%type-open-sans-8-9-text {
+  @include only-text-type($font-size-8, $open-sans, $font-weight-900);
+}
+
+%type-open-sans-7-9-text {
+  @include only-text-type($font-size-7, $open-sans, $font-weight-900);
+}
