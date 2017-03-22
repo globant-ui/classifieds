@@ -1,6 +1,6 @@
 import { Component,Input,OnInit,SimpleChanges,AfterViewInit} from '@angular/core';
 import { AppState } from '../../app.service';
-import { SettingsService } from '../../services/setting.service';
+import { SettingsService } from '../../_common/services/setting.service';
 import { LoaderComponent } from '../../_common/loader/components/loader.component';
 import { Observable }     from 'rxjs/Observable';
 import { Http, Response,RequestOptions } from '@angular/http';
