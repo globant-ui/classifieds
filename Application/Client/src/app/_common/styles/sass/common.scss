@@ -163,3 +163,10 @@ input, select{
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+@media (max-width: $screen-xs-max) {
+  .green-button {
+    width: 100%;
+    margin: 20px 0;
+  }
+}
