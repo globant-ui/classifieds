@@ -38,15 +38,21 @@
             <span class="icon-like-icon wishlist"></span>
           </a>
         </li>
-        <li>
-            <button class="btn btn-default" type="button" id="profile" (click)="profileButton()">
+        <li dropdown>
+            <button class="btn btn-default" type="button" id="profile" dropdownToggle>
                 <span class="icon-profile profile-btn"></span>
                 <span class="textProfile">my profile</span>
             </button>
-            <ul class="signOutContainer" *ngIf = "signOutHideShow">
+            <ul class="signOutContainer" dropdownMenu role="menu" aria-labelledby="profile">
               <li>
-                <button class="green-button sign-out-btn" >
-                  <span class="icon-flag"></span>
+                <button>
+                 <!--  <span class="icon-profile profile-btn"></span>  -->
+                  <span class="textProfile">my profile</span>
+                </button>
+              </li>
+              <li>
+                <button>
+                  <!-- <span class="icon-flag"></span> -->
                   <span (click)="doLogout()">Sign Out</span>
                 </button>
               </li>
