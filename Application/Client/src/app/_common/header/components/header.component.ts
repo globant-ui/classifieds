@@ -50,7 +50,6 @@ export class HeaderComponent implements OnInit{
   }
   //profile button click
   profileButton(){
-   console.log("jjjjjj");
    this.signOutHideShow = !this.signOutHideShow;
    
   }
