@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
   private topNavbar:any;
   private affixEl:any;
   private affixElOffsetTop: number;
+  private recommededUrl : string = '';
 
   @ViewChild(SearchComponent) searchComponent;
   @ViewChild( CardListComponent) cardListComponent;
@@ -45,6 +46,7 @@ export class HomeComponent implements OnInit {
       private _settingsService: SettingsService,
       private _cservice:CService,
       private el:ElementRef) {
+          this.recommededUrl = _settingsService.getPath('recommededUrl');
   }
   ngOnInit() {
     this.baseUrl=this._settingsService.getBaseUrl();
@@ -81,7 +83,11 @@ export class HomeComponent implements OnInit {
     if( categoryName == 'Top ten') {
       url = this.cardUrl;
       this.searchComponent.setFilter( 'TOP TEN' );
-    } else {
+    } 
+     else if(categoryName === 'Recommended'){
+         url = this.recommededUrl;
+         this.searchComponent.setFilter( 'Recommended' );
+    }else {
       url = this.cardsByCategoryUrl + categoryName;
       this.searchComponent.setFilter( categoryName );
     }
@@ -92,7 +98,7 @@ export class HomeComponent implements OnInit {
           this.initialCardData = res;
       },
       error => {
-        console.log("error in response");
+        console.log("error in response",error);
       },
       ()=>{
         console.log("Finally");
