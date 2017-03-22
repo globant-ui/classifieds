@@ -89,6 +89,6 @@ export class SearchComponent {
     }
 
     setFilter(filterData) {
-        this.searchCategoryByStr = filterData;
+        //this.searchCategoryByStr = filterData;
     }
 }
