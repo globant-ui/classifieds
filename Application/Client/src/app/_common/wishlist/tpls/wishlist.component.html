@@ -12,7 +12,7 @@
             <div class="col-xs-6 col-sm-6 col-md-3">
               <div class="thumbnail" *ngFor = "let wishlist of WishListSelectedData">
                   <img src="../../../../assets/img/similarListing.png" alt="...">
-                      <div class="listingContent caption">
+                      <div class="listingContent caption" >
                           <span class="title"><h5>{{wishlist.Price}}</h5></span>
                           <span class="price pull-right">{{wishlist.Title}}</span>
                           <span class="price pull-right"(click)="deleteWishList(wishlist)">x</span>

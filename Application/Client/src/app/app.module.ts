@@ -35,6 +35,7 @@ import { SelectInterestComponent } from './_common/select-interest/components/se
 import { WishListComponent } from './_common/wishlist/components/wishlist.component';
 import  {SettingsService} from  './_common/services/setting.service';
 import { PopUpMessageComponent } from './_common/popup';
+import  {WishlistService} from  './_common/services/shared.service';
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
@@ -97,7 +98,8 @@ type StoreType = {
     CookieService,
     SettingsService,
     Base64Service,
-    DatePipe
+    DatePipe,
+    WishlistService
   ]
 })
 export class AppModule {

@@ -50,8 +50,7 @@ export class HeaderComponent implements OnInit{
   }
 
   wishlistPopup() {
-    console.log("wishlistPopup click");
-    this.wishlistFlag = true;
+    this.wishlistFlag =  !this.wishlistFlag;
   }
 
 }

@@ -7,6 +7,7 @@ import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../_common/services/http.service';
 import {CookieService} from 'angular2-cookie/core';
 import {Router} from '@angular/router';
+import  {WishlistService} from  '../../_common/services/shared.service';
 
 let styles = require('../styles/card-list.component.scss').toString();
 let tpls = require('../tpls/card-list.component.html').toString();
@@ -35,14 +36,19 @@ export class CardListComponent{
         private _settingsService: SettingsService,
         private _router: Router,
         private _cservice: CService,
-        private _cookieService: CookieService
+        private _cookieService: CookieService,
+        private _wishlistService:WishlistService
     ) {
         this.wishListPostUrl = _settingsService.getPath('wishListPostUrl');
         this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
         this.GetUserWishList = _settingsService.getPath('GetUserWishList');
         this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl');
+        this._wishlistService.GetWishList().subscribe(res => this.onItemAdded(res));
     }
-
+private onItemAdded(item): void {
+        // do something with added item
+        alert(item);
+    }
     ngOnChanges(changes:SimpleChanges){
         if(changes['cards']){
             this.GetWishList();
@@ -57,7 +63,7 @@ export class CardListComponent{
     ngAfterViewInit(){
         console.log('all = ',this.cards);
     }
-    
+
    loading( flag ) {
         this.isLoading = flag;
     }
