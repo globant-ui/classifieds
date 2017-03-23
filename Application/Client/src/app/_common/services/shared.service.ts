@@ -42,7 +42,7 @@ constructor(
                console.log("error in response", error);
            });
    }
-     //get the wishlist api call
+     //get my wishlist pop-up api call
   getUserWishList() {
     this._cservice.observableGetHttp(this.wishListSelectedUrl, null, false)
       .subscribe((res: Response) => {

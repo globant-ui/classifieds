@@ -59,3 +59,4 @@ export class HeaderComponent implements OnInit{
     this.signOutHideShow = !this.signOutHideShow;
   }
 
+}

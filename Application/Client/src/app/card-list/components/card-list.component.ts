@@ -8,6 +8,7 @@ import {CService} from  '../../_common/services/http.service';
 import {CookieService} from 'angular2-cookie/core';
 import {Router} from '@angular/router';
 import  {WishlistService} from  '../../services/shared.service';
+import  {WishListCardService} from  '../service/card.list.service';
 
 let styles = require('../styles/card-list.component.scss').toString();
 let tpls = require('../tpls/card-list.component.html').toString();
@@ -37,6 +38,7 @@ export class CardListComponent{
         private _router: Router,
         private _cservice: CService,
         private _cookieService: CookieService,
+        private wishListCardService : WishListCardService
     ) {
         this.wishListPostUrl = _settingsService.getPath('wishListPostUrl');
         this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
@@ -83,17 +85,26 @@ export class CardListComponent{
 
 //get wishlist api
    GetWishList() {
-       console.log("this.GetUserWishList", this.GetUserWishList)
-       this._cservice.observableGetHttp(this.GetUserWishList, null, false)
-           .subscribe((res: Response) => {
-               console.log("this.GetUserWishList Response", res);
-               if (res['length'] != 0) {
-                   this.updateCards(res);
-               }
-           },
-           error => {
-               console.log("error in response", error);
-           });
+       debugger;
+        this.wishListCardService.GetWishListData(this.GetUserWishList)
+    .then(res=>{
+     this.updateCards(res);
+    },
+        error => {
+         console.log("error in response", error);
+       }
+    );
+    //    console.log("this.GetUserWishList", this.GetUserWishList)
+    //    this._cservice.observableGetHttp(this.GetUserWishList, null, false)
+    //        .subscribe((res: Response) => {
+    //            console.log("this.GetUserWishList Response", res);
+               
+    //                this.updateCards(res);
+               
+    //        },
+    //        error => {
+    //            console.log("error in response", error);
+    //        });
    }
 
 //update the cards 
