@@ -1,13 +1,18 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, NgZone} from '@angular/core';
 import {CService} from  '../../_common/services/http.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { ActivatedRoute } from '@angular/router';
 import {Base64Service} from '../../_common/services/base64.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http,Response,Headers} from '@angular/http';
+import { FileUploader } from 'ng2-file-upload';
+// import * as _ from "lodash";
 
 let tpls = require('../tpls/createProfile.html').toString();
 let styles = require('../styles/createProfile.scss').toString();
+
+const URL = 'http://in-it0289/UserAPI/api/User/PostUserImage';
+//const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 
 @Component({
     selector:'create-profile',
@@ -19,21 +24,36 @@ export class ProfileComponent implements OnInit {
 
     private getUserProfileUrl = 'http://in-it0289/Userapi/api/user/GetUserProfile?userEmail=';
     private updateUserProfile = 'http://in-it0289/Userapi/api/User/UpdateUserProfile';
-    private deleteSubScription = 'http://in-it0289/Userapi/api/user/DeleteSubscription';
+    private deleteSubScription = 'http://in-it0289/UserAPI/api/User/DeleteAlerts?userEmail=';
+    private UpdateImageUrl =  'http://in-it0289/UserAPI/api/User/PostUserImage';
     private userEmail:any;
     private userDetails: any;
     private userProfileData : any = {};
     private tagData: any = [];
     private subscribeCat:any = [];
     private UserImage: any;
+    private updatedTag:any = [];
+    private showPopupDivMessage:string= '';
+    private delayTimer: any;
+    private showPopupMessage: boolean = false;
     private openEditProfile: boolean = false;
     private closeViewProfile:boolean = true;
     private UserProfileImage = this._settingService.settings;
+    private subCategoryUrl: string = '';
+    private selectInterestUrl: string = '';
+    private enabledDropdown : boolean = true;
+    private interestResult:any ;
 
-    constructor(private httpService:CService,
+    constructor(  private _http: Http,
+                private httpService:CService,
                 private _route:ActivatedRoute,
                 private _settingService : SettingsService,
-                public _base64service:Base64Service){
+                public _base64service:Base64Service,
+                  private zone:NgZone){
+
+      this.subCategoryUrl =this. _settingService.getPath('subCategoryUrl');
+      this.selectInterestUrl =this._settingService.getPath('searchUrl');
+
     }
 
     ngOnInit() {
@@ -47,6 +67,7 @@ export class ProfileComponent implements OnInit {
 
     getProfileData(userMail){
       this.userDetails = this.getUserProfileUrl+this.userEmail;
+      this.userProfileData = {};
       this.httpService.observableGetHttp(this.userDetails ,null,false)
         .subscribe((res:Response)=> {
             this.userProfileData = res;
@@ -75,6 +96,8 @@ export class ProfileComponent implements OnInit {
       this.httpService.observablePutHttp(url,updatedData,null,false)
         .subscribe((res)=> {
             console.log("comes here in result",res);
+            this.showPopupMessage = true;
+            this.showPopupDivMessage = 'profile';
           },
           error => {
             console.log("error in response");
@@ -84,22 +107,84 @@ export class ProfileComponent implements OnInit {
           });
     }
 
-    deleteSub(event){
-      console.log("delete",event);
-      this.subscribeCat = this.subscribeCat.splice();
-      let UpdatedAlert = this.subscribeCat;
-      let url = this.deleteSubScription+UpdatedAlert;
-      this.httpService.observableDeleteHttp(url,null,false)
-        .subscribe((res)=>{
-        console.log("deleted the subsscription",res);
-        },
+    deleteSub(res){
+     let UpdatedAlert = JSON.stringify(res);
+      let url = this.deleteSubScription + this.userEmail;
+      this.subscribeCat.push(res);
+      this.httpService.observablePutHttp(url,UpdatedAlert,null,false)
+        .subscribe((response)=>{
+            console.log("deleted the subsscription",response);
+            this.getProfileData(this.userEmail);
+          },
           error =>{
-          console.log("error in responese");
+            console.log("error in responese");
           },
           ()=>{
             console.log("finally");
           });
     }
+  deleteTag(res){
+      this.tagData.splice(res,1);
+  }
+
+  UpdateImage(event){
+    let self = this;
+    var data = new FormData();
+    data.append("file", document.getElementById("myFileField").files[0]);
+
+     var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+        if(xhr.status === 201) {
+          self.UserImage = '';
+        } else {
+          console.log("Error");
+        }
+      }
+    }
+    self.UserImage = null;
+    xhr.open("POST", "http://in-it0289/UserAPI/api/User/PostUserImage");
+    xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
+    xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
+    xhr.send(data);
+  }
+
+  fetchInterest(e: Event, val) {
+    if (val.length >= 3) {
+      //Delay of some time to slow down the results
+      clearTimeout(this.delayTimer);
+      this.delayTimer = setTimeout(() => {
+        this.fetchInterestData(val);
+      }, 1000);
+    }
+  }
+  fetchInterestData(text: string) {
+    this.httpService.observableGetHttp(this.subCategoryUrl + text, null, false)
+      .subscribe((res: Response) => {
+          if (res['length'] > 0) {
+            this.interestResult = res;
+            this.enabledDropdown = true;
+          } else {
+            console.log("No result found!!!");
+          }
+        },
+        error => {
+          console.log("error in response", error);
+        });
+  }
+
+  selectInterest(val) {
+    this.tagData.push(val);
+    console.log(this.tagData);
+    //to duplicate element allowed in tag logic
+    this.tagData = this.tagData.reduce(function (a, b) {
+      if (a.indexOf(b) < 0) a.push(b);
+      return a;
+    }, []);
+    this.enabledDropdown = false;
+    this.interestResult = [];
+  }
+
 
 }
 

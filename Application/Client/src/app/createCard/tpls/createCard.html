@@ -58,24 +58,19 @@
                         <label class="uppercaseText">Add photos</label>
                       </div>
                     </div>
-                    <div class="row">
-                        <ul class="nav navbar-nav">
-                          <li>
-                              <div class="col-lg-12 col-md-12 col-xs-12">
-                                <div class="img-icon noPadding addPhotoDiv" *ngFor="let img of uploadedImages">
-                                    <img src="{{img}}">
-                                </div>
-                                <div class="img-icon noPadding addPhotoDiv">
-                                    <label for="image-upload" class="imageUpload">
-                                        <img src="../../../../assets/img/addImage.png" />
-                                    </label>
-                                    <input id="image-upload" type="file" (change)="fileNameChanged($event)" />
-                                </div>
-                              </div>
-                          </li>
-                        </ul>
-                    </div>
+                    <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
+                      <img src="{{img}}">
+                      </div>
+                    <label for="myFileField" class="imageUpload">
+                    <img src="../../../../assets/img/addImage.png" />
+                    </label>
+                    <input type="file" id="myFileField" name="myFile" (change)="fileNameChanged($event)" multiple/>
                   </div>
+
+
+                <!--Multiple-->
+
+
                   <div class="row form-group">
                     <div class="col-lg-4 col-md-4 col-xs-12 marginBottom">
                         <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
@@ -93,9 +88,10 @@
                         <input #location formControlName="location" name="location" class="fullWidth" type="text" id="location" placeholder="Location" required />
                         <!-- <div class="glyphicon glyphicon-chevron-down downArrow"></div> -->
                     </div>
-
-                    <div class="col-lg-4 col-md-4 col-xs-12 marginBottom">
-                        <input #price formControlName="price" name="price" class="fullWidth" type="text" id="price" placeholder="Price" required />
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-lg-5 col-md-5 col-xs-12">
+                        <input #price formControlName="price" name="price" class="fullWidth" type="number" id="price" placeholder="Price" required />
                         <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
                           Price is required
                         </div>-->
@@ -114,12 +110,15 @@
                       </div>
                     </div>
                   </div>
-                   
+
                   <div class="row form-group" *ngIf="filters.Filters">
                       <div class="col-lg-11 col-md-11 col-xs-12 marginBottom">
                         <div class="row">
-                          <div class="col-lg-3 col-md-3 col-xs-12 marginBottom" *ngFor="let filter of filters.Filters">
-                            <select class="typeSelect fullWidth" name="{{filter.FilterName}}" [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName" formControlName="{{filter.FilterName}}" >
+                          <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of filters.Filters">
+                            <select class="typeSelect fullWidth"
+                                    name="{{filter.FilterName}}"
+                                    [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName"
+                                    formControlName="{{filter.FilterName}}" >
                               <option selected="{{(action === 'Create' && action !== 'Edit')?true:null}}" disabled>{{filter.FilterName}}</option>
                               <option *ngFor="let FilterValues of filter.FilterValues" value="{{FilterValues}}">{{FilterValues}}</option>
                             </select>
@@ -131,8 +130,13 @@
                   <div class="row form-group" *ngIf="textBoxes">
                       <div class="col-lg-11 col-md-11 col-xs-12">
                         <div class="row">
-                          <div class="col-lg-3 col-md-3 col-xs-12 marginBottom" *ngFor="let filter of textBoxes">
-                            <input class="typeSelect fullWidth" type="text" name="{{filter.FilterName}}" formControlName="{{filter.FilterName}}" placeholder="{{filter.FilterName}}" [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName" />
+                          <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of textBoxes">
+                            <input class="typeSelect fullWidth"
+                                   type="number"
+                                   name="{{filter.FilterName}}"
+                                   formControlName="{{filter.FilterName}}"
+                                   placeholder="{{filter.FilterName}}"
+                                   [(ngModel)]="(productInfo && productInfo['Listing']) ? productInfo['Listing'][filter.FilterName] : filter.FilterName" />
                           </div>
                         </div>
                       </div>

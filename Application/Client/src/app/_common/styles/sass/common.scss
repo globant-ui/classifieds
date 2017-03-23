@@ -158,6 +158,16 @@ input, select{
     color: $white-color;
     border: none;
 }
+
+.orange-border-button{
+  padding: 15px 40px;
+  border-radius: 50px;
+  background: $white-color;
+  border: 3px solid $createListing-complete-default-bgcolor;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: $createListing-complete-active-text-color;
+}
 // grey-tag-withcross
 .grey-tag{
 
@@ -182,8 +192,15 @@ input, select{
           }
 }
 @media (max-width: $screen-xs-max) {
-  .green-button {
+  .green-button,{
     width: 100%;
     margin: 20px 0;
+  }
+  .orange-border-button{
+    background: $green-color;
+    color: $white-color;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
   }
 }

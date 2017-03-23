@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
+
 import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
@@ -33,13 +34,13 @@ import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
 import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
 import { PopUpMessageComponent } from './_common/popup';
-
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { AccordionModule } from 'ng2-bootstrap/accordion';
 import { CarouselModule } from 'ng2-bootstrap/carousel';
+import { FileUploadModule } from 'ng2-file-upload';
 
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -75,7 +76,6 @@ type StoreType = {
     CreateCardComponent,
     PopUpMessageComponent,
     ProfileComponent
-
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -87,7 +87,8 @@ type StoreType = {
     CollapseModule.forRoot(),
     DropdownModule.forRoot(),
     AccordionModule.forRoot(),
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    FileUploadModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

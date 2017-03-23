@@ -19,6 +19,7 @@ let tpls = require('../tpls/header.component.html').toString();
 export class HeaderComponent implements OnInit{
 
   public isCollapsed:boolean = true;
+
   private session : Session;
   private activeSession:boolean = false;
   private signOutHideShow: boolean = false;
@@ -51,7 +52,7 @@ export class HeaderComponent implements OnInit{
   //profile button click
   profileButton(){
    this.signOutHideShow = !this.signOutHideShow;
-   
+
   }
 
 }
