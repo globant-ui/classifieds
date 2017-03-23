@@ -96,6 +96,7 @@ export class CreateCardComponent implements OnInit {
 
            self.categories = res;
            self.subcategories = self.categories[0].SubCategory;
+
          },
          error => {
            console.log("error in response");

@@ -4,9 +4,9 @@
   .container{
 
     form{
-     padding: 0px 50px;
+     padding: 50px 50px;
      .buttonRow{
-      margin-top: 50px;
+      margin-top: 30px;
      }
      .form-group{
       .capitalText{
@@ -24,9 +24,14 @@
       .marginBottom{
        margin-bottom: 15px;
       }
+      .addPhotoDiv{
+        &:first-child{
+          margin: 10px 10px 10px 0;
+        }
+      }
       .img-icon{
        padding: 20px 10px;
-       margin: 10px;
+       margin: 10px 10px 10px 15px;
        width: 115px;
        height: 115px;
        background-color: $createListing-item-bgcolor;
@@ -42,7 +47,7 @@
        }
       }
       .selectedCategory{
-        border:1px solid $createListing-selected-item-border-color;
+        border:1px solid $darkblue-color;
       }
       #sub-category{
        @extend %type-open-sans-12-6-text;
@@ -76,15 +81,30 @@
         @extend %type-open-sans-14-6-text;
        }
       }
+      .typeListinglabel, #typeListing, .subCategoryLabel, #sub-category{
+        margin-bottom: 30px;
+      }
+      #sub-category,#typeListing{
+        label.radio-inline{
+          input{
+            margin-top: 0;
+          }
+        }
+      }
       .checkbox{
+        text-align: right;
+        margin-bottom: 15px;
        label{
         color: $primary-text-color;
+        input{
+          margin-top: 0;
+        }
        }
       }
       .downArrow{
           position: absolute;
           top: 14px;
-          right: 21px;
+          right: 25px;
           background-color: #fafafa;
           width: 5%
       }
@@ -96,34 +116,56 @@
   .createCardContainer{
     .container{ 
      form{
-      padding: 20px;
+      padding: 50px 20px;
       .form-group{
-       .img-icon{
-        .spriteimage{
-         display: none;
+        margin-bottom: 5px;
+        .img-icon{
+          vertical-align: top;
+          position: relative;
+          .spriteimage{
+           display: none;
+          }
+          .mobileImage{
+           display: block;
+          }
+          width: 65px;
+          height: 65px;
+          img{
+              width: 55px;
+              height: 55px;
+              position: absolute;
+              top: 4px;
+              left: 2px;
+          }
         }
-        .mobileImage{
-         display: block;
+        ul.categoryUl{
+          margin: 0;
+          padding: 0;
         }
-        width: 65px;
-        height: 65px;
-        img{
-         width: 55px;
-            height: 55px;
-            position: absolute;
-            top: 15px;
-            left: 15px;
+      .addPhotoDiv{
+        &:first-child{
+          margin: 10px 10px 10px 15px;
         }
-       }
+      }
        .publishButton{
         float: none;
        }
+       .marginBottom{
+       margin-bottom: 10px;
+      }
+       .typeListinglabel, #typeListing, .subCategoryLabel, #sub-category{
+        margin-bottom: 10px;
+      }
        #sub-category{
         .radio-inline{
          display: block;
-         margin: 10px;
+         margin: 10px 10px 20px 10px;
         }
        }
+       .checkbox{
+          text-align: left;
+          margin: 0;
+        }
        .downArrow{
         right:20px;
         width:4%;
