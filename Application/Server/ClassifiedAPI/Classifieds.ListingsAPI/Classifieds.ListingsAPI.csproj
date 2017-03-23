@@ -172,6 +172,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Properties\PublishProfiles\ListingAPI230317.pubxml" />
     <None Include="Properties\PublishProfiles\suyash.rasal.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -217,7 +218,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>64238</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ListingsAPI/</IISUrl>
+          <IISUrl>http://localhost/ListingAPI/</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost/ListingAPI/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

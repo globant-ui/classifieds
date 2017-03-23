@@ -441,13 +441,14 @@ namespace Classifieds.UserServiceAPI.Controllers
                             string userName = loginNameParts[0];
                             string path = HttpContext.Current.Server.MapPath("~/");
                             path = path + ConfigurationManager.AppSettings["BasePathProfileImage"].ToString();
-                            path = path + userName + @"\";//+ postedFile.FileName;
+                            path = path + userName + @"\";
                             if (!System.IO.Directory.Exists(path))
                             {
                                 System.IO.Directory.CreateDirectory(path);
                             }
-                            postedFile.SaveAs(path + userName + extension);
-                            _userService.UpdateImagePath(_userEmail, ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString() + userName + "/" + userName + extension);
+                            string uniqueUserName = userName + Guid.NewGuid().ToString();
+                            postedFile.SaveAs(path + uniqueUserName + extension);
+                            _userService.UpdateImagePath(_userEmail, ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString() + userName + "/" + uniqueUserName + extension);
                         }
                     }
 
