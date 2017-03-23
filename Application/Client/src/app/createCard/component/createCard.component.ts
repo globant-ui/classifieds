@@ -8,9 +8,12 @@ import {SettingsService} from '../../_common/services/setting.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
 import {CookieService} from 'angular2-cookie/core';
+import { FileUploader } from 'ng2-file-upload';
 
 let tpls = require('../tpls/createCard.html').toString();
 let styles = require('../styles/createCard.scss').toString();
+
+const URL = 'http://in-it0289/ListingAPI/api/Listings/PostListing';
 
 @Component({
     selector:'create-card',
@@ -19,7 +22,7 @@ let styles = require('../styles/createCard.scss').toString();
     providers: [apiPaths,SettingsService]
 })
 export class CreateCardComponent implements OnInit {
-    
+
     @ViewChild('PopUpMessageComponent') popUpMessageComponent;
 
     public myForm: FormGroup;
@@ -80,7 +83,8 @@ export class CreateCardComponent implements OnInit {
         negotiable: new FormControl('', [<any>Validators.required]),
         price: new FormControl('', [<any>Validators.required]),
         location: new FormControl('', [<any>Validators.required]),
-        submittedBy: new FormControl('', [])
+        submittedBy: new FormControl('', []),
+        file: new FormControl('', [])
       });
         this.getCategories();
     }
@@ -163,6 +167,7 @@ export class CreateCardComponent implements OnInit {
             this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
+        console.log( document.getElementById("myFileField").files);
 
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
@@ -175,7 +180,6 @@ export class CreateCardComponent implements OnInit {
             reader.readAsDataURL(event.target.files[0]);
         }
     }
-
     }
 
     createCard(action){
@@ -184,35 +188,35 @@ export class CreateCardComponent implements OnInit {
        console.log(this.isCompleted + '********************' + this.isActive);
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
-
        let cardData = this.data.mapCardData(this.myForm);
        if(action === 'create'){
            cardData.IsPublished = true;
        }
 
-       this.uploadedImages.forEach(function(value,key){
+      var data = new FormData();
+
+      data.append("listing", JSON.stringify(cardData));
+
+      let files = document.getElementById("myFileField").files;
+      console.log(files);
+      for (let i = 0; i < files.length; i++) {
+          data.append("file", files[i]);
+        console.log(data);
+      }
+      console.log(document.getElementById("myFileField").files);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://in-it0289/ListingAPI/api/Listings/PostListing");
+      xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
+      xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
+      xhr.send(data);
+
+     this.uploadedImages.forEach(function(value,key){
            let imageDetails = {};
            imageDetails['ImageName'] = 'Photo'+key;
            imageDetails['Image'] =  value;
            cardData.Photos.push(imageDetails);
        });
-       this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
-       .subscribe((res)=> {
-            if(res['_id'].length != 0){
-                 console.log("length in create card for id",res['_id'])
-                 this.showPopupMessage = true;
-                 this.showPopupDivMessage = 'listing';
-            }
-         },
-         error => {
-             this.showPopupMessage = false;
-           console.log("error in response");
-
-         },
-         ()=>{
-           console.log("Finally");
-
-         })
         this.submitted = true;
     }
 

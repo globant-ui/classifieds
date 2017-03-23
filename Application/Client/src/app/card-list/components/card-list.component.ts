@@ -50,11 +50,10 @@ export class CardListComponent{
     }
 
     ngOnInit() {
+      console.log("cards",this.cards);
         this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
         this.GetUserWishList = this.GetUserWishList + this.emailId;
     }
-
-   
 
     loading( flag ) {
         this.isLoading = flag;
@@ -93,7 +92,7 @@ export class CardListComponent{
            });
    }
 
-//update the cards 
+//update the cards
    updateCards(wishListData) {
        if ( this.cards && this.cards.length != 0 ) {
            for ( let i = 0; i < this.cards.length; i++ ) {
