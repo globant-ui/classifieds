@@ -40,20 +40,21 @@ nav.header{
             vertical-align: middle;
           }
         }
-        a{
-            padding: 0;
+        /*a{
+            padding: 0;*/
             .textwishlist{
               text-transform: uppercase;
               color: $white-color;
               float: right;
               @extend %type-open-sans-12-6-text;
+              padding-top: 5px;
             }
             .wishlist{
               padding:5px 12px 0 0;
               color: $red-color;
               float: right;
-            }
-          }
+            }/*
+          }*/
           #profile{
             background: none;
             border: none;
