@@ -19,8 +19,10 @@ let tpls = require('../tpls/header.component.html').toString();
 export class HeaderComponent implements OnInit{
 
   public isCollapsed:boolean = true;
-    private session : Session;
-    private activeSession:boolean = false;
+
+  private session : Session;
+  private activeSession:boolean = false;
+  private signOutHideShow: boolean = false;
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
               private _cookieService:CookieService,
@@ -47,7 +49,11 @@ export class HeaderComponent implements OnInit{
   doLogout(){
     this._authenticationWindowService.doLogOut();
   }
+  //profile button click
+  profileButton(){
+   this.signOutHideShow = !this.signOutHideShow;
 
+  }
 
 }
 
