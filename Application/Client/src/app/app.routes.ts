@@ -8,15 +8,12 @@ import { CreateCardComponent } from './createCard/component/createCard.component
 
 export const ROUTES: Routes = [
   { path: '', component: LoginComponent},
-  {
-    path: 'home', component: HomeComponent
-  },
-  {path: 'productInfo', component: ProductInfoComponent},
-  {path: 'productInfo/:id', component: ProductInfoComponent},
+  {path: 'home', component: HomeComponent},
   {path: 'createCard', component: CreateCardComponent},
   {path: 'createCard/:id', component: CreateCardComponent},
+  {path: 'profile', component: ProfileComponent},
   {path: 'profile/:usermail', component: ProfileComponent},
-
-
+  {path: 'productInfo', component: ProductInfoComponent},
+  {path: 'productInfo/:id', component: ProductInfoComponent}
 ];
 

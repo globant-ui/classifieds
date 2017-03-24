@@ -14,7 +14,7 @@ var mapData = (function () {
         var today = new Date();
         var locale = "en-us";
         var cardCreatedDate = today.getDate() + '-' + today.toLocaleString(locale, { month: "short" }) + '-' + today.getFullYear();
-        //let DimensionHeight = 
+        //let DimensionHeight =
         var dimensions = (form.get('DimensionLength') && form.get('DimensionHeight') && form.get('DimensionWidth')) ? {
             "Length": form.get('DimensionLength').value,
             "Width": form.get('DimensionWidth').value,
@@ -46,7 +46,7 @@ var mapData = (function () {
             "TypeofUse": "",
             "Type": (form.get('Type')) ? form.get('Type').value : '',
             "Model": "NA",
-            "Negotiable": form.get('negotiable').value,
+            "Negotiable": (form.get('negotiable')) ? form.get('negotiable').value : false,
             "IsPublished": false,
             "Photos": []
         };

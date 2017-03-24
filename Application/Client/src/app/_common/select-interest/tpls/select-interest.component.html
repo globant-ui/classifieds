@@ -8,7 +8,9 @@
         <div class="modal-content">
           <div class="modal-body">
             <h4 class="modal-title text-center">Hello there!<br class="shidden-sm hidden-md hidden-lg" /> Would you like to select your interest?</h4>
-            <div class="tagInput"><input type="text" id="addTag" #interest (keyup)="fetchInterest($event,interest.value);" placeholder="Add tag"></div>
+            <div class="tagInput">
+              <input type="text" id="addTag" #interest (keyup)="fetchInterest($event,interest.value);" placeholder="Add tag">
+            </div>
             <div class="autoSuggestion" *ngIf="enabledDropdown">
               <ul>
                 <li (click)="selectInterest(res)" *ngFor="let res of interestResult">
@@ -34,14 +36,12 @@
             </div>
             <div class="btn-container">
               <a class="skip-text" (click)="skipInterest()">Skip for now</a>
-              <button type="submit" class="btn btn-default pull-right done-btn" 
+              <button type="submit" class="btn btn-default pull-right done-btn"
                       [disabled]="obj.SubCategory.length === 0 && obj.Location.length === 0" (click) = "PostData(obj)">DONE</button>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
   </div>
 </div>
