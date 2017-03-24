@@ -153,6 +153,17 @@ input, select{
     border: none;
 }
 
+.small-green-button {
+    @extend %type-open-sans-7-9-text;
+    padding: 6px 15px;
+    border-radius: 30px;
+    background: $green-color;
+    color: $white-color;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 @media (max-width: $screen-xs-max) {
   .green-button {
     width: 100%;
