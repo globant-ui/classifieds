@@ -13,7 +13,7 @@ let tpls = require('../tpls/banner.component.html').toString();
 })
 export class BannerComponent implements OnInit {
   private settings: any;
-  private showSubCategory: any;
+  private showSubCategory: boolean = true;
   private listingsData: any;
   localState = {value: ''};
 
@@ -47,22 +47,5 @@ export class BannerComponent implements OnInit {
     el.addEventListener(evt, function () {
       handler.call(el);
     });
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    let that = this;
-    let size = event.target.innerWidth;
-
-    if (size > 450) {
-      this.renderer.listen(this.elRef.nativeElement, 'mouseover', (event) => {
-        this.showSubCategory = true;
-      });
-    } else {
-      this.renderer.listen(this.elRef.nativeElement, 'click', (event) => {
-        this.showSubCategory = true;
-      });
-    }
-
   }
 }
