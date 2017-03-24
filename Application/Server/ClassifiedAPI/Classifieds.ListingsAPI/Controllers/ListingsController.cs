@@ -84,6 +84,17 @@ namespace Classifieds.ListingsAPI.Controllers
                 var listing = _listingService.GetListingById(id);
                 if (listing != null)
                 {
+                    if (listing.Photos != null)
+                    {
+                        foreach (ListingImages img in listing.Photos)
+                        {
+                            if (img != null)
+                            {
+                                img.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + img.Image;
+                            }
+                        }
+                    }
+
                     #region Select common fields of listing entity and avoid redundant ones. Auto mapping/copy of one object to another(Dynamic object cloning) i.e. set all properies of 'ListingCommonFields' from 'Listing' entity. 
                     productInfo.Listing = new ListingCommonFields();
                     Type t = productInfo.Listing.GetType();
@@ -172,7 +183,10 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast);
+                //return _listingService.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast);
+                List<Listing> objListing = new List<Listing>();
+                objListing = _listingService.GetListingsBySubCategory(subCategory, startIndex, pageCount, isLast);
+                return MapImageName(objListing);
             }
             catch (Exception ex)
             {
@@ -209,7 +223,10 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByCategory(category, startIndex, pageCount, isLast);
+                //return _listingService.GetListingsByCategory(category, startIndex, pageCount, isLast);
+                List<Listing> objListing = new List<Listing>();
+                objListing = _listingService.GetListingsByCategory(category, startIndex, pageCount, isLast);
+                return MapImageName(objListing);
             }
             catch (Exception ex)
             {
@@ -237,7 +254,10 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
 
-                return _listingService.GetTopListings(noOfRecords);
+                //return _listingService.GetTopListings(noOfRecords);
+                List<Listing> objListing = new List<Listing>();
+                objListing = _listingService.GetTopListings(noOfRecords);
+                return MapImageName(objListing);
             }
             catch (Exception ex)
             {
@@ -274,7 +294,10 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByEmail(email, startIndex, pageCount, isLast);
+                //return _listingService.GetListingsByEmail(email, startIndex, pageCount, isLast);
+                List<Listing> objListing = new List<Listing>();
+                objListing = _listingService.GetListingsByEmail(email, startIndex, pageCount, isLast);
+                return MapImageName(objListing);
             }
             catch (Exception ex)
             {
@@ -312,7 +335,10 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(param + "passed cannot be negative!");
                 }
 
-                return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, _userEmail, startIndex, pageCount, isLast);
+                //return _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, _userEmail, startIndex, pageCount, isLast);
+                List<Listing> objListing = new List<Listing>();
+                objListing = _listingService.GetListingsByCategoryAndSubCategory(category, subCategory, _userEmail, startIndex, pageCount, isLast);
+                return MapImageName(objListing);
             }
             catch (Exception ex)
             {
@@ -342,7 +368,10 @@ namespace Classifieds.ListingsAPI.Controllers
                 var listingIds = _webApiServiceAgent.GetWishListListingIds(_accessToken, _userEmail);
                 if (listingIds != null)
                 {
-                    return _listingService.GetMyWishList(listingIds);
+                    //return _listingService.GetMyWishList(listingIds);
+                    List<Listing> objListing = new List<Listing>();
+                    objListing = _listingService.GetMyWishList(listingIds);
+                    return MapImageName(objListing);
                 }
                 return null;
             }
@@ -374,7 +403,10 @@ namespace Classifieds.ListingsAPI.Controllers
                 var tags = _webApiServiceAgent.GetRecommendedTag(_accessToken, _userEmail);
                 if (tags != null)
                 {
-                    return _listingService.GetRecommendedList(tags);
+                    //return _listingService.GetRecommendedList(tags);
+                    List<Listing> objListing = new List<Listing>();
+                    objListing = _listingService.GetRecommendedList(tags);
+                    return MapImageName(objListing);
                 }
                 return null;
             }
@@ -390,41 +422,6 @@ namespace Classifieds.ListingsAPI.Controllers
         #endregion
 
         #region Post, Put, Delete
-
-        #region Post Listing
-        /// <summary>
-        /// Insert new listing item into the database
-        /// </summary>
-        /// <param name="listing">Listing Object</param>
-        /// <returns></returns>
-        public HttpResponseMessage Post(Listing listing)
-        {
-            HttpResponseMessage result;
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-                listing.Status = Status.Active.ToString();
-                listing.SubmittedDate = DateTime.Now;
-                //listing.Photos = CreateImagePath(listing).ToArray();
-                var classified = _listingService.CreateListing(listing);
-                result = Request.CreateResponse(HttpStatusCode.Created, classified);
-                var newItemUrl = Url.Link("Listings", new { id = classified._id });
-                result.Headers.Location = new Uri(newItemUrl);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-            return result;
-        }
-
-        #endregion
 
         #region Put (Update Listing) 
         /// <summary>
@@ -445,7 +442,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-
+                listing.Status = Status.Active.ToString();
                 var classified = _listingService.UpdateListing(id, listing);
                 result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
                 var newItemUrl = Url.Link("Listings", new { id = classified._id });
@@ -553,13 +550,14 @@ namespace Classifieds.ListingsAPI.Controllers
                     Listing listing;
                     //Image handling
                     string path = HttpContext.Current.Server.MapPath("~/");
-                    path = path + ConfigurationManager.AppSettings["ListingImagePath"].ToString();
+                    path = path + ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
                     if (!System.IO.Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
-                    path = ConfigurationManager.AppSettings["ListingImagePath"].ToString();
+                    path = ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
                     string uploadPath = HttpContext.Current.Server.MapPath("~" + path);
+                    string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
                     StreamProvider provider = new StreamProvider(uploadPath);
                     try
                     {
@@ -573,7 +571,8 @@ namespace Classifieds.ListingsAPI.Controllers
                                   var fileInfo = provider.FileData.Select(i =>
                                   {
                                       var info = new FileInfo(i.LocalFileName);
-                                      return new ListingImages(info.Name, path + info.Name);
+
+                                      return new ListingImages(info.Name, dbPath + info.Name);
                                   });
                                   return fileInfo;
                               });
@@ -614,61 +613,6 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
-        /// <summary>
-        /// This method will add images to existing images array.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<ListingImages>> PostListingImages(string listingId)
-        {
-            try
-            {
-                string authResult = _commonRepository.IsAuthenticated(Request);
-                _userEmail = GetUserEmail();
-                if (!(authResult.Equals("200")))
-                {
-                    throw new Exception(authResult);
-                }
-
-                if (Request.Content.IsMimeMultipartContent())
-                {
-                    string path = HttpContext.Current.Server.MapPath("~/");
-                    path = path + ConfigurationManager.AppSettings["ListingImagePath"].ToString();
-                    if (!System.IO.Directory.Exists(path))
-                    {
-                        System.IO.Directory.CreateDirectory(path);
-                    }
-                    string uploadPath = HttpContext.Current.Server.MapPath("~"+ConfigurationManager.AppSettings["ListingImagePath"].ToString());
-                    StreamProvider streamProvider = new StreamProvider(uploadPath);
-                    await Request.Content.ReadAsMultipartAsync(streamProvider);
-
-                    List<ListingImages> lstImages = new List<ListingImages>();
-                    foreach (var file in streamProvider.FileData)
-                    {
-                        FileInfo fi = new FileInfo(file.LocalFileName);
-                        ListingImages objImage = new ListingImages(fi.Name, ConfigurationManager.AppSettings["ListingImagePath"].ToString() + fi.Name);
-                        //objImage.ImageName = fi.Name;
-                        //objImage.Image = ConfigurationManager.AppSettings["ListingImagePath"].ToString()+ fi.Name;
-                        lstImages.Add(objImage);
-                    }
-                    ListingImages[] imgArr = new ListingImages[] {};
-                    imgArr = lstImages.ToArray();
-                    //we can pass ImageList array and save in database
-                    _listingService.UpdateImagePath(listingId, imgArr);
-                    return lstImages;
-                }
-                else
-                {
-                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
-                    throw new HttpResponseException(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, _userEmail);
-                throw ex;
-            }
-       }
-
         #endregion
 
         #endregion
@@ -767,6 +711,27 @@ namespace Classifieds.ListingsAPI.Controllers
                 _logger.Log(ex, _userEmail);
                 throw ex;
             }
+        }
+        
+        private List<Listing> MapImageName(List<Listing> listArray)
+        {
+            if (listArray != null)
+            {
+                foreach (Listing lst in listArray)
+                {
+                    if (lst.Photos != null)
+                    {
+                        foreach (ListingImages img in lst.Photos)
+                        {
+                            if (img != null)
+                            {
+                                img.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + img.Image;
+                            }
+                        }
+                    }
+                }
+            }
+            return listArray;
         }
 
         #endregion

@@ -85,10 +85,10 @@ namespace Classifieds.Listings.Repository
                 {
                     skip = startIndex - 1;
                 }
-
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => (p.SubCategory == subCategory) && (p.Status == Status.Active.ToString()))
                                             .Select(p => p)
+                                            .OrderByDescending(p=>p.SubmittedDate)
                                             .Skip(skip)
                                             .Take(pageCount)
                                             .ToList();
@@ -130,6 +130,7 @@ namespace Classifieds.Listings.Repository
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => (p.ListingCategory == category) && (p.Status == Status.Active.ToString()))
                                             .Select(p => p)
+                                            .OrderByDescending(p => p.SubmittedDate)
                                             .Skip(skip)
                                             .Take(pageCount)
                                             .ToList();
@@ -195,6 +196,7 @@ namespace Classifieds.Listings.Repository
                 List<TEntity> listings = Classifieds.FindAll()
                                             .Where(p => p.SubmittedBy == email)
                                             .Select(p => p)
+                                            .OrderByDescending(p => p.SubmittedDate)
                                             .Skip(skip)
                                             .Take(pageCount)
                                             .ToList();
@@ -239,7 +241,8 @@ namespace Classifieds.Listings.Repository
                 }
                 List<TEntity> result = Classifieds.FindAll()
                                             .Where(p => (p.ListingCategory == category) && (p.SubCategory == subCategory) && (p.SubmittedBy != email) && (p.Status == Status.Active.ToString()))
-                                             .Select(p => p)
+                                            .Select(p => p)
+                                            .OrderByDescending(p => p.SubmittedDate)
                                             .Skip(skip)
                                             .Take(pageCount)
                                             .ToList();
@@ -293,7 +296,8 @@ namespace Classifieds.Listings.Repository
             try
             {
                 var finalQuery = Query.And(Query.In("City", BsonArray.Create(tag.Location)), Query.In("SubCategory", BsonArray.Create(tag.SubCategory)));
-                var listings = Classifieds.Find(finalQuery).Where(p => p.Status == Status.Active.ToString());
+                var listings = Classifieds.Find(finalQuery).Where(p => p.Status == Status.Active.ToString())
+                                                            .OrderByDescending(p => p.SubmittedDate);
                 return listings.ToList();
             }
             catch (Exception ex)
@@ -342,8 +346,8 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.Price, listObj.Price)
                     .Set(p => p.YearOfPurchase, listObj.YearOfPurchase)
                     .Set(p => p.Status, listObj.Status)
-                    .Set(p => p.SubmittedBy, listObj.SubmittedBy)
-                    .Set(p => p.SubmittedDate, listObj.SubmittedDate)
+                    //.Set(p => p.SubmittedBy, listObj.SubmittedBy)
+                    //.Set(p => p.SubmittedDate, listObj.SubmittedDate)
                     .Set(p => p.IdealFor, listObj.IdealFor)
                     .Set(p => p.Furnished, listObj.Furnished)
                     .Set(p => p.FuelType, listObj.FuelType)
@@ -352,7 +356,6 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.DimensionWidth, listObj.DimensionWidth)
                     .Set(p => p.DimensionHeight, listObj.DimensionHeight)
                     .Set(p => p.TypeofUse, listObj.TypeofUse)
-                    .Set(p => p.Photos, listObj.Photos)
                     .Set(p => p.Address, listObj.Address)
                     .Set(p => p.Details, listObj.Details)
                     .Set(p => p.SubCategory, listObj.SubCategory)

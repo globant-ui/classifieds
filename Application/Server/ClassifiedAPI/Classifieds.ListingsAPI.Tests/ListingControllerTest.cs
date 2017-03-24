@@ -204,86 +204,86 @@ namespace Classifieds.ListingsAPI.Tests
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetListingsByCategory("Housing", 1, -5);
         }
-        /// <summary>
-        /// test positive scenario for PostList and verify response header location
-        /// </summary>
-        [TestMethod]
-        public void Controller_PostListTest_SetsLocationHeader()
-        {
-            // Arrange
-            _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>()))
-                .Returns(GetListObject());
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+        ///// <summary>
+        ///// test positive scenario for PostList and verify response header location
+        ///// </summary>
+        //[TestMethod]
+        //public void Controller_PostListTest_SetsLocationHeader()
+        //{
+        //    // Arrange
+        //    _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>()))
+        //        .Returns(GetListObject());
+        //    _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+        //    _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
 
-            _controller.Request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(UrlLocation)
-            };
-            _controller.Configuration = new HttpConfiguration();
-            _controller.Configuration.Routes.MapHttpRoute(
-                name: "Listings",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional });
+        //    _controller.Request = new HttpRequestMessage
+        //    {
+        //        Method = HttpMethod.Post,
+        //        RequestUri = new Uri(UrlLocation)
+        //    };
+        //    _controller.Configuration = new HttpConfiguration();
+        //    _controller.Configuration.Routes.MapHttpRoute(
+        //        name: "Listings",
+        //        routeTemplate: "api/{controller}/{id}",
+        //        defaults: new { id = RouteParameter.Optional });
 
-            _controller.RequestContext.RouteData = new HttpRouteData(
-                route: new HttpRoute(),
-                values: new HttpRouteValueDictionary { { "controller", "listings" } });
+        //    _controller.RequestContext.RouteData = new HttpRouteData(
+        //        route: new HttpRoute(),
+        //        values: new HttpRouteValueDictionary { { "controller", "listings" } });
 
-            // Act
-            Listing listObj = GetListObject();
-            var response = _controller.Post(listObj);
+        //    // Act
+        //    Listing listObj = GetListObject();
+        //    var response = _controller.Post(listObj);
 
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual(true, response.IsSuccessStatusCode);
-            Assert.AreEqual(UrlLocation + "/9", response.Headers.Location.AbsoluteUri);
-        }
+        //    // Assert
+        //    Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        //    Assert.AreEqual(true, response.IsSuccessStatusCode);
+        //    Assert.AreEqual(UrlLocation + "/9", response.Headers.Location.AbsoluteUri);
+        //}
 
-        /// <summary>
-        /// test positive scenario for postlist by using mock url helper
-        /// </summary>
-        [TestMethod]
-        public void Controller_PostListTest_SetsLocationHeader_MockURLHelperVersion()
-        {
-            // This version uses a mock UrlHelper.
-            // Arrange           
-            _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>()))
-                .Returns(GetListObject());
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.Request = new HttpRequestMessage();
-            _controller.Configuration = new HttpConfiguration();
+        ///// <summary>
+        ///// test positive scenario for postlist by using mock url helper
+        ///// </summary>
+        //[TestMethod]
+        //public void Controller_PostListTest_SetsLocationHeader_MockURLHelperVersion()
+        //{
+        //    // This version uses a mock UrlHelper.
+        //    // Arrange           
+        //    _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>()))
+        //        .Returns(GetListObject());
+        //    _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
+        //    _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+        //    _controller.Request = new HttpRequestMessage();
+        //    _controller.Configuration = new HttpConfiguration();
 
-            string locationUrl = "http://localhost/ListingsAPI/api/listings";
+        //    string locationUrl = "http://localhost/ListingsAPI/api/listings";
 
-            // Create the mock and set up the Link method, which is used to create the Location header.
-            // The mock version returns a fixed string.
-            var mockUrlHelper = new Mock<UrlHelper>();
-            mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
-            _controller.Url = mockUrlHelper.Object;
+        //    // Create the mock and set up the Link method, which is used to create the Location header.
+        //    // The mock version returns a fixed string.
+        //    var mockUrlHelper = new Mock<UrlHelper>();
+        //    mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
+        //    _controller.Url = mockUrlHelper.Object;
 
-            // Act
-            Listing listObj = GetListObject();
-            var response = _controller.Post(listObj);
+        //    // Act
+        //    Listing listObj = GetListObject();
+        //    var response = _controller.Post(listObj);
 
-            // Assert
-            Assert.AreEqual(locationUrl, response.Headers.Location.AbsoluteUri);
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual(true, response.IsSuccessStatusCode);
-        }
+        //    // Assert
+        //    Assert.AreEqual(locationUrl, response.Headers.Location.AbsoluteUri);
+        //    Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        //    Assert.AreEqual(true, response.IsSuccessStatusCode);
+        //}
 
-        /// <summary>
-        /// test for inserting null listing object throws exception
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Controller_PostList_ThrowsException()
-        {
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.Post(null);
-        }
+        ///// <summary>
+        ///// test for inserting null listing object throws exception
+        ///// </summary>
+        //[TestMethod]
+        //[ExpectedException(typeof(NullReferenceException))]
+        //public void Controller_PostList_ThrowsException()
+        //{
+        //    _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+        //    _controller.Post(null);
+        //}
 
         /// <summary>
         /// test positive scenario of Delete listing
