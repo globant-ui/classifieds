@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
-import {mapData} from  '../../mapData/mapData';
+import {MapData} from  '../../mapData/mapData';
 import { PopUpMessageComponent } from '../../_common/popup/';
 import { ActivatedRoute } from '@angular/router';
 import {SettingsService} from '../../_common/services/setting.service';
@@ -35,6 +35,7 @@ export class CreateCardComponent implements OnInit {
     public isActive: string = '';
     public isCompleted = [];
     public type: string = '';
+    public currentSubCategory: string = '';
     public filters;
     public textBoxes = [];
     private showPopupMessage: boolean = false;
@@ -46,7 +47,7 @@ export class CreateCardComponent implements OnInit {
 
     constructor(private httpService:CService,
                 private apiPath:apiPaths,
-                private data:mapData,
+                private data:MapData,
                 private _route: ActivatedRoute,
                 private _settingsService: SettingsService,
                 private _cookieService:CookieService
@@ -64,9 +65,9 @@ export class CreateCardComponent implements OnInit {
         this.isCompleted = [];
         this.endPoints.push('SELECT','UPLOAD','ADD','INFO','DONE');
         this.type = 'Car-Automotive';
+        this.currentSubCategory = 'Car';
         this.filters = [];
         this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
-
     }
 
     ngOnInit() {
@@ -160,6 +161,11 @@ export class CreateCardComponent implements OnInit {
     reloadSubcategories(category){
         this.selectedCategory = category.ListingCategory;
         this.subcategories = category.SubCategory;
+        this.currentSubCategory = this.subcategories[0];
+        this.type = this.currentSubCategory + '-' + this.selectedCategory;
+        console.log('type:'+this.type);
+        console.log('currentSubCategory:'+ this.currentSubCategory);
+        this.getFilters();
     }
 
     fileNameChanged(event){
@@ -230,6 +236,9 @@ export class CreateCardComponent implements OnInit {
 
     subCategoryUpdated(){
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
+        this.currentSubCategory = this.myForm.get('subCategory').value;
+        console.log('type:'+this.type);
+        console.log('currentSubCategory:'+ this.currentSubCategory);
         this.getFilters();
     }
 
