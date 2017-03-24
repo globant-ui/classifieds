@@ -25,7 +25,6 @@ export class BannerComponent implements OnInit {
 
   ngOnInit() {
     this.listingsData = this._settingsService.getBannerListingsData();
-    console.log('dsf = ', this.listingsData);
   }
 
   submitState(value: string) {

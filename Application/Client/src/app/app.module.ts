@@ -6,9 +6,9 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-
 import { ENV_PROVIDERS } from './environment';
-import { ROUTES } from './app.routes';
+import { APP_ROUTERS } from './app.routes';
+import {DASHBOARD_ROUTERS } from './dashboard/components/dashboard.routes';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
@@ -20,6 +20,7 @@ import { SimilarListingComponent } from './_common/similarListing/components/sim
 
 import { CardListComponent } from './card-list/components/card-list.component';
 import { BannerComponent } from './banner/components/banner.component';
+import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { ProductInfoComponent } from './product-info/components/product-info.component';
 import {CookieService} from 'angular2-cookie/core';
 import {CService} from "./_common/services/http.service";
@@ -63,6 +64,7 @@ type StoreType = {
     AppComponent,
     HomeComponent,
     HeaderComponent,
+    DashboardComponent,
     ProgressComponent,
     CardListComponent,
     SimilarListingComponent,
@@ -82,7 +84,8 @@ type StoreType = {
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    RouterModule.forRoot(APP_ROUTERS, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    RouterModule.forRoot(DASHBOARD_ROUTERS, { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
     DropdownModule.forRoot(),

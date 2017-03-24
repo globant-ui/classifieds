@@ -27,7 +27,7 @@
       </div>
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <button class="green-button" [routerLink]="['createCard']">
+          <button class="green-button" [routerLink]="['/dashboard/createCard']">
             <span class="icon-flag"></span>
             <span>create</span>
           </button>
@@ -41,13 +41,13 @@
         <li dropdown>
             <button class="btn btn-default" type="button" id="profile" dropdownToggle>
                 <span class="icon-profile profile-btn"></span>
-                <span class="textProfile">my profile</span>
+                <span class="textProfile" (click)="showUserProfile()">my profile {{session.useremail}}</span>
             </button>
             <ul class="signOutContainer" dropdownMenu role="menu" aria-labelledby="profile">
               <li>
                 <button>
                  <!--  <span class="icon-profile profile-btn"></span>  -->
-                  <span class="textProfile" (click)="showUserProfile()" [routerLink]="['profile']">my profile</span>
+                  <span class="textProfile" (click)="showUserProfile()" [routerLink]="['/dashboard/profile']">my profile {{session}}</span>
                 </button>
               </li>
               <li>
