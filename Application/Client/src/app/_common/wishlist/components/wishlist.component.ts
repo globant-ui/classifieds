@@ -1,4 +1,4 @@
-import { Component,ViewChild,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,EventEmitter, Output,ViewChild,OnInit, AfterViewInit  } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -9,6 +9,7 @@ import 'rxjs/Rx';
 import {Session} from '../../authentication/entity/session.entity';
 import { ModalDirective } from 'ng2-bootstrap/modal';
 import { WishListService } from '../service/wishlist.service'
+//import  {SharedService} from  '../../services/shared.service';
 
 let styles = require('../styles/wishlist.component.scss').toString();
 let tpls = require('../tpls/wishlist.component.html').toString();
@@ -28,13 +29,14 @@ private DeleteUserWishListUrl: string = '';
 private WishListSelectedData : any;
 
 
+
 @ViewChild('childModal') public childModal:ModalDirective;
 
   constructor(
                  private _settingsService: SettingsService,
                  private _cservice:CService,
                  private _cookieService: CookieService,
-                 private wishListService : WishListService ) {
+                 private wishListService : WishListService) {
 
     this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
     this.GetUserWishList = _settingsService.getPath('GetUserWishList') + this.emailId;
@@ -65,6 +67,7 @@ private WishListSelectedData : any;
     this.wishListService.getUserWishList(this.wishListSelectedUrl)
     .then(res=>{
       this.WishListSelectedData = res;
+      console.log("this.WishListSelectedData",res)
     },
         error => {
          console.log("error in response", error);
@@ -72,12 +75,24 @@ private WishListSelectedData : any;
     );
   }
 
+//to get ids of wishlist
+  GetWishListData() {
+    this.wishListService.GetWishList(this.GetUserWishList)
+    .then(res=>{
+      //this.WishListSelectedData = res;
+    },
+        error => {
+         console.log("error in response", error);
+       }
+    );
+  }
   //delete api call
   deleteWishListData(obj) {
     this.wishListService.deleteWishList(this.DeleteUserWishListUrl+ obj._id)
     .then(res=>{
       console.log('deleted');
       this.getUserWishListData();
+       this.GetWishListData();
     },
         error => {
          console.log("error in response", error);

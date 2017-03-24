@@ -36,7 +36,6 @@ import { WishListComponent } from './_common/wishlist/components/wishlist.compon
 import  {SettingsService} from  './_common/services/setting.service';
 import { PopUpMessageComponent } from './_common/popup';
 import  {WishListService} from  './_common/wishlist/service/wishlist.service';
-import  {WishListCardService} from  './card-list/service/card.list.service';
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
@@ -102,8 +101,7 @@ type StoreType = {
     SettingsService,
     Base64Service,
     DatePipe,
-    WishListService,
-    WishListCardService
+    WishListService
   ]
 })
 export class AppModule {

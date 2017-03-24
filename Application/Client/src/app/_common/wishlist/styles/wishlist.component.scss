@@ -4,7 +4,7 @@
 	text-align: center;
 	padding: 20px;
 	.modal-dialog{
-		width: 750px;
+		width: 70%;
 		.modal-content{
 			background-color: $white-color !important;
 			color: $primary-text-color;
@@ -12,37 +12,52 @@
 				h4{
 					color:$black-color;
 					@extend %type-open-sans-22-4-text;
+					padding-top: 25px;
 				}
 			}
 			.modal-body{
-				padding:45px 90px !important;
+				padding:45px 70px !important;
 				.successMessage{
 					p{
 						color: $createListing-text-color;
 						@extend %type-arvo-regular-36-4-text;
 					}
 				}
-				img, .successMessage{
-					margin-bottom: 45px;
-				}
-				p{
-					@extend %type-open-sans-14-4-text;
-				}
-				p.contentP{
-					width: 400px;
-					margin: 0 auto;
-				}
-				button{
-					margin-top: 45px;
-					padding: 25px 40px;
-					border-radius: 30px;
-					background: $white-color;
-					border: 3px solid $createListing-complete-default-bgcolor;
-					text-transform: uppercase;
-					letter-spacing: 3px;
-					@extend %type-open-sans-12-7-text;
-					color: $createListing-complete-active-text-color;
-				}
+				.thumbnail{
+			    	background-color: $createListing-item-bgcolor;
+			    	padding: 0;
+			    	border: 0;
+				    img{
+				      width: 100%;
+				    }
+				    .listingContent{
+				    	text-align: left;
+					    span{
+					       display: inline-block;
+					       color: $primary-text-color !important;
+					       padding: 5px;
+					    }
+					    span.title{
+					       @extend %type-open-sans-16-6-text;
+					       color: $heading-color !important;
+					       h5{
+					       		margin: 0;
+					       	}
+					    }
+					    span.price{
+					       @extend %type-open-sans-10-6-text;
+					    }
+				    }
+				    .wishlistDelete{
+			    	    position: absolute;
+					    top: -1px;
+					    right: 20px;
+					    img{
+					    	width: 8px;
+					    	height: 8px;
+					    }		
+				    }
+			    }
 			}
 		}
 	}
