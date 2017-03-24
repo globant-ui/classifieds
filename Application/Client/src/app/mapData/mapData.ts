@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class mapData{
+export class MapData{
 
   constructor() {
   }
@@ -27,19 +27,19 @@ export class mapData{
         "Details": (form.get('shortDesc'))?form.get('shortDesc').value:'',
         "Brand": (form.get('Brand'))?form.get('Brand').value:'',
         "Price": (form.get('price'))?form.get('price').value:0,
-        "YearOfPurchase": (form.get('YearOfPurchase'))?form.get('YearOfPurchase').value:'',
+        "YearOfPurchase": (form.get('YearOfPurchase'))?parseInt(form.get('YearOfPurchase').value):0,
         "Status": "",
         "SubmittedDate": cardCreatedDate,
         "IdealFor": (form.get('IdealFor'))?form.get('IdealFor').value:'',
         "Furnished": (form.get('Furnished'))?form.get('Furnished').value:'',
         "FuelType": (form.get('FuelType'))?form.get('FuelType').value:'',
-        "KmDriven": (form.get('KmDriven'))?form.get('KmDriven').value:0,
-        "DimensionWidth": (form.get('DimensionWidth'))?form.get('DimensionWidth').value:0,
-        "DimensionLength": (form.get('DimensionLength'))?form.get('DimensionLength').value:0,
-        "DimensionHeight": (form.get('DimensionHeight'))?form.get('DimensionHeight').value:0,
+        "KmDriven": (form.get('KmDriven'))?parseInt(form.get('KmDriven').value):0,
+        "DimensionWidth": (form.get('DimensionWidth'))?parseInt(form.get('DimensionWidth').value):0,
+        "DimensionLength": (form.get('DimensionLength'))?parseInt(form.get('DimensionLength').value):0,
+        "DimensionHeight": (form.get('DimensionHeight'))?parseInt(form.get('DimensionHeight').value):0,
         "TypeofUse": "",
         "Type": (form.get('Type'))?form.get('Type').value:'',
-        "Negotiable": (form.get('negotiable'))?form.get('negotiable').value:false,
+        "Negotiable": (form.get('negotiable') && form.get('negotiable')!=='' )?form.get('negotiable').value:false,
         "IsPublished": false,
         "Photos": [],
         "SubmittedBy": (form.get('submittedBy'))?form.get('submittedBy').value:false,

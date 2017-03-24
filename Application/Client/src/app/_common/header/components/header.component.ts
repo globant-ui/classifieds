@@ -19,6 +19,7 @@ let tpls = require('../tpls/header.component.html').toString();
 export class HeaderComponent implements OnInit{
 
   public isCollapsed:boolean = true;
+
   private session : Session;
   private activeSession:boolean = false;
   private wishlistFlag: boolean = false;
@@ -47,9 +48,18 @@ export class HeaderComponent implements OnInit{
     // this._route.navigate(['profile' ,usermail]);
     }
 
+
   doLogout(){
     this._authenticationWindowService.doLogOut();
   }
+<<<<<<< HEAD
+=======
+  //profile button click
+  profileButton(){
+   this.signOutHideShow = !this.signOutHideShow;
+
+  }
+>>>>>>> client-development
 
   wishlistPopup() {
     this.wishlistFlag = !this.wishlistFlag;

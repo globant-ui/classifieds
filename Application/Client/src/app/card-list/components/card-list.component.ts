@@ -56,16 +56,13 @@ export class CardListComponent{
     }
 
     ngOnInit() {
+      console.log("cards",this.cards);
         this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
         this.GetUserWishList = this.GetUserWishList + this.emailId;
         //this.wishListData = this._sharedService.dataArray;
     }
-
-    ngAfterViewInit(){
-        console.log('all = ',this.cards);
-    }
-
-   loading( flag ) {
+    
+    loading( flag ) {
         this.isLoading = flag;
     }
 
@@ -74,7 +71,8 @@ export class CardListComponent{
   }
 
 //favorite card method
-   favorite(id, i, card) {
+   favorite(event,id, i, card) {
+       event.stopPropagation();
        this.wishListCondtionalUrl = (card.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
        var operation = card.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
        this._cservice[operation](this.wishListCondtionalUrl, card.isInWishList ? null : card, card.isInWishList ? false : null, false)
@@ -100,7 +98,7 @@ export class CardListComponent{
            });
    }
 
-//update the cards 
+//update the cards
    updateCards(wishListData) {
        if ( this.cards && this.cards.length != 0 ) {
            for ( let i = 0; i < this.cards.length; i++ ) {

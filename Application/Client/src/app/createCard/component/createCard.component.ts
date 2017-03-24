@@ -1,16 +1,19 @@
 import { Component, OnInit,ViewChild} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CService} from  '../../_common/services/http.service';
-import {mapData} from  '../../mapData/mapData';
+import {MapData} from  '../../mapData/mapData';
 import { PopUpMessageComponent } from '../../_common/popup/';
 import { ActivatedRoute } from '@angular/router';
 import {SettingsService} from '../../_common/services/setting.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
 import {CookieService} from 'angular2-cookie/core';
+import { FileUploader } from 'ng2-file-upload';
 
 let tpls = require('../tpls/createCard.html').toString();
 let styles = require('../styles/createCard.scss').toString();
+
+const URL = 'http://in-it0289/ListingAPI/api/Listings/PostListing';
 
 @Component({
     selector:'create-card',
@@ -19,7 +22,7 @@ let styles = require('../styles/createCard.scss').toString();
     providers: [apiPaths,SettingsService]
 })
 export class CreateCardComponent implements OnInit {
-    
+
     @ViewChild('PopUpMessageComponent') popUpMessageComponent;
 
     public myForm: FormGroup;
@@ -32,6 +35,7 @@ export class CreateCardComponent implements OnInit {
     public isActive: string = '';
     public isCompleted = [];
     public type: string = '';
+    public currentSubCategory: string = '';
     public filters;
     public textBoxes = [];
     private showPopupMessage: boolean = false;
@@ -43,7 +47,7 @@ export class CreateCardComponent implements OnInit {
 
     constructor(private httpService:CService,
                 private apiPath:apiPaths,
-                private data:mapData,
+                private data:MapData,
                 private _route: ActivatedRoute,
                 private _settingsService: SettingsService,
                 private _cookieService:CookieService
@@ -61,9 +65,9 @@ export class CreateCardComponent implements OnInit {
         this.isCompleted = [];
         this.endPoints.push('SELECT','UPLOAD','ADD','INFO','DONE');
         this.type = 'Car-Automotive';
+        this.currentSubCategory = 'Car';
         this.filters = [];
         this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
-
     }
 
     ngOnInit() {
@@ -80,7 +84,8 @@ export class CreateCardComponent implements OnInit {
         negotiable: new FormControl('', [<any>Validators.required]),
         price: new FormControl('', [<any>Validators.required]),
         location: new FormControl('', [<any>Validators.required]),
-        submittedBy: new FormControl('', [])
+        submittedBy: new FormControl('', []),
+        file: new FormControl('', [])
       });
         this.getCategories();
     }
@@ -156,6 +161,11 @@ export class CreateCardComponent implements OnInit {
     reloadSubcategories(category){
         this.selectedCategory = category.ListingCategory;
         this.subcategories = category.SubCategory;
+        this.currentSubCategory = this.subcategories[0];
+        this.type = this.currentSubCategory + '-' + this.selectedCategory;
+        console.log('type:'+this.type);
+        console.log('currentSubCategory:'+ this.currentSubCategory);
+        this.getFilters();
     }
 
     fileNameChanged(event){
@@ -164,6 +174,7 @@ export class CreateCardComponent implements OnInit {
             this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
+        console.log( document.getElementById("myFileField").files);
 
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
@@ -176,7 +187,6 @@ export class CreateCardComponent implements OnInit {
             reader.readAsDataURL(event.target.files[0]);
         }
     }
-
     }
 
     createCard(action){
@@ -185,35 +195,35 @@ export class CreateCardComponent implements OnInit {
        console.log(this.isCompleted + '********************' + this.isActive);
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
-
        let cardData = this.data.mapCardData(this.myForm);
        if(action === 'create'){
            cardData.IsPublished = true;
        }
 
-       this.uploadedImages.forEach(function(value,key){
+      var data = new FormData();
+
+      data.append("listing", JSON.stringify(cardData));
+
+      let files = document.getElementById("myFileField").files;
+      console.log(files);
+      for (let i = 0; i < files.length; i++) {
+          data.append("file", files[i]);
+        console.log(data);
+      }
+      console.log(document.getElementById("myFileField").files);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://in-it0289/ListingAPI/api/Listings/PostListing");
+      xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
+      xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
+      xhr.send(data);
+
+     this.uploadedImages.forEach(function(value,key){
            let imageDetails = {};
            imageDetails['ImageName'] = 'Photo'+key;
            imageDetails['Image'] =  value;
            cardData.Photos.push(imageDetails);
        });
-       this.httpService.observablePostHttp(this.apiPath.CREATE_CARD,cardData,null,false)
-       .subscribe((res)=> {
-            if(res['_id'].length != 0){
-                 console.log("length in create card for id",res['_id'])
-                 this.showPopupMessage = true;
-                 this.showPopupDivMessage = 'listing';
-            }
-         },
-         error => {
-             this.showPopupMessage = false;
-           console.log("error in response");
-
-         },
-         ()=>{
-           console.log("Finally");
-
-         })
         this.submitted = true;
     }
 
@@ -226,6 +236,9 @@ export class CreateCardComponent implements OnInit {
 
     subCategoryUpdated(){
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
+        this.currentSubCategory = this.myForm.get('subCategory').value;
+        console.log('type:'+this.type);
+        console.log('currentSubCategory:'+ this.currentSubCategory);
         this.getFilters();
     }
 
