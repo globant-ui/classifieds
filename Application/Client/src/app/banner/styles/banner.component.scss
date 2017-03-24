@@ -4,11 +4,11 @@
   /* background-color: $darkblue-color; */
   width:100%;
   max-width:1366px;
-  margin: 0;
   padding: 0;
   .banner-row{
     background: url("../../../assets/img/background.jpg") no-repeat;
     height:589px;
+    margin-top: 70px;
     h1{
       @extend %type-arvo-regular-38-4-text;
       text-align: center;
@@ -30,7 +30,7 @@
             border-left:2px solid $light-grey-border;
             padding: 25px 0 15px;
             text-align: center;
-            @extend %type-open-sans-10-6-text;
+            @extend %type-open-sans-12-6-text;
             color: $primary-button-text-color;
             .img-icon{
               display: none;
@@ -40,7 +40,7 @@
             }
             .categoryTitle{
               letter-spacing: 3px;
-              @extend %type-open-sans-9-6-text;
+              @extend %type-open-sans-12-7-text;
               text-transform: uppercase;
             }
             span.spriteimage{
@@ -55,7 +55,7 @@
               background: transparent;
               padding: 8px 30px;
               letter-spacing: 1px;
-              @extend %type-open-sans-9-6-text;
+              @extend %type-open-sans-12-7-text;
               text-transform: uppercase;
             }
             a.expandListIcon{
@@ -84,7 +84,7 @@
                 border: none;
                 width:100%;
                 padding: 0;
-                margin: 0;
+                margin: 0 0 5px 0;
                 height: auto;
                 line-height:1.3;
                 a{
@@ -98,7 +98,7 @@
               display: none;
             }
             .categoryTitle{
-              @extend %type-open-sans-11-4-text;
+              @extend %type-open-sans-12-7-text;
             }
             button{
               background: $darkblue-color;

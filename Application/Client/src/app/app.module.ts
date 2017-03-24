@@ -87,7 +87,7 @@ type StoreType = {
     CollapseModule.forRoot(),
     DropdownModule.forRoot(),
     AccordionModule.forRoot(),
-    CarouselModule.forRoot(),
+    CarouselModule.forRoot()
     FileUploadModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
