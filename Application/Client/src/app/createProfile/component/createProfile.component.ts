@@ -184,7 +184,5 @@ export class ProfileComponent implements OnInit {
     this.enabledDropdown = false;
     this.interestResult = [];
   }
-
-
 }
 

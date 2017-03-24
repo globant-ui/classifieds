@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit{
     this._route.navigateByUrl('/dashboard/profile/'+usermail);
     }
 
+
   doLogout(){
     this._authenticationWindowService.doLogOut();
   }
