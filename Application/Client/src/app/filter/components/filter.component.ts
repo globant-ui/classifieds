@@ -66,8 +66,8 @@ export class FilterComponent {
     for (let item of  this.filterData) {
       item.isActive = false;
     }
-     this.filterData[index].isActive = true;
-    this.getSelectedFilterOption.emit( category );
+    this.filterData[index].isActive = true;
+    this.getSelectedFilterOption.emit( {'categoryName':category} );
   }
 
   getCardsByCategory(category)
