@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from '../../home/components/home.component';
+import { HomeComponent } from '../../home/component/home.component';
 import { ProductInfoComponent } from '../../product-info';
 import { LoginComponent } from '../../_common/login/component/login.component';
 import { ProfileComponent } from '../../createProfile/component/createProfile.component';
