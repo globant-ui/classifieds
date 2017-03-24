@@ -25,12 +25,10 @@
       <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
 
       <div class="col-lg-1"></div>
-    </div>
-    <div class="col-lg-1"></div>
 
-    <div class="col-lg-4">
-      <div class="col-lg-11 profile-text">
-        <h3>My Interests</h3>
+      <div class="col-lg-4">
+        <div class="col-lg-11 profile-text">
+          <h3>My Interests</h3>
           <div class="profile-interest">
             <ul class="blue-tag">
               <li *ngFor="let res of tagData;let i=index;"><a>{{res}}</a></li>
@@ -169,6 +167,7 @@
       </p>
     </div>
   </div>
+</div>
 </div>
 </div>
 <popup-message *ngIf="showPopupMessage" [showPopupDivMessage]="showPopupDivMessage" ></popup-message>
