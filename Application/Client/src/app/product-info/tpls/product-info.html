@@ -36,9 +36,9 @@
           <h6><i>Posted on {{postedDate}}</i></h6>
         </div>
         <div class="col-xs-6 col-md-6">
-          <h3 class="pull-right">{{productInfoData.Listing.Price}}
-          <p *ngIf="productInfoData.Negotiable"><i class="pull-right">Negotiable</i></p>
-            <p *ngIf="!productInfoData.Negotiable"><i class="pull-right">Non-Negotiable</i></p>
+          <h3 class="pull-right">RS.{{productInfoData.Listing.Price}}
+          <h6 *ngIf="productInfoData.Negotiable"><i class="pull-right">Negotiable</i></h6>
+            <h6 *ngIf="!productInfoData.Negotiable"><i class="pull-right">Non-Negotiable</i></h6>
           </h3>
 
         </div>
