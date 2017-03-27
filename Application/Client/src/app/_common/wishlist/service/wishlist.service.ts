@@ -1,47 +1,35 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import {Response, Http, Headers, RequestOptions} from '@angular/http';
-import {CService} from  '../../services/http.service';
-import {SettingsService} from '../../services/setting.service';
-import {CookieService} from 'angular2-cookie/core';
-import {Observable} from 'rxjs/Observable';
+import { Response, Http, Headers, RequestOptions } from '@angular/http';
+import { CService } from '../../services/http.service';
+import { SettingsService } from '../../services/setting.service';
+import { CookieService } from 'angular2-cookie/core';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class WishListService extends CService  {
+export class WishListService extends CService {
 
-private wishListSelectedUrl : string = '';
-private GetUserWishList:string = '';
-private emailId:string = '';
-private DeleteUserWishListUrl: string = '';
-private WishListSelectedData : any;
-//@Output() onWishlistUpdate: EventEmitter<any> = new EventEmitter<any>();
-
-constructor(
+  constructor(
     private _settingsService: SettingsService,
     public _cookieService: CookieService,
-    public _http:Http
-) {
-    super( _http, _cookieService );
+    public _http: Http
+  ) {
+    super(_http, _cookieService);
+  }
 
-    // this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
-    // this.GetUserWishList = _settingsService.getPath('GetUserWishList') + this.emailId;
-    // this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl') + this.emailId + '&listingId=';;
-    // console.log("this.DeleteUserWishListUrl", this.DeleteUserWishListUrl);
-    // this.wishListSelectedUrl = _settingsService.getPath('wishListSelectedUrl');
-}
- //get my wishlist pop-up api call
-  getUserWishList( url ) {
-    return this.promiseGetHttp( url, null, false );
+  //get my wishlist pop-up api call
+  getUserWishList(url) {
+    return this.promiseGetHttp(url, null, false);
   }
 
   //get wishlist ids.
-   GetWishList( url ) {
-    return this.promiseGetHttp( url, null, false );
+  GetWishList(url) {
+    return this.promiseGetHttp(url, null, false);
   }
 
   //delete api call
-  deleteWishList( url ) {
-   // this.onWishlistUpdate.emit(true);
-    return this.promiseDeleteHttp( url, null, false );
+  deleteWishList(url) {
+    // this.onWishlistUpdate.emit(true);
+    return this.promiseDeleteHttp(url, null, false);
   }
 
 }

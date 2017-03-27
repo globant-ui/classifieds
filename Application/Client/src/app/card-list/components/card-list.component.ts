@@ -7,9 +7,6 @@ import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../_common/services/http.service';
 import {CookieService} from 'angular2-cookie/core';
 import {Router} from '@angular/router';
-import  {WishlistService} from  '../../services/shared.service';
-//import  {SharedService} from  '../../_common/services/shared.service';
-//import  {WishListCardService} from  '../service/card.list.service';
 
 let styles = require('../styles/card-list.component.scss').toString();
 let tpls = require('../tpls/card-list.component.html').toString();
@@ -40,8 +37,6 @@ export class CardListComponent{
         private _router: Router,
         private _cservice: CService,
         private _cookieService: CookieService,
-         //private _sharedService: SharedService
-       // private wishListCardService : WishListCardService
     ) {
         this.wishListPostUrl = _settingsService.getPath('wishListPostUrl');
         this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
@@ -59,7 +54,6 @@ export class CardListComponent{
       console.log("cards",this.cards);
         this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
         this.GetUserWishList = this.GetUserWishList + this.emailId;
-        //this.wishListData = this._sharedService.dataArray;
     }
     
     loading( flag ) {
