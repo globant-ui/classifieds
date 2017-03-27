@@ -19,17 +19,12 @@ export class AppComponent {
   name = 'Angular 2 Webpack Starter';
   url = 'https://twitter.com/AngularClass';
 
-@Input() data1;
+
 
   @ViewChildren("cheader") CHeader;
 
   constructor(public appState: AppState) {
 
-  }
-
-
-  ngOnInit() {
-console.log("main app",this.data1)
   }
 
 }

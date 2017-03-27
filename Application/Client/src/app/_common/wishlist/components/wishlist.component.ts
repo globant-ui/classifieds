@@ -1,4 +1,4 @@
-import { Component,EventEmitter, Output,ViewChild,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,EventEmitter, Output,ViewChild, AfterViewInit  } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../services/setting.service';
 import { Observable }     from 'rxjs/Observable';
@@ -19,7 +19,7 @@ let tpls = require('../tpls/wishlist.component.html').toString();
   template : tpls
 })
 
-export class WishListComponent implements OnInit, AfterViewInit  {
+export class WishListComponent implements AfterViewInit  {
 
 private GetUserWishList:string = '';
 private emailId:string = '';
@@ -44,8 +44,6 @@ private WishListSelectedData : any;
     this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl') + this.emailId + '&listingId=';;
    
   }
-
-  ngOnInit() {}
 
   ngAfterViewInit() {
     this.showChildModal();
@@ -72,25 +70,15 @@ private WishListSelectedData : any;
     );
   }
 
-//to get ids of wishlist
-  GetWishListData() {
-    this.wishListService.GetWishList(this.GetUserWishList)
-    .then(res=>{
-      //this.WishListSelectedData = res;
-    },
-        error => {
-         console.log("error in response", error);
-       }
-    );
-  }
-
   //delete api call
   deleteWishListData(obj) {
+    let self = this;
     this.wishListService.deleteWishList(this.DeleteUserWishListUrl+ obj._id)
     .then(res=>{
-      console.log('deleted');
-      this.getUserWishListData();
-       this.GetWishListData();
+      let delIndex = self.WishListSelectedData.findIndex(function(o){
+          return o._id === obj._id;
+      })
+      self.WishListSelectedData.splice(delIndex, 1);
     },
         error => {
          console.log("error in response", error);
