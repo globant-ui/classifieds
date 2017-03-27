@@ -11,7 +11,6 @@ import  {SettingsService} from  './_common/services/setting.service';
     './app.component.css'
   ],
   template: `<main>
-              <header></header>
             <router-outlet></router-outlet></main>`
 })
 export class AppComponent {

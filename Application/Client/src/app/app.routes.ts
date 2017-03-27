@@ -1,19 +1,26 @@
-import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home';
+import { Routes, RouterModule, provideRoutes } from '@angular/router';
+import { DASHBOARD_ROUTERS } from './dashboard/components/dashboard.routes';
+import {DashboardComponent} from './dashboard/components/dashboard.component';
+import {LoginComponent} from './_common/login/component/login.component';
+
+import { HomeComponent } from './home/components/home.component';
+import { HeaderComponent } from './_common/header/components/header.component';
 import { ProductInfoComponent } from './product-info';
-import { LoginComponent } from './_common/login/component/login.component';
 import { ProfileComponent } from './createProfile/component/createProfile.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
 
 
-export const ROUTES: Routes = [
-  { path: '', component: LoginComponent},
-  {path: 'home', component: HomeComponent},
-  {path: 'createCard', component: CreateCardComponent},
-  {path: 'createCard/:id', component: CreateCardComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'profile/:usermail', component: ProfileComponent},
-  {path: 'productInfo', component: ProductInfoComponent},
-  {path: 'productInfo/:id', component: ProductInfoComponent}
+
+export const APP_ROUTERS : Routes = [
+  { path: '', component: LoginComponent}
+];
+
+export const routes : Routes = [
+  ...DASHBOARD_ROUTERS,
+  ...APP_ROUTERS
+];
+
+export const APP_ROUTER_PROVIDER= [
+  provideRoutes( routes)
 ];
 

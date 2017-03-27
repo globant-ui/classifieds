@@ -37,17 +37,6 @@ export class SearchComponent {
                      this.searchAutoSuggestionUrl =_settingsService.getPath('searchAutoSuggestionUrl');
                  }
 
-    onKeyUp( event: any, text: string ) {
-        if (text.length >= 3) {
-            this.searchCategoryByStringUrl = this.searchAutoSuggestionUrl + text;
-            //Delay of some time to slow down the results
-            clearTimeout(this.delayTimer);
-
-            this.delayTimer = setTimeout(() => {
-                this.fetchSearchedData(text);
-            }, 1000);
-        }
-    }
 
     fetchSearchedData( text: string ) {
         this.isLoading = true;  ;
@@ -73,7 +62,7 @@ export class SearchComponent {
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
                 .subscribe((res: Response) => {
                     let obj = { 'categoryName': str, 'result': res };
-                    this.searchCategory.emit(obj.categoryName);
+                    this.searchCategory.emit(obj);
                 },
                 error => {
                     console.log("error in response",error);
