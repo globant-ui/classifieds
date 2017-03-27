@@ -52,14 +52,6 @@ export class HeaderComponent implements OnInit{
   doLogout(){
     this._authenticationWindowService.doLogOut();
   }
-<<<<<<< HEAD
-=======
-  //profile button click
-  profileButton(){
-   this.signOutHideShow = !this.signOutHideShow;
-
-  }
->>>>>>> client-development
 
   wishlistPopup() {
     this.wishlistFlag = !this.wishlistFlag;
