@@ -60,7 +60,7 @@ export class CardListComponent{
     }
 
    showProductInfo(id){
-     this._router.navigate(['productInfo',id]);
+     this._router.navigateByUrl('/dashboard/productInfo/'+id);
   }
 
 //favorite card method
