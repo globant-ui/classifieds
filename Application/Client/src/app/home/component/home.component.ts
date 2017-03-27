@@ -77,33 +77,38 @@ export class HomeComponent implements OnInit {
     this.getCards( selectedFilter );
   }
 
-  getCards( categoryName ) {
+  getCards( data ) {
     this.cardListComponent.loading( true );
     let url;
-    if( categoryName == 'Top ten') {
+    if(data.result){
+      this.cardListComponent.loading( false );
+      this.initialCardData = data.result;
+    }
+    else if( data.categoryName == 'Top ten') {
       url = this.cardUrl;
       this.searchComponent.setFilter( 'TOP TEN' );
     }
-     else if(categoryName === 'Recommended'){
+     else if(data.categoryName === 'Recommended'){
          url = this.recommededUrl;
          this.searchComponent.setFilter( 'Recommended' );
     }else {
-      url = this.cardsByCategoryUrl + categoryName;
-      this.searchComponent.setFilter( categoryName );
+      url = this.cardsByCategoryUrl + data.categoryName;
+      this.searchComponent.setFilter( data.categoryName );
     }
 
-    this._cservice.observableGetHttp(url, null, false)
-    .subscribe((res:Response)=> {
-          this.cardListComponent.loading( false );
-          this.initialCardData = res;
-          console.log("filter by category", this.initialCardData);
-      },
-      error => {
-        console.log("error in response",error);
-      },
-      ()=>{
-        console.log("Finally");
-      })
+    if(!data.result){
+      this._cservice.observableGetHttp(url, null, false)
+      .subscribe((res:Response)=> {
+            this.cardListComponent.loading( false );
+            this.initialCardData = res;
+        },
+        error => {
+          console.log("error in response",error);
+        },
+        ()=>{
+          console.log("Finally");
+        })
+    }
   }
 
    getBannerListing (){

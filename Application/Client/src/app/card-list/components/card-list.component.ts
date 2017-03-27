@@ -64,7 +64,8 @@ export class CardListComponent{
   }
 
 //favorite card method
-   favorite(id, i, card) {
+   favorite(event,id, i, card) {
+       event.stopPropagation();
        this.wishListCondtionalUrl = (card.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
        var operation = card.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
        this._cservice[operation](this.wishListCondtionalUrl, card.isInWishList ? null : card, card.isInWishList ? false : null, false)
