@@ -1,7 +1,9 @@
 @import "../../_common/styles/sass/style";
 
 .productInfoPage {
+
   .breadcrumb {
+    margin-top: 70px;
     background-color: $white-color;
     color: $darkblue-color;
     font: 0.857em 'Open Sans', sans-serif;
@@ -26,7 +28,7 @@
 
     img {
       width: 100%;
-    } 
+    }
   }
 
   .carousel.slide{
@@ -72,7 +74,7 @@
   }
 
   .description h6 {
-    font-weight: bold;    
+    font-weight: bold;
     letter-spacing: 2px;
   }
 
@@ -185,7 +187,7 @@
   .userDetailsSpacing {
       margin-top: 20px;
 
-      .designerName {    
+      .designerName {
         .designation-name {
             display: block;
             padding-left: 34%;
