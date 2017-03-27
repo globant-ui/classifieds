@@ -8,7 +8,6 @@ import {SettingsService} from '../../_common/services/setting.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http, Headers} from '@angular/http';
 import {CookieService} from 'angular2-cookie/core';
-import { FileUploader } from 'ng2-file-upload';
 
 let tpls = require('../tpls/createCard.html').toString();
 let styles = require('../styles/createCard.scss').toString();
@@ -217,6 +216,8 @@ export class CreateCardComponent implements OnInit {
       xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
       xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
       xhr.send(data);
+      this.showPopupDivMessage="listing";
+      this.showPopupMessage = true;
 
      this.uploadedImages.forEach(function(value,key){
            let imageDetails = {};
