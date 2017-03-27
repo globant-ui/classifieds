@@ -35,14 +35,17 @@ import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
 import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
+import { WishListComponent } from './_common/wishlist/components/wishlist.component';
+import  {SettingsService} from  './_common/services/setting.service';
 import { PopUpMessageComponent } from './_common/popup';
+import  {WishListService} from  './_common/wishlist/service/wishlist.service';
+
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { AccordionModule } from 'ng2-bootstrap/accordion';
 import { CarouselModule } from 'ng2-bootstrap/carousel';
-import { FileUploadModule } from 'ng2-file-upload';
 
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -77,10 +80,10 @@ type StoreType = {
     SelectInterestComponent,
     ProductInfoComponent,
     CreateCardComponent,
+    ProfileComponent,
+    WishListComponent,
     MyListingsComponent,
     PopUpMessageComponent,
-    ProfileComponent
-
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -94,7 +97,6 @@ type StoreType = {
     DropdownModule.forRoot(),
     AccordionModule.forRoot(),
     CarouselModule.forRoot()
-    FileUploadModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
@@ -102,8 +104,10 @@ type StoreType = {
     CService,
     MapData,
     CookieService,
+    SettingsService,
     Base64Service,
-    DatePipe
+    DatePipe,
+    WishListService
   ]
 })
 export class AppModule {

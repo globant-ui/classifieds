@@ -32,11 +32,11 @@
             <span>create</span>
           </button>
         </li>
-        <li>
-          <a href="#">
-            <span class="textwishlist">my wishlist</span>
+        <li (click)="wishlistPopup()">
+          <!--<a href="#">-->
+            <span class="textwishlist">my favourites</span>
             <span class="icon-like-icon wishlist"></span>
-          </a>
+          <!--</a>-->
         </li>
         <li dropdown>
             <button class="btn btn-default" type="button" id="profile" dropdownToggle>
@@ -144,3 +144,4 @@
     </div>
   </div>
 </nav>
+<wishlist *ngIf = "wishlistFlag"></wishlist>

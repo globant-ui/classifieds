@@ -13,7 +13,7 @@ export class CService {
   public code: string;
   private sessionObj;
 
-  constructor(public _http: Http, private _cookieService: CookieService) {
+  constructor(public _http: Http, public _cookieService: CookieService) {
   }
 
   public getHeaders(): Headers {

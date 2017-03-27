@@ -1,0 +1,30 @@
+<div bsModal #childModal="bs-modal" class="modal fade wishListPopupContainer"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+		  	<h4 class="modal-title">My Wishlist</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3" *ngFor = "let wishlist of WishListSelectedData">
+              <div class="thumbnail">
+                  <img src="../../../../assets/img/similarListing.png" alt="...">
+                  <div class="listingContent caption" >
+                      <span class="title"><h5>{{wishlist.Title}}</h5></span>
+                      <span class="price pull-right">Rs {{wishlist.Price}}</span>
+                  </div>
+                  <div class="wishlistDelete"> 
+                    <span (click)="deleteWishListData(wishlist)"><img src="../../../../assets/img/closeButton.png"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

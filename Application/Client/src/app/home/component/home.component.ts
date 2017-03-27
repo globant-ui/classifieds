@@ -24,9 +24,9 @@ export class HomeComponent implements OnInit {
   private settings : any ;
   private baseUrl : any ;
   private  data : any;
-  private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
+  private cardUrl : string = '';
   private bannerUrl = 'http://in-it0289/MasterDataAPI/api/category/GetAllCategory';
-  private cardsByCategoryUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=';
+  private cardsByCategoryUrl:string = '';
   private selectedFilter: string = '';
   public initialCardData: any;
   public bannerData: any;
@@ -46,14 +46,19 @@ export class HomeComponent implements OnInit {
       private _settingsService: SettingsService,
       private _cservice:CService,
       private el:ElementRef) {
-          this.recommededUrl = _settingsService.getPath('recommededUrl');
+
+        this.cardUrl = _settingsService.getPath('cardUrl');
+        this.cardsByCategoryUrl = _settingsService.getPath('cardsByCategoryUrl');
+        this.recommededUrl = _settingsService.getPath('recommededUrl');
   }
+
   ngOnInit() {
     this.baseUrl=this._settingsService.getBaseUrl();
     this.getInitialCards();
     this.getBannerListing();
     this.getAffixElOffsetTop();
   }
+  
   getAffixElOffsetTop(){
     this.affixEl = this.el.nativeElement.querySelector('#cheader1');
     this.affixElOffsetTop = this.affixEl.offsetTop;
@@ -64,6 +69,7 @@ export class HomeComponent implements OnInit {
       .subscribe((res:Response)=> {
             this.searchComponent.setFilter( 'TOP TEN' );
             this.initialCardData = res;
+            console.log("this.initialCardData",this.initialCardData)
         },
         error => {
           console.log("error in response");

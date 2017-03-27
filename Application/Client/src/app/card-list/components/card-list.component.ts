@@ -1,4 +1,4 @@
-import { Component,Input,OnInit,SimpleChanges } from '@angular/core';
+import { Component,Input,OnInit,SimpleChanges,AfterViewInit} from '@angular/core';
 import { AppState } from '../../app.service';
 import { SettingsService } from '../../_common/services/setting.service';
 import { LoaderComponent } from '../../_common/loader/components/loader.component';
@@ -27,6 +27,7 @@ export class CardListComponent{
     private GetUserWishList: string = '';
     private DeleteUserWishListUrl: string = '';
     private isLoading:boolean = false;
+    private wishListData : any;
 
     @Input() cards;
 
@@ -35,14 +36,14 @@ export class CardListComponent{
         private _settingsService: SettingsService,
         private _router: Router,
         private _cservice: CService,
-        private _cookieService: CookieService
+        private _cookieService: CookieService,
     ) {
         this.wishListPostUrl = _settingsService.getPath('wishListPostUrl');
         this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
         this.GetUserWishList = _settingsService.getPath('GetUserWishList');
         this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl');
     }
-
+    
     ngOnChanges(changes:SimpleChanges){
         if(changes['cards']){
             this.GetWishList();
@@ -54,7 +55,7 @@ export class CardListComponent{
         this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
         this.GetUserWishList = this.GetUserWishList + this.emailId;
     }
-
+    
     loading( flag ) {
         this.isLoading = flag;
     }
@@ -80,13 +81,10 @@ export class CardListComponent{
 
 //get wishlist api
    GetWishList() {
-       console.log("this.GetUserWishList", this.GetUserWishList)
        this._cservice.observableGetHttp(this.GetUserWishList, null, false)
            .subscribe((res: Response) => {
                console.log("this.GetUserWishList Response", res);
-               if (res['length'] != 0) {
                    this.updateCards(res);
-               }
            },
            error => {
                console.log("error in response", error);

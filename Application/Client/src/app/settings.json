@@ -28,10 +28,14 @@
       "productInfoUrl": "http://in-it0289/ListingAPI/api/Listings/GetListingById?id=",
       "subCategoryUrl":"http://IN-IT0289/MasterDataAPI/api/Category/GetSubCategorySuggestion?subCategoryText=",
       "selectInterestUrl": "http://in-it0289/UserAPI/api/User/AddTag?userEmail=",
+      "cardUrl":"http://in-it0289/ListingAPI/api/Listings/GetTopListings",
+      "cardsByCategoryUrl" : "http://in-it0289/ListingAPI/api/Listings/GetListingsByCategory?Category=",
       "wishListPostUrl":"http://in-it0289/UserApi/api/User/AddToWishList?userEmail=",
       "GetUserWishList":"http://in-it0289/UserApi/api/User/GetUserWishList?userEmail=",
       "DeleteUserWishListUrl": "http://in-it0289/UserApi/api/User/DeleteFromWishList?userEmail=",
+      "wishListSelectedUrl":"http://in-it0289/ListingAPI/api/Listings/GetMyWishlist",
       "recommededUrl" : "http://in-it0289/ListingAPI/api/Listings/GetRecommendedList"
+
     } 
 
   },
