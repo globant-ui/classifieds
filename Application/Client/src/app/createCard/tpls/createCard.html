@@ -1,6 +1,6 @@
 <div class="createCardContainer">
   <div class="container">
-        <div class="row">
+        <div class="row topMargin">
           <div class="col-lg-2 col-md-2 col-xs-2">
               <progress-bar [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
           </div>
@@ -15,10 +15,10 @@
                     <div class="col-lg-9 col-md-9 col-xs-12">
                       <fieldset id="typeListing">
                         <label class="radio-inline">
-                          <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="cardType=='sale'">sale
+                          <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="cardType=='sale'">Sell
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="cardType" formControlName="cardType" value="rent" checked="cardType=='rent'">rent
+                          <input type="radio" name="cardType" formControlName="cardType" value="rent" checked="cardType=='rent'">Rent
                         </label>
                       </fieldset>
                     </div>
@@ -88,9 +88,8 @@
                         <input #location formControlName="location" name="location" class="fullWidth" type="text" id="location" placeholder="Location" required />
                         <!-- <div class="glyphicon glyphicon-chevron-down downArrow"></div> -->
                     </div>
-                  </div>
-                  <div class="row form-group">
-                    <div class="col-lg-5 col-md-5 col-xs-12">
+                  
+                    <div class="col-lg-4 col-md-4 col-xs-12">
                         <input #price formControlName="price" name="price" class="fullWidth" type="number" id="price" placeholder="Price" required />
                         <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
                           Price is required
@@ -143,13 +142,13 @@
                   </div>
                   <div class="row form-group buttonRow">
                       <div class="col-lg-6 col-md-6 col-xs-12 marginBottom" *ngIf="action=='Create'">
-                          <button class="capitalText tempSavebutton" (click)="createCard('saveClose')">Save and close</button>
+                          <button class="tempSaveButton green-button" (click)="createCard('saveClose')">Save and close</button>
                       </div>
                       <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Create'">
-                          <button class="uppercaseText publishButton" (click)="createCard('create')"> publish </button>
+                          <button class="green-button publishButton pull-right" (click)="createCard('create')"> publish </button>
                       </div>
                       <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Edit'">
-                          <button class="uppercaseText publishButton" (click)="updateCard()"> Update </button>
+                          <button class="green-button pull-right" (click)="updateCard()"> Update </button>
                       </div>
                   </div>
               </form>

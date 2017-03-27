@@ -1,114 +1,117 @@
 @import "../../_common/styles/sass/style";
 
 .createCardContainer{ 
+ /* margin-top: 70px;*/
   .container{
-
-    form{
-     padding: 50px 50px;
-     .buttonRow{
-      margin-top: 30px;
-     }
-     .form-group{
-      .capitalText{
-       text-transform: capitalize;
-      }
-      .uppercaseText{
-       text-transform: uppercase !important;
-      }
-      .noPadding{
-       padding: 0 !important;
-       #image-upload{
-        display:none;
+    .topMargin{
+      margin-top: 80px;
+      form{
+       padding: 50px 50px;
+       .buttonRow{
+        margin-top: 30px;
        }
-      }
-      .marginBottom{
-       margin-bottom: 15px;
-      }
-      .addPhotoDiv{
-        &:first-child{
-          margin: 10px 10px 10px 0;
-        }
-      }
-      .img-icon{
-       padding: 20px 10px;
-       margin: 10px 10px 10px 15px;
-       width: 115px;
-       height: 115px;
-       background-color: $createListing-item-bgcolor;
-       text-align: center;
-       display: inline-block;
-       border: 2px solid $createListing-item-border-color;
-       img{
-        width: 111px;
-        height: 111px;
-       }
-       .mobileImage{
-        display: none;
-       }
-      }
-      .selectedCategory{
-        border:1px solid $darkblue-color;
-      }
-      #sub-category{
-       @extend %type-open-sans-12-6-text;
-      }
-      .fullWidth{
-       width: 100%;
-      }
-      button{
-       padding: 15px 45px;
-       border-radius: 30px;
-          background: transparent;
-          border: 2px solid $createListing-item-border-color;
-          @extend %type-open-sans-14-6-text;
-      }
-      .publishButton{
-          background-color: $green-color;
-          color: $white-color;
-          @extend %type-open-sans-12-6-text;
-          letter-spacing: 4px;
-          float: right;
-         }
-         .tempSavebutton{
-          color: $createListing-save-close-text-color;
-         }
-      label{
-       color: $darkblue-color;
-       font-size: 0.999em;
-      }
-      #typeListing{
-       label{
-        @extend %type-open-sans-14-6-text;
-       }
-      }
-      .typeListinglabel, #typeListing, .subCategoryLabel, #sub-category{
-        margin-bottom: 30px;
-      }
-      #sub-category,#typeListing{
-        label.radio-inline{
-          input{
-            margin-top: 0;
+       .form-group{
+          .capitalText{
+           text-transform: capitalize;
+          }
+          .uppercaseText{
+           text-transform: uppercase !important;
+          }
+          .noPadding{
+             padding: 0 !important;
+             #image-upload{
+              display:none;
+             }
+          }
+          .marginBottom{
+            margin-bottom: 15px;
+          }
+          .addPhotoDiv{
+            &:first-child{
+              margin: 10px 10px 10px 0;
+            }
+          }
+          .img-icon{
+           padding: 20px 10px;
+           margin: 10px 10px 10px 15px;
+           width: 115px;
+           height: 115px;
+           background-color: $createListing-item-bgcolor;
+           text-align: center;
+           display: inline-block;
+           border: 2px solid $createListing-item-border-color;
+           img{
+            width: 111px;
+            height: 111px;
+           }
+           .mobileImage{
+            display: none;
+           }
+          }
+          .selectedCategory{
+            border:1px solid $darkblue-color;
+          }
+          #sub-category{
+           @extend %type-open-sans-12-4-text;
+          }
+          .fullWidth{
+           width: 100%;
+          }
+          button.publishButton{
+              padding: 15px 45px !important;
+              @extend %type-open-sans-12-6-text;
+              letter-spacing: 4px !important;
+          }
+          button.tempSaveButton{
+            padding: 15px 45px;
+            background: transparent !important;
+            border: 2px solid $createListing-item-border-color !important;
+            @extend %type-open-sans-14-6-text;
+            color: $createListing-save-close-text-color !important;
+          }
+          label{
+           color: $darkblue-color;
+           font-size: 0.999em;
+           font-weight: normal;
+          }
+          #typeListing{
+            label{
+              @extend %type-open-sans-14-4-text;
+            }
+          }
+          .typeListinglabel, #typeListing, .subCategoryLabel, #sub-category{
+            margin-bottom: 30px;
+          }
+          #sub-category,#typeListing{
+            label.radio-inline{
+              padding-left: 0;
+              padding-right: 25px;
+              margin: 0 10px 10px 10px;
+              input{
+                margin-top: 0;
+                margin-left: -20px;
+              }
+            }
+          }
+          .checkbox{
+            text-align: right;
+            margin-bottom: 15px;
+            label{
+              color: $primary-text-color;
+              input{
+                margin-top: 0;
+              }
+            }
+          }
+          .downArrow{
+            position: absolute;
+            top: 14px;
+            right: 25px;
+            background-color: #fafafa;
+            width: 5%
           }
         }
       }
-      .checkbox{
-        text-align: right;
-        margin-bottom: 15px;
-       label{
-        color: $primary-text-color;
-        input{
-          margin-top: 0;
-        }
-       }
-      }
-      .downArrow{
-          position: absolute;
-          top: 14px;
-          right: 25px;
-          background-color: #fafafa;
-          width: 5%
-      }
-     }
     }
   }
 }
