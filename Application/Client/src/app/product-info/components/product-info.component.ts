@@ -7,6 +7,7 @@ import {CService} from  '../../_common/services/http.service';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {subscribeOn} from "../../../../node_modules/rxjs/operator/subscribeOn";
+import {CookieService} from 'angular2-cookie/core';
 
 
 let styles = require('../styles/product-info.component.scss').toString();
@@ -33,6 +34,13 @@ export class ProductInfoComponent {
   public subcategoryData = [];
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
 
+  private wishListPostUrl:string = '';
+  private wishListCondtionalUrl:string = '';
+  private emailId:string = '';
+  private filterCategoryUrl:string = '';
+  private GetUserWishList: string = '';
+  private DeleteUserWishListUrl: string = '';
+
   constructor(private _route: ActivatedRoute,
               public _datepipe: DatePipe,
               public appState: AppState,
@@ -41,17 +49,25 @@ export class ProductInfoComponent {
               private _settingsService: SettingsService,
               private renderer: Renderer,
               private elRef:ElementRef,
-              public  _cservice:CService) {
+              public  _cservice:CService,
+              private _cookieService: CookieService,) {
 
     this._route.params.subscribe(params => {
       this.productId = params['id'];
+
+      this.wishListPostUrl = _settingsService.getPath('wishListPostUrl');
+      this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
+      this.GetUserWishList = _settingsService.getPath('GetUserWishList');
+      this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl');
     });
   }
 
   ngOnInit() {
+    this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
+    this.GetUserWishList = this.GetUserWishList + this.emailId;
     this.type = "";
     this.showSimilarListing();
-
+    this.GetWishList(); 
   }
 
   transformDate(date) {
@@ -88,4 +104,40 @@ export class ProductInfoComponent {
           console.log("Finally");
         })
   }
-  }
+ favorite(card,id) {
+       this.wishListCondtionalUrl = (card.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
+       var operation = card.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
+       this._cservice[operation](this.wishListCondtionalUrl, card.isInWishList ? null : card, card.isInWishList ? false : null, false)
+           .subscribe((res: Response) => {
+             console.log("product data wishlist",res)
+              //  this.card[i]['isInWishList'] = !this.card[i]['isInWishList'];
+               this.GetWishList();
+           },
+           error => {
+               console.log("error in response", error);
+           });
+   }
+
+//get wishlist api
+   GetWishList() {
+       this._cservice.observableGetHttp(this.GetUserWishList, null, false)
+           .subscribe((res: Response) => {
+               console.log("this.GetUserWishList Response", res);
+                  this.updateCards(res);
+           },
+           error => {
+               console.log("error in response", error);
+           });
+   }
+
+//update the cards
+   updateCards(wishListData) {
+     console.log("wishListData",wishListData)
+      //  if ( this.cards && this.cards.length != 0 ) {
+      //      for ( let i = 0; i < this.cards.length; i++ ) {
+      //          this.cards[i]['isInWishList'] = wishListData.indexOf(this.cards[i]['_id']) > -1;
+      //      }
+      //  }
+   }
+ }
+  
