@@ -9,8 +9,6 @@
     <a (click)="ShowEditProfile()">Edit Profile</a>
   </div>
   </div>
-
-</div>
 <div class="container-fluid" *ngIf="userProfileData && closeViewProfile">
 <div class="container new-myprofile-wrapper">
   <div class="row">
@@ -25,6 +23,8 @@
       <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
 
       <div class="col-lg-1"></div>
+    </div>
+    <div class="col-lg-1"></div>
 
       <div class="col-lg-4">
         <div class="col-lg-11 profile-text">
@@ -170,4 +170,5 @@
 </div>
 </div>
 </div>
+<my-listings [userEmail]="userEmail"></my-listings>
 <popup-message *ngIf="showPopupMessage" [showPopupDivMessage]="showPopupDivMessage" ></popup-message>

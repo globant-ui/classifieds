@@ -10,6 +10,7 @@
   color: $white-color !important;
   background: transparent !important;
   height: 700px !important;
+  box-shadow: none !important;
 
   > li {
     position: relative;
@@ -33,7 +34,7 @@
       line-height: 3em;
       border-radius: 100%;
       position: relative;
-      z-index: 1000;
+      z-index: 998;
     }
     &:after {
       content: '';
@@ -45,7 +46,7 @@
       top: 1.25em;*/
       width: 0.5em;
       height: 80%;
-      top: 20%;
+      top: 30%;
       left: 49%;
       margin-left: 1.5em\9;
       z-index: 1;

@@ -1,6 +1,9 @@
 @import "../../../_common/styles/sass/style";
 
 nav.header{
+  position: fixed;
+  width: 100%;
+  z-index: 999;
   background-color: $darkblue-color;
   border:none;
   border-radius: 0;

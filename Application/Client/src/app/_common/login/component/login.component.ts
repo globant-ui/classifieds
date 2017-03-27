@@ -180,7 +180,7 @@ export class LoginComponent implements OnInit{
           //this.session.set( 'username', userGoogle['name'] );
           console.log("valid user session started",this.session);
           this._cookieService.putObject('SESSION_PORTAL',this.session);
-          this._router.navigateByUrl('home');
+          this._router.navigateByUrl('/dashboard/home');
         },
         error => {
           console.log("error in response");
