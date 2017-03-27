@@ -1,7 +1,7 @@
 import { Component,Input,OnInit,AfterViewInit,Renderer,ElementRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AppState } from '../../app.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import {SettingsService} from '../../_common/services/setting.service';
 import {CService} from  '../../_common/services/http.service';
 import { Http, Response,RequestOptions } from '@angular/http';
@@ -37,6 +37,7 @@ export class ProductInfoComponent {
               public _datepipe: DatePipe,
               public appState: AppState,
               public _http:Http,
+              private _router:Router,
               private _settingsService: SettingsService,
               private renderer: Renderer,
               private elRef:ElementRef,
@@ -61,8 +62,13 @@ export class ProductInfoComponent {
   ngAfterViewInit(){
     this.getProductInfo();
   }
+
   showSimilarListing(){
 
+    }
+
+  showProductInfo(id){
+    this._router.navigate(['productInfo',id]);
   }
 
   getProductInfo (){

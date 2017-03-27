@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
     else if( data.categoryName == 'Top ten') {
       url = this.cardUrl;
       this.searchComponent.setFilter( 'TOP TEN' );
-    } 
+    }
      else if(data.categoryName === 'Recommended'){
          url = this.recommededUrl;
          this.searchComponent.setFilter( 'Recommended' );
@@ -95,7 +95,7 @@ export class HomeComponent implements OnInit {
       url = this.cardsByCategoryUrl + data.categoryName;
       this.searchComponent.setFilter( data.categoryName );
     }
-    
+
     if(!data.result){
       this._cservice.observableGetHttp(url, null, false)
       .subscribe((res:Response)=> {
@@ -108,13 +108,14 @@ export class HomeComponent implements OnInit {
         ()=>{
           console.log("Finally");
         })
-    }  
+    }
   }
 
    getBannerListing (){
      this._cservice.observableGetHttp(this.bannerUrl,null,false)
        .subscribe((res:Response)=> {
            this.bannerData = res;
+           console.log("bannerData",this.bannerData);
          },
          error => {
            console.log("error in response");
