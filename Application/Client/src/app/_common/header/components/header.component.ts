@@ -23,6 +23,8 @@ export class HeaderComponent implements OnInit{
   private session : Session;
   private activeSession:boolean = false;
   private signOutHideShow: boolean = false;
+  private userEmail: any;
+  private userName:any;
 
   constructor(public _authenticationWindowService: AuthenticationWindowService,
               private _cookieService:CookieService,
@@ -31,6 +33,10 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit(){
     this.session = new Session( this._cookieService.getObject( 'SESSION_PORTAL' ) );
+    console.log(this.session);
+    this.userEmail = this.session.useremail;
+    var name =  this.userEmail.substring(0,  this.userEmail.indexOf("@"));
+    this.userName = name.replace(/\./g, ' ');
     this.activeSession = (this.session && this.session.isValid());
     this._route.navigateByUrl('/dashboard/home');
     if(!this.activeSession){
