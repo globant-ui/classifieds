@@ -100,7 +100,12 @@ export class HomeComponent implements OnInit {
       this._cservice.observableGetHttp(url, null, false)
       .subscribe((res:Response)=> {
             this.cardListComponent.loading( false );
-            this.initialCardData = res;
+             if(res){
+                this.initialCardData = res;
+              }
+              else{
+                this.initialCardData = [];
+              }
         },
         error => {
           console.log("error in response",error);
