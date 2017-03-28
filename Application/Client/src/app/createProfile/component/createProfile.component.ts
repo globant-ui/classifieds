@@ -140,7 +140,7 @@ export class ProfileComponent implements OnInit {
     xhr.onreadystatechange = function() {
       if (xhr.readyState == XMLHttpRequest.DONE) {
         if(xhr.status === 201) {
-          self.UserImage = '';
+          self.UserImage = JSON.parse(xhr.response).Message;
         } else {
           console.log("Error");
         }
