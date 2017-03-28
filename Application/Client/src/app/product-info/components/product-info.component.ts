@@ -19,7 +19,7 @@ let tpls = require('../tpls/product-info.html').toString();
   template : tpls
 })
 
-export class ProductInfoComponent {
+export class ProductInfoComponent{
   localState = { value: '' };
 
   @Input() showProductInfoPage;
@@ -42,15 +42,14 @@ export class ProductInfoComponent {
               private renderer: Renderer,
               private elRef:ElementRef,
               public  _cservice:CService) {
-
-    this._route.params.subscribe(params => {
-      this.productId = params['id'];
-    });
   }
 
   ngOnInit() {
     this.type = "";
     this.showSimilarListing();
+    this._route.params.subscribe(params => {
+      this.productId = params['id'];
+    });
 
   }
 

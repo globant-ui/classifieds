@@ -15,6 +15,10 @@
   @include only-text-type($font-size-base, $open-sans, $font-weight-400);
 }
 
+%type-open-sans-14-7-text{
+  @include only-text-type($font-size-14, $open-sans, $font-weight-700);
+}
+
 %type-open-sans-15-4-text {
   @include only-text-type($font-size-15, $open-sans, $font-weight-400);
 }

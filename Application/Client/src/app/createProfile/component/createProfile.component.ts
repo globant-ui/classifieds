@@ -144,8 +144,8 @@ export class ProfileComponent implements OnInit {
     }
     self.UserImage = null;
     xhr.open("POST", "http://in-it0289/UserAPI/api/User/PostUserImage");
-    xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
-    xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
+    xhr.setRequestHeader("accesstoken",this.userProfileData._id );
+    xhr.setRequestHeader("useremail", this.userEmail);
     xhr.send(data);
   }
 
