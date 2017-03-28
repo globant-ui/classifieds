@@ -41,7 +41,7 @@
         <li dropdown>
             <button class="btn btn-default" type="button" id="profile" dropdownToggle>
                 <span class="icon-profile profile-btn"></span>
-                <span class="textProfile">{{this.userName}}</span>
+                <span class="textProfile" (click)="showUserProfile()"x>{{this.userName}}</span>
             </button>
             <ul class="signOutContainer" dropdownMenu role="menu" aria-labelledby="profile">
               <li>
