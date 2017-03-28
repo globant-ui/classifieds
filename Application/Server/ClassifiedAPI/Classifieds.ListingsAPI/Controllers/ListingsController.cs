@@ -497,9 +497,8 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="id">Listing Id</param>
         /// <returns></returns>
-        public HttpResponseMessage Delete(string id)
-        {
-            HttpResponseMessage result;
+        public bool Delete(string id)
+        {             
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -509,15 +508,13 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
 
-                _listingService.DeleteListing(id);
-                result = Request.CreateResponse(HttpStatusCode.NoContent);
+               return _listingService.DeleteListing(id);                
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, _userEmail);
                 throw ex;
-            }
-            return result;
+            }            
         }
 
         #endregion

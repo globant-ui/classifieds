@@ -247,11 +247,11 @@ namespace Classifieds.Listings.BusinessServices
         /// Delete listing item for given Id
         /// </summary>
         /// <param name="id">Listing Id</param>
-        public void DeleteListing(string id)
+        public bool DeleteListing(string id)
         {
             try
             {
-                _listingRepository.Delete(id);
+                return _listingRepository.Delete(id);
             }
             catch (Exception ex)
             {

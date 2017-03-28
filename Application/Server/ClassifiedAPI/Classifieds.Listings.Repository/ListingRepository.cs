@@ -379,12 +379,14 @@ namespace Classifieds.Listings.Repository
         /// </summary>
         /// <param name="id">Listing Id</param>
         /// <returns>return void</returns>
-        public void Delete(string id)
+        public bool Delete(string id)
         {
             try
             {
-                var query = Query<TEntity>.EQ(p => p._id, id);
-                Classifieds.Remove(query);
+                //var query = Query<TEntity>.EQ(p => p._id, id);               
+                var update = Update<TEntity>.Set(p => p.Status, Convert.ToString(Status.Closed));
+                var result = Classifieds.Update(Query<TEntity>.EQ(p => p._id, id), update);
+                return result.UpdatedExisting;
             }
             catch (Exception ex)
             {
