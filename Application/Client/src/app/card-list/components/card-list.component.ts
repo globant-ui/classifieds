@@ -51,9 +51,9 @@ export class CardListComponent{
     }
 
     ngOnInit() {
-      console.log("cards",this.cards);
         this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
         this.GetUserWishList = this.GetUserWishList + this.emailId;
+        this.GetWishList();
     }
     
     loading( flag ) {
@@ -67,24 +67,31 @@ export class CardListComponent{
 //favorite card method
    favorite(event,id, i, card) {
        event.stopPropagation();
-       this.wishListCondtionalUrl = (card.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
-       var operation = card.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
-       this._cservice[operation](this.wishListCondtionalUrl, card.isInWishList ? null : card, card.isInWishList ? false : null, false)
-           .subscribe((res: Response) => {
-               this.cards[i]['isInWishList'] = !this.cards[i]['isInWishList'];
-               this.GetWishList();
-           },
-           error => {
-               console.log("error in response", error);
-           });
+       if(this.wishListData.length <= 20 || card.isInWishList === true){
+        this.wishListCondtionalUrl = (card.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
+        var operation = card.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
+        this._cservice[operation](this.wishListCondtionalUrl, card.isInWishList ? null : card, card.isInWishList ? false : null, false)
+            .subscribe((res: Response) => {
+                this.cards[i]['isInWishList'] = !this.cards[i]['isInWishList'];
+                this.GetWishList();
+            },
+            error => {
+                console.log("error in response", error);
+            });
+       }
+       else{
+           alert("Only 20 Wishlist is allowed !!!");
+       }
    }
 
 //get wishlist api
    GetWishList() {
+       let self = this;
        this._cservice.observableGetHttp(this.GetUserWishList, null, false)
            .subscribe((res: Response) => {
-               console.log("this.GetUserWishList Response", res);
-                   this.updateCards(res);
+                console.log("this.GetUserWishList Response", res);
+                self.wishListData = res;
+                this.updateCards(res);
            },
            error => {
                console.log("error in response", error);
