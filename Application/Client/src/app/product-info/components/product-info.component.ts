@@ -17,7 +17,7 @@ let tpls = require('../tpls/product-info.html').toString();
   selector: 'product-info',
   styles : [ styles ],
   providers:[SettingsService, apiPaths, DatePipe],
-  template : tpls
+  template : tpls,
 })
 
 export class ProductInfoComponent {
@@ -40,6 +40,8 @@ export class ProductInfoComponent {
   private filterCategoryUrl:string = '';
   private GetUserWishList: string = '';
   private DeleteUserWishListUrl: string = '';
+  private WishListSelectedData : any;
+  private isInWishList:any;
 
   constructor(private _route: ActivatedRoute,
               public _datepipe: DatePipe,
@@ -105,17 +107,29 @@ export class ProductInfoComponent {
         })
   }
  favorite(card,id) {
-       this.wishListCondtionalUrl = (card.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
-       var operation = card.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
-       this._cservice[operation](this.wishListCondtionalUrl, card.isInWishList ? null : card, card.isInWishList ? false : null, false)
+   
+   let index = this.WishListSelectedData.findIndex(function (o) {
+     return o === id;
+   })
+   this.isInWishList = index > -1 ? true : false;
+
+       if (this.WishListSelectedData.length <= 4) {
+         this.wishListCondtionalUrl = (this.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
+         var operation = this.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
+         this._cservice[operation](this.wishListCondtionalUrl, this.isInWishList ? null : card, this.isInWishList ? false : null, false)
            .subscribe((res: Response) => {
-             console.log("product data wishlist",res)
-              //  this.card[i]['isInWishList'] = !this.card[i]['isInWishList'];
-               this.GetWishList();
+             console.log("product data wishlist", res)
+             //  this.card[i]['isInWishList'] = !this.card[i]['isInWishList'];
+             this.GetWishList();
            },
            error => {
-               console.log("error in response", error);
+             console.log("error in response", error);
            });
+       }
+       else{
+           alert("Only 20 Wishlist is allowed !!!");
+       }
+
    }
 
 //get wishlist api
@@ -123,7 +137,9 @@ export class ProductInfoComponent {
        this._cservice.observableGetHttp(this.GetUserWishList, null, false)
            .subscribe((res: Response) => {
                console.log("this.GetUserWishList Response", res);
-                  this.updateCards(res);
+               /**/
+                this.updateCards(res);
+                this.WishListSelectedData = res;
            },
            error => {
                console.log("error in response", error);

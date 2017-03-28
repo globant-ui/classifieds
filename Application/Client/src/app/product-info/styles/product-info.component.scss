@@ -158,7 +158,8 @@
   .wishlistText {
     margin: 10px 0 0 0;
     padding-bottom: 18px;
-    span.wishlist {
+    span.isFaveSelected {
+			color: $red-color !important;
       // color: $red-color; 
       margin-right: 10px;
     }
