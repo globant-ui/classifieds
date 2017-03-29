@@ -12,20 +12,16 @@
   <div class="col-md-12 product-info-wrapper">
     <!-- Gallery Start -->
     <div class="col-xs-12 col-md-6 mobileViewCarousel">
-      <carousel>
-        <slide>
-          <img src="../../../../assets/img/gallery-img-1.png" alt="First slide">
-        </slide>
-        <slide>
-          <img src="../../../../assets/img/gallery-img-2.png" alt="Second slide">
-        </slide>
-        <slide>
-          <img src="../../../../assets/img/gallery-img-3.png" alt="Third slide">
-        </slide>
-        <slide>
-          <img src="../../../../assets/img/gallery-img-4.png" alt="Third slide">
-        </slide>
-      </carousel>
+      <div *ngIf="productInfoData.Listing.Photos.length > 0">
+        <carousel>
+          <slide *ngFor="let item of productInfoData.Listing.Photos">
+            <img src="{{item.Image}}" alt="First slide">
+          </slide>
+        </carousel>
+      </div>
+      <div *ngIf="productInfoData.Listing.Photos.length <= 0">
+        <h2>No Photo</h2>
+      </div>  
     </div>
     <!-- Gallery End -->
 
@@ -36,7 +32,7 @@
           <h6><i>Posted on {{postedDate}}</i></h6>
         </div>
         <div class="col-xs-6 col-md-6">
-          <h3 class="pull-right">RS.{{productInfoData.Listing.Price}}
+          <h3 class="pull-right">{{productInfoData.Listing.Price | currency:'INR':false}}
           <h6 *ngIf="productInfoData.Negotiable"><i class="pull-right">Negotiable</i></h6>
             <h6 *ngIf="!productInfoData.Negotiable"><i class="pull-right">Non-Negotiable</i></h6>
           </h3>
@@ -63,7 +59,7 @@
       </div>
       <div class="col-xs-12 col-md-12 clearfix userDetailsSpacing no-padding-left">
         <div class="col-xs-12 col-md-8">
-          <span><a href="#"><img src="/assets/img/userProfilePic.png" class="img-circle"></a></span>
+          <span><a href="#"><img style="width: 50px;height: 50px;" src="{{productInfoData.Photo}}" class="img-circle"></a></span>
           <span class="orangeIconSpacing"><img src="/assets/img/orange-icon.png"></span>
           <span class="designerName"><span>{{productInfoData.UserName}},</span> <i class="designation-name">{{productInfoData.Designation}}</i></span>
         </div>
