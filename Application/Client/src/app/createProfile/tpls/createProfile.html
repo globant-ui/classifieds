@@ -12,7 +12,7 @@
 <div class="container-fluid" *ngIf="userProfileData && closeViewProfile">
 <div class="container new-myprofile-wrapper">
   <div class="row">
-    <div class="col-lg-3 profile-details">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profile-details">
       <div class="profile-image">
         <img class="img-circle" data-src="{{UserImage}}"/>
       </div>
@@ -22,11 +22,11 @@
       <div class="pad-bot-20"><i class="fa fa-phone"></i>{{userProfileData.Mobile}}</div>
       <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
 
-      <div class="col-lg-1"></div>
+      
     </div>
-    <div class="col-lg-1"></div>
+    
 
-      <div class="col-lg-4">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
         <div class="col-lg-11 profile-text">
           <h3>My Interests</h3>
           <div class="profile-interest">
@@ -40,7 +40,7 @@
           <div class="col-lg-1"></div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
       <h3>My subscription</h3>
       <div class="my-sub-icon pull-right">
         <span class="">
@@ -69,31 +69,34 @@
   </div>
 
 <div class="container-fluid" *ngIf = "userProfileData && openEditProfile && !closeViewProfile" >
-  <h2>Edit my profile</h2>
+
 <div class="container edit-profile-wrapper">
   <div class="row">
-    <div class="col-lg-3 profile-details">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 profile-details">
       <div class="profile-image">
       <div class="edit-icon">
-        <input class="green-circle-button" id="myFileField" type="file" name="myFile" (change)="UpdateImage($event)"/>
-          <label for="myFileField" class="imageUpload">
-            </label>
+        <div class="green-circle-button">
+            <div class="edit-icon-img">
+              <input id="myFileField" type="file" name="myFile" (change)="UpdateImage($event)"/>
+                <label for="myFileField" class="imageUpload">
+                  </label>
+            </div>
+        </div>
       </div>
-
         <img class="img-circle" src="{{UserImage}}" />
       </div>
       <div class="person-name pad-topbot-20">{{userProfileData.UserName}}</div>
-      <div class="pad-bot-35 text-deco-underline"></div>
-      <input [(ngModel)] = "userProfileData.Designation">
-      <input [(ngModel)] = " userProfileData.Location">
+      <div class="text-deco-underline">
+        <input [(ngModel)] = "userProfileData.Designation" class="pad-bot-20">
+        <input [(ngModel)] = " userProfileData.Location" class="pad-bot-35">
+      </div>
       <div class="pad-bot-20 text-deco-underline"><i class="fa fa-phone"></i>
         <input [(ngModel)]="userProfileData.Mobile"></div>
       <div><i class="fa fa-envelope"></i>{{userProfileData.UserEmail}}</div>
-      <div class="col-lg-1"></div>
+     
     </div>
-    <div class="col-lg-1"></div>
-
-    <div class="col-lg-4">
+   
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
       <div class="col-lg-11 profile-text">
         <h3>My Interests</h3>
           <div class="profile-interest">
@@ -117,7 +120,7 @@
           <div class="col-lg-1"></div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
       <h3>My Subscribtion</h3>
       <div class="my-sub-icon pull-right">
        <span class="">
