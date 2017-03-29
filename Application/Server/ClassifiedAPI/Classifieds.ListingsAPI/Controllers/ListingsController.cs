@@ -466,7 +466,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="id">Listing Id</param>
         /// <param name="listing">Listing Object</param>
         /// <returns></returns>
-        public HttpResponseMessage PutCloseListing(string id, Listing listing)
+        public HttpResponseMessage PutCloseListing(string id)
         {
             HttpResponseMessage result;
             try
@@ -476,9 +476,8 @@ namespace Classifieds.ListingsAPI.Controllers
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
-                }
-                listing.Status = Status.Closed.ToString();
-                var classified = _listingService.CloseListing(id, listing);
+                }               
+                var classified = _listingService.CloseListing(id);
                 result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
             }
             catch (Exception ex)
@@ -497,8 +496,9 @@ namespace Classifieds.ListingsAPI.Controllers
         /// </summary>
         /// <param name="id">Listing Id</param>
         /// <returns></returns>
-        public bool Delete(string id)
-        {             
+        public HttpResponseMessage Delete(string id)
+        {
+            HttpResponseMessage result;
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -508,13 +508,15 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
 
-               return _listingService.DeleteListing(id);                
+                _listingService.DeleteListing(id);
+                result = Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, _userEmail);
                 throw ex;
-            }            
+            }
+            return result;
         }
 
         #endregion

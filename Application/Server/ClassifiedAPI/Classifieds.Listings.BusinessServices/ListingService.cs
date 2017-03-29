@@ -247,11 +247,11 @@ namespace Classifieds.Listings.BusinessServices
         /// Delete listing item for given Id
         /// </summary>
         /// <param name="id">Listing Id</param>
-        public bool DeleteListing(string id)
+        public void DeleteListing(string id)
         {
             try
             {
-                return _listingRepository.Delete(id);
+                _listingRepository.Delete(id);
             }
             catch (Exception ex)
             {
@@ -285,11 +285,11 @@ namespace Classifieds.Listings.BusinessServices
         /// <param name="id">Listing Id</param>
         /// <param name="listing">Listing Object</param>
         /// <returns></returns>
-        public Listing CloseListing(string id, Listing listing)
+        public bool CloseListing(string id)
         {
             try
             {
-                return _listingRepository.CloseListing(id, listing);
+                return _listingRepository.CloseListing(id);
             }
             catch (Exception ex)
             {

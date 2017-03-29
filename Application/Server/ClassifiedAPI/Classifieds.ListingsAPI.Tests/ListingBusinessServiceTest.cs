@@ -466,14 +466,14 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var lstObject = GetListObject();
-            _moqAppManager.Setup(x => x.CloseListing(It.IsAny<string>(), It.IsAny<Listing>())).Returns(lstObject);
+            _moqAppManager.Setup(x => x.CloseListing(It.IsAny<string>())).Returns(true);
             var closeListing = new Listing() { Status = lstObject.Status };
             //Act
-            var result = _service.CloseListing(lstObject._id, closeListing);
+            var result = _service.CloseListing(lstObject._id);
 
             //Assert
             Assert.IsNotNull(result, null);
-            Assert.IsInstanceOfType(result, typeof(Listing));
+            //Assert.IsInstanceOfType(result, typeof(Listing));
         }
 
         /// <summary>
@@ -485,10 +485,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.CloseListing(It.IsAny<string>(), It.IsAny<Listing>())).Throws(ex);
+            _moqAppManager.Setup(x => x.CloseListing(It.IsAny<string>())).Throws(ex);
 
             //Act
-            _service.CloseListing(null, null);
+            _service.CloseListing(null);
         }
 
         #endregion PutCloseListingTest
