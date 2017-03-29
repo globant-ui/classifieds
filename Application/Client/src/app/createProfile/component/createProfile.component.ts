@@ -46,6 +46,10 @@ export class ProfileComponent implements OnInit {
     private enabledDropdown : boolean = true;
     private interestResult:any ;
     private session : Session;
+    private availableLocation: String[] = ['Pune',"Banglore"];
+    private selectedLocation: any = [];
+    private isAllLocationChecked: Boolean = false;
+    private preferedLocation:any = '';
 
     constructor(  private _http: Http,
                 private httpService:CService,
@@ -75,7 +79,7 @@ export class ProfileComponent implements OnInit {
       this.httpService.observableGetHttp(this.userDetails ,null,false)
         .subscribe((res:Response)=> {
             this.userProfileData = res;
-            console.log("Profile Data",this.userProfileData);
+            this.updateLocalLocation();
             this.subscribeCat = this.userProfileData.Alert;
             console.log("subscribeData",this.subscribeCat);
             this.tagData = this.userProfileData.Tags.SubCategory;
@@ -94,7 +98,45 @@ export class ProfileComponent implements OnInit {
       this.closeViewProfile = false;
     }
 
-    UpdateProfileData(){
+    updateLocalLocation(){
+      if(this.userProfileData.Tags.Location){
+        this.selectedLocation =  Array.from(this.userProfileData.Tags.Location);
+        if(this.selectedLocation.indexOf("All loactions") !== -1){
+          this.isAllLocationChecked = true;
+          this.preferedLocation = this.availableLocation;
+        }
+        else{
+          this.preferedLocation = this.selectedLocation;
+        }
+      }
+    }
+
+    isChecked(p_value:string){
+        if(this.selectedLocation.indexOf(p_value) !== -1){
+          return true;
+        }
+        return false;
+    }
+
+    onLocationChange($event){
+        let self = this;
+        if($event.target.name === "All loactions"){
+          self.isAllLocationChecked = !self.isAllLocationChecked;
+        }
+        if($event.target.checked){
+          if(self.selectedLocation.indexOf($event.target.value) === -1){
+            self.selectedLocation.push($event.target.value)
+          }
+        }
+        else{
+          if(self.selectedLocation.indexOf($event.target.value) !== -1){
+              self.selectedLocation.splice(self.selectedLocation.indexOf($event.target.value), 1);
+          }
+        }
+    }
+
+    UpdateProfileData() {
+      this.userProfileData.Tags.Location = this.selectedLocation;
       let updatedData = this.userProfileData;
       let url = this.updateUserProfile;
       this.httpService.observablePutHttp(url,updatedData,null,false)
