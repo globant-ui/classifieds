@@ -396,7 +396,7 @@ namespace Classifieds.UserServiceAPI.Controllers
         /// <returns>Task</returns>
         public async Task<HttpResponseMessage> PostUserImage()
         {
-
+            string resPath = string.Empty;
             try
             {
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -446,14 +446,22 @@ namespace Classifieds.UserServiceAPI.Controllers
                             {
                                 System.IO.Directory.CreateDirectory(path);
                             }
+                            DirectoryInfo di = new DirectoryInfo(path);
+                            if (di.GetFiles().Length > 0)
+                            {
+                                foreach (FileInfo f in di.GetFiles())
+                                {
+                                    f.Delete();
+                                }
+                            }
                             string uniqueUserName = userName + Guid.NewGuid().ToString();
                             postedFile.SaveAs(path + uniqueUserName + extension);
-                            _userService.UpdateImagePath(_userEmail, ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString() + userName + "/" + uniqueUserName + extension);
+                            resPath = ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString() + userName + "/" + uniqueUserName + extension;
+                            _userService.UpdateImagePath(_userEmail, resPath);
                         }
                     }
-
-                    var resMessage = string.Format("User Profile Image Updated Successfully.");
-                    return Request.CreateErrorResponse(HttpStatusCode.Created, resMessage); ;
+                    //return image path in response
+                    return Request.CreateErrorResponse(HttpStatusCode.Created, ConfigurationManager.AppSettings["ImageServer"].ToString() + resPath); ;
                 }
                 var res = string.Format("Please Upload a image.");
                 dict.Add("error", res);
