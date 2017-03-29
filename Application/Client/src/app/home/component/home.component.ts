@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   public bannerData: any;
   public filterCat:any;
   public navIsFixed: boolean = false;
+  public isSearchActive: boolean = false;
   private topNavbar:any;
   private affixEl:any;
   private affixElOffsetTop: number;
@@ -87,6 +88,7 @@ export class HomeComponent implements OnInit {
     this.cardListComponent.loading( true );
     let url;
     if(data.result){
+      this.isSearchActive = true;
       this.cardListComponent.loading( false );
       this.initialCardData = data.result;
     }
@@ -106,6 +108,7 @@ export class HomeComponent implements OnInit {
       this._cservice.observableGetHttp(url, null, false)
       .subscribe((res:Response)=> {
             this.cardListComponent.loading( false );
+            this.isSearchActive = false;
              if(res){
                 this.initialCardData = res;
               }
