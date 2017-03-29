@@ -446,6 +446,14 @@ namespace Classifieds.UserServiceAPI.Controllers
                             {
                                 System.IO.Directory.CreateDirectory(path);
                             }
+                            DirectoryInfo di = new DirectoryInfo(path);
+                            if (di.GetFiles().Length > 0)
+                            {
+                                foreach (FileInfo f in di.GetFiles())
+                                {
+                                    f.Delete();
+                                }
+                            }
                             string uniqueUserName = userName + Guid.NewGuid().ToString();
                             postedFile.SaveAs(path + uniqueUserName + extension);
                             resPath = ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString() + userName + "/" + uniqueUserName + extension;

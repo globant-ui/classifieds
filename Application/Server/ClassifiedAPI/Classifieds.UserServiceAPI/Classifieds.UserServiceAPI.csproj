@@ -168,6 +168,7 @@
     <None Include="Properties\PublishProfiles\UserAPI22032017.pubxml" />
     <None Include="Properties\PublishProfiles\UserAPI23032017.pubxml" />
     <None Include="Properties\PublishProfiles\UserAPI28032017.pubxml" />
+    <None Include="Properties\PublishProfiles\UserAPI29032017.pubxml" />
     <None Include="Properties\PublishProfiles\UserService.pubxml" />
     <None Include="Properties\PublishProfiles\UsserAPI.pubxml" />
     <None Include="Properties\PublishProfiles\utest.pubxml" />
