@@ -1,5 +1,5 @@
-
 <ul class="nav navbar-nav filter">
+  <li *ngIf="isSearchActive" class="active"><a class="active">{{searchValue}}</a></li>
   <li class="active" 
       *ngFor="let item of filterData; let i = index" 
       (click)="selectedOption(item.listName,i)">

@@ -4,7 +4,7 @@
         <search (searchCategory)="getCards($event)"
                 (getSelectedFilter)="getSelectedFilter($event)"
                 ></search>
-        <filter [selectedFilter]="selectedFilter" [isSearchActive]="isSearchActive"
+        <filter [selectedFilter]="selectedFilter" [isSearchActive]="isSearchActive" [searchValue]="searchValue"
                 (getSelectedFilterOption)="getSelectedFilterOption($event)">
         </filter>
    </div>

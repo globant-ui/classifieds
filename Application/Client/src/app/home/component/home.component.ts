@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   private affixEl:any;
   private affixElOffsetTop: number;
   private recommededUrl : string = '';
+  private searchValue:string = '';
 
   @ViewChild(SearchComponent) searchComponent;
   @ViewChild( CardListComponent) cardListComponent;
@@ -91,6 +92,7 @@ export class HomeComponent implements OnInit {
       this.isSearchActive = true;
       this.cardListComponent.loading( false );
       this.initialCardData = data.result;
+      this.searchValue = data.categoryName;
     }
     else if( data.categoryName == 'Top ten') {
       url = this.cardUrl;
@@ -109,6 +111,7 @@ export class HomeComponent implements OnInit {
       .subscribe((res:Response)=> {
             this.cardListComponent.loading( false );
             this.isSearchActive = false;
+            this.searchValue = '';
              if(res){
                 this.initialCardData = res;
               }
