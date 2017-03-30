@@ -45,13 +45,11 @@ ngOnChanges(changes: {[propKey: string]: SimpleChange}){
  public showChildModal(): void {
    this.childModal1.show();
  }
-
-  viewListingRedirect() {
-    this._route.navigateByUrl('/dashboard/home');
-  }
-
+ 
+ viewListingRedirect() {
+   this._route.navigate(['dashboard/home']);
+ }
   redirectToMyProfile(){
     this._route.navigateByUrl('/dashboard/home');
   }
-
 }

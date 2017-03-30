@@ -39,7 +39,7 @@ export class MapData{
         "DimensionHeight": (form.get('DimensionHeight'))?parseInt(form.get('DimensionHeight').value):0,
         "TypeofUse": "",
         "Type": (form.get('Type'))?form.get('Type').value:'',
-        "Negotiable": (form.get('negotiable') && form.get('negotiable')!=='' )?form.get('negotiable').value:false,
+        "Negotiable": (form.get('negotiable') && form.get('negotiable')!== '' )?form.get('negotiable').value:false,
         "IsPublished": false,
         "Photos": [],
         "SubmittedBy": (form.get('submittedBy'))?form.get('submittedBy').value:false,

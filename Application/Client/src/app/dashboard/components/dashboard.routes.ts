@@ -18,7 +18,7 @@ export const DASHBOARD_ROUTERS: Routes = [
       {path: 'profile', component: ProfileComponent},
       {path: 'profile/:usermail', component: ProfileComponent},
       {path: 'productInfo', component: ProductInfoComponent},
-      {path: 'productInfo/:id', component: ProductInfoComponent},
+        {path: 'productInfo/:id', component: ProductInfoComponent},
       ...CREATE_CARD_ROUTERS
   ]
 }

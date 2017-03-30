@@ -86,6 +86,7 @@ export class CreateCardComponent implements OnInit {
         submittedBy: new FormControl('', []),
         file: new FormControl('', [])
       });
+
         this.getCategories();
     }
 
@@ -191,7 +192,8 @@ export class CreateCardComponent implements OnInit {
     createCard(action){
        this.isCompleted.push(this.endPoints[2]);
        this.isActive = this.endPoints[3];
-       console.log(this.isCompleted + '********************' + this.isActive);
+       console.log(this.myForm);
+       debugger;
        this.myForm.patchValue({category:this.selectedCategory});
        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
        let cardData = this.data.mapCardData(this.myForm);
@@ -204,12 +206,9 @@ export class CreateCardComponent implements OnInit {
       data.append("listing", JSON.stringify(cardData));
 
       let files = document.getElementById("myFileField").files;
-      console.log(files);
       for (let i = 0; i < files.length; i++) {
           data.append("file", files[i]);
-        console.log(data);
       }
-      console.log(document.getElementById("myFileField").files);
 
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "http://in-it0289/ListingAPI/api/Listings/PostListing");
