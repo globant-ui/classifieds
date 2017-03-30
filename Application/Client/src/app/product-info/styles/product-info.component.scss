@@ -168,6 +168,9 @@
     span.wishlist {
       color: $primary-text-color; margin-right: 10px;
     }
+    span.isFaveSelected  {
+      color: $red-color !important;
+    }
 
     span.textwishlist {
       font-size: 12px; font-weight: bold; color: $primary-text-color;
