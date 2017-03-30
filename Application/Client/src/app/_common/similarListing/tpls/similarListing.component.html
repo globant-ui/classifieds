@@ -9,10 +9,10 @@
     <div class="col-xs-6 col-sm-6 col-md-3" *ngFor="let card of similarListing;let i = index;">
       <div class="thumbnail">
         <template [ngIf]="i<4">
-          <img src="../../../../assets/img/similarListing.png" alt="...">
+          <img src="{{card.Photos[0].Image}}" alt="...">
           <div class="listingContent caption">
             <span class="title"><h5>{{card.Title}}</h5></span>
-            <span class="price pull-right">{{card.Price}}</span>
+            <span class="price pull-right">{{card.Price | currency:'INR':true}}</span>
           </div>
         </template>
       </div>
