@@ -1,10 +1,12 @@
 import { Component, OnInit, NgZone} from '@angular/core';
+import {CookieService} from 'angular2-cookie/core';
 import {CService} from  '../../_common/services/http.service';
 import {SettingsService} from '../../_common/services/setting.service';
 import { ActivatedRoute } from '@angular/router';
 import {Base64Service} from '../../_common/services/base64.service';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {Http,Response,Headers} from '@angular/http';
+import {Session} from '../../_common/authentication/entity/session.entity';
 import { FileUploader } from 'ng2-file-upload';
 // import * as _ from "lodash";
 
@@ -43,9 +45,11 @@ export class ProfileComponent implements OnInit {
     private selectInterestUrl: string = '';
     private enabledDropdown : boolean = true;
     private interestResult:any ;
+    private session : Session;
 
     constructor(  private _http: Http,
                 private httpService:CService,
+                private _cookieService:CookieService,
                 private _route:ActivatedRoute,
                 private _settingService : SettingsService,
                 public _base64service:Base64Service,
@@ -136,16 +140,17 @@ export class ProfileComponent implements OnInit {
     xhr.onreadystatechange = function() {
       if (xhr.readyState == XMLHttpRequest.DONE) {
         if(xhr.status === 201) {
-          self.UserImage = '';
+          self.UserImage = JSON.parse(xhr.response).Message;
         } else {
           console.log("Error");
         }
       }
     }
+    this.session = new Session(this._cookieService.getObject('SESSION_PORTAL'));
     self.UserImage = null;
     xhr.open("POST", "http://in-it0289/UserAPI/api/User/PostUserImage");
-    xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
-    xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
+    xhr.setRequestHeader("accesstoken",this.session['token'] );
+    xhr.setRequestHeader("useremail", this.userEmail);
     xhr.send(data);
   }
 

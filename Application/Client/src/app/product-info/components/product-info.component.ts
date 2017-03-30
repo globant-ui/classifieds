@@ -20,7 +20,7 @@ let tpls = require('../tpls/product-info.html').toString();
   template : tpls,
 })
 
-export class ProductInfoComponent {
+export class ProductInfoComponent{
   localState = { value: '' };
 
   @Input() showProductInfoPage;
@@ -52,17 +52,14 @@ export class ProductInfoComponent {
               private renderer: Renderer,
               private elRef:ElementRef,
               public  _cservice:CService,
-              private _cookieService: CookieService,) {
-
-    this._route.params.subscribe(params => {
-      this.productId = params['id'];
+              private _cookieService: CookieService) {
 
       this.wishListPostUrl = _settingsService.getPath('wishListPostUrl');
       this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
       this.GetUserWishList = _settingsService.getPath('GetUserWishList');
       this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl');
-    });
-  }
+    }
+  
 
   ngOnInit() {
     this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
@@ -70,6 +67,12 @@ export class ProductInfoComponent {
     this.type = "";
     this.showSimilarListing();
     this.GetWishList(); 
+
+    this._route.params.subscribe(params => {
+      this.productId = params['id'];
+    });
+
+
   }
 
   transformDate(date) {

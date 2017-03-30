@@ -51,7 +51,7 @@
 					color: $primary-text-color;
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
-					height: $font-size-12*$line-height*$lines-to-show3; /* Fallback for non-webkit */
+					height: $font-size-12*$line-height*$lines-to-show3 + 1; /* Fallback for non-webkit */
 					/*margin: 15px auto 0;*/
 					@extend %type-open-sans-12-4-text;
 					line-height: $line-height;
@@ -70,18 +70,19 @@
 					li{
 						@extend %type-open-sans-12-7-text;
 						text-transform: uppercase;
+            display: inline-block;
 						span{
 							margin-right: 5px;
 							&:first-child{
 								float: left;
 							}
-							&:last-child{
-								float: right;
-							}
 						}
+            &:last-child{
+              float: right;
+            }
 						.isFaveSelected {
 								color: $red-color !important;
-							}
+            }
 					}
 				}
 			}
