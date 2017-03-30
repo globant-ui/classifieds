@@ -19,7 +19,7 @@
                         <ul>
                             <li>
                                 <span class="icon-clock" ></span>{{card.SubmittedDate.toString().split('T')[0]}}</li>
-                            <li><span class="icon-like-icon" [ngClass]="{'isFaveSelected': card.isInWishList}" (click) = "favorite($event,card._id, i,card)"></span>RS {{card.Price}}</li>
+                            <li><span class="icon-like-icon" [ngClass]="{'isFaveSelected': card.isInWishList}" (click) = "favorite($event,card._id, i,card)"></span>{{card.Price| currency:'INR':true}}</li>
                         </ul>
                     </div>
                 </div>
