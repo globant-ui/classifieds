@@ -1,6 +1,7 @@
-import { Component,OnInit,Input,Output,EventEmitter,OnChanges,SimpleChange } from '@angular/core';
+import { Component,OnInit,Input,Output,EventEmitter,OnChanges,SimpleChange,NgZone} from '@angular/core';
 import {CService} from  '../../services/http.service';
 import {apiPaths} from  '../../../../serverConfig/apiPaths';
+import {Router} from '@angular/router';
 
 
 let styles = require('../styles/similarListing.component.scss').toString();
@@ -19,7 +20,7 @@ export class SimilarListingComponent implements OnChanges{
 
   public similarListing;
 
-  constructor(private httpService:CService,private apiPath:apiPaths){}
+  constructor(private httpService:CService,private apiPath:apiPaths,private _router:Router,private zone:NgZone){}
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}){
     this.getSimilarListing();
@@ -41,6 +42,11 @@ export class SimilarListingComponent implements OnChanges{
         console.log("Finally");
         this.similarListingLoaded.emit('loaded');
       })
+  }
+
+  openListing(id){
+      this._router.navigateByUrl('/dashboard/productInfo/'+id);
+    // this._router.navigateByUrl('/dashboard/productInfo/'+id,{ skipLocationChange: true });
   }
 
 

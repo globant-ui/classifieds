@@ -87,6 +87,7 @@ export class CardListComponent{
 //get wishlist api
    GetWishList() {
        let self = this;
+       if(this.emailId != "")
        this._cservice.observableGetHttp(this.GetUserWishList, null, false)
            .subscribe((res: Response) => {
                 console.log("this.GetUserWishList Response", res);
