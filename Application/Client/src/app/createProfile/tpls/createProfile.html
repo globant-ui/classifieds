@@ -35,7 +35,7 @@
          <!--<li  *ngFor="let tag of userProfileData.Tags.SubCategory"><a>{{tag}}</a></li>-->
             </ul>
           </div>
-          <p>Viwe listing from : <span>All locations</span></p>
+          <p>Viwe listing from : <span>{{preferedLocation}}</span></p>
           </div>
           <div class="col-lg-1"></div>
     </div>
@@ -146,18 +146,13 @@
     <div class="col-lg-4"></div>
     <div class="col-lg-8 edit-profile-text">
         <p>Preffered loaction:
-          <span>
-            <input type="checkbox" name="Pune" value="Pune">
-            <label class="radio-inline">Pune</label>
+          <span *ngFor="let location of availableLocation">
+            <input type="checkbox" [checked]="isChecked(location)" [disabled]="isAllLocationChecked" (change)="onLocationChange($event)" name="{{location}}" value="{{location}}">
+            <label class="radio-inline">{{location}}</label>
           </span>
 
            <span>
-             <input type="checkbox" name="Banglore" value="Banglore">
-             <label class="radio-inline">Banglore</label>
-           </span>
-
-           <span>
-             <input type="checkbox" name="All loactions" value="All loactions">
+             <input [checked]="isChecked('All loactions')" type="checkbox" (change)="onLocationChange($event)" name="All loactions" value="All loactions">
              <label class="radio-inline">All loactions</label>
            </span>
 

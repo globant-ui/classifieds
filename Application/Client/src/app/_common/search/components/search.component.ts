@@ -19,7 +19,7 @@ export class SearchComponent {
 
     @Output() searchCategory: EventEmitter<any> = new EventEmitter<any>();
     @Output() getSelectedFilter: EventEmitter<any> = new EventEmitter<any>();
-
+    
     private searchUrl = '';
     private searchAutoSuggestionUrl = "";
     private searchCategoryByStringUrl:any;
@@ -58,11 +58,13 @@ export class SearchComponent {
   
     searchCategoryByString( str: string) {
         if (str.length >= 3) {
+            var self = this;
             this.searchCategoryByStringUrl = this.searchUrl + str;
             this._cservice.observableGetHttp( this.searchCategoryByStringUrl, null, false )
                 .subscribe((res: Response) => {
                     let obj = { 'categoryName': str, 'result': res };
                     this.searchCategory.emit(obj);
+                    self.searchCategoryByStr = '';
                 },
                 error => {
                     console.log("error in response",error);
