@@ -69,9 +69,12 @@
       }
     }
 
-  .img-circle {
-    border-radius: 50%;
-  }
+  .userProfilePic{
+   img{
+     width:50px;
+     height:50px;
+   }
+ }
 
   .description h6 {
     font-weight: bold;
@@ -141,9 +144,13 @@
   }
 
   .designerName {
-    font-size: 12px;
-    span {
-      letter-spacing: 2px; font-family: 'Open Sans'; font-weight: bold;
+    
+    p {
+      letter-spacing: 2px;
+      @extend %type-open-sans-12-9-text;
+    }
+    p.designation {
+      @extend %type-open-sans-10-6-text;
     }
   }
 
