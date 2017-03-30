@@ -27,6 +27,10 @@ export class SimilarListingComponent implements OnChanges{
 
   }
 
+  showProductInfo(id){
+    this._router.navigateByUrl('/dashboard/productInfo/'+id);
+  }
+
   getSimilarListing(){
     let pathUrl= '';
     let filter = this.type.split("-");

@@ -73,7 +73,6 @@ private WishListSelectedData : any;
   }
 
   showProductInfo(id){
-    debugger;
     this.hideChildModal()
     this._router.navigateByUrl('/dashboard/productInfo/'+id);
   }
