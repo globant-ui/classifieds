@@ -75,6 +75,7 @@ export class ProductInfoComponent{
     this.productDetails = this.productInfoUrl+this.productId;
     this._cservice.observableGetHttp(this.productDetails ,null,false)
       .subscribe((res:Response)=> {
+          this.isClicked = false;
           this.productInfoData = res;
           console.log(this.productInfoData);
           this.type = this.productInfoData.Listing.SubCategory + '-' + this.productInfoData.Listing.ListingCategory;
@@ -88,4 +89,8 @@ export class ProductInfoComponent{
           console.log("Finally");
         })
   }
+  
+  showContact(){
+    this.isClicked = true;
   }
+}

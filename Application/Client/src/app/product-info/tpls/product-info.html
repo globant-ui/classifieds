@@ -32,7 +32,7 @@
           <h6><i>Posted on {{postedDate}}</i></h6>
         </div>
         <div class="col-xs-6 col-md-6">
-          <h3 class="pull-right">{{productInfoData.Listing.Price | currency:'INR':false}}
+          <h3 class="pull-right">{{productInfoData.Listing.Price | currency:'INR':true}}
           <h6 *ngIf="productInfoData.Negotiable"><i class="pull-right">Negotiable</i></h6>
             <h6 *ngIf="!productInfoData.Negotiable"><i class="pull-right">Non-Negotiable</i></h6>
           </h3>
@@ -65,8 +65,8 @@
         </div>
         <div class="col-xs-12 col-md-4 no-padding-right">
           <button type="button"
-                  class="green-button pull-right" (click)="isClicked === !isClicked">CONTACT</button>
-          <div class="contact-number" [hidden]="!isClicked">{{productInfoData.Contact}}</div>
+                  class="green-button pull-right" *ngIf = "!isClicked" (click)="showContact()">CONTACT</button>
+          <div class="contact-number" *ngIf = "isClicked"><span *ngIf="productInfoData.ContactNo">Contact No: {{productInfoData.ContactNo}}</span><span *ngIf="!productInfoData.ContactNo">Contact No: NA</span><br/><span *ngIf="productInfoData.Email">Email: {{productInfoData.Email}}</span><span *ngIf="!productInfoData.Email">Email: NA</span></div>
         </div>
       </div>
 
