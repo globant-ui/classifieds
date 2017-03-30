@@ -49,6 +49,7 @@ export class ProductInfoComponent{
     this.showSimilarListing();
     this._route.params.subscribe(params => {
       this.productId = params['id'];
+      this.getProductInfo();
     });
 
   }

@@ -9,6 +9,7 @@ import 'rxjs/Rx';
 import {Session} from '../../authentication/entity/session.entity';
 import { ModalDirective } from 'ng2-bootstrap/modal';
 import { WishListService } from '../service/wishlist.service'
+import {Router} from '@angular/router';
 
 let styles = require('../styles/wishlist.component.scss').toString();
 let tpls = require('../tpls/wishlist.component.html').toString();
@@ -34,6 +35,7 @@ private WishListSelectedData : any;
   constructor(
                  private _settingsService: SettingsService,
                  private _cservice:CService,
+                 private _router: Router,
                  private _cookieService: CookieService,
                  private wishListService : WishListService) {
 
@@ -68,6 +70,12 @@ private WishListSelectedData : any;
          console.log("error in response", error);
        }
     );
+  }
+
+  showProductInfo(id){
+    debugger;
+    this.hideChildModal()
+    this._router.navigateByUrl('/dashboard/productInfo/'+id);
   }
 
   //delete api call
