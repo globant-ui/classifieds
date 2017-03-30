@@ -455,7 +455,8 @@ namespace Classifieds.Listings.Repository
         {
             try
             {
-                var update = Update<TEntity>.Set(p => p.IsPublished, true);
+                var update = Update<TEntity>.Set(p => p.IsPublished, true)
+                    .Set(p => p.Status, Convert.ToString(Status.Active));
                 var result = Classifieds.Update(Query<TEntity>.EQ(p => p._id, id), update);
                 return result.UpdatedExisting;
             }
