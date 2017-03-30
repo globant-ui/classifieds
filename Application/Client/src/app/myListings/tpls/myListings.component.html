@@ -1,4 +1,4 @@
-<div class="similarListingContainer similarListingContainerWithArrow"> 
+<div class="similarListingContainer similarListingContainerWithArrow">
 <div class="row">
 <div class="galleryArrow hidden-xs col-sm-1 col-md-1 col-lg-1">
         <img src="../../../../assets/img/arrow-left-circle.png" alt="...">
@@ -9,33 +9,33 @@
       <div class="col-sm-12">
         <h3>My Listing</h3>
       </div>
-    </div>    
-   
+    </div>
+
     <div class="row">
-      
-      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" *ngFor="let card of userListingData;let i = index;">
-        <div class="thumbnail">
+
+      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"  *ngFor="let card of userListingData;let i = index;">
+        <div class="thumbnail" *ngIf="card.Status == 'Active'" (click)="showProductInfo(card._id)">
           <template [ngIf]="i<4">
           <div class="mylisting-edit-icon">
               <button class="green-circle-button">
                 <i class="icon-Mobile_EditIcon"></i>
               </button>
           </div>
-            <img src="../../../../assets/img/similarListing.png" alt="...">
+            <img src="{{card.Photos[0].Image}}" alt="...">
 
             <div class="listingContent caption">
               <span class="title"><h5>{{card.Title}}</h5></span>
-              <span class="price pull-right">{{card.Price}}</span>
+              <span class="price pull-right">{{card.Price| currency:'INR':true}}</span>
               <div class="text-center">
-                <button class="small-green-button">Close listing</button>
+                <button class="small-green-button" *ngIf = "card.IsPublished" (click)="deleteLisitng(card._id)">Close listing</button>
               </div>
               <div>
               <div>
-              <span class="pull-left">
-                <button class="small-green-button">Publish</button>
+              <span class="pull-left" >
+                <button class="small-green-button" *ngIf = "!card.IsPublished" (click)="publishListing($event)">Publish</button>
               </span>
-              <span class="pull-right">
-                <button class="small-green-button">Close listing</button>
+              <span class="pull-right" >
+                <button class="small-green-button" *ngIf = "!card.IsPublished"(click)="deleteLisitng(card._id)">Close listing</button>
               </span>
               </div>
               </div>
@@ -43,10 +43,10 @@
           </template>
         </div>
       </div>
-      
-    </div>  
 
-  </div> 
+    </div>
+
+  </div>
 
   <div class="galleryArrow hidden-xs col-sm-1 col-md-1 col-lg-1">
         <img src="../../../../assets/img/arrow-right-circle.png" alt="...">

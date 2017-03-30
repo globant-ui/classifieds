@@ -47,10 +47,10 @@ ngOnChanges(changes: {[propKey: string]: SimpleChange}){
  }
 
  viewListingRedirect() {
-   this._route.navigate(['home']);
+   this._route.navigate(['dashboard/home']);
  }
+
   redirectToMyProfile(){
     this._route.navigate(['home']);
   }
-
 }
