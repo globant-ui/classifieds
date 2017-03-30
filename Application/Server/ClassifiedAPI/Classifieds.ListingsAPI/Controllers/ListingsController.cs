@@ -521,6 +521,37 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion
 
+        #region PutPublishListing
+
+        /// <summary>
+        /// Update listing status for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public HttpResponseMessage PutPublishListing(string id)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var classified = _listingService.PublishListing(id);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion PutPublishListing
         #endregion
 
         #region PostListingImages

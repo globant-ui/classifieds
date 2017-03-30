@@ -444,6 +444,28 @@ namespace Classifieds.Listings.Repository
 
         #endregion
 
+        #region PublishListing
+
+        /// <summary>
+        /// Update listing's isPublished field based on id from the database
+        /// </summary>
+        /// <param name="id">Listing Id</param>        
+        /// <returns>return true/false</returns>
+        public bool PublishListing(string id)
+        {
+            try
+            {
+                var update = Update<TEntity>.Set(p => p.IsPublished, true);
+                var result = Classifieds.Update(Query<TEntity>.EQ(p => p._id, id), update);
+                return result.UpdatedExisting;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion PublishListing
         #endregion
 
         #region private methods

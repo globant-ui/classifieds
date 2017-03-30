@@ -299,6 +299,27 @@ namespace Classifieds.Listings.BusinessServices
 
         #endregion CloseListing
 
+        #region PublishListing
+
+        /// <summary>
+        /// Update listing's isPublished field for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public bool PublishListing(string id)
+        {
+            try
+            {
+                return _listingRepository.PublishListing(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion PublishListing
         #endregion
     }
 }
