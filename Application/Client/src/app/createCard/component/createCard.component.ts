@@ -55,10 +55,6 @@ export class CreateCardComponent implements OnInit {
 
         this._route.params.subscribe(params => {
             self.productId = params['id'];
-
-            if(self.productId === 'create'){
-                this.createCard('create');
-            }
             if(self.productId !== undefined){
                 self.action = 'Edit';
                 self.getProductData(self.productId);
