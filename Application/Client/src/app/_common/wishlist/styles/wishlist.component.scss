@@ -28,23 +28,22 @@
 			    	padding: 0;
 			    	border: 0;
 				    img{
-				      width: 100%;
+				      width: 230px;
+					  height: 150px;
 				    }
 				    .listingContent{
 				    	text-align: left;
-					    span{
-					       display: inline-block;
-					       color: $primary-text-color !important;
-					       padding: 5px;
-					    }
-					    span.title{
+						p{
+							color: $primary-text-color !important;
+						}
+					    h5.title{
 					       @extend %type-open-sans-16-6-text;
 					       color: $heading-color !important;
-					       h5{
-					       		margin: 0;
-					       	}
+					       white-space: nowrap;
+                           overflow: hidden;
+                           text-overflow: ellipsis;
 					    }
-					    span.price{
+					    p.price{
 					       @extend %type-open-sans-10-6-text;
 					    }
 				    }
