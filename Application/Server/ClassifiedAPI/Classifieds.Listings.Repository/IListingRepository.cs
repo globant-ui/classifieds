@@ -14,7 +14,7 @@ namespace Classifieds.Listings.Repository
         List<TEntity> GetTopListings(int noOfRecords);
         List<TEntity> GetListingsByEmail(string email, int startIndex, int pageCount, bool isLast);
         List<TEntity> GetListingsByCategoryAndSubCategory(string category, string subCategory, string email, int startIndex, int pageCount, bool isLast);
-        TEntity CloseListing(string id, TEntity entity);
+        bool CloseListing(string id);
         List<TEntity> GetMyWishList(string[] id);
         List<TEntity> GetRecommendedList(Tags tag);
         void UpdateImagePath(string listingId, ListingImages[] photos);

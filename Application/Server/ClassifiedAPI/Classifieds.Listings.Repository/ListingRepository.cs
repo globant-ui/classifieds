@@ -384,7 +384,7 @@ namespace Classifieds.Listings.Repository
             try
             {
                 var query = Query<TEntity>.EQ(p => p._id, id);
-                Classifieds.Remove(query);
+                Classifieds.Remove(query);                  
             }
             catch (Exception ex)
             {
@@ -401,14 +401,13 @@ namespace Classifieds.Listings.Repository
         /// <param name="id">Listing Id</param>
         /// <param name="listObj">listing object </param>
         /// <returns>return updated listing object</returns>
-        public TEntity CloseListing(string id, TEntity listObj)
+        public bool CloseListing(string id)
         {
             try
-            {
-                var query = Query<TEntity>.EQ(p => p._id, id);
-                var update = Update<TEntity>.Set(p => p.Status, listObj.Status);
-                Classifieds.Update(query, update);
-                return listObj;
+            {                
+                var update = Update<TEntity>.Set(p => p.Status, Convert.ToString(Status.Closed));
+                var result = Classifieds.Update(Query<TEntity>.EQ(p => p._id, id), update);
+                return result.UpdatedExisting;
             }
             catch (Exception ex)
             {

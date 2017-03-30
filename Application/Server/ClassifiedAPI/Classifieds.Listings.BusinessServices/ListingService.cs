@@ -285,11 +285,11 @@ namespace Classifieds.Listings.BusinessServices
         /// <param name="id">Listing Id</param>
         /// <param name="listing">Listing Object</param>
         /// <returns></returns>
-        public Listing CloseListing(string id, Listing listing)
+        public bool CloseListing(string id)
         {
             try
             {
-                return _listingRepository.CloseListing(id, listing);
+                return _listingRepository.CloseListing(id);
             }
             catch (Exception ex)
             {

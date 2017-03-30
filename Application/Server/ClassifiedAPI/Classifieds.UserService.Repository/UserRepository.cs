@@ -255,13 +255,18 @@ namespace Classifieds.UserService.Repository
         {
             try
             {
-                //check listingId is existed or not in Wishlist array.                
-                var query = Query.And(Query.EQ("WishList", listingId), Query.EQ("UserEmail", userEmail));
-                var items = Classifieds.Find(query).ToList();
-                if (items.Count == 0)
+                //Check total wishlist count is less than 20 or not                 
+                var wishlistquery = Classifieds.Find(Query.EQ("UserEmail", userEmail)).Select(w => w.WishList).ToList();
+                if (wishlistquery != null && wishlistquery[0].Count() < 21)
                 {
-                    var result = Classifieds.Update(Query.EQ("UserEmail", userEmail), Update.PushWrapped("WishList", listingId));
-                    return result.UpdatedExisting;
+                    //check listingId is existed or not in Wishlist array.                
+                    var query = Query.And(Query.EQ("WishList", listingId), Query.EQ("UserEmail", userEmail));
+                    var items = Classifieds.Find(query).ToList();
+                    if (items.Count == 0)
+                    {
+                        var result = Classifieds.Update(Query.EQ("UserEmail", userEmail), Update.PushWrapped("WishList", listingId));
+                        return result.UpdatedExisting;
+                    }
                 }
                 return false;
             }
