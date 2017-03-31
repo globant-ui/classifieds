@@ -33,13 +33,14 @@
 				min-height: 180px;
 				h3{
 					padding: 0 0 15px 0;
-					margin: 0;
+					margin: 0 0 10px 0;
 					color: $heading-color;
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
-					height: $font-size-22*$line-height*$lines-to-show2; /* Fallback for non-webkit */
+				/*	height: font-size-22*$line-height*$lines-to-show2; /* Fallback for non-webkit */
 					/*margin: 0 auto;
 					font-size: $font-size-22;*/
+					height: 3em;
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show2;
 					-webkit-box-orient: vertical;
@@ -51,8 +52,9 @@
 					color: $primary-text-color;
 					display: block; /* Fallback for non-webkit */
 					display: -webkit-box;
-					height: $font-size-12*$line-height*$lines-to-show3 + 1; /* Fallback for non-webkit */
+					/*height: $font-size-12*$line-height*$lines-to-show3 + 1;  Fallback for non-webkit */
 					/*margin: 15px auto 0;*/
+					height: 4em;
 					@extend %type-open-sans-12-4-text;
 					line-height: $line-height;
 					-webkit-line-clamp: $lines-to-show3;

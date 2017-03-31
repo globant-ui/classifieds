@@ -73,13 +73,13 @@ private WishListSelectedData : any;
   }
 
   showProductInfo(id){
-    debugger;
     this.hideChildModal()
     this._router.navigateByUrl('/dashboard/productInfo/'+id);
   }
 
   //delete api call
-  deleteWishListData(obj) {
+  deleteWishListData(event,obj) {
+    event.stopPropagation();
     let self = this;
     this.wishListService.deleteWishList(this.DeleteUserWishListUrl+ obj._id)
     .then(res=>{

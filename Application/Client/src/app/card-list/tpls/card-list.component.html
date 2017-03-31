@@ -14,18 +14,18 @@
 
                     </div>
                     <div class="contentdetail">
-                        <h3>{{card.Title}}</h3>
-                        <p>{{card.Details}}</p>
+                        <h3 title="{{card.Title}}">{{card.Title}}</h3>
+                        <p title="{{card.Details}}">{{card.Details}}</p>
                         <ul>
                             <li>
                                 <span class="icon-clock" ></span>{{card.SubmittedDate.toString().split('T')[0]}}</li>
-                            <li><span class="icon-like-icon" [ngClass]="{'isFaveSelected': card.isInWishList}" (click) = "favorite($event,card._id, i,card)"></span> {{card.Price}}</li>
+                            <li><span class="icon-like-icon" [ngClass]="{'isFaveSelected': card.isInWishList}" (click) = "favorite($event,card._id, i,card)"></span>{{card.Price| currency:'INR':true}}</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div style="text-align: center;" *ngIf="cards.length == 0"><h1>No results found</h1></div>
+        <div style="text-align: center;" *ngIf="cards.length == 0"><page-not-found></page-not-found></div>
     </div>
 
 </div>

@@ -13,11 +13,11 @@
               <div class="thumbnail" (click)="showProductInfo(wishlist._id)">
                   <img src="{{wishlist.Photos[0].Image}}" alt="...">
                   <div class="listingContent caption" >
-                      <span class="title"><h5>{{wishlist.Title}}</h5></span>
-                      <span class="price pull-right">{{wishlist.Price| currency:'INR':true}}</span>
+                      <h5 class="title">{{wishlist.Title}}</h5>
+                      <p class="price">{{wishlist.Price| currency:'INR':true}}</p>
                   </div>
                   <div class="wishlistDelete"> 
-                    <span (click)="deleteWishListData(wishlist)"><img src="../../../../assets/img/closeButton.png"></span>
+                    <span (click)="deleteWishListData($event,wishlist)"><img src="../../../../assets/img/closeButton.png"></span>
                   </div>
               </div>
             </div>

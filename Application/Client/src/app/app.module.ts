@@ -39,6 +39,7 @@ import { WishListComponent } from './_common/wishlist/components/wishlist.compon
 import  {SettingsService} from  './_common/services/setting.service';
 import { PopUpMessageComponent } from './_common/popup';
 import  {WishListService} from  './_common/wishlist/service/wishlist.service';
+import { PageNotFoundComponent } from './_common/page-not-found';
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
@@ -84,6 +85,7 @@ type StoreType = {
     WishListComponent,
     MyListingsComponent,
     PopUpMessageComponent,
+    PageNotFoundComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,

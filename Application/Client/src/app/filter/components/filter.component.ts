@@ -25,6 +25,7 @@ export class FilterComponent {
 
   @Input() selectedFilter;
   @Input() isSearchActive;
+  @Input() searchValue;
   @Output() getSelectedFilterOption: EventEmitter<any> = new EventEmitter <any>();
 
   constructor(public appState: AppState,

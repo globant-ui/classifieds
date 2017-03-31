@@ -64,13 +64,13 @@ export class CardListComponent{
      this._router.navigateByUrl('/dashboard/productInfo/'+id);
   }
 
-//favorite card method
+    //favorite card method
    favorite(event,id, i, card) {
        event.stopPropagation();
        if(this.wishListData.length <= 20 || card.isInWishList === true){
         this.wishListCondtionalUrl = (card.isInWishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + id);
         var operation = card.isInWishList ? 'observableDeleteHttp' : 'observablePostHttp';
-        this._cservice[operation](this.wishListCondtionalUrl, card.isInWishList ? null : card, card.isInWishList ? false : null, false)
+        this._cservice[operation](this.wishListCondtionalUrl, null, false)
             .subscribe((res: Response) => {
                 this.cards[i]['isInWishList'] = !this.cards[i]['isInWishList'];
                 this.GetWishList();
