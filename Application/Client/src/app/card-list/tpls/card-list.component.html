@@ -7,11 +7,8 @@
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" *ngFor="let card of cards; let i=index;" >
                 <div class="plain-card-container" (click)="showProductInfo(card._id)">
                     <div class="img-block">
-                        <img src="{{card.Photos[0].Image}}" class="img-responsive" />
-
-                    <!--<div class="img-block">
-                        <img src="{{card.Photos[0]['Image']}}" class="img-responsive" />-->
-
+                        <img *ngIf="card.Photos && card.Photos.length>0" src="{{card.Photos[0].Image}}" class="img-responsive" />
+                        <img *ngIf="!card.Photos || card.Photos.length<=0" src="../../../../assets/img/similarListing.png" class="img-responsive" />
                     </div>
                     <div class="contentdetail">
                         <h3 title="{{card.Title}}">{{card.Title}}</h3>

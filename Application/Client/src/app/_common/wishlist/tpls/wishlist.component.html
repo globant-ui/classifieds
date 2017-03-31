@@ -11,7 +11,8 @@
           <div class="row">
             <div class="col-xs-3 col-sm-3 col-md-3" *ngFor = "let wishlist of WishListSelectedData">
               <div class="thumbnail" (click)="showProductInfo(wishlist._id)">
-                  <img src="{{wishlist.Photos[0].Image}}" alt="...">
+                  <img *ngIf="wishlist.Photos && wishlist.Photos.length>0" src="{{wishlist.Photos[0].Image}}" alt="..." class="img-responsive">
+                  <img *ngIf="!wishlist.Photos || wishlist.Photos.length<=0" src="../../../../assets/img/similarListing.png" class="img-responsive" />
                   <div class="listingContent caption" >
                       <h5 class="title">{{wishlist.Title}}</h5>
                       <p class="price">{{wishlist.Price| currency:'INR':true}}</p>

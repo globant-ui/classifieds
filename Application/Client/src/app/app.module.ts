@@ -25,6 +25,7 @@ import { BannerComponent } from './banner/components/banner.component';
 import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { ProductInfoComponent } from './product-info/components/product-info.component';
 import {Base64Service} from "./_common/services/base64.service";
+import {Broadcaster} from "./_common/services/broadcast.service";
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
 import { ProfileComponent } from './createProfile/component/createProfile.component';
@@ -109,7 +110,8 @@ type StoreType = {
     SettingsService,
     Base64Service,
     DatePipe,
-    WishListService
+    WishListService,
+    Broadcaster
   ]
 })
 export class AppModule {

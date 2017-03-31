@@ -5,6 +5,7 @@ import { LoaderComponent } from '../../_common/loader/components/loader.componen
 import { Observable }     from 'rxjs/Observable';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {CService} from  '../../_common/services/http.service';
+import {Broadcaster} from  '../../_common/services/broadcast.service';
 import {CookieService} from 'angular2-cookie/core';
 import {Router} from '@angular/router';
 
@@ -35,6 +36,7 @@ export class CardListComponent{
         public appState: AppState,
         private _settingsService: SettingsService,
         private _router: Router,
+        private broadcaster: Broadcaster,
         private _cservice: CService,
         private _cookieService: CookieService,
     ) {
@@ -54,6 +56,11 @@ export class CardListComponent{
         this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
         this.GetUserWishList = this.GetUserWishList + this.emailId;
         this.GetWishList();
+        let self = this;
+        this.broadcaster.on<string>('WISH_LIST_UPDATED')
+            .subscribe(data => {
+                self.GetWishList();
+        });
     }
     
     loading( flag ) {
