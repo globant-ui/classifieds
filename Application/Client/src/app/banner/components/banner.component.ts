@@ -23,7 +23,7 @@ export class BannerComponent implements OnInit {
     private _settingsService: SettingsService,
     private renderer: Renderer,
     private elRef: ElementRef,
-    private _router: Router,) {
+    private _router: Router) {
   }
 
   @Input()
@@ -61,7 +61,7 @@ export class BannerComponent implements OnInit {
     sub = sub.replace("/", "-");
     this._router.navigateByUrl('/dashboard/exploreList/' + sub);
   }
-  
+
   //explore click route
   exploreCategory( subCategoryMain ) {
     this._router.navigateByUrl('/dashboard/exploreList/' + subCategoryMain);

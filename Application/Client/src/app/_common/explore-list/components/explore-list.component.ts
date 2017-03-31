@@ -11,7 +11,5 @@ let tpls = require('../tpls/explore-list.component.html').toString();
 
 export class ExploreComponent  {
 
-
-
 } 
 
