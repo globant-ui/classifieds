@@ -201,6 +201,20 @@ namespace Classifieds.Listings.BusinessServices
 
         #endregion
 
+        #region GetPhotosByListingId
+        public ListingImages[] GetPhotosByListingId(string id)
+        {
+            try
+            {
+                return _listingRepository.GetPhotosByListingId(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
         #region CreateListing
         /// <summary>
         /// Create new listing item into the database
