@@ -43,9 +43,10 @@ export class LoginComponent implements OnInit{
 
     ngOnInit(){
         this._settingsService.getSettings();
+        this.session = new Session(this._cookieService.getObject('SESSION_PORTAL'));
         this.activeSession = (this.session && this.session.isValid());
         if(this.activeSession){
-            this._router.navigateByUrl('home');
+            this._router.navigateByUrl('/dashboard/home');
         }
     }
 
@@ -64,7 +65,7 @@ export class LoginComponent implements OnInit{
   doLogin(){
     console.log(this._settingsService.settings);
     let context = this;
-    this.session =new Session({});
+    this.session = new Session({});
     let params = '?client_id=' + encodeURIComponent( this._settingsService.settings.auth.client_id )
       + '&redirect_uri=' + encodeURIComponent( this._settingsService.settings.auth.redirect_uri )
       + '&scope=' + encodeURIComponent( this._settingsService.settings.auth.scope )
@@ -191,4 +192,3 @@ export class LoginComponent implements OnInit{
   }
 
 }
-
