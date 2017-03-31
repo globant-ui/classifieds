@@ -8,6 +8,7 @@ using Classifieds.Listings.BusinessEntities;
 using Classifieds.Search.BusinessServices;
 using Classifieds.Common;
 using Classifieds.Common.Repositories;
+using System.Configuration;
 
 #endregion
 
@@ -70,7 +71,9 @@ namespace Classifieds.SearchAPI.Controllers
                     string param = startIndex < 0 ? "Start Index" : "Page Count";
                     throw new Exception(param + "passed cannot be negative!");
                 }
-                return _searchService.FullTextSearch(searchText, startIndex, pageCount, isLast).ToList();
+                //return _searchService.FullTextSearch(searchText, startIndex, pageCount, isLast).ToList();               
+                var objListing = _searchService.FullTextSearch(searchText, startIndex, pageCount, isLast).ToList();
+                return MapImageName(objListing);
             }
             catch (Exception ex)
             {
@@ -89,6 +92,27 @@ namespace Classifieds.SearchAPI.Controllers
             message.Headers.TryGetValues("UserEmail", out headerValues);
             string headerVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return headerVal;
+        }
+
+        private List<Listing> MapImageName(List<Listing> listArray)
+        {
+            if (listArray != null)
+            {
+                foreach (Listing lst in listArray)
+                {
+                    if (lst.Photos != null)
+                    {
+                        foreach (ListingImages img in lst.Photos)
+                        {
+                            if (img != null)
+                            {
+                                img.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + img.Image;
+                            }
+                        }
+                    }
+                }
+            }
+            return listArray;
         }
         #endregion
     }

@@ -20,5 +20,6 @@ namespace Classifieds.Listings.BusinessServices
         List<Listing> GetRecommendedList(Tags tags);
         void UpdateImagePath(string listingId, ListingImages[] photos);
         ListingImages[] GetPhotosByListingId(string id);
+        bool PublishListing(string id);
     }
 }

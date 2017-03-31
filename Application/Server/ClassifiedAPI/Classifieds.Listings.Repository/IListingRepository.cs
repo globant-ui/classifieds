@@ -19,5 +19,6 @@ namespace Classifieds.Listings.Repository
         List<TEntity> GetRecommendedList(Tags tag);
         void UpdateImagePath(string listingId, ListingImages[] photos);
         ListingImages[] GetPhotosByListingId(string id);
+        bool PublishListing(string id);
     }
 }

@@ -40,7 +40,8 @@ namespace Classifieds.ListingsAPI.Controllers
         {
             Active,
             Closed,
-            Expired
+            Expired,
+            Saved
         };
         private string _accessToken = string.Empty;
         private readonly IWebApiServiceAgent _webApiServiceAgent;
@@ -612,6 +613,71 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion
 
+        #region PutPublishListing
+
+        /// <summary>
+        /// Update listing status for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public HttpResponseMessage PutPublishListing(string id)
+        {
+            HttpResponseMessage result;
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                var classified = _listingService.PublishListing(id);
+                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion PutPublishListing
+
+        #region PutImageListing
+
+        ///// <summary>
+        ///// remove listing image for given Id and image object
+        ///// </summary>
+        ///// <param name="id">Listing Id</param>
+        ///// <param name="listingImage">Listing Image Object</param>
+        ///// <returns></returns>
+        //[HttpPut]
+        //public HttpResponseMessage DeleteImageListing(string id, ListingImages listingImage)
+        //{
+        //    HttpResponseMessage result;
+        //    try
+        //    {
+        //        string authResult = _commonRepository.IsAuthenticated(Request);
+        //        _userEmail = GetUserEmail();
+        //        if (!(authResult.Equals("200")))
+        //        {
+        //            throw new Exception(authResult);
+        //        }
+        //        var classified = _listingService.CloseListing(id);
+        //        result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.Log(ex, _userEmail);
+        //        throw ex;
+        //    }
+        //    return result;
+        //}
+
+        #endregion PutImageListing
+
         #endregion
 
         #region PostListingImages
@@ -663,7 +729,11 @@ namespace Classifieds.ListingsAPI.Controllers
                                 JavaScriptSerializer j = new JavaScriptSerializer();
                                 var a = j.Deserialize(jsonStr, typeof(object));
                                 listing = LoadListingObject((Dictionary<string,object>)a);
-                                listing.Status = Status.Active.ToString();
+                                if (listing.IsPublished)
+                                    listing.Status = Status.Active.ToString();
+                                else
+                                    listing.Status = Status.Saved.ToString();
+
                                 listing.SubmittedDate = DateTime.Now;
                                 listing.Photos = imageInfo.ToArray<ListingImages>();
                                 var classified = _listingService.CreateListing(listing);

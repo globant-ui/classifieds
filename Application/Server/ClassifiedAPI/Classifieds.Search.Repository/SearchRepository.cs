@@ -9,6 +9,14 @@ namespace Classifieds.Search.Repository
 {
     public class SearchRepository<TEntity> : DBRepository, ISearchRepository<TEntity> where TEntity:Listing
     {
+        #region Private Variables
+        private enum Status
+        {
+            Active,
+            Closed,
+            Expired
+        };
+        #endregion
         MongoCollection<TEntity> Classifieds
         {
             get
@@ -40,6 +48,7 @@ namespace Classifieds.Search.Repository
                     skip = startIndex - 1;
                 }
                 List<TEntity> searchResult = Classifieds.Find(Query.Text(searchText))
+                                                        .Where(p => p.Status == Convert.ToString(Status.Active))
                                                         .Select(p => p)
                                                         .Skip(skip)
                                                         .Take(pageCount)
