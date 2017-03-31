@@ -12,9 +12,9 @@
                   <div class="categoryTitle">{{category.ListingCategory}}</div>
                   <span class="spriteimage {{category.ListingCategory}}Icon"></span>
                   <ul class="hoverlistWrapper" *ngIf="showSubCategory">
-                      <li *ngFor="let sub of category.SubCategory"><a>{{sub}}</a></li>
+                      <li *ngFor="let sub of category.SubCategory" (click) = "exploreSubCategory(sub)" ><a>{{sub}}</a></li>
                   </ul>
-                  <button>EXPLORE</button>
+                  <button (click) = "exploreCategory(category.ListingCategory)">EXPLORE</button>
               </li>
           </ul>
           <accordion class="visible-xs visible-sm">

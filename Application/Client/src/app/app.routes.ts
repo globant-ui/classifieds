@@ -8,6 +8,7 @@ import { HeaderComponent } from './_common/header/components/header.component';
 import { ProductInfoComponent } from './product-info';
 import { ProfileComponent } from './createProfile/component/createProfile.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
+import { ExploreComponent } from './_common/explore-list/components/explore-list.component';
 
 
 

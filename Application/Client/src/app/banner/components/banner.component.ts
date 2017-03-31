@@ -1,6 +1,7 @@
 import { Component,Input,OnInit,HostListener,AfterViewInit,Renderer,ElementRef } from '@angular/core';
 import { AppState } from '../../app.service';
 import {SettingsService} from '../../_common/services/setting.service';
+import {Router} from '@angular/router';
 
 let styles = require('../styles/banner.component.scss').toString();
 let tpls = require('../tpls/banner.component.html').toString();
@@ -17,7 +18,12 @@ export class BannerComponent implements OnInit {
   private listingsData: any;
   localState = {value: ''};
 
-  constructor(public appState: AppState, private _settingsService: SettingsService, private renderer: Renderer, private elRef: ElementRef) {
+  constructor(
+    public appState: AppState, 
+    private _settingsService: SettingsService,
+    private renderer: Renderer,
+    private elRef: ElementRef,
+    private _router: Router) {
   }
 
   @Input()
@@ -47,5 +53,17 @@ export class BannerComponent implements OnInit {
     el.addEventListener(evt, function () {
       handler.call(el);
     });
+  }
+
+  //banner click subCategory route
+  exploreSubCategory( sub ) {
+    sub = sub.replace(/\s+/g, '');
+    sub = sub.replace("/", "-");
+    this._router.navigateByUrl('/dashboard/exploreList/' + sub);
+  }
+
+  //explore click route
+  exploreCategory( subCategoryMain ) {
+    this._router.navigateByUrl('/dashboard/exploreList/' + subCategoryMain);
   }
 }
