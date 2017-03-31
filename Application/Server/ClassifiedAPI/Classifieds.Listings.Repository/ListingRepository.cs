@@ -307,6 +307,16 @@ namespace Classifieds.Listings.Repository
         }
         #endregion
 
+        #region GetPhotosByListingId
+        public ListingImages[] GetPhotosByListingId(string id)
+        {
+            var query = Query<TEntity>.EQ(p => p._id, id);
+            Listing partialRresult = Classifieds
+                .Find(query).SingleOrDefault(p => p.Status == Status.Active.ToString());
+            return partialRresult.Photos;
+        }
+        #endregion
+
         #region Add Listing
         /// <summary>
         /// Insert a new listing object into the database
@@ -361,6 +371,7 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.SubCategory, listObj.SubCategory)
                     .Set(p => p.Type, listObj.Type)
                     .Set(p => p.Negotiable, listObj.Negotiable)
+                    .Set(p => p.Photos, listObj.Photos)
                     .Set(p => p.IsPublished, listObj.IsPublished);
 
                 Classifieds.Update(query, update);

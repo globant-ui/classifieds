@@ -459,6 +459,97 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion
 
+        #region PutListing
+        /// <summary>
+        /// Updates a listing including images
+        /// </summary>
+        /// <param name="id">listing id</param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<HttpResponseMessage> PutListing(string id)
+        {
+            HttpResponseMessage result = new HttpResponseMessage();
+            try
+            {
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+                if (Request.Content.IsMimeMultipartContent())
+                {
+                    Listing listing;
+                    //Image handling
+                    string path = HttpContext.Current.Server.MapPath("~/");
+                    path = path + ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    path = ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
+                    string uploadPath = HttpContext.Current.Server.MapPath("~" + path);
+                    string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
+                    StreamProvider provider = new StreamProvider(uploadPath);
+                    try
+                    {
+                        var imageInfo = await ProcessImages(Request, dbPath, provider);
+                        var images = imageInfo.ToArray<ListingImages>();
+                        // Form data i.e. text handling 
+                        foreach (var key in provider.FormData.AllKeys)
+                        {
+                            foreach (var val in provider.FormData.GetValues(key))
+                            {
+                                string jsonStr = provider.FormData.Get(key);
+                                JavaScriptSerializer j = new JavaScriptSerializer();
+                                var a = j.Deserialize(jsonStr, typeof(object));
+                                listing = LoadListingObject((Dictionary<string, object>)a);
+                                listing.Status = Status.Active.ToString();
+                                ListingImages[] photos = _listingService.GetPhotosByListingId(id);
+                                if (photos != null && photos.Length > 0)
+                                {
+                                    DirectoryInfo di = new DirectoryInfo(uploadPath);
+                                    if (di.GetFiles().Length > 0)
+                                    {
+                                        foreach (FileInfo f in di.GetFiles())
+                                        {
+                                            foreach (ListingImages img in photos)
+                                            {
+                                                if(img.ImageName == f.Name)
+                                                    f.Delete();
+                                            }
+                                        }
+                                    }
+                                }
+                                listing.Photos = imageInfo.ToArray<ListingImages>();
+                                var classified = _listingService.UpdateListing(id, listing);
+                                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+                                var newItemUrl = Url.Link("Listings", new { id = classified._id });
+                                result.Headers.Location = new Uri(newItemUrl);
+                            }
+                        }
+                        return result;
+                       }
+                       catch (Exception ex)
+                       {
+                            _logger.Log(ex, _userEmail);
+                            throw ex;
+                       }
+                }
+                else
+                {
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
+                    throw new HttpResponseException(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+        }
+
+        #endregion
         #region PutCloseListing
 
         /// <summary>
@@ -626,21 +717,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     StreamProvider provider = new StreamProvider(uploadPath);
                     try
                     {
-                        var imageInfo =  await Request.Content.ReadAsMultipartAsync(provider)
-                            .ContinueWith(t =>
-                              {
-                                  if (t.IsFaulted || t.IsCanceled)
-                                  {
-                                      throw new HttpResponseException(HttpStatusCode.InternalServerError);
-                                  }
-                                  var fileInfo = provider.FileData.Select(i =>
-                                  {
-                                      var info = new FileInfo(i.LocalFileName);
-
-                                      return new ListingImages(info.Name, dbPath + info.Name);
-                                  });
-                                  return fileInfo;
-                              });
+                        var imageInfo = await ProcessImages(Request, dbPath, provider);
 
                         // Form data i.e. text handling 
                         foreach (var key in provider.FormData.AllKeys)
@@ -803,6 +880,24 @@ namespace Classifieds.ListingsAPI.Controllers
             return listArray;
         }
 
+        private Task<IEnumerable<ListingImages>> ProcessImages(HttpRequestMessage request, string dbPath, StreamProvider provider)
+        {
+            return request.Content.ReadAsMultipartAsync(provider)
+                            .ContinueWith(t =>
+                            {
+                                if (t.IsFaulted || t.IsCanceled)
+                                {
+                                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                                }
+                                var fileInfo = provider.FileData.Select(i =>
+                                {
+                                    var info = new FileInfo(i.LocalFileName);
+
+                                    return new ListingImages(info.Name, dbPath + info.Name);
+                                });
+                                return fileInfo;
+                            });
+        }
         #endregion
     }
 }
