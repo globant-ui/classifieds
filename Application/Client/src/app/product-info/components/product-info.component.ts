@@ -33,9 +33,11 @@ export class ProductInfoComponent{
   public subcategoryData = [];
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
   private GetUserWishList: string = '';
+  private wishListPostUrl:string = '';
+  private DeleteUserWishListUrl: string = '';
   private emailId:string = "";
   private isInWhishList:boolean = false;
-  private wishListData:any[] = [];
+  private wishListData:any = [];
 
   constructor(private _route: ActivatedRoute,
               public _datepipe: DatePipe,
@@ -48,6 +50,8 @@ export class ProductInfoComponent{
               private elRef:ElementRef,
               public  _cservice:CService) {
               this.GetUserWishList = _settingsService.getPath('GetUserWishList');
+              this.wishListPostUrl = _settingsService.getPath('wishListPostUrl');
+              this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl');
   }
 
   ngOnInit() {
@@ -111,6 +115,24 @@ export class ProductInfoComponent{
                console.log("error in response", error);
            });
        }
+   }
+
+   updateWishList(){
+    if(this.wishListData.length <= 20 || this.isInWhishList === true){
+      let wishListCondtionalUrl = (this.isInWhishList ? this.DeleteUserWishListUrl : this.wishListPostUrl) + (this.emailId + '&listingId=' + this.productInfoData.Listing._id);
+      let operation = this.isInWhishList ? 'observableDeleteHttp' : 'observablePostHttp';
+      this._cservice[operation](wishListCondtionalUrl, null, false)
+          .subscribe((res: Response) => {
+              this.isInWhishList = !this.isInWhishList;
+          },
+          error => {
+              console.log("error in response", error);
+          });
+      }
+      else{
+          alert("Only 20 Wishlist is allowed !!!");
+      }
+     
    }
   
   showContact(){

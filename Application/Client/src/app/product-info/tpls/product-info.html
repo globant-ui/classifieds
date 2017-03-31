@@ -42,8 +42,8 @@
       <div class="clearfix product-des-head">
         <div class="col-xs-6 col-md-6 description clearfix no-padding-left"><h6>DESCRIPTION</h6></div>
         <div class="col-xs-6 col-md-6 clearfix text-right wishlistText no-padding-right">
-          <a href="#">
-            <span [class.isFaveSelected]="isInWhishList" class="icon-like-icon wishlist"></span>
+          <a (click)="updateWishList()">
+            <span  [class.isFaveSelected]="isInWhishList" class="icon-like-icon wishlist"></span>
             <span class="textwishlist hidden-xs">ADD TO FAVOURITES</span>
           </a>
         </div>
