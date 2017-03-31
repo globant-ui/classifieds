@@ -19,7 +19,8 @@ namespace Classifieds.Listings.Repository
         {
             Active,
             Closed,
-            Expired
+            Expired,
+            Saved
         };
         private MongoCollection<TEntity> Classifieds
         {
@@ -194,7 +195,7 @@ namespace Classifieds.Listings.Repository
                 }
 
                 List<TEntity> listings = Classifieds.FindAll()
-                                            .Where(p => p.SubmittedBy == email)
+                                            .Where(p => (p.SubmittedBy == email) && ((p.Status == Status.Active.ToString()) || (p.Status == Status.Saved.ToString()) ))
                                             .Select(p => p)
                                             .OrderByDescending(p => p.SubmittedDate)
                                             .Skip(skip)
