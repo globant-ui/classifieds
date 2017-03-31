@@ -4,6 +4,7 @@ import { AppState } from '../../app.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import {SettingsService} from '../../_common/services/setting.service';
 import {CService} from  '../../_common/services/http.service';
+import {Broadcaster} from  '../../_common/services/broadcast.service';
 import { Http, Response,RequestOptions } from '@angular/http';
 import {apiPaths} from  '../../../serverConfig/apiPaths';
 import {subscribeOn} from "../../../../node_modules/rxjs/operator/subscribeOn";
@@ -47,6 +48,7 @@ export class ProductInfoComponent{
               private _settingsService: SettingsService,
               private renderer: Renderer,
               private _cookieService: CookieService,
+              private broadcaster: Broadcaster,
               private elRef:ElementRef,
               public  _cservice:CService) {
               this.GetUserWishList = _settingsService.getPath('GetUserWishList');
@@ -62,7 +64,10 @@ export class ProductInfoComponent{
       this.productId = params['id'];
       this.getProductInfo();
     });
-
+    this.broadcaster.on<string>('WISH_LIST_UPDATED')
+        .subscribe(data => {
+            this.GetWishList();
+    });
   }
 
   transformDate(date) {
