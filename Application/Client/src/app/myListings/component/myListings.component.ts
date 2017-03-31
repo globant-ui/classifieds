@@ -20,9 +20,11 @@ export class MyListingsComponent implements OnInit {
   private userLisitngDetails:any;
   private userListingData:any;
   private deleteMyListing:any;
+  private publishListData:any;
 
   private getMyListingsUrl = "http://in-it0289/ListingAPI/api/Listings/GetListingsByEmail?email=";
-  private deleteMyLisitngUrl = "http://in-it0289/ListingAPI/api/Listings/Delete?id=";
+  private deleteMyLisitngUrl = "http://in-it0289/ListingAPI/api/Listings/PutCloseListing/";
+  private publishListUrl= "http://in-it0289/ListingAPI/api/listings/PutPublishListing/";
 
     constructor(private _cservice:CService, private _router: Router){
     }
@@ -54,11 +56,10 @@ export class MyListingsComponent implements OnInit {
 
   deleteLisitng(value){
     event.stopPropagation();
-    this.deleteMyListing = this.deleteMyLisitngUrl+value;
+   // this.deleteMyListing = this.deleteMyLisitngUrl+value;
     console.log(this.deleteMyListing);
-    this._cservice.observableDeleteHttp(this.deleteMyListing ,null,false)
+    this._cservice.observablePutHttp(this.deleteMyLisitngUrl, value ,null,false)
       .subscribe((res:Response)=> {
-          console.log("ok",res);
           this.getMyListings(this.userEmail);
         },
         error => {
@@ -67,6 +68,24 @@ export class MyListingsComponent implements OnInit {
         ()=>{
           console.log("Finally");
         })
+  }
+
+  publishListing(id){
+    this._cservice.observablePutHttp(this.publishListUrl,id,null,false)
+      .subscribe((res:Response)=> {
+          console.log("ok",res);
+        },
+        error => {
+          console.log("error in response");
+        },
+        ()=>{
+          console.log("Finally");
+        })
+
+  }
+
+  EditMyListing(id){
+
   }
 
 }

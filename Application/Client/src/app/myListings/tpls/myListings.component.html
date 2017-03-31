@@ -14,10 +14,10 @@
     <div class="row">
 
       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"  *ngFor="let card of userListingData;let i = index;">
-        <div class="thumbnail" *ngIf="card.Status == 'Active'" (click)="showProductInfo(card._id)">
+        <div class="thumbnail" (click)="showProductInfo(card._id)">
           <template [ngIf]="i<4">
           <div class="mylisting-edit-icon">
-              <button class="green-circle-button">
+              <button class="green-circle-button" (click)="EditMyListing(card._id)">
                 <i class="icon-Mobile_EditIcon"></i>
               </button>
 
@@ -42,7 +42,7 @@
               <div>
               <div>
               <span class="pull-left" >
-                <button class="small-green-button" *ngIf = "!card.IsPublished" (click)="publishListing($event)">Publish</button>
+                <button class="small-green-button" *ngIf = "!card.IsPublished" (click)="publishListing(card._id)">Publish</button>
               </span>
               <span class="pull-right" >
                 <button class="small-green-button" *ngIf = "!card.IsPublished"(click)="deleteLisitng(card._id)">Close listing</button>
