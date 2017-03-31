@@ -345,11 +345,11 @@ namespace Classifieds.Listings.Repository
         /// <param name="id">Listing Id</param>
         /// <param name="listObj">listing object </param>
         /// <returns>return updated listing object</returns>
-        public TEntity Update(string id, TEntity listObj)
+        public TEntity Update(TEntity listObj)
         {
             try
             {
-                var query = Query<TEntity>.EQ(p => p._id, id);
+                var query = Query<TEntity>.EQ(p => p._id, listObj._id);
                 var update = Update<TEntity>.Set(p => p.Title, listObj.Title)
                     .Set(p => p.ListingType, listObj.ListingType)
                     .Set(p => p.ListingCategory, listObj.ListingCategory)
