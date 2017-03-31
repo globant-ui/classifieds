@@ -20,7 +20,11 @@
         </carousel>
       </div>
       <div *ngIf="productInfoData.Listing.Photos.length <= 0">
-        <h2>No Photo</h2>
+        <carousel>
+          <slide *ngIf="!productInfoData.Listing.Photos || productInfoData.Listing.Photos.length<=0">
+            <img src="../../../../assets/img/similarListing.png" alt="First slide">
+          </slide>
+        </carousel>
       </div>  
     </div>
     <!-- Gallery End -->
