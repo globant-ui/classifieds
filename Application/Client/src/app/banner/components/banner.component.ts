@@ -54,10 +54,16 @@ export class BannerComponent implements OnInit {
       handler.call(el);
     });
   }
-  exploreSubCategory(sub){
-     // sub = sub.replace(/\s+/g, '');
-      sub.replace("", "-");
-      this._router.navigateByUrl('/dashboard/exploreList/'+sub);
-    console.log("sub",sub)
+
+  //banner click subCategory route
+  exploreSubCategory( sub ) {
+    sub = sub.replace(/\s+/g, '');
+    sub = sub.replace("/", "-");
+    this._router.navigateByUrl('/dashboard/exploreList/' + sub);
+  }
+  
+  //explore click route
+  exploreCategory( subCategoryMain ) {
+    this._router.navigateByUrl('/dashboard/exploreList/' + subCategoryMain);
   }
 }
