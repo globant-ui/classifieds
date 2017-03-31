@@ -10,6 +10,7 @@ import {Session} from '../../authentication/entity/session.entity';
 import { ModalDirective } from 'ng2-bootstrap/modal';
 import { WishListService } from '../service/wishlist.service'
 import {Router} from '@angular/router';
+import {Broadcaster} from  '../../services/broadcast.service';
 
 let styles = require('../styles/wishlist.component.scss').toString();
 let tpls = require('../tpls/wishlist.component.html').toString();
@@ -17,6 +18,7 @@ let tpls = require('../tpls/wishlist.component.html').toString();
 @Component({
   selector: 'wishlist',
   styles : [ styles ],
+  providers:[],
   template : tpls
 })
 
@@ -36,6 +38,7 @@ private WishListSelectedData : any;
                  private _settingsService: SettingsService,
                  private _cservice:CService,
                  private _router: Router,
+                 private broadcaster: Broadcaster,
                  private _cookieService: CookieService,
                  private wishListService : WishListService) {
 
@@ -83,14 +86,15 @@ private WishListSelectedData : any;
     let self = this;
     this.wishListService.deleteWishList(this.DeleteUserWishListUrl+ obj._id)
     .then(res=>{
-      let delIndex = self.WishListSelectedData.findIndex(function(o){
-          return o._id === obj._id;
-      })
-      self.WishListSelectedData.splice(delIndex, 1);
-    },
-        error => {
+        let delIndex = self.WishListSelectedData.findIndex(function(o){
+            return o._id === obj._id;
+        })
+        self.WishListSelectedData.splice(delIndex, 1);
+        self.broadcaster.broadcast('WISH_LIST_UPDATED', "success");
+      },
+      error => {
          console.log("error in response", error);
-       }
+      }
     );
   }
 } 
