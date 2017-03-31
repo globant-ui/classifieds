@@ -17,7 +17,7 @@
                       <p class="price">{{wishlist.Price| currency:'INR':true}}</p>
                   </div>
                   <div class="wishlistDelete"> 
-                    <span (click)="deleteWishListData(wishlist)"><img src="../../../../assets/img/closeButton.png"></span>
+                    <span (click)="deleteWishListData($event,wishlist)"><img src="../../../../assets/img/closeButton.png"></span>
                   </div>
               </div>
             </div>
