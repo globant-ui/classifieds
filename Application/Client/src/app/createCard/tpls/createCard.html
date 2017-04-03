@@ -63,7 +63,7 @@
                     <label *ngIf="uploadedImages.length<4" for="myFileField" class="imageUpload">
                     <img src="../../../../assets/img/addImage.png" />
                     </label>
-                    <input type="file" id="myFileField" name="myFile" (change)="fileNameChanged($event)" multiple/>
+                    <input style="display: none;" type="file" id="myFileField" name="myFile" (change)="fileNameChanged($event)" multiple/>
                   </div>
 
 
