@@ -21,7 +21,7 @@
             <accordion-group #group *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory">
               <div accordion-heading>
                 <div class="img-icon">
-                      <img src="../../../../assets/img/mobile-icon/{{category.Image}}" />
+                      <span class="spriteimage {{category.ListingCategory}}Icon"></span>
                 </div>
                 <div class="categoryTitle">{{category.ListingCategory}}</div>
                 <i class="pull-right float-xs-right glyphicon"
