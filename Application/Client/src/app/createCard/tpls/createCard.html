@@ -34,7 +34,6 @@
                           <div class="col-xs-4 noPadding">
                             <div class="img-icon" (click)="reloadSubcategories(category)">
                               <span class="spriteimage {{category.ListingCategory}}Icon"></span>
-                              <img class="mobileImage"src="../../../../assets/img/mobile-icon/{{category.Image}}" />
                             </div>
                           </div>
                         </li>
@@ -61,10 +60,10 @@
                     <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
                       <img src="{{img}}">
                       </div>
-                    <label for="myFileField" class="imageUpload">
+                    <label *ngIf="uploadedImages.length<4" for="myFileField" class="imageUpload">
                     <img src="../../../../assets/img/addImage.png" />
                     </label>
-                    <input type="file" id="myFileField" name="myFile" (change)="fileNameChanged($event)" multiple/>
+                    <input style="display: none;" type="file" id="myFileField" name="myFile" (change)="fileNameChanged($event)" multiple/>
                   </div>
 
 

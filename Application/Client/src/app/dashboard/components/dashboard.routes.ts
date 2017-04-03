@@ -6,6 +6,7 @@ import { ProfileComponent } from '../../createProfile/component/createProfile.co
 import { CreateCardComponent } from '../../createCard/component/createCard.component';
 import { DashboardComponent } from './dashboard.component';
 import { CREATE_CARD_ROUTERS } from '../../createCard/component/create.card.routes';
+import { ExploreComponent } from '../../_common/explore-list';
 
 
 export const DASHBOARD_ROUTERS: Routes = [
@@ -19,6 +20,8 @@ export const DASHBOARD_ROUTERS: Routes = [
       {path: 'profile/:usermail', component: ProfileComponent},
       {path: 'productInfo', component: ProductInfoComponent},
         {path: 'productInfo/:id', component: ProductInfoComponent},
+        {path: 'exploreList', component: ExploreComponent},
+          {path: 'exploreList/:sub', component: ExploreComponent},
       ...CREATE_CARD_ROUTERS
   ]
 }

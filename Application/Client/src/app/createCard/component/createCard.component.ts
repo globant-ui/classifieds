@@ -30,6 +30,7 @@ export class CreateCardComponent implements OnInit {
     public categories;
     public subcategories;
     public uploadedImages = [];
+    private uploadedImageData = [];
     public endPoints = [];
     public isActive: string = '';
     public isCompleted = [];
@@ -107,19 +108,21 @@ export class CreateCardComponent implements OnInit {
     }
 
     getFilters(){
-       let url = (this.myForm.get('subCategory').value!=undefined && this.myForm.get('subCategory').value!='') ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
-       let self = this;
-       this.httpService.observableGetHttp(url,null,false)
-       .subscribe((res)=> {
-           self.filters = res;
-           self.loadFilters();
-         },
-         error => {
-           console.log("error in response");
-         },
-         ()=>{
-           console.log("Finally");
-         })
+       if(this.subcategories && this.subcategories.length > 0){
+        let url = (this.myForm.get('subCategory').value!=undefined && this.myForm.get('subCategory').value!='') ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
+        let self = this;
+        this.httpService.observableGetHttp(url,null,false)
+        .subscribe((res)=> {
+            self.filters = res;
+            self.loadFilters();
+            },
+            error => {
+            console.log("error in response");
+            },
+            ()=>{
+            console.log("Finally");
+            })
+        }
     }
 
     loadFilters(){
@@ -162,30 +165,24 @@ export class CreateCardComponent implements OnInit {
         this.subcategories = category.SubCategory;
         this.currentSubCategory = this.subcategories[0];
         this.type = this.currentSubCategory + '-' + this.selectedCategory;
-        console.log('type:'+this.type);
-        console.log('currentSubCategory:'+ this.currentSubCategory);
         this.getFilters();
     }
 
     fileNameChanged(event){
-
         if(this.myForm.get('cardType').value!='' && this.myForm.get('subCategory').value!='' && this.selectedCategory!=''){
             this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
-        console.log( document.getElementById("myFileField").files);
-
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = (event:any) => {
-            this.uploadedImages.push(event.target.result);
+                this.uploadedImageData.push(event.target.files[0]);
+                var reader = new FileReader();
+                reader.onload = (event:any) => {
+                    this.uploadedImages.push(event.target.result);
+                }
+                reader.readAsDataURL(event.target.files[0]);
             }
-
-            reader.readAsDataURL(event.target.files[0]);
         }
-    }
     }
 
     createCard(action){
@@ -198,33 +195,18 @@ export class CreateCardComponent implements OnInit {
        if(action === 'create'){
            cardData.IsPublished = true;
        }
-
       var data = new FormData();
-
       data.append("listing", JSON.stringify(cardData));
-
-      let files = document.getElementById("myFileField").files;
-      console.log(files);
-      for (let i = 0; i < files.length; i++) {
-          data.append("file", files[i]);
-        console.log(data);
-      }
-      console.log(document.getElementById("myFileField").files);
-
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "http://in-it0289/ListingAPI/api/Listings/PostListing");
-      xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
-      xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
-      xhr.send(data);
-      this.showPopupDivMessage="listing";
-      this.showPopupMessage = true;
-
-     this.uploadedImages.forEach(function(value,key){
-           let imageDetails = {};
-           imageDetails['ImageName'] = 'Photo'+key;
-           imageDetails['Image'] =  value;
-           cardData.Photos.push(imageDetails);
-       });
+        for (let i = 0; i < this.uploadedImageData.length; i++) {
+            data.append("file", this.uploadedImageData[i]);
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://in-it0289/ListingAPI/api/Listings/PostListing");
+        xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
+        xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
+        xhr.send(data);
+        this.showPopupDivMessage="listing";
+        this.showPopupMessage = true;
         this.submitted = true;
     }
 
