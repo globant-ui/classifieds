@@ -444,7 +444,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
                 listing.Status = Status.Active.ToString();
-                var classified = _listingService.UpdateListing(id, listing);
+                var classified = _listingService.UpdateListing(listing);
                 result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
                 var newItemUrl = Url.Link("Listings", new { id = classified._id });
                 result.Headers.Location = new Uri(newItemUrl);
@@ -466,21 +466,23 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="id">listing id</param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<HttpResponseMessage> PutListing(string id)
+        public async Task<HttpResponseMessage> PutListing()
         {
-            HttpResponseMessage result = new HttpResponseMessage();
             try
             {
+                //request authentication
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 _userEmail = GetUserEmail();
                 if (!(authResult.Equals("200")))
                 {
                     throw new Exception(authResult);
                 }
+
+                HttpResponseMessage result = new HttpResponseMessage();
                 if (Request.Content.IsMimeMultipartContent())
                 {
-                    Listing listing;
-                    //Image handling
+                    Listing listing = null;
+                    //configuring the path
                     string path = HttpContext.Current.Server.MapPath("~/");
                     path = path + ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
                     if (!System.IO.Directory.Exists(path))
@@ -494,7 +496,7 @@ namespace Classifieds.ListingsAPI.Controllers
                     try
                     {
                         var imageInfo = await ProcessImages(Request, dbPath, provider);
-                        var images = imageInfo.ToArray<ListingImages>();
+                        
                         // Form data i.e. text handling 
                         foreach (var key in provider.FormData.AllKeys)
                         {
@@ -503,31 +505,26 @@ namespace Classifieds.ListingsAPI.Controllers
                                 string jsonStr = provider.FormData.Get(key);
                                 JavaScriptSerializer j = new JavaScriptSerializer();
                                 var a = j.Deserialize(jsonStr, typeof(object));
-                                listing = LoadListingObject((Dictionary<string, object>)a);
-                                listing.Status = Status.Active.ToString();
-                                ListingImages[] photos = _listingService.GetPhotosByListingId(id);
-                                if (photos != null && photos.Length > 0)
-                                {
-                                    DirectoryInfo di = new DirectoryInfo(uploadPath);
-                                    if (di.GetFiles().Length > 0)
-                                    {
-                                        foreach (FileInfo f in di.GetFiles())
-                                        {
-                                            foreach (ListingImages img in photos)
-                                            {
-                                                if(img.ImageName == f.Name)
-                                                    f.Delete();
-                                            }
-                                        }
-                                    }
-                                }
-                                listing.Photos = imageInfo.ToArray<ListingImages>();
-                                var classified = _listingService.UpdateListing(id, listing);
-                                result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
-                                var newItemUrl = Url.Link("Listings", new { id = classified._id });
-                                result.Headers.Location = new Uri(newItemUrl);
+                                listing = LoadListingObject((Dictionary<string, object>)a, true);
                             }
                         }
+                        if (listing == null)
+                            throw new NullReferenceException("Listing object is null");
+
+                        //deleting existing images and adding new ones
+                        DeletePhotosByListingId(listing._id, uploadPath);
+                        //var images = imageInfo.ToArray<ListingImages>();
+
+                        listing.Photos = imageInfo.ToArray<ListingImages>();
+
+                        if (listing.IsPublished)
+                            listing.Status = Status.Active.ToString();
+                        else
+                            listing.Status = Status.Saved.ToString();
+                        var classified = _listingService.UpdateListing(listing);
+                        result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+                        var newItemUrl = Url.Link("Listings", new { id = classified._id });
+                        result.Headers.Location = new Uri(newItemUrl);
                         return result;
                        }
                        catch (Exception ex)
@@ -690,9 +687,6 @@ namespace Classifieds.ListingsAPI.Controllers
         {
             try
             {
-                bool listingFound = false;
-                HttpResponseMessage result = new HttpResponseMessage();
-
                 //request authentication
                 string authResult = _commonRepository.IsAuthenticated(Request);
                 _userEmail = GetUserEmail();
@@ -701,9 +695,10 @@ namespace Classifieds.ListingsAPI.Controllers
                     throw new Exception(authResult);
                 }
 
+                HttpResponseMessage result = new HttpResponseMessage();
                 if (Request.Content.IsMimeMultipartContent())
                 {
-                    Listing listing;
+                    Listing listing = null;
                     //Image handling
                     string path = HttpContext.Current.Server.MapPath("~/");
                     path = path + ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
@@ -718,28 +713,30 @@ namespace Classifieds.ListingsAPI.Controllers
                     try
                     {
                         var imageInfo = await ProcessImages(Request, dbPath, provider);
-
                         // Form data i.e. text handling 
                         foreach (var key in provider.FormData.AllKeys)
                         {
                             foreach (var val in provider.FormData.GetValues(key))
                             {
-                                listingFound = true;
                                 string jsonStr = provider.FormData.Get(key);
                                 JavaScriptSerializer j = new JavaScriptSerializer();
                                 var a = j.Deserialize(jsonStr, typeof(object));
-                                listing = LoadListingObject((Dictionary<string,object>)a);
-                                if (listing.IsPublished)
-                                    listing.Status = Status.Active.ToString();
-                                else
-                                    listing.Status = Status.Saved.ToString();
-
-                                listing.SubmittedDate = DateTime.Now;
-                                listing.Photos = imageInfo.ToArray<ListingImages>();
-                                var classified = _listingService.CreateListing(listing);
-                                result = Request.CreateResponse(HttpStatusCode.Created, classified);
+                                listing = LoadListingObject((Dictionary<string, object>)a, false);
                             }
                         }
+                        if (listing == null)
+                        { 
+                            throw new NullReferenceException();
+                        }
+                        
+                        if (listing.IsPublished)
+                            listing.Status = Status.Active.ToString();
+                        else
+                            listing.Status = Status.Saved.ToString();
+                        listing.SubmittedDate = DateTime.Now;
+                        listing.Photos = imageInfo.ToArray<ListingImages>();
+                        var classified = _listingService.CreateListing(listing);
+                        result = Request.CreateResponse(HttpStatusCode.Created, classified);
                         return result;
                     }
                     catch (System.Exception e)
@@ -776,9 +773,13 @@ namespace Classifieds.ListingsAPI.Controllers
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
         }
-        private Listing LoadListingObject(Dictionary<string,object> o)
+        private Listing LoadListingObject(Dictionary<string,object> o, bool isPut)
         {
             Listing listing = new Listing();
+            if (isPut)
+            {
+                listing._id = o["_id"].ToString();
+            }
             listing.Address = o["Address"].ToString();
             listing.Brand = o["Brand"].ToString();
             listing.City = o["City"].ToString();
@@ -897,6 +898,28 @@ namespace Classifieds.ListingsAPI.Controllers
                                 });
                                 return fileInfo;
                             });
+        }
+
+        private void DeletePhotosByListingId(string id, string uploadPath)
+        {
+            ListingImages[] photos = _listingService.GetPhotosByListingId(id);
+            if (photos != null && photos.Length > 0)
+            {
+                DirectoryInfo di = new DirectoryInfo(uploadPath);
+                if (di.GetFiles().Length > 0)
+                {
+                    foreach (FileInfo f in di.GetFiles())
+                    {
+                        foreach (ListingImages img in photos)
+                        {
+                            if (img.ImageName == f.Name)
+                            {
+                                f.Delete();
+                            }
+                        }
+                    }
+                }
+            }
         }
         #endregion
     }

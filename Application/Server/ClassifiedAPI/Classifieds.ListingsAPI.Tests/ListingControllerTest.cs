@@ -327,7 +327,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Controller_UpdateListTest()
         {
             // Arrange
-            _mockService.Setup(x => x.UpdateListing(It.IsAny<string>(), It.IsAny<Listing>()))
+            _mockService.Setup(x => x.UpdateListing(It.IsAny<Listing>()))
                 .Returns(GetListObject());
             _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
