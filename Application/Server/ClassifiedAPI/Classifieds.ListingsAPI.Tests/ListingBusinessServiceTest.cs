@@ -295,10 +295,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var lstObject = GetListObject();
-            _moqAppManager.Setup(x => x.Update(It.IsAny<string>(), It.IsAny<Listing>())).Returns(lstObject);
+            _moqAppManager.Setup(x => x.Update(It.IsAny<Listing>())).Returns(lstObject);
             var updatedList = new Listing() { Title = lstObject.Title, ListingType = lstObject.ListingType };
             //Act
-            var result = _service.UpdateListing(lstObject._id, updatedList);
+            var result = _service.UpdateListing(updatedList);
 
             //Assert
             Assert.IsNotNull(result, null);
@@ -314,10 +314,10 @@ namespace Classifieds.ListingsAPI.Tests
         {
             //Arrange
             var ex = new ArgumentNullException("ArgumentNullException", new ArgumentNullException());
-            _moqAppManager.Setup(x => x.Update(It.IsAny<string>(), It.IsAny<Listing>())).Throws(ex);
+            _moqAppManager.Setup(x => x.Update(It.IsAny<Listing>())).Throws(ex);
 
             //Act
-            _service.UpdateListing(null, null);
+            _service.UpdateListing(null);
         }
 
         /// <summary>

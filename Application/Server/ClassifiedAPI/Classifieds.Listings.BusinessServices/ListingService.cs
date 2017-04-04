@@ -242,11 +242,11 @@ namespace Classifieds.Listings.BusinessServices
         /// <param name="id">Listing Id</param>
         /// <param name="listing">Listing Object</param>
         /// <returns></returns>
-        public Listing UpdateListing(string id, Listing listing)
+        public Listing UpdateListing(Listing listing)
         {
             try
             {
-                return _listingRepository.Update(id, listing);
+                return _listingRepository.Update(listing);
             }
             catch (Exception ex)
             {

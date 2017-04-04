@@ -238,7 +238,7 @@ namespace Classifieds.ListingsAPI.Tests
             result.Title = "UpdatedTest";
             result.ListingCategory = "UpdatedHousing";
 
-            var updatedresult = _listingRepo.Update(result._id, result);
+            var updatedresult = _listingRepo.Update(result);
             Assert.IsNotNull(updatedresult);
 
             Assert.AreEqual(result.Title, updatedresult.Title);
@@ -252,7 +252,7 @@ namespace Classifieds.ListingsAPI.Tests
         [ExpectedException(typeof(NullReferenceException))]
         public void Repo_UpdateListTest_NullId_ThrowException()
         {
-            var result = _listingRepo.Update(null, null);
+            var result = _listingRepo.Update(null);
             Assert.IsNull(result);
         }
 
