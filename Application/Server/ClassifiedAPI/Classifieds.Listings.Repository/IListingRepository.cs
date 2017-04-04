@@ -20,5 +20,6 @@ namespace Classifieds.Listings.Repository
         void UpdateImagePath(string listingId, ListingImages[] photos);
         ListingImages[] GetPhotosByListingId(string id);
         bool PublishListing(string id);
+        bool DeleteListingImage(string id, ListingImages lstImage);
     }
 }

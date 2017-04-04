@@ -504,7 +504,10 @@ namespace Classifieds.ListingsAPI.Controllers
                                 JavaScriptSerializer j = new JavaScriptSerializer();
                                 var a = j.Deserialize(jsonStr, typeof(object));
                                 listing = LoadListingObject((Dictionary<string, object>)a);
-                                listing.Status = Status.Active.ToString();
+                                if (listing.IsPublished)
+                                    listing.Status = Status.Active.ToString();
+                                else
+                                    listing.Status = Status.Saved.ToString();
                                 ListingImages[] photos = _listingService.GetPhotosByListingId(id);
                                 if (photos != null && photos.Length > 0)
                                 {
@@ -647,34 +650,56 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #region PutImageListing
 
-        ///// <summary>
-        ///// remove listing image for given Id and image object
-        ///// </summary>
-        ///// <param name="id">Listing Id</param>
-        ///// <param name="listingImage">Listing Image Object</param>
-        ///// <returns></returns>
-        //[HttpPut]
-        //public HttpResponseMessage DeleteImageListing(string id, ListingImages listingImage)
-        //{
-        //    HttpResponseMessage result;
-        //    try
-        //    {
-        //        string authResult = _commonRepository.IsAuthenticated(Request);
-        //        _userEmail = GetUserEmail();
-        //        if (!(authResult.Equals("200")))
-        //        {
-        //            throw new Exception(authResult);
-        //        }
-        //        var classified = _listingService.CloseListing(id);
-        //        result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Log(ex, _userEmail);
-        //        throw ex;
-        //    }
-        //    return result;
-        //}
+        /// <summary>
+        /// remove listing image for given Id and image object
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listingImage">Listing Image Object</param>
+        /// <returns></returns>
+        [HttpPut]
+        public HttpResponseMessage DeleteListingImage(string id, ListingImages listingImage)
+        {
+            HttpResponseMessage result;
+            try
+            {                
+                string authResult = _commonRepository.IsAuthenticated(Request);
+                _userEmail = GetUserEmail();
+                if (!(authResult.Equals("200")))
+                {
+                    throw new Exception(authResult);
+                }
+
+                //Image handling               
+                string path = ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
+                string uploadPath = HttpContext.Current.Server.MapPath("~" + path);
+
+                string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
+
+                if (listingImage != null)
+                {
+                    var imagePath = uploadPath + listingImage.ImageName;
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(uploadPath + listingImage.ImageName);
+                    }
+
+                    listingImage.Image = dbPath + listingImage.ImageName;
+                    var classified = _listingService.DeleteListingImage(id, listingImage);
+
+                    result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
+                }
+                else
+                {
+                    result = Request.CreateResponse(HttpStatusCode.OK,"Image not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, _userEmail);
+                throw ex;
+            }
+            return result;
+        }
 
         #endregion PutImageListing
 

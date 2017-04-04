@@ -479,6 +479,27 @@ namespace Classifieds.Listings.Repository
         }
 
         #endregion PublishListing
+
+        #region User DeleteListingImage
+        /// <summary>
+        /// Delete Alerts
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="alert"></param>
+        public bool DeleteListingImage(string id, ListingImages img)
+        {
+            try
+            {
+                var result = Classifieds.Update(Query<TEntity>.EQ(p => p._id, id), 
+                    MongoDB.Driver.Builders.Update.PullWrapped<ListingImages>("Photos", img));
+                return result.UpdatedExisting;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
         #endregion
 
         #region private methods
