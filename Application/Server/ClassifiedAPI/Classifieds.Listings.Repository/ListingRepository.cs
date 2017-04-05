@@ -373,7 +373,10 @@ namespace Classifieds.Listings.Repository
                     .Set(p => p.Type, listObj.Type)
                     .Set(p => p.Negotiable, listObj.Negotiable)
                     .Set(p => p.Photos, listObj.Photos)
-                    .Set(p => p.IsPublished, listObj.IsPublished);
+                    .Set(p => p.IsPublished, listObj.IsPublished)
+                    .Set(p => p.Country, listObj.Country)
+                    .Set(p => p.State, listObj.State)
+                    .Set(p => p.City, listObj.City);
 
                 Classifieds.Update(query, update);
                 return listObj;

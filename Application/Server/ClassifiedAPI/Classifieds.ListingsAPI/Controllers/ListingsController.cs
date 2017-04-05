@@ -459,7 +459,7 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion
 
-        #region PutListing
+        #region PutListing (Update Listing)
         /// <summary>
         /// Updates a listing including images
         /// </summary>
@@ -504,18 +504,36 @@ namespace Classifieds.ListingsAPI.Controllers
                             {
                                 string jsonStr = provider.FormData.Get(key);
                                 JavaScriptSerializer j = new JavaScriptSerializer();
-                                var a = j.Deserialize(jsonStr, typeof(object));
-                                listing = LoadListingObject((Dictionary<string, object>)a, true);
+                                //var a = j.Deserialize(jsonStr, typeof(object));
+                                //listing = LoadListingObject((Dictionary<string, object>)a, true);
+                                listing = j.Deserialize<Listing>(jsonStr);
                             }
                         }
                         if (listing == null)
                             throw new NullReferenceException("Listing object is null");
 
                         //deleting existing images and adding new ones
-                        DeletePhotosByListingId(listing._id, uploadPath);
-                        //var images = imageInfo.ToArray<ListingImages>();
-
-                        listing.Photos = imageInfo.ToArray<ListingImages>();
+                        //DeletePhotosByListingId(listing._id, uploadPath);
+                        //listing.Photos = imageInfo.ToArray<ListingImages>();
+                        if (listing.Photos == null || listing.Photos.Length == 0)
+                        {
+                            listing.Photos = imageInfo.ToArray<ListingImages>();
+                        }
+                        else
+                        {
+                            //removing base address for existing photo[] field in json send from UI
+                            string imageServerPath = ConfigurationManager.AppSettings["ImageServer"].ToString();
+                            foreach (ListingImages photo in listing.Photos)
+                            {                               
+                                photo.Image = photo.Image.Replace(imageServerPath, string.Empty); 
+                            }
+                            var images = imageInfo.ToArray<ListingImages>();
+                            foreach (ListingImages img in images)
+                            {
+                                listing.Photos = (listing.Photos ?? Enumerable.Empty<ListingImages>()).Concat(Enumerable.Repeat(img, 1)).ToArray();
+                            }
+                        }
+                        
 
                         if (listing.IsPublished)
                             listing.Status = Status.Active.ToString();
@@ -547,7 +565,8 @@ namespace Classifieds.ListingsAPI.Controllers
         }
 
         #endregion
-        #region PutCloseListing
+
+        #region PutCloseListing (Update status to mark closed)
 
         /// <summary>
         /// Update listing status for given Id
@@ -579,7 +598,7 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion PutCLoseListing
 
-        #region Delete Listing
+        #region DeleteListing  (hard delete)
         /// <summary>
         /// Delete listing item for given Id
         /// </summary>
@@ -610,7 +629,7 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion
 
-        #region PutPublishListing
+        #region PutPublishListing (Update status to Active and IsPublished to true)
 
         /// <summary>
         /// Update listing status for given Id
@@ -642,7 +661,7 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion PutPublishListing
 
-        #region PutImageListing
+        #region Put-DeleteListingImage
 
         /// <summary>
         /// remove listing image for given Id and image object
@@ -697,9 +716,7 @@ namespace Classifieds.ListingsAPI.Controllers
 
         #endregion PutImageListing
 
-        #endregion
-
-        #region PostListingImages
+        #region PostListing
         /// <summary>
         /// 
         /// </summary>
@@ -780,6 +797,8 @@ namespace Classifieds.ListingsAPI.Controllers
         }
         #endregion
 
+        #endregion
+        
         #endregion
 
         #region private methods
