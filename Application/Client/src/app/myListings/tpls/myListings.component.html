@@ -1,7 +1,7 @@
 <div class="similarListingContainer similarListingContainerWithArrow">
 <div class="row">
-<div class="galleryArrow hidden-xs col-sm-1 col-md-1 col-lg-1">
-        <img src="../../../../assets/img/arrow-left-circle.png" alt="...">
+<div [class.nav-disable]="!isBackEnable" *ngIf="userListingData"  class="galleryArrow hidden-xs col-sm-1 col-md-1 col-lg-1">
+        <img *ngIf="userListingData.length > 4" (click)="previousClickHandler()" src="../../../../assets/img/arrow-left-circle.png" alt="...">
 </div>
 
   <div class="similarListings col-xs-12 col-sm-10 col-md-10 col-lg-10">
@@ -13,24 +13,14 @@
 
     <div class="row">
 
-      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"  *ngFor="let card of userListingData;let i = index;">
+      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"  *ngFor="let card of currentUserList;let i = index;">
         <div class="thumbnail" (click)="showProductInfo(card._id)">
-          <template [ngIf]="i<4">
-          <div class="mylisting-edit-icon">
-              <button class="green-circle-button" (click)="EditMyListing(card._id)">
-                <i class="icon-Mobile_EditIcon"></i>
-              </button>
-
-        <!--<div class="edit-icon mylisting-edit-icon">
-          <div class="green-circle-button">
-            <div class="edit-icon-img">
-              <input id="myFileField" type="file" name="myFile" (change)="UpdateImage($event)"/>
-                <label for="myFileField" class="imageUpload"></label>
+          <template [ngIf]="true">
+            <div class="mylisting-edit-icon">
+                <button class="green-circle-button" (click)="EditMyListing(card._id)">
+                  <i class="icon-Mobile_EditIcon"></i>
+                </button>
             </div>
-        </div>
-      </div>-->
-
-          </div>
             <img *ngIf="card.Photos && card.Photos.length > 0" src="{{card.Photos[0].Image}}" alt="..." class="img-responsive">
             <img *ngIf="!card.Photos || card.Photos.length <= 0" src="../../../../assets/img/similarListing.png" class="img-responsive" />
             <div class="listingContent caption">
@@ -58,8 +48,8 @@
 
   </div>
 
-  <div class="galleryArrow hidden-xs col-sm-1 col-md-1 col-lg-1">
-        <img src="../../../../assets/img/arrow-right-circle.png" alt="...">
+  <div [class.nav-disable]="!isNextEnable" *ngIf="userListingData"  class="galleryArrow hidden-xs col-sm-1 col-md-1 col-lg-1">
+        <img *ngIf="userListingData.length > 4" (click)="nextClickHandler()" src="../../../../assets/img/arrow-right-circle.png" alt="...">
     </div>
 </div>
 </div>

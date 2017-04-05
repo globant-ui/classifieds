@@ -22,7 +22,11 @@ export class MyListingsComponent implements OnInit {
   private deleteMyListing:any;
   private publishListData:any;
   private listingId : any;
-
+  private currentUserList = [];
+  private startIndex:number = 0;
+  private endIndex:number = 4;
+  private isNextEnable:boolean = true;
+  private isBackEnable:boolean = false;
   private getMyListingsUrl = "http://in-it0289/ListingAPI/api/Listings/GetListingsByEmail?email=";
   private deleteMyLisitngUrl = "http://in-it0289/ListingAPI/api/listings/PutCloseListing/";
   private publishListUrl= "http://in-it0289/ListingAPI/api/listings/PutPublishListing/";
@@ -46,6 +50,7 @@ export class MyListingsComponent implements OnInit {
     this._cservice.observableGetHttp(this.userLisitngDetails ,null,false)
       .subscribe((res:Response)=> {
           this.userListingData = res;
+          this.getUpdatedList();
           console.log("--------",this.userListingData);
         },
         error => {
@@ -54,6 +59,14 @@ export class MyListingsComponent implements OnInit {
         ()=>{
           console.log("Finally");
         })
+  }
+
+  getUpdatedList(){
+    let arr = [];
+    for(let i = this.startIndex ; i < this.endIndex ; i++){
+      arr.push(this.userListingData[i]);
+    }
+    this.currentUserList = arr;
   }
 
   deleteLisitng(value){
@@ -88,6 +101,34 @@ export class MyListingsComponent implements OnInit {
           console.log("Finally");
         })
 
+  }
+
+  nextClickHandler(){
+    if(this.userListingData){
+      if(this.userListingData.length > 4){
+        if(this.startIndex+4 < this.userListingData.length){
+          this.startIndex++;
+          this.endIndex = this.startIndex + 4;
+          this.getUpdatedList();
+        }
+        this.isNextEnable = this.endIndex >= this.userListingData.length ? false : true;
+        this.isBackEnable = this.startIndex <= 0 ? false : true;
+      }
+    }
+  }
+
+  previousClickHandler(){
+    if(this.userListingData){
+      if(this.userListingData.length > 4){
+        if(this.startIndex-1 >= 0){
+          this.startIndex--;
+          this.endIndex = this.startIndex + 4;
+          this.getUpdatedList();
+        }
+        this.isNextEnable = this.endIndex >= this.userListingData.length ? false : true;
+        this.isBackEnable = this.startIndex <= 0 ? false : true;
+      }
+    }
   }
 
   EditMyListing(id){

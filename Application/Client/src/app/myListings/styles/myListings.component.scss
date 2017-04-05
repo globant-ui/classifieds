@@ -15,6 +15,11 @@
   }
 }
 
+.nav-disable{
+    cursor: default;
+    opacity: 0.5;
+}
+
 .edit-profile-link {
   @extend %type-open-sans-14-9-text;
   color: $darkblue-color;
