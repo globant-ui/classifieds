@@ -20,9 +20,12 @@ export class MyListingsComponent implements OnInit {
   private userLisitngDetails:any;
   private userListingData:any;
   private deleteMyListing:any;
+  private publishListData:any;
+  private listingId : any;
 
   private getMyListingsUrl = "http://in-it0289/ListingAPI/api/Listings/GetListingsByEmail?email=";
-  private deleteMyLisitngUrl = "http://in-it0289/ListingAPI/api/Listings/Delete?id=";
+  private deleteMyLisitngUrl = "http://in-it0289/ListingAPI/api/listings/PutCloseListing/";
+  private publishListUrl= "http://in-it0289/ListingAPI/api/listings/PutPublishListing/";
 
     constructor(private _cservice:CService, private _router: Router){
     }
@@ -33,6 +36,7 @@ export class MyListingsComponent implements OnInit {
     }
 
   showProductInfo(id){
+      event.stopPropagation();
     this._router.navigateByUrl('/dashboard/productInfo/'+id);
   }
 
@@ -54,9 +58,25 @@ export class MyListingsComponent implements OnInit {
 
   deleteLisitng(value){
     event.stopPropagation();
-    this.deleteMyListing = this.deleteMyLisitngUrl+value;
+   // this.deleteMyListing = this.deleteMyLisitngUrl+value;
+    this.listingId = value;
     console.log(this.deleteMyListing);
-    this._cservice.observableDeleteHttp(this.deleteMyListing ,null,false)
+    this._cservice.observablePutHttp(this.deleteMyLisitngUrl+ this.listingId,null,null,false)
+      .subscribe((res:Response)=> {
+          console.log(res);
+          this.getMyListings(this.userEmail);
+        },
+        error => {
+          console.log("error in response");
+        },
+        ()=>{
+          console.log("Finally");
+        })
+  }
+
+  publishListing(id){
+    event.stopPropagation();
+    this._cservice.observablePutHttp(this.publishListUrl+ id,null,null,false)
       .subscribe((res:Response)=> {
           console.log("ok",res);
           this.getMyListings(this.userEmail);
@@ -67,6 +87,11 @@ export class MyListingsComponent implements OnInit {
         ()=>{
           console.log("Finally");
         })
+
+  }
+
+  EditMyListing(id){
+      this._router.navigateByUrl('dashboard/createCard/' +id);
   }
 
 }

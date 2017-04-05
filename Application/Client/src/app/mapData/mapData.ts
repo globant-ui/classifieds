@@ -6,7 +6,7 @@ export class MapData{
   constructor() {
   }
 
-  mapCardData(form) {
+  mapCardData(form,publishStatus = false) {
       let today = new Date();
       let locale = "en-us";
       let cardCreatedDate = today.getDate() + '-' + today.toLocaleString(locale, { month: "short" })  + '-' + today.getFullYear();
@@ -16,37 +16,38 @@ export class MapData{
 //          "Height": form.get('DimensionHeight').value
 //       }:{};
 
-      let address = (form.get('area') && form.get('city') && form.get('state') && form.get('country')) ? form.get('area').value + '-' + form.get('city').value + '-' + form.get('state').value + '-' + form.get('country').value : '';
+      let address = (form.value['area'] && form.value['city'] && form.value['state'] && form.value['country']) ? form.value['area'] + '-' + form.value['city'] + '-' + form.value['state'] + '-' + form.value['country'] : '';
+      debugger;
       let data = {
 
-        "ListingType": (form.get('cardType'))?form.get('cardType').value:'',
-        "ListingCategory": (form.get('category'))?form.get('category').value:'',
-        "SubCategory": (form.get('subCategory'))?form.get('subCategory').value:'',
-        "Title": (form.get('title'))?form.get('title').value:'',
+        "ListingType": (form.value['cardType'])?form.value['cardType']:'',
+        "ListingCategory": (form.value['category'])?form.value['category']:'',
+        "SubCategory": (form.value['subCategory'])?form.value['subCategory']:'',
+        "Title": (form.value['title'])?form.value['title']:'',
         "Address": address,
-        "Details": (form.get('shortDesc'))?form.get('shortDesc').value:'',
-        "Brand": (form.get('Brand'))?form.get('Brand').value:'',
-        "Price": (form.get('price'))?form.get('price').value:0,
-        "YearOfPurchase": (form.get('YearOfPurchase'))?parseInt(form.get('YearOfPurchase').value):0,
+        "Details": (form.value['shortDesc'])?form.value['shortDesc']:'',
+        "Brand": (form.value['Brand'])?form.value['Brand']:'',
+        "Price": (form.value['price'])?form.value['price']:0,
+        "YearOfPurchase": (form.value['YearOfPurchase'])?parseInt(form.value['YearOfPurchase']):0,
         "Status": "",
         "SubmittedDate": cardCreatedDate,
-        "IdealFor": (form.get('IdealFor'))?form.get('IdealFor').value:'',
-        "Furnished": (form.get('Furnished'))?form.get('Furnished').value:'',
-        "FuelType": (form.get('FuelType'))?form.get('FuelType').value:'',
-        "KmDriven": (form.get('KmDriven'))?parseInt(form.get('KmDriven').value):0,
-        "DimensionWidth": (form.get('DimensionWidth'))?parseInt(form.get('DimensionWidth').value):0,
-        "DimensionLength": (form.get('DimensionLength'))?parseInt(form.get('DimensionLength').value):0,
-        "DimensionHeight": (form.get('DimensionHeight'))?parseInt(form.get('DimensionHeight').value):0,
+        "IdealFor": (form.value['IdealFor'])?form.value['IdealFor']:'',
+        "Furnished": (form.value['Furnished'])?form.value['Furnished']:'',
+        "FuelType": (form.value['FuelType'])?form.value['FuelType']:'',
+        "KmDriven": (form.value['KmDriven'])?parseInt(form.value['KmDriven']):0,
+        "DimensionWidth": (form.value['DimensionWidth'])?parseInt(form.value['DimensionWidth']):0,
+        "DimensionLength": (form.value['DimensionLength'])?parseInt(form.value['DimensionLength']):0,
+        "DimensionHeight": (form.value['DimensionHeight'])?parseInt(form.value['DimensionHeight']):0,
         "TypeofUse": "",
-        "Type": (form.get('Type'))?form.get('Type').value:'',
-        "Negotiable": (form.get('negotiable') && form.get('negotiable')!== '' )?form.get('negotiable').value:false,
-        "IsPublished": false,
+        "Type": (form.value['Type'])?form.value['Type']:'',
+        "Negotiable": (form.value['negotiable'] && form.value['negotiable'] !== '' )?form.value['negotiable']:false,
+        "IsPublished": publishStatus ,
         "Photos": [],
-        "SubmittedBy": (form.get('submittedBy'))?form.get('submittedBy').value:false,
-        "Rooms": (form.get('Rooms'))?form.get('Rooms').value:'',
-        "State": (form.get('state'))?form.get('state').value:'',
-        "Country": (form.get('country'))?form.get('country').value:'',
-        "City": (form.get('city'))?form.get('city').value:''
+        "SubmittedBy": (form.value['submittedBy'])?form.value['submittedBy']:false,
+        "Rooms": (form.value['Rooms'])?form.value['Rooms']:'',
+        "State": (form.value['state'])?form.value['state']:'',
+        "Country": (form.value['country'])?form.value['country']:'',
+        "City": (form.value['city'])?form.value['city']:''
       };
       return data;
 
