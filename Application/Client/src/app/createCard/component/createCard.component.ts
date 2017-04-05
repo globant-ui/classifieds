@@ -285,9 +285,13 @@ export class CreateCardComponent implements OnInit {
     }
 
     setFieldValue(){
-      for(let i = 0 ; i < this.productInfo['Fields'].length; i++){
-          this.objDynamicData[this.productInfo['Fields'][i].FieldName] = this.productInfo['Fields'][i].FieldValue
-      }
+        if(this.productInfo){
+            if(this.productInfo['Fields']){
+                for(let i = 0 ; i < this.productInfo['Fields'].length; i++){
+                    this.objDynamicData[this.productInfo['Fields'][i].FieldName] = this.productInfo['Fields'][i].FieldValue;
+                }
+            }
+        }
     }
 
     updateCard(){

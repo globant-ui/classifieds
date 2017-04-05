@@ -57,14 +57,14 @@
                 <label class="uppercaseText">Add photos</label>
               </div>
             </div>
+            <div class="img-icon noPadding" *ngFor="let imgSrc of photos">
+              <img src="{{imgSrc.Image}}">
+            </div>
             <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
               <img src="{{img}}">
             </div>
             <label *ngIf="uploadedImages.length+existingImageCount<4" for="myFileField" class="imageUpload">
-              <img src="../../../../assets/img/addImage.png" />
-              <div class="img-icon noPadding" *ngFor="let imgSrc of photos">
-                <img src="{{imgSrc.Image}}">
-              </div>
+              <img src="../../../../assets/img/addImage.png" /> 
             </label>
             <input style="display: none;" type="file" id="myFileField" name="myFile" (change)="fileNameChanged($event)" multiple/>
           </div>
