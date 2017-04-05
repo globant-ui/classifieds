@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row topMargin">
       <div class="col-lg-2 col-md-2 col-xs-2">
-        <progress-bar [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
+        <progress-bar *ngIf="action!='Edit'" [endPoints]="endPoints" [isActive]="isActive" [isCompleted]="isCompleted"></progress-bar>
       </div>
       <div class="col-lg-10 col-md-10 col-xs-10">
         <form [formGroup]="myForm" novalidate>
