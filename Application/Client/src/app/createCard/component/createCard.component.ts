@@ -298,39 +298,18 @@ export class CreateCardComponent implements OnInit {
         let cardData = this.data.mapCardData(this.myForm,this.productInfo['Listing'].IsPublished);
         cardData["_id"] = this.productId;
         cardData["ListingCategory"] = this.selectedCategory;
-        //cardData["IsPublished"] = true;
-        console.log("update card Data",cardData);
+        cardData['Photos'] = this.photos;
         let url = this.apiPath.UPDATE_CARD;
         var data = new FormData();
         data.append("listing", JSON.stringify(cardData));  //json object
         for (let i = 0; i < this.uploadedImageData.length; i++) {
-        data.append("file", this.uploadedImageData[i]);   //image file object
-       }
+            data.append("file", this.uploadedImageData[i]);   //image file object
+        }
         var xhr = new XMLHttpRequest();
         xhr.open("PUT", url);
         xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
         xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
         xhr.send(data);
-        console.log("data data",data);
-       //  this.httpService.observablePutHttp(url,cardData,null,false)
-       // .subscribe((res)=> {
-       //     console.log("comes here in result",res);
-       //     this.showPopupDivMessage="listing";
-       //     this.showPopupMessage = true;
-       //   },
-       //   error => {
-       //     console.log("error in response");
-       //   },
-       //   ()=>{
-       //     console.log("Finally");
-       //   });
     }
-
-      // var xhr = new XMLHttpRequest();
-      // xhr.open("PUT", "http://in-it0289/ListingAPI/api/Listings/PostListing");
-      // xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
-      // xhr.setRequestHeader("useremail", "this.user");
-      // xhr.send(data);
-
 }
 
