@@ -334,6 +334,28 @@ namespace Classifieds.Listings.BusinessServices
         }
 
         #endregion PublishListing
+
+        #region DeleteListingImage
+
+        /// <summary>
+        /// Update listing's isPublished field for given Id
+        /// </summary>
+        /// <param name="id">Listing Id</param>
+        /// <param name="listing">Listing Object</param>
+        /// <returns></returns>
+        public bool DeleteListingImage(string id, ListingImages lstImage)
+        {
+            try
+            {
+                return _listingRepository.DeleteListingImage(id, lstImage);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion DeleteListingImage
         #endregion
     }
 }
