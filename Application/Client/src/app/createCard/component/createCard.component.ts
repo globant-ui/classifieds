@@ -35,6 +35,7 @@ export class CreateCardComponent implements OnInit {
     public isActive: string = '';
     public isCompleted = [];
     public type: string = '';
+    public objDynamicData = {}
     public currentSubCategory: string = '';
     public filters;
     public textBoxes = [];
@@ -44,6 +45,8 @@ export class CreateCardComponent implements OnInit {
     public action: string = 'Create';
     public productInfo = {};
     public sessionObj;
+    private photos = [];
+    private existingImageCount = 0;
 
     constructor(private httpService:CService,
                 private apiPath:apiPaths,
@@ -58,7 +61,7 @@ export class CreateCardComponent implements OnInit {
             self.productId = params['id'];
             if(self.productId !== undefined){
                 self.action = 'Edit';
-                self.getProductData(self.productId);
+                self.getCategories(true);
             }
         });
         this.isActive = '';
@@ -87,17 +90,20 @@ export class CreateCardComponent implements OnInit {
         submittedBy: new FormControl('', []),
         file: new FormControl('', [])
       });
+        this.objDynamicData = {};
         this.getCategories();
     }
 
-    getCategories(){
+    getCategories(p_editMode = false){
       var self = this;
        this.httpService.observableGetHttp(this.apiPath.GET_ALL_CATEGORIES,null,false)
        .subscribe((res)=> {
 
            self.categories = res;
            self.subcategories = self.categories[0].SubCategory;
-
+           if(p_editMode){
+               self.getProductData(self.productId);
+           }
          },
          error => {
            console.log("error in response");
@@ -158,12 +164,13 @@ export class CreateCardComponent implements OnInit {
         this.textBoxes.forEach(function(element){
             self.myForm.addControl(element.FilterName,new FormControl("", Validators.required));
         });
+        self.setFieldValue();
     }
 
-    reloadSubcategories(category){
+    reloadSubcategories(category,subCategory = ''){
         this.selectedCategory = category.ListingCategory;
         this.subcategories = category.SubCategory;
-        this.currentSubCategory = this.subcategories[0];
+        this.currentSubCategory = subCategory != '' ? subCategory : this.subcategories[0];
         this.type = this.currentSubCategory + '-' + this.selectedCategory;
         this.getFilters();
     }
@@ -227,25 +234,46 @@ export class CreateCardComponent implements OnInit {
 
     getProductData(productId){
         let productInfoUrl = this._settingsService.getPath('productInfoUrl')+productId;
+        console.log("Info URL" ,productInfoUrl);
         let self = this;
         this.httpService.observableGetHttp(productInfoUrl,null,false)
         .subscribe((res)=> {
             self.productInfo = res;
+            console.log(res);
+            console.log("productInfo:");
             console.log(self.productInfo);
-            self.myForm.patchValue({cardType:self.productInfo['Listing'].ListingType});
-            self.myForm.patchValue({category:self.productInfo['Listing'].ListingCategory});
-            self.myForm.patchValue({subCategory:self.productInfo['Listing'].SubCategory});
-            self.myForm.patchValue({title:self.productInfo['Listing'].Title});
-            self.myForm.patchValue({location:self.productInfo['Listing'].City});
-            self.myForm.patchValue({shortDesc:self.productInfo['Listing'].Details});
-            self.myForm.patchValue({price:self.productInfo['Listing'].Price});
-            self.myForm.patchValue({area:self.productInfo['Listing'].Address.split("-")[0]});
-            self.myForm.patchValue({city:self.productInfo['Listing'].City});
-            self.myForm.patchValue({state:self.productInfo['Listing'].State});
-            self.myForm.patchValue({country:self.productInfo['Listing'].Country});
-            self.myForm.patchValue({negotiable:self.productInfo['Listing'].Negotiable});
+            if(self.productInfo['Listing']){
+              self.myForm.patchValue({cardType:self.productInfo['Listing'].ListingType});
+              //self.myForm.patchValue({category:self.productInfo['Listing'].ListingCategory});
+              //self.myForm.patchValue({subCategory:self.productInfo['Listing'].SubCategory});
+              self.myForm.patchValue({title:self.productInfo['Listing'].Title});
+              self.myForm.patchValue({location:self.productInfo['Listing'].City});
+              self.myForm.patchValue({shortDesc:self.productInfo['Listing'].Details});
+              self.myForm.patchValue({price:self.productInfo['Listing'].Price});
+              self.myForm.patchValue({area:self.productInfo['Listing'].Address.split("-")[0]});
+              self.myForm.patchValue({city:self.productInfo['Listing'].City});
+              self.myForm.patchValue({country:self.productInfo['Listing'].Country});
+              self.myForm.patchValue({negotiable:self.productInfo['Listing'].Negotiable});
+              self.photos = self.productInfo['Listing']['Photos'];
+              self.existingImageCount = self.photos.length;
+              let categoryIndex;
+              if(self.categories){
+                 categoryIndex = self.categories.findIndex(function(o){
+                    return o.ListingCategory === self.productInfo['Listing'].ListingCategory;
+                });
+                self.selectedCategory = self.categories[categoryIndex];
+              }
+              else{
+                  console.log("No Category Found !!!")
+              }
+              self.currentSubCategory = self.productInfo['Listing'].SubCategory;
+              //self.getFilters();
+              self.reloadSubcategories(self.selectedCategory,self.currentSubCategory);
 
-            self.getFilters();
+              console.log('productInfo');
+              console.log(self.productInfo);
+            }
+
 
             },
             error => {
@@ -256,21 +284,49 @@ export class CreateCardComponent implements OnInit {
             })
     }
 
-    updateCard(){
-        let cardData = this.data.mapCardData(this.myForm);
-        cardData["_id"] = this.productId;
-        let url = this.apiPath.UPDATE_CARD + this.productId;
-        this.httpService.observablePutHttp(url,cardData,null,false)
-       .subscribe((res)=> {
-           console.log("comes here in result",res);
-         },
-         error => {
-           console.log("error in response");
-         },
-         ()=>{
-           console.log("Finally");
-         });
+    setFieldValue(){
+      for(let i = 0 ; i < this.productInfo['Fields'].length; i++){
+          this.objDynamicData[this.productInfo['Fields'][i].FieldName] = this.productInfo['Fields'][i].FieldValue
+      }
     }
+
+    updateCard(){
+        let cardData = this.data.mapCardData(this.myForm,this.productInfo['Listing'].IsPublished);
+        cardData["_id"] = this.productId;
+        cardData["ListingCategory"] = this.selectedCategory;
+        //cardData["IsPublished"] = true;
+        console.log("update card Data",cardData);
+        let url = this.apiPath.UPDATE_CARD;
+        var data = new FormData();
+        data.append("listing", JSON.stringify(cardData));  //json object
+        for (let i = 0; i < this.uploadedImageData.length; i++) {
+        data.append("file", this.uploadedImageData[i]);   //image file object
+       }
+        var xhr = new XMLHttpRequest();
+        xhr.open("PUT", url);
+        xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
+        xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
+        xhr.send(data);
+        console.log("data data",data);
+       //  this.httpService.observablePutHttp(url,cardData,null,false)
+       // .subscribe((res)=> {
+       //     console.log("comes here in result",res);
+       //     this.showPopupDivMessage="listing";
+       //     this.showPopupMessage = true;
+       //   },
+       //   error => {
+       //     console.log("error in response");
+       //   },
+       //   ()=>{
+       //     console.log("Finally");
+       //   });
+    }
+
+      // var xhr = new XMLHttpRequest();
+      // xhr.open("PUT", "http://in-it0289/ListingAPI/api/Listings/PostListing");
+      // xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
+      // xhr.setRequestHeader("useremail", "this.user");
+      // xhr.send(data);
 
 }
 

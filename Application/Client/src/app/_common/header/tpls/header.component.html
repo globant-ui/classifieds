@@ -41,13 +41,13 @@
         <li dropdown>
             <button class="btn btn-default" type="button" id="profile" dropdownToggle>
                 <span class="icon-profile profile-btn"></span>
-                <span class="textProfile">{{this.userName}}</span>
+                <span class="textProfile" (click)="showUserProfile()" >{{this.userName}}</span>
             </button>
             <ul class="signOutContainer" dropdownMenu role="menu" aria-labelledby="profile">
               <li>
                 <button>
                  <!--  <span class="icon-profile profile-btn"></span>  -->
-                  <span class="textProfile" (click)="showUserProfile()" [routerLink]="['/dashboard/profile']">my profile</span>
+                  <span class="textProfile"  [routerLink]="['/dashboard/profile']">my profile</span>
                 </button>
               </li>
               <li>
