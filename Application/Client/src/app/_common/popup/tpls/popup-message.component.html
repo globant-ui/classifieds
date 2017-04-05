@@ -36,6 +36,15 @@
 					<p class="contentP">wdjkcndk;fnv;kdfv; dflv df vf vldfklvfk’lv lkfv df v’lf vlefvlf vl fvl eflv mflv mefv mf vlmf vlfq vlf v fvl flv flv lefv lf vlmef vf vlf v v lv efvmkerbhefnkl,qaf jm,. m, hbjn</p>
 			      <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" >Close</button>
 				</div>
+				<!--fourth popup-->
+				<div class="second" *ngIf = "showPopupDivMessage === 'card-edit' " >
+					<div class="successMessage">
+				        <p class="firstP">Congratulations!</p>
+						<p>Your listing has been updated!</p>
+					</div>
+					<p class="contentP">Your all the changes has been updated</p>
+			    <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">Close</button>
+				</div>
 			</div>
     </div>
   </div>

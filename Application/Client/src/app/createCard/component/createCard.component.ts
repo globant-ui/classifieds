@@ -240,12 +240,8 @@ export class CreateCardComponent implements OnInit {
         .subscribe((res)=> {
             self.productInfo = res;
             console.log(res);
-            console.log("productInfo:");
-            console.log(self.productInfo);
             if(self.productInfo['Listing']){
               self.myForm.patchValue({cardType:self.productInfo['Listing'].ListingType});
-              //self.myForm.patchValue({category:self.productInfo['Listing'].ListingCategory});
-              //self.myForm.patchValue({subCategory:self.productInfo['Listing'].SubCategory});
               self.myForm.patchValue({title:self.productInfo['Listing'].Title});
               self.myForm.patchValue({location:self.productInfo['Listing'].City});
               self.myForm.patchValue({shortDesc:self.productInfo['Listing'].Details});
@@ -267,11 +263,7 @@ export class CreateCardComponent implements OnInit {
                   console.log("No Category Found !!!")
               }
               self.currentSubCategory = self.productInfo['Listing'].SubCategory;
-              //self.getFilters();
               self.reloadSubcategories(self.selectedCategory,self.currentSubCategory);
-
-              console.log('productInfo');
-              console.log(self.productInfo);
             }
 
 
@@ -301,6 +293,7 @@ export class CreateCardComponent implements OnInit {
         cardData['Photos'] = this.photos;
         let url = this.apiPath.UPDATE_CARD;
         var data = new FormData();
+        this.showPopupDivMessage="card-edit";
         data.append("listing", JSON.stringify(cardData));  //json object
         for (let i = 0; i < this.uploadedImageData.length; i++) {
             data.append("file", this.uploadedImageData[i]);   //image file object
@@ -310,6 +303,7 @@ export class CreateCardComponent implements OnInit {
         xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
         xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
         xhr.send(data);
+        this.showPopupMessage = true;
     }
 }
 
