@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace Classifieds.ListingsAPI.Tests
 {
-    [Ignore]
     [TestClass]
     public class ListingRepositoryTest
     {
@@ -38,8 +37,8 @@ namespace Classifieds.ListingsAPI.Tests
             var listObject = new Listing
             {
                 ListingType = "sale",
-                ListingCategory = "Housing",
-                SubCategory = "Apartments",
+                ListingCategory = "Automotive",
+                SubCategory = "Car",
                 Title = "flat on rent",
                 Address = "pune",
                 Details = "for rupees 49,00,000",
@@ -151,7 +150,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_GetListingByCategoryTest_InvalidCategory()
         {
             var result = _listingRepo.GetListingsByCategory("qazxsw", 1, 5, false);
-            Assert.AreEqual(0, result.Count);
+            Assert.IsNull(result);
         }
 
         /// <summary>
@@ -161,7 +160,7 @@ namespace Classifieds.ListingsAPI.Tests
         public void Repo_GetListingByCategoryTest_NullCategory()
         {
             var nullResult = _listingRepo.GetListingsByCategory(null, 1, 5, false);
-            Assert.AreEqual(0, nullResult.Count);
+            Assert.IsNull(nullResult);
         }
 
         /// <summary>
@@ -391,7 +390,7 @@ namespace Classifieds.ListingsAPI.Tests
         /// test positive scenario for Get Listing By Category and SubCategory 
         /// </summary>
         [TestMethod]
-        public void GetListingsByCategoryAndSubCategoryTest()
+        public void Repo_GetListingsByCategoryAndSubCategoryTest()
         {
             // Arrange
             SetUpClassifiedsListing();
@@ -457,11 +456,10 @@ namespace Classifieds.ListingsAPI.Tests
         /// test for Update Close listing object with null listing id throws exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Repo_CloseListingTest_NullId_ThrowException()
+        public void Repo_CloseListingTest_NullId_ReturnsFalse()
         {
             var result = _listingRepo.CloseListing(null);
-            Assert.IsNull(result);
+            Assert.IsFalse(result);
         }
 
         #endregion
