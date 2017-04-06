@@ -24,7 +24,7 @@ namespace Classifieds.ListingsAPI.Tests
         private Mock<ICommonRepository> _mockAuthRepo;
         private Mock<ILogger> _logger;
         private readonly List<Listing> _classifiedList = new List<Listing>();
-        private const string UrlLocation = "http://localhost/api/listings";
+        private const string UrlLocation = "http://localhost/ListingAPI/api/Listings";
         private ListingsController _controller;
         private enum Status
         {
@@ -112,6 +112,17 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         /// <summary>
+        /// test for null listing id giving exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void GetListingById_ThrowsException()
+        {
+
+            _controller.GetListingById(null);
+        }
+
+        /// <summary>
         ///test positive scenario for Get Listings By SubCategory 
         /// </summary>
         [TestMethod]
@@ -132,24 +143,13 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         /// <summary>
-        /// test for null listing id giving exception
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Controller_GetListingById_ThrowsException()
-        {
-            
-            _controller.GetListingById(null);
-        }
-
-        /// <summary>
         /// test for null subcategory giving exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Controller_GetListingsBySubCategory_ThrowsException()
+        [ExpectedException(typeof(Exception))]
+        public void GetListingsBySubCategory_ThrowsException()
         {
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("401");
             _controller.GetListingsBySubCategory(null, 1, 5);
         }
 
@@ -158,11 +158,12 @@ namespace Classifieds.ListingsAPI.Tests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void Controller_GetListingsBySubCategory_ThrowsExceptionWithNegativeParams()
+        public void GetListingsBySubCategory_ThrowsExceptionWithNegativeParams()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetListingsBySubCategory("test", -2, 5);
         }
+
         /// <summary>
         /// test positive scenario get listing collection by category
         /// </summary>
@@ -184,17 +185,6 @@ namespace Classifieds.ListingsAPI.Tests
         }
 
         /// <summary>
-        ///  test for null category giving exception
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetListingByCategory_ThrowsException()
-        {
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.GetListingsByCategory(null, 1, 5);
-        }
-
-        /// <summary>
         ///  test for negative category giving exception
         /// </summary>
         [TestMethod]
@@ -204,92 +194,12 @@ namespace Classifieds.ListingsAPI.Tests
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.GetListingsByCategory("Housing", 1, -5);
         }
-        ///// <summary>
-        ///// test positive scenario for PostList and verify response header location
-        ///// </summary>
-        //[TestMethod]
-        //public void Controller_PostListTest_SetsLocationHeader()
-        //{
-        //    // Arrange
-        //    _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>()))
-        //        .Returns(GetListObject());
-        //    _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-        //    _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-
-        //    _controller.Request = new HttpRequestMessage
-        //    {
-        //        Method = HttpMethod.Post,
-        //        RequestUri = new Uri(UrlLocation)
-        //    };
-        //    _controller.Configuration = new HttpConfiguration();
-        //    _controller.Configuration.Routes.MapHttpRoute(
-        //        name: "Listings",
-        //        routeTemplate: "api/{controller}/{id}",
-        //        defaults: new { id = RouteParameter.Optional });
-
-        //    _controller.RequestContext.RouteData = new HttpRouteData(
-        //        route: new HttpRoute(),
-        //        values: new HttpRouteValueDictionary { { "controller", "listings" } });
-
-        //    // Act
-        //    Listing listObj = GetListObject();
-        //    var response = _controller.Post(listObj);
-
-        //    // Assert
-        //    Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-        //    Assert.AreEqual(true, response.IsSuccessStatusCode);
-        //    Assert.AreEqual(UrlLocation + "/9", response.Headers.Location.AbsoluteUri);
-        //}
-
-        ///// <summary>
-        ///// test positive scenario for postlist by using mock url helper
-        ///// </summary>
-        //[TestMethod]
-        //public void Controller_PostListTest_SetsLocationHeader_MockURLHelperVersion()
-        //{
-        //    // This version uses a mock UrlHelper.
-        //    // Arrange           
-        //    _mockService.Setup(x => x.CreateListing(It.IsAny<Listing>()))
-        //        .Returns(GetListObject());
-        //    _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-        //    _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-        //    _controller.Request = new HttpRequestMessage();
-        //    _controller.Configuration = new HttpConfiguration();
-
-        //    string locationUrl = "http://localhost/ListingsAPI/api/listings";
-
-        //    // Create the mock and set up the Link method, which is used to create the Location header.
-        //    // The mock version returns a fixed string.
-        //    var mockUrlHelper = new Mock<UrlHelper>();
-        //    mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
-        //    _controller.Url = mockUrlHelper.Object;
-
-        //    // Act
-        //    Listing listObj = GetListObject();
-        //    var response = _controller.Post(listObj);
-
-        //    // Assert
-        //    Assert.AreEqual(locationUrl, response.Headers.Location.AbsoluteUri);
-        //    Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-        //    Assert.AreEqual(true, response.IsSuccessStatusCode);
-        //}
-
-        ///// <summary>
-        ///// test for inserting null listing object throws exception
-        ///// </summary>
-        //[TestMethod]
-        //[ExpectedException(typeof(NullReferenceException))]
-        //public void Controller_PostList_ThrowsException()
-        //{
-        //    _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-        //    _controller.Post(null);
-        //}
 
         /// <summary>
         /// test positive scenario of Delete listing
         /// </summary>     
         [TestMethod]
-        public void Controller_DeleteListTest()
+        public void DeleteListTest()
         {
             // Arrange
             Listing listObject = GetListObject();
@@ -306,7 +216,7 @@ namespace Classifieds.ListingsAPI.Tests
 
             //Assert
             Assert.AreEqual(true, true);
-            //Assert.AreEqual(true, response.IsSuccessStatusCode);
+            Assert.AreEqual(true, response.IsSuccessStatusCode);
         }
 
         /// <summary>
@@ -314,56 +224,14 @@ namespace Classifieds.ListingsAPI.Tests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Controller_DeleteList_ThrowsException()
+        public void DeleteList_ThrowsException()
         {
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
             _controller.Delete(null);
         }
 
         /// <summary>
-        /// test positive scenario for updating listing
-        /// </summary>
-        [TestMethod]
-        public void Controller_UpdateListTest()
-        {
-            // Arrange
-            _mockService.Setup(x => x.UpdateListing(It.IsAny<Listing>()))
-                .Returns(GetListObject());
-            _logger.Setup(x => x.Log(It.IsAny<Exception>(), It.IsAny<string>()));
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-
-            _controller.Request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(UrlLocation)
-            };
-            _controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-
-            // Act     
-            var listObject = GetListObject();
-            var updatedProduct = new Listing() { Title = listObject.Title, ListingType = listObject.ListingType };
-            var contentResult = _controller.Put(listObject._id, updatedProduct);
-
-            //Assert
-            Assert.IsNotNull(contentResult);
-            Assert.AreEqual(HttpStatusCode.Accepted, contentResult.StatusCode);
-            Assert.IsNotNull(contentResult.Content);
-        }
-
-        /// <summary>
-        ///  test for updating listing with null listing id throws exception
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Controller_UpdateList_ThrowsException()
-        {
-            var updatedProduct = new Listing() { Title = "test", ListingType = "test" };
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
-            _controller.Put(null, updatedProduct);
-        }
-
-        /// <summary>
-        /// test positive scenario for get top listing collection as per specyfied record count
+        /// test positive scenario for get top listing collection as per specified record count
         /// </summary>
         [TestMethod]
         public void GetTopListings_5RecordsTest()
@@ -433,10 +301,10 @@ namespace Classifieds.ListingsAPI.Tests
         /// test for null listing Email giving exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Controller_GetListingByEmail_ThrowsException()
+        [ExpectedException(typeof(Exception))]
+        public void GetListingByEmail_ThrowsException()
         {
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("401");
             _controller.GetListingsByEmail(null);
         }
 
@@ -466,10 +334,10 @@ namespace Classifieds.ListingsAPI.Tests
         /// test for null listing Email giving exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Controller_GetListingByCategoryAndSubCategory_ThrowsException()
+        [ExpectedException(typeof(Exception))]
+        public void GetListingByCategoryAndSubCategory_ThrowsException()
         {
-            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
+            _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("401");
             _controller.GetListingsByCategoryAndSubCategory(null, null, 1, 5, false);
         }
 
@@ -481,7 +349,7 @@ namespace Classifieds.ListingsAPI.Tests
         /// test positive scenario for updating close listing
         /// </summary>
         [TestMethod]
-        public void Controller_CloseListingTest()
+        public void CloseListingTest()
         {
             // Arrange
             _mockService.Setup(x => x.CloseListing(It.IsAny<string>()))
@@ -512,7 +380,7 @@ namespace Classifieds.ListingsAPI.Tests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Controller_CloseListing_ThrowsException()
+        public void CloseListing_ThrowsException()
         {
             var updatedStatus = new Listing() { Status = "Closed" };
             _mockAuthRepo.Setup(x => x.IsAuthenticated(It.IsAny<HttpRequestMessage>())).Returns("200");
