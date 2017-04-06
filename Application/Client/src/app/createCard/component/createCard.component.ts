@@ -33,6 +33,7 @@ export class CreateCardComponent implements OnInit {
     private uploadedImageData = [];
     public endPoints = [];
     public isActive: string = '';
+    public isPublishEnable: boolean = false;
     public isCompleted = [];
     public type: string = '';
     public objDynamicData = {}
@@ -113,6 +114,77 @@ export class CreateCardComponent implements OnInit {
          })
     }
 
+    updatePublishStatus(event = null){
+        if(this.action != "Edit"){
+            let status = true;
+            if(this.checkFormControlStatus(['cardType','title','shortDesc','city','price']) && this.selectedCategory != '' && this.currentSubCategory != '' && this.uploadedImages.length > 0)
+            {
+                switch(this.selectedCategory){
+                    case 'Automotive':
+                        if(this.checkFormControlStatus(['YearOfPurchase','Brand'])){
+                            if(this.currentSubCategory != 'Bicycle'){
+                                if(this.checkFormControlStatus(['Type','KmDriven'])){
+                                    if(this.currentSubCategory === 'Car'){
+                                        if(!this.checkFormControlStatus(['FuelType'])){
+                                            status = false;
+                                        }
+                                    }
+                                }
+                                else{
+                                    status = false;
+                                }
+                            }
+                        }
+                        else{
+                            status = false;
+                        }
+                    break;
+                    case 'Housing':
+                        if(this.checkFormControlStatus(['IdealFor','Furnished','YearOfPurchase'])){
+                            status = this.currentSubCategory != 'Single Room' ? this.checkFormControlStatus(['Rooms']) : true;
+                        }
+                        else{
+                            status = false;
+                        }
+                    break;
+                    case  'Furniture':
+                        status = this.checkFormControlStatus(['DimensionHeight','DimensionWidth','DimensionLength','YearOfPurchase']);
+                    break;
+                    case  'Electronics':
+                        status = this.currentSubCategory != 'Other' ? this.checkFormControlStatus(['Brand','YearOfPurchase']) : true;
+                    break;
+                    case  'Other':
+                        status = this.currentSubCategory != 'Sport Equipment' ? this.checkFormControlStatus(['Type']) : this.checkFormControlStatus(['Brand']);
+                    break;
+                }
+            }
+            else{
+                status = false;
+            }
+            this.isPublishEnable = status;
+        } 
+    }
+
+    checkFormControlStatus(p_value){
+        if(this.myForm){
+            for(let i = 0 ; i < p_value.length; i++){
+                if(this.myForm.value[p_value[i]]){
+                    let status = this.myForm.value[p_value[i]] != "" ? true : false;
+                    if(status === false){
+                        return false;
+                    }
+                }
+                else{
+                    return false;
+                }
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     getFilters(){
        if(this.subcategories && this.subcategories.length > 0){
         let url = (this.myForm.get('subCategory').value!=undefined && this.myForm.get('subCategory').value!='') ? this.apiPath.FILTERS + this.myForm.get('subCategory').value:this.apiPath.FILTERS + this.subcategories[0];
@@ -173,6 +245,8 @@ export class CreateCardComponent implements OnInit {
         this.currentSubCategory = subCategory != '' ? subCategory : this.subcategories[0];
         this.type = this.currentSubCategory + '-' + this.selectedCategory;
         this.getFilters();
+        this.resetFormValue();
+        this.updatePublishStatus();
     }
 
     fileNameChanged(event){
@@ -192,18 +266,33 @@ export class CreateCardComponent implements OnInit {
         }
     }
 
+    resetFormValue(){
+        if(this.action != "Edit"){
+            this.myForm.patchValue({YearOfPurchase:''});
+            this.myForm.patchValue({Brand:''});
+            this.myForm.patchValue({Type:''});
+            this.myForm.patchValue({KmDriven:''});
+            this.myForm.patchValue({FuelType:''});
+            this.myForm.patchValue({IdealFor:''});
+            this.myForm.patchValue({Furnished:''});
+            this.myForm.patchValue({Rooms:''});
+            this.myForm.patchValue({DimensionHeight:''});
+            this.myForm.patchValue({DimensionWidth:''});
+            this.myForm.patchValue({DimensionLength:''});
+        }  
+    }
+
     createCard(action){
-       this.isCompleted.push(this.endPoints[2]);
-       this.isActive = this.endPoints[3];
-       console.log(this.isCompleted + '********************' + this.isActive);
-       this.myForm.patchValue({category:this.selectedCategory});
-       this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
-       let cardData = this.data.mapCardData(this.myForm);
-       if(action === 'create'){
-           cardData.IsPublished = true;
-       }
-      var data = new FormData();
-      data.append("listing", JSON.stringify(cardData));
+        this.isCompleted.push(this.endPoints[2]);
+        this.isActive = this.endPoints[3];
+        this.myForm.patchValue({category:this.selectedCategory});
+        this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
+        let cardData = this.data.mapCardData(this.myForm);
+        if(action === 'create'){
+            cardData.IsPublished = true;
+        }
+        var data = new FormData();
+        data.append("listing", JSON.stringify(cardData));
         for (let i = 0; i < this.uploadedImageData.length; i++) {
             data.append("file", this.uploadedImageData[i]);
         }
@@ -227,9 +316,9 @@ export class CreateCardComponent implements OnInit {
     subCategoryUpdated(){
         this.type = this.myForm.get('subCategory').value + '-' + this.selectedCategory;
         this.currentSubCategory = this.myForm.get('subCategory').value;
-        console.log('type:'+this.type);
-        console.log('currentSubCategory:'+ this.currentSubCategory);
         this.getFilters();
+        this.resetFormValue();
+        this.updatePublishStatus();
     }
 
     getProductData(productId){

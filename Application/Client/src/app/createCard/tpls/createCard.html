@@ -15,10 +15,10 @@
             <div class="col-lg-9 col-md-9 col-xs-12">
               <fieldset id="typeListing">
                 <label class="radio-inline">
-                  <input type="radio" name="cardType" formControlName="cardType" value="sale" checked="cardType=='sale'">Sell
+                  <input (change)="updatePublishStatus($event)" type="radio" name="cardType" formControlName="cardType" value="sale" checked="cardType=='sale'">Sell
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" name="cardType" formControlName="cardType" value="rent" checked="cardType=='rent'">Rent
+                  <input (change)="updatePublishStatus($event)" type="radio" name="cardType" formControlName="cardType" value="rent" checked="cardType=='rent'">Rent
                 </label>
               </fieldset>
             </div>
@@ -75,7 +75,7 @@
 
           <div class="row form-group">
             <div class="col-lg-4 col-md-4 col-xs-12 marginBottom">
-              <input #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
+              <input (change)="updatePublishStatus()" #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="Title" required />
               <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
                   Title is required
               </div>
@@ -87,12 +87,12 @@
                 <option selected="productInfo['Listing'].City === 'Pune'">Pune</option>
                 <option selected="productInfo['Listing'].City === 'Bangalore'">Banglore</option>
               </select> -->
-              <input #location formControlName="city" name="city" class="fullWidth" type="text" id="city" placeholder="Location" required />
+              <input (change)="updatePublishStatus()" #location formControlName="city" name="city" class="fullWidth" type="text" id="city" placeholder="Location" required />
               <!-- <div class="glyphicon glyphicon-chevron-down downArrow"></div> -->
             </div>
 
             <div class="col-lg-4 col-md-4 col-xs-12">
-              <input #price formControlName="price" name="price" class="fullWidth" type="number" id="price" placeholder="Price" required />
+              <input (change)="updatePublishStatus()" #price formControlName="price" name="price" class="fullWidth" type="number" id="price" placeholder="Price" required />
               <div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
                 Price is required
               </div>
@@ -100,7 +100,7 @@
           </div>
           <div class="row form-group">
             <div class="col-lg-10 col-md-10 col-xs-12 marginBottom">
-              <input #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
+              <input (change)="updatePublishStatus()" #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="Short Description" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
                <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
                   Short Description is required.
               </div>
@@ -116,7 +116,7 @@
             <div class="col-lg-11 col-md-11 col-xs-12 marginBottom">
               <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of filters.Filters">
-                  <select class="typeSelect fullWidth"
+                  <select (change)="updatePublishStatus()" class="typeSelect fullWidth"
                           name="{{filter.FilterName}}"
                           [(ngModel)]="objDynamicData[filter.FilterName]"
                           formControlName="{{filter.FilterName}}" >
@@ -132,7 +132,7 @@
             <div class="col-lg-11 col-md-11 col-xs-12">
               <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 marginBottom" *ngFor="let filter of textBoxes">
-                  <input class="typeSelect fullWidth"
+                  <input (change)="updatePublishStatus()" class="typeSelect fullWidth"
                          type="number"
                          name="{{filter.FilterName}}"
                          formControlName="{{filter.FilterName}}"
@@ -147,7 +147,7 @@
               <button class="tempSaveButton green-button" (click)="createCard('saveClose')">Save and close</button>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Create'">
-              <button class="green-button publishButton pull-right" (click)="createCard('create')"> publish </button>
+              <button class="green-button publishButton pull-right" [class.publish-disable]="!isPublishEnable" [disabled]="!isPublishEnable" (click)="createCard('create')"> publish </button>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Edit'">
               <button class="green-button pull-right"  (click)="updateCard()"> Update </button>
