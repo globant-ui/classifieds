@@ -67,7 +67,7 @@ export class CreateCardComponent implements OnInit {
         });
         this.isActive = '';
         this.isCompleted = [];
-        this.endPoints.push('SELECT','UPLOAD','ADD','INFO','DONE');
+        this.endPoints.push('SELECT','UPLOAD','ADD INFO','DONE');
         this.type = 'Car-Automotive';
         this.currentSubCategory = 'Car';
         this.filters = [];
@@ -116,6 +116,18 @@ export class CreateCardComponent implements OnInit {
 
     updatePublishStatus(event = null){
         if(this.action != "Edit"){
+            debugger;
+            this.isCompleted.length = 0;
+            if( this.selectedCategory != '' && this.currentSubCategory != '' && this.checkFormControlStatus(['cardType'])){
+                this.isCompleted.push(this.endPoints[0]);
+            }
+            if(this.uploadedImages.length > 0){
+                this.isCompleted.push(this.endPoints[1]);
+            }
+            if(this.checkFormControlStatus(['title','shortDesc','city','price'])){
+                this.isCompleted.push(this.endPoints[2]);
+            }
+            
             let status = true;
             if(this.checkFormControlStatus(['cardType','title','shortDesc','city','price']) && this.selectedCategory != '' && this.currentSubCategory != '' && this.uploadedImages.length > 0)
             {
@@ -161,6 +173,10 @@ export class CreateCardComponent implements OnInit {
             else{
                 status = false;
             }
+            if(status === true){
+                this.isCompleted.push(this.endPoints[3]);
+            }
+            
             this.isPublishEnable = status;
         } 
     }
@@ -251,7 +267,7 @@ export class CreateCardComponent implements OnInit {
 
     fileNameChanged(event){
         if(this.myForm.get('cardType').value!='' && this.myForm.get('subCategory').value!='' && this.selectedCategory!=''){
-            this.isCompleted.push(this.endPoints[0]);
+            //this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
         if(this.uploadedImages.length<4){
@@ -283,7 +299,7 @@ export class CreateCardComponent implements OnInit {
     }
 
     createCard(action){
-        this.isCompleted.push(this.endPoints[2]);
+        //this.isCompleted.push(this.endPoints[2]);
         this.isActive = this.endPoints[3];
         this.myForm.patchValue({category:this.selectedCategory});
         this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
@@ -308,7 +324,7 @@ export class CreateCardComponent implements OnInit {
 
     isAddInfoCompleted() {
         if(this.myForm.get('title').value !== '' && this.myForm.get('price').value !== '' && this.myForm.get('shortDesc').value !== '' && this.myForm.get('location').value !== ''){
-            this.isCompleted.push(this.endPoints[1]);
+            //this.isCompleted.push(this.endPoints[1]);
         }
         this.isActive = this.endPoints[2];
     }
