@@ -123,7 +123,7 @@ export class CreateCardComponent implements OnInit {
             ()=>{
             console.log("Finally");
             })
-        } 
+        }
     }
 
     loadFilters(){
@@ -174,6 +174,7 @@ export class CreateCardComponent implements OnInit {
             this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
+        console.log("Images",this.uploadedImages);
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
                 this.uploadedImageData.push(event.target.files[0]);
@@ -271,6 +272,9 @@ export class CreateCardComponent implements OnInit {
            console.log("Finally");
          });
     }
-
+  removeImage(value){
+      this.uploadedImages.splice(value,1);
+      this.uploadedImageData.splice(value,1);
+    }
 }
 

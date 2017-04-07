@@ -1,6 +1,6 @@
 @import "../../_common/styles/sass/style";
 
-.createCardContainer{ 
+.createCardContainer{
  /* margin-top: 70px;*/
   .container{
     .topMargin{
@@ -40,6 +40,16 @@
            text-align: center;
            display: inline-block;
            border: 2px solid $createListing-item-border-color;
+            position: relative;
+            .deleteImageButton{
+              position: absolute;
+              top: -10px;
+              right: -10px;
+              .green-circle-button{
+                width: 25px;
+                height: 25px;
+              }
+            }
            img{
             width: 111px;
             height: 111px;
@@ -117,7 +127,7 @@
 }
 @media (min-width: 320px) and (max-width: 460px){
   .createCardContainer{
-    .container{ 
+    .container{
      form{
       padding: 50px 20px;
       .form-group{

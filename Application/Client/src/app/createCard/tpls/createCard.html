@@ -57,7 +57,13 @@
                         <label class="uppercaseText">Add photos</label>
                       </div>
                     </div>
-                    <div class="img-icon noPadding" *ngFor="let img of uploadedImages">
+                    <div class="img-icon noPadding" *ngFor="let img of uploadedImages;let i=index;" >
+                      <!--<button (click)="removeImage(img)">delete</button>-->
+                      <span class="pull-right deleteImageButton">
+                        <button class="green-circle-button"  (click)="removeImage($event)">
+                          <i class="fa fa-close"></i>
+                        </button>
+                      </span>
                       <img src="{{img}}">
                       </div>
                     <label *ngIf="uploadedImages.length<4" for="myFileField" class="imageUpload">
@@ -87,7 +93,7 @@
                         <input #location formControlName="location" name="location" class="fullWidth" type="text" id="location" placeholder="Location" required />
                         <!-- <div class="glyphicon glyphicon-chevron-down downArrow"></div> -->
                     </div>
-                  
+
                     <div class="col-lg-4 col-md-4 col-xs-12">
                         <input #price formControlName="price" name="price" class="fullWidth" type="number" id="price" placeholder="Price" required />
                         <!--<div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
