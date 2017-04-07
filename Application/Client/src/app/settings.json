@@ -12,7 +12,7 @@
     "google_tokeninfo": "https://www.googleapis.com/oauth2/v3/tokeninfo",
     "google_userinfo": "https://www.googleapis.com/oauth2/v2/userinfo",
     "redirect_uri": "http://localhost:3000",
-    "client_id": "707223437243-mjonk287edkln9gd3e496hv227vqj736.apps.googleusercontent.com",
+    "client_id": "66965891984-dcjab2fu942m67karc04ntlroaqlos93.apps.googleusercontent.com",
     "scope": "email profile https://www.googleapis.com/auth/admin.directory.user.readonly https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/plus.me",
     "access_type": "offline",
     "response_type": "code",

@@ -114,7 +114,7 @@ export class LoginComponent implements OnInit{
         this._http.post(this._settingsService.settings.auth.getToken
           +'&code=' +encodeURIComponent(token)
           +'&client_id='+encodeURIComponent(this._settingsService.settings.auth.client_id)
-          +'&client_secret='+encodeURIComponent('ySOaT67r44BcWkNqovW7MmM-')
+          +'&client_secret='+encodeURIComponent('A2Sr3dnWbdE_uyufnVZJwGdj')
           +'&redirect_uri=' +'http://localhost:3000'
           , {headers: headers})
           .subscribe(
