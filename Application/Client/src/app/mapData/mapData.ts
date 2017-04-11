@@ -17,7 +17,6 @@ export class MapData{
 //       }:{};
 
       let address = (form.value['area'] && form.value['city'] && form.value['state'] && form.value['country']) ? form.value['area'] + '-' + form.value['city'] + '-' + form.value['state'] + '-' + form.value['country'] : '';
-      debugger;
       let data = {
 
         "ListingType": (form.value['cardType'])?form.value['cardType']:'',

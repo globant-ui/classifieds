@@ -150,7 +150,7 @@
               <button class="green-button publishButton pull-right" [class.publish-disable]="!isPublishEnable" [disabled]="!isPublishEnable" (click)="createCard('create')"> publish </button>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Edit'">
-              <button class="green-button pull-right"  (click)="updateCard()"> Update </button>
+              <button class="green-button pull-right" [disabled]="updateStatus && !isPublishEnable" [class.publish-disable]="updateStatus && !isPublishEnable"  (click)="updateCard()"> Update </button>
             </div>
           </div>
         </form>
