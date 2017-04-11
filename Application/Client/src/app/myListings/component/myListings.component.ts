@@ -72,6 +72,77 @@ export class MyListingsComponent implements OnInit {
     this.currentUserList = arr;
   }
 
+  checkFormControlStatus(p_value,card){
+      if(card){
+          for(let i = 0 ; i < p_value.length; i++){
+              if(card[p_value[i]]){
+                  let status = card[p_value[i]] != "" ? true : false;
+                  if(status === false){
+                      return false;
+                  }
+              }
+              else{
+                  return false;
+              }
+          }
+          return true;
+      }
+      else{
+          return false;
+      }
+  }
+
+  checkPublishStatus(card){
+    let status = true;
+    if(card.IsPublished === false){
+      if(this.checkFormControlStatus(['ListingType','Title','Details','City','Price','ListingCategory','SubCategory'],card) && card['Photos'].length > 0){
+        switch(card['ListingCategory']){
+          case 'Automotive':
+                if(this.checkFormControlStatus(['YearOfPurchase','Brand'],card)){
+                    if(card['SubCategory'] != 'Bicycle'){
+                        if(this.checkFormControlStatus(['Type','KmDriven'],card)){
+                            if(card['SubCategory']  === 'Car'){
+                                if(!this.checkFormControlStatus(['FuelType'],card)){
+                                    status = false;
+                                }
+                            }
+                        }
+                        else{
+                            status = false;
+                        }
+                    }
+                }
+                else{
+                    status = false;
+                }
+          break;
+          case 'Housing':
+                if(this.checkFormControlStatus(['IdealFor','Furnished','YearOfPurchase'],card)){
+                    status = card['SubCategory'] != 'Single Room' ? this.checkFormControlStatus(['Rooms'],card) : true;
+                }
+                else{
+                    status = false;
+                }
+          break;
+          case  'Furniture':
+                status = this.checkFormControlStatus(['DimensionHeight','DimensionLength','DimensionWidth','YearOfPurchase'],card);
+          break;
+          case  'Electronics':
+                status = card['SubCategory'] != 'Other' ? this.checkFormControlStatus(['Brand','YearOfPurchase'],card) : true;
+          break;
+          case  'Other':
+                status = card['SubCategory'] != 'Sport Equipment' ? this.checkFormControlStatus(['Type'],card) : this.checkFormControlStatus(['Brand'],card);
+          break;
+        }
+      }
+      else{
+        status = false;
+      }
+    }
+    
+    return !status;
+  }
+
   deleteLisitng(value){
     event.stopPropagation();
    // this.deleteMyListing = this.deleteMyLisitngUrl+value;
