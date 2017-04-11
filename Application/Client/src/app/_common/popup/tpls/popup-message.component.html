@@ -18,6 +18,16 @@
 						<p class="contentP"></p>
 						<button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">View Listing</button>
 				</div>
+				<!--Listing saved-->
+				<div class="first" *ngIf = "showPopupDivMessage === 'saved-listing' " >
+						<img src="../../../../assets/img/success.png">
+								<div class="successMessage">
+										<p class="firstP">Congratulations!</p>
+										<p>Your listing has been saved!</p>
+								</div>
+						<p class="contentP"></p>
+						<button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">View Listing</button>
+				</div>
 					<!--second popup-->
 				<div class="second" *ngIf = "showPopupDivMessage === 'profile' " >
 					<div class="successMessage">

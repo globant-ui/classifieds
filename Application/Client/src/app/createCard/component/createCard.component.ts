@@ -34,6 +34,7 @@ export class CreateCardComponent implements OnInit {
     public endPoints = [];
     public isActive: string = '';
     public isPublishEnable: boolean = false;
+    public updateStatus: boolean = false;
     public isCompleted = [];
     public type: string = '';
     public objDynamicData = {}
@@ -115,8 +116,7 @@ export class CreateCardComponent implements OnInit {
     }
 
     updatePublishStatus(event = null){
-        if(this.action != "Edit"){
-            debugger;
+        if(this.action != "Edit" || this.updateStatus === true){
             this.isCompleted.length = 0;
             if( this.selectedCategory != '' && this.currentSubCategory != '' && this.checkFormControlStatus(['cardType'])){
                 this.isCompleted.push(this.endPoints[0]);
@@ -129,7 +129,7 @@ export class CreateCardComponent implements OnInit {
             }
 
             let status = true;
-            if(this.checkFormControlStatus(['cardType','title','shortDesc','city','price']) && this.selectedCategory != '' && this.currentSubCategory != '' && this.uploadedImages.length > 0)
+            if(this.checkFormControlStatus(['cardType','title','shortDesc','city','price']) && this.selectedCategory != '' && this.currentSubCategory != '' && (this.uploadedImages.length > 0 || this.photos.length > 0))
             {
                 switch(this.selectedCategory){
                     case 'Automotive':
@@ -263,6 +263,13 @@ export class CreateCardComponent implements OnInit {
         this.getFilters();
         this.resetFormValue();
         this.updatePublishStatus();
+        if(this.action === "Edit" && this.productInfo){
+            if(this.productInfo['Listing']){
+                if(this.productInfo['Listing'].IsPublished){
+                    this.isPublishEnable = subCategory != '' ? true : this.isPublishEnable;
+                }
+            }
+        }
     }
 
     fileNameChanged(event){
@@ -305,8 +312,10 @@ export class CreateCardComponent implements OnInit {
         this.myForm.patchValue({category:this.selectedCategory});
         this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
         let cardData = this.data.mapCardData(this.myForm);
+        this.showPopupDivMessage="saved-listing";
         if(action === 'create'){
             cardData.IsPublished = true;
+            this.showPopupDivMessage="listing";
         }
         var data = new FormData();
         data.append("listing", JSON.stringify(cardData));
@@ -318,7 +327,6 @@ export class CreateCardComponent implements OnInit {
         xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
         xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
         xhr.send(data);
-        this.showPopupDivMessage="listing";
         this.showPopupMessage = true;
         this.submitted = true;
     }
@@ -368,8 +376,9 @@ export class CreateCardComponent implements OnInit {
               else{
                   console.log("No Category Found !!!")
               }
-              self.currentSubCategory = self.productInfo['Listing'].SubCategory;
-              self.reloadSubcategories(self.selectedCategory,self.currentSubCategory);
+                self.updateStatus = self.productInfo['Listing'].IsPublished;
+                self.currentSubCategory = self.productInfo['Listing'].SubCategory;
+                self.reloadSubcategories(self.selectedCategory,self.currentSubCategory);
             }
 
 
