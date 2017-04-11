@@ -304,8 +304,10 @@ export class CreateCardComponent implements OnInit {
         this.myForm.patchValue({category:this.selectedCategory});
         this.myForm.patchValue({submittedBy:this.sessionObj.useremail});
         let cardData = this.data.mapCardData(this.myForm);
+        this.showPopupDivMessage="saved-listing";
         if(action === 'create'){
             cardData.IsPublished = true;
+            this.showPopupDivMessage="listing";
         }
         var data = new FormData();
         data.append("listing", JSON.stringify(cardData));
@@ -317,7 +319,6 @@ export class CreateCardComponent implements OnInit {
         xhr.setRequestHeader("accesstoken", "c4fd7b85796f4d05b12504fbf1c42a3e");
         xhr.setRequestHeader("useremail", "avadhut.lakule@globant.com");
         xhr.send(data);
-        this.showPopupDivMessage="listing";
         this.showPopupMessage = true;
         this.submitted = true;
     }
