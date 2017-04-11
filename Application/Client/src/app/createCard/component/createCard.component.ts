@@ -265,7 +265,7 @@ export class CreateCardComponent implements OnInit {
         this.updatePublishStatus();
         if(this.action === "Edit" && this.productInfo){
             if(this.productInfo['Listing']){
-                if(this.productInfo['Listing'].IsPublished){
+                if(this.productInfo['Listing'].IsPublished && (this.uploadedImages.length > 0 || this.photos.length > 0)){
                     this.isPublishEnable = subCategory != '' ? true : this.isPublishEnable;
                 }
             }
@@ -277,7 +277,6 @@ export class CreateCardComponent implements OnInit {
             //this.isCompleted.push(this.endPoints[0]);
         }
         this.isActive = this.endPoints[1];
-        console.log("Images",this.uploadedImages);
         if(this.uploadedImages.length<4){
             if (event.target.files && event.target.files[0]) {
                 this.uploadedImageData.push(event.target.files[0]);
@@ -286,6 +285,7 @@ export class CreateCardComponent implements OnInit {
                     this.uploadedImages.push(event.target.result);
                 }
                 reader.readAsDataURL(event.target.files[0]);
+                this.updatePublishStatus();  
             }
         }
     }
@@ -424,6 +424,7 @@ export class CreateCardComponent implements OnInit {
   removeImage(value){
       this.uploadedImages.splice(value,1);
       this.uploadedImageData.splice(value,1);
+      this.updatePublishStatus();
     }
 
   removeImagefromPhotos(imgSrc){
@@ -441,7 +442,7 @@ export class CreateCardComponent implements OnInit {
         },
         ()=>{
           console.log("finally");
-        });
+        }); 
   }
 
 }
