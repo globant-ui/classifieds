@@ -63,6 +63,9 @@ export class MyListingsComponent implements OnInit {
 
   getUpdatedList(){
     let arr = [];
+    if(this.userListingData.length < this.endIndex){
+      this.endIndex = this.userListingData.length;
+    }
     for(let i = this.startIndex ; i < this.endIndex ; i++){
       arr.push(this.userListingData[i]);
     }
