@@ -420,9 +420,29 @@ export class CreateCardComponent implements OnInit {
         xhr.send(data);
         this.showPopupMessage = true;
     }
+
   removeImage(value){
       this.uploadedImages.splice(value,1);
       this.uploadedImageData.splice(value,1);
     }
+
+  removeImagefromPhotos(imgSrc){
+    let deletedImageObj = JSON.stringify(imgSrc);
+    let url = this.apiPath.DELETEIMAGE +'?id=' + this.productId;
+   // this.photos.delete(1);
+    this.existingImageCount = this.existingImageCount > 0 ? this.existingImageCount-1 : 0 ;
+    this.httpService.observablePutHttp(url,deletedImageObj,null,false)
+      .subscribe((response)=>{
+          console.log("deleted the subsscription",response);
+          this.getProductData(this.productId);
+        },
+        error =>{
+          console.log("error in responese");
+        },
+        ()=>{
+          console.log("finally");
+        });
+  }
+
 }
 

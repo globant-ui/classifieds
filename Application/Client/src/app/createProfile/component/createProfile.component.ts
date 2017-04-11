@@ -155,7 +155,7 @@ export class ProfileComponent implements OnInit {
 
     deleteSub(res){
      let UpdatedAlert = JSON.stringify(res);
-      let url = this.deleteSubScription + this.userEmail;
+      let url = this.deleteSubScription +this.userEmail;
       this.subscribeCat.push(res);
       this.httpService.observablePutHttp(url,UpdatedAlert,null,false)
         .subscribe((response)=>{
@@ -169,6 +169,7 @@ export class ProfileComponent implements OnInit {
             console.log("finally");
           });
     }
+
   deleteTag(res){
       this.tagData.splice(res,1);
   }

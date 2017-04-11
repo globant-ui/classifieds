@@ -21,7 +21,7 @@
                   <i class="icon-Mobile_EditIcon"></i>
                 </button>
             </div>
-            <img *ngIf="card.Photos && card.Photos.length > 0" src="{{card.Photos[0].Image}}" alt="..." class="img-responsive">
+            <img src="{{card.Photos[0].Image}}" alt="..." class="img-responsive">
             <img *ngIf="!card.Photos || card.Photos.length <= 0" src="../../../../assets/img/similarListing.png" class="img-responsive" />
             <div class="listingContent caption">
               <span class="title"><h5>{{card.Title}}</h5></span>
