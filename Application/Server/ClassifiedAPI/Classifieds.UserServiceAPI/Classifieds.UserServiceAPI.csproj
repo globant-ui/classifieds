@@ -165,6 +165,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\suyash.rasal.pubxml" />
     <None Include="Properties\PublishProfiles\UserAPI22032017.pubxml" />
     <None Include="Properties\PublishProfiles\UserAPI23032017.pubxml" />
     <None Include="Properties\PublishProfiles\UserAPI28032017.pubxml" />
@@ -199,6 +200,10 @@
     <ProjectReference Include="..\Classifieds.UserService.BusinessServices\Classifieds.UserService.BusinessServices.csproj">
       <Project>{04264ee5-d1d8-4cbc-8b1b-84ece383c4d1}</Project>
       <Name>Classifieds.UserService.BusinessServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Minio.Api\MinioApi.csproj">
+      <Project>{CC30CADE-342A-4CED-858D-B60200C075B0}</Project>
+      <Name>MinioApi</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

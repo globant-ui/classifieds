@@ -49,7 +49,7 @@ namespace Classifieds.Listings.Repository
             {
                 var query = Query<TEntity>.EQ(p => p._id, id);
                 var partialRresult = Classifieds
-                    .Find(query).SingleOrDefault(p => p.Status == Status.Active.ToString());
+                    .Find(query).SingleOrDefault(p => (p.Status == Status.Active.ToString()) || (p.Status == Status.Saved.ToString()));
 
                 return partialRresult;
             }
