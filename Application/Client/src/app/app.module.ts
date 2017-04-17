@@ -42,6 +42,7 @@ import { PopUpMessageComponent } from './_common/popup';
 import  {WishListService} from  './_common/wishlist/service/wishlist.service';
 import { PageNotFoundComponent } from './_common/page-not-found';
 import { ExploreComponent } from './_common/explore-list';
+import { TRANSLATION_PROVIDERS, TranslatePipe, TranslateService }   from './translate';
 
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
@@ -68,6 +69,7 @@ type StoreType = {
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
+    TranslatePipe,
     AppComponent,
     HomeComponent,
     HeaderComponent,
@@ -113,7 +115,9 @@ type StoreType = {
     Base64Service,
     DatePipe,
     WishListService,
-    Broadcaster
+    Broadcaster,
+    TRANSLATION_PROVIDERS,
+    TranslateService
   ]
 })
 export class AppModule {

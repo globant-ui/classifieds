@@ -5,7 +5,7 @@
             <!-- <button type="button" class="close" data-dismiss="modal">
                 <span class="glyphicon glyphicon-remove-circle"></span>
             </button> -->
-            <h5 class="modal-title text-center">Hey there, please login!</h5>
+            <h5 class="modal-title text-center">{{ 'Hey there, please login' | translate }}!</h5>
         </div>
         <div class="modal-body">
             <form>
@@ -17,7 +17,7 @@
                 </div>
                 <h6 class="text-center">OR</h6> -->
                 <div class="form-group">
-                    <button class="google-signin" (click)="doLogin()"><img src="../../../../assets/img/google-plus-logo.png" width="40" height="40" /> Sign in with google</button>
+                    <button class="google-signin" (click)="doLogin()"><img src="../../../../assets/img/google-plus-logo.png" width="40" height="40" /> {{ 'Sign in with google' | translate }}</button>
                 </div>
                 <!-- <div class="checkbox">
                     <label><input type="checkbox" checked> Remember me</label>

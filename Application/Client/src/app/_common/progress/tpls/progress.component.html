@@ -3,6 +3,6 @@
         [class.is-complete]="isCompleted.indexOf(endPoint) > -1"
         [class.is-active]="isActive===endPoint"
         [attr.data-step]="(isCompleted.indexOf(endPoint) > -1)?(i+1):(i+1)">
-      {{endPoint}}
+      {{endPoint | translate }}
     </li>
 </ol>

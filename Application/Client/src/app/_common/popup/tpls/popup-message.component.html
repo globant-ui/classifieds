@@ -12,48 +12,48 @@
 				<div class="first" *ngIf = "showPopupDivMessage === 'listing' " >
 						<img src="../../../../assets/img/success.png">
 								<div class="successMessage">
-										<p class="firstP">Congratulations!</p>
-										<p>Your listing has been accepted!</p>
+										<p class="firstP">{{ 'Congratulations' | translate }}!</p>
+										<p>{{ 'Your listing has been accepted' | translate }}!</p>
 								</div>
 						<p class="contentP"></p>
-						<button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">View Listing</button>
+						<button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">{{ 'View Listing' | translate }}</button>
 				</div>
 				<!--Listing saved-->
 				<div class="first" *ngIf = "showPopupDivMessage === 'saved-listing' " >
 						<img src="../../../../assets/img/success.png">
 								<div class="successMessage">
-										<p class="firstP">Congratulations!</p>
-										<p>Your listing has been saved!</p>
+										<p class="firstP">{{ 'Congratulations' | translate }}!</p>
+										<p>{{ 'Your listing has been saved' | translate }}!</p>
 								</div>
 						<p class="contentP"></p>
-						<button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">View Listing</button>
+						<button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">{{ 'View Listing' | translate }}</button>
 				</div>
 					<!--second popup-->
 				<div class="second" *ngIf = "showPopupDivMessage === 'profile' " >
 					<div class="successMessage">
-				        <p class="firstP">Congratulations!</p>
-						<p>Your profile has been updated!</p>
+				        <p class="firstP">{{ 'Congratulations' | translate }}!</p>
+						<p>{{ 'Your profile has been updated' | translate }}!</p>
 					</div>
-					<p class="contentP">Your all the changes has been updated</p>
-			    <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="redirectToMyProfile()">Close</button>
+					<p class="contentP">{{ 'Your all the changes has been updated' | translate }}</p>
+			    <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="redirectToMyProfile()">{{ 'Close' | translate }}</button>
 				</div>
 				<!--third popup-->
 				<div class="third" *ngIf = "showPopupDivMessage === 'subscription' " >
 					<div class="successMessage">
-				        <p class="firstP">Congratulations!</p>
-						<p>Your subscription has been added!</p>
+				        <p class="firstP">{{ 'Congratulations' | translate }}!</p>
+						<p>{{ 'Your subscription has been added' | translate }}!</p>
 					</div>
 					<p class="contentP">wdjkcndk;fnv;kdfv; dflv df vf vldfklvfk’lv lkfv df v’lf vlefvlf vl fvl eflv mflv mefv mf vlmf vlfq vlf v fvl flv flv lefv lf vlmef vf vlf v v lv efvmkerbhefnkl,qaf jm,. m, hbjn</p>
-			      <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" >Close</button>
+			      <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" >{{ 'Close' | translate }}</button>
 				</div>
 				<!--fourth popup-->
 				<div class="second" *ngIf = "showPopupDivMessage === 'card-edit' " >
 					<div class="successMessage">
-				        <p class="firstP">Congratulations!</p>
-						<p>Your listing has been updated!</p>
+				        <p class="firstP">{{ 'Congratulations' | translate }}!</p>
+						<p>{{ 'Your listing has been updated' | translate }}!</p>
 					</div>
-					<p class="contentP">Your all the changes has been updated</p>
-			    <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">Close</button>
+					<p class="contentP">{{ 'Your all the changes has been updated' | translate }}</p>
+			    <button type="button" class="btn btn-default orange-border-button" data-dismiss="modal" (click)="viewListingRedirect()">{{ 'Close' | translate }}</button>
 				</div>
 			</div>
     </div>

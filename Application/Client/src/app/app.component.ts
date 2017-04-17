@@ -1,8 +1,8 @@
 
-import { Component, ViewEncapsulation,ViewChildren,Input} from '@angular/core';
+import { Component, ViewEncapsulation,ViewChildren,Input,OnInit} from '@angular/core';
 import { AppState } from './app.service';
 import  {SettingsService} from  './_common/services/setting.service';
-
+import { TranslateService } from './translate';
 
 @Component({
   selector: 'app',
@@ -19,11 +19,15 @@ export class AppComponent {
   name = 'Angular 2 Webpack Starter';
   url = 'https://twitter.com/AngularClass';
 
+  ngOnInit() {
+    // standing data
+    this._translate.use('en');  
+  }
 
 
   @ViewChildren("cheader") CHeader;
 
-  constructor(public appState: AppState) {
+  constructor(public appState: AppState,private _translate: TranslateService) {
 
   }
 

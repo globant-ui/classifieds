@@ -29,12 +29,12 @@
         <li>
           <button class="green-button" [routerLink]="['/dashboard/createCard']">
             <span class="icon-flag"></span>
-            <span>create</span>
+            <span>{{ 'create' | translate }}</span>
           </button>
         </li>
         <li (click)="wishlistPopup()">
           <!--<a href="#">-->
-            <span class="textwishlist">my favourites</span>
+            <span class="textwishlist">{{ 'my favourites' | translate }}</span>
             <span class="icon-like-icon wishlist"></span>
           <!--</a>-->
         </li>
@@ -47,13 +47,13 @@
               <li>
                 <button>
                  <!--  <span class="icon-profile profile-btn"></span>  -->
-                  <span class="textProfile" (click)="showUserProfile()"  [routerLink]="['/dashboard/profile']">my profile</span>
+                  <span class="textProfile" (click)="showUserProfile()"  [routerLink]="['/dashboard/profile']">{{ 'my profile' | translate }}</span>
                 </button>
               </li>
               <li>
                 <button>
                   <!-- <span class="icon-flag"></span> -->
-                  <span (click)="doLogout()">Sign Out</span>
+                  <span (click)="doLogout()">{{ 'Sign Out' | translate }}</span>
                 </button>
               </li>
             </ul>
@@ -64,14 +64,14 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" href="#collapse1">Electronics <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                <a data-toggle="collapse" href="#collapse1">{{ 'Electronics' | translate }} <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
               </h4>
             </div>
             <div id="collapse1" class="panel-collapse collapse">
               <ul class="list-group">
-                <li class="list-group-item">Mobiles</li>
-                <li class="list-group-item">Laptops and Desktops</li>
-                <li class="list-group-item">Kitchen Appliences</li>
+                <li class="list-group-item">{{ 'Mobiles' | translate }}</li>
+                <li class="list-group-item">{{ 'Laptops and Desktops' | translate }}</li>
+                <li class="list-group-item">{{ 'Kitchen Appliences' | translate }}</li>
               </ul>
             </div>
           </div>
@@ -80,14 +80,14 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" href="#collapse2">Housing<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                <a data-toggle="collapse" href="#collapse2">{{ 'Housing' | translate }}<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
               </h4>
             </div>
             <div id="collapse2" class="panel-collapse collapse">
               <ul class="list-group">
-                <li class="list-group-item">Studio Apartments</li>
-                <li class="list-group-item">Double Sharing</li>
-                <li class="list-group-item">Fully Furnished</li>
+                <li class="list-group-item">{{ 'Studio Apartments' | translate }}</li>
+                <li class="list-group-item">{{ 'Double Sharing' | translate }}</li>
+                <li class="list-group-item">{{ 'Fully Furnished' | translate }}</li>
               </ul>
             </div>
           </div>
@@ -96,14 +96,14 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" href="#collapse3">Automotive<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                <a data-toggle="collapse" href="#collapse3">{{ 'Automotive' | translate }}<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
               </h4>
             </div>
             <div id="collapse3" class="panel-collapse collapse">
               <ul class="list-group">
-                <li class="list-group-item">Cars</li>
-                <li class="list-group-item">Motarcycles</li>
-                <li class="list-group-item">Scooters</li>
+                <li class="list-group-item">{{ 'Cars' | translate }}</li>
+                <li class="list-group-item">{{ 'Motarcycles' | translate }}</li>
+                <li class="list-group-item">{{ 'Scooters' | translate }}</li>
               </ul>
             </div>
           </div>
@@ -112,14 +112,14 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" href="#collapse4">Furniture <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                <a data-toggle="collapse" href="#collapse4">{{ 'Furniture' | translate }} <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
               </h4>
             </div>
             <div id="collapse4" class="panel-collapse collapse">
               <ul class="list-group">
-                <li class="list-group-item">Beds and Sofas</li>
-                <li class="list-group-item">Tables and Chairs</li>
-                <li class="list-group-item">Wadrobes and Storage</li>
+                <li class="list-group-item">{{ 'Beds and Sofas' | translate }}</li>
+                <li class="list-group-item">{{ 'Tables and Chairs' | translate }}</li>
+                <li class="list-group-item">{{ 'Wadrobes and Storage' | translate }}</li>
               </ul>
             </div>
           </div>
@@ -128,14 +128,14 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" href="#collapse5">Assorted <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                <a data-toggle="collapse" href="#collapse5">{{ 'Assorted' | translate }} <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
               </h4>
             </div>
             <div id="collapse5" class="panel-collapse collapse">
               <ul class="list-group">
-                <li class="list-group-item">Books and stationary</li>
-                <li class="list-group-item">Sports equipment</li>
-                <li class="list-group-item">Musical instrument</li>
+                <li class="list-group-item">{{ 'Books and stationary' | translate }}</li>
+                <li class="list-group-item">{{ 'Sports equipment' | translate }}</li>
+                <li class="list-group-item">{{ 'Musical instrument' | translate }}</li>
               </ul>
             </div>
           </div>
