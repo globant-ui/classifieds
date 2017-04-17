@@ -15,7 +15,7 @@
 
       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"  *ngFor="let card of currentUserList;let i = index;">
         <div class="thumbnail" (click)="showProductInfo(card._id)">
-          <template [ngIf]="true">
+          <ng-template [ngIf]="true">
             <div class="mylisting-edit-icon">
                 <button class="green-circle-button" (click)="EditMyListing(card._id)">
                   <i class="icon-Mobile_EditIcon"></i>
@@ -40,7 +40,7 @@
               </div>
               </div>
             </div>
-          </template>
+          </ng-template>
         </div>
       </div>
 

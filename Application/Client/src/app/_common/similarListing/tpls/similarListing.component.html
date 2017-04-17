@@ -9,14 +9,14 @@
     <div *ngIf="similarListing.length > 1">
       <div class="col-xs-6 col-sm-6 col-md-3" *ngFor="let card of similarListing;let i = index;">
         <div (click)="showProductInfo(card._id)" class="thumbnail">
-          <template [ngIf]="i<4">
+          <ng-template [ngIf]="i<4">
             <img *ngIf="card.Photos && card.Photos.length>0" src="{{card.Photos[0].Image}}" class="img-responsive" alt="...">
             <img *ngIf="!card.Photos || card.Photos.length<=0" src="../../../../assets/img/similarListing.png" class="img-responsive" />
             <div class="listingContent caption">
               <span class="title"><h5>{{card.Title}}</h5></span>
               <span class="price pull-right">{{card.Price | currency:'INR':true}}</span>
             </div>
-          </template>
+          </ng-template>
         </div>
       </div>
     </div>
