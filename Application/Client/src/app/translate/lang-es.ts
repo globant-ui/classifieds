@@ -3,10 +3,23 @@
 export const LANG_ES_NAME = 'es';
 
 export const LANG_ES_TRANS = {
-    
+    //Login
+
+    'Hey there, please login':'Hola, por favor ingresa',
+    'Sign in with google':'Inicia sesión con Google',
+
+    //Global
     'currency': 'USD',
     'My Wishlist': 'mi lista de deseos',
     'No results found':'No se han encontrado resultados',
+    'Coming Soon':'Próximamente',
+
+    //Select Intrest
+    'Would you like to select your interest':'Desea seleccionar su interés',
+    'Preferred location':'Ubicación preferida',
+    'All Locations':'Todas las localizaciones',
+    'Skip for now':'Salte por ahora',
+    'DONE':'HECHO',
 
     //Home
 

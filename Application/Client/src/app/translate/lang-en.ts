@@ -4,9 +4,23 @@ export const LANG_EN_NAME = 'en';
 
 export const LANG_EN_TRANS = {
 
+    //Login
+
+    'Hey there, please login':'Hey there, please login',
+    'Sign in with google':'Sign in with google',
+
+    //Global
     'currency': 'INR',
     'My Wishlist': 'My Wishlist',
     'No results found':'No results found',
+    'Coming Soon':'Coming Soon',
+
+    //Select Intrest
+    'Would you like to select your interest':'Would you like to select your interest',
+    'Preferred location':'Preferred location',
+    'All Locations':'All Locations',
+    'Skip for now':'Skip for now',
+    'DONE':'DONE',
 
     //Home
 

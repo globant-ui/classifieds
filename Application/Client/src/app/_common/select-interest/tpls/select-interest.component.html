@@ -7,7 +7,7 @@
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-body">
-            <h4 class="modal-title text-center">Hello there!<br class="shidden-sm hidden-md hidden-lg" /> Would you like to select your interest?</h4>
+            <h4 class="modal-title text-center">Hello there!<br class="shidden-sm hidden-md hidden-lg" /> {{ 'Would you like to select your interest' | translate }}?</h4>
             <div class="tagInput">
               <input type="text" id="addTag" #interest (keyup)="fetchInterest($event,interest.value);" placeholder="Add tag">
             </div>
@@ -29,15 +29,15 @@
               </ul>
             </div>
             <div class="prefLocation">
-              <label>Preffered location </label>
+              <label>{{ 'Preferred location' | translate }} </label>
               <label><input type="checkbox" #cb1 [disabled]="disabledCheckbox" value="Pune"  (change)="selectCheckbox(cb1)"> Pune</label>
               <label><input type="checkbox" #cb2 [disabled]="disabledCheckbox" value="Banglore"  (change)="selectCheckbox(cb2)"> Banglore</label>
-              <label><input type="checkbox" #cb3  value="All"  (change)="selectCheckbox(cb3)"> All Locations</label>
+              <label><input type="checkbox" #cb3  value="All"  (change)="selectCheckbox(cb3)"> {{ 'All Locations' | translate }}</label>
             </div>
             <div class="btn-container">
-              <a class="skip-text" (click)="skipInterest()">Skip for now</a>
+              <a class="skip-text" (click)="skipInterest()">{{ 'Skip for now' | translate }}</a>
               <button type="submit" class="btn btn-default pull-right done-btn"
-                      [disabled]="obj.SubCategory.length === 0 && obj.Location.length === 0" (click) = "PostData(obj)">DONE</button>
+                      [disabled]="obj.SubCategory.length === 0 && obj.Location.length === 0" (click) = "PostData(obj)">{{ 'DONE' | translate }}</button>
             </div>
           </div>
         </div>
