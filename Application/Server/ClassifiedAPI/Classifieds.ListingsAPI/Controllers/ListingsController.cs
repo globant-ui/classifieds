@@ -17,6 +17,7 @@ using Classifieds.ListingsAPI.Helpers;
 using System.Configuration;
 using System.Web.Script.Serialization;
 using System.Reflection;
+using Minio;
 
 namespace Classifieds.ListingsAPI.Controllers
 {
@@ -26,8 +27,8 @@ namespace Classifieds.ListingsAPI.Controllers
     /// Purpose : This class is used for to implement get/post/put/delete methods on listings
     /// Created By : Suyash, Santosh
     /// Created Date: 08/12/2016
-    /// Modified by : Ashish
-    /// Modified date: 12/01/2017
+    /// Modified by : Ashish, Suyash
+    /// Modified date: 5/04/2017
     /// </summary>
     public class ListingsController : ApiController
     {
@@ -91,7 +92,8 @@ namespace Classifieds.ListingsAPI.Controllers
                         {
                             if (img != null)
                             {
-                                img.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + img.Image;
+                                //img.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + img.Image;
+                                img.Image = ConfigurationManager.AppSettings["MinioImageServer"].ToString() + img.Image;
                             }
                         }
                     }
@@ -462,8 +464,8 @@ namespace Classifieds.ListingsAPI.Controllers
         #region PutListing (Update Listing)
         /// <summary>
         /// Updates a listing including images
-        /// </summary>
-        /// <param name="id">listing id</param>
+        /// request content is MimeMultipartContent format which includes text part and file part. text part is listing object(with _id) and file part is images to be uploaded
+        /// </summary>        
         /// <returns></returns>
         [HttpPut]
         public async Task<HttpResponseMessage> PutListing()
@@ -491,49 +493,45 @@ namespace Classifieds.ListingsAPI.Controllers
                     }
                     path = ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
                     string uploadPath = HttpContext.Current.Server.MapPath("~" + path);
-                    string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
+                    //string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
                     StreamProvider provider = new StreamProvider(uploadPath);
                     try
                     {
-                        var imageInfo = await ProcessImages(Request, dbPath, provider);
-                        
-                        // Form data i.e. text handling 
+                        // Form data - File handling i.e. code to Upload Images to Minio storage server                         
+                        var imageInfo = await ProcessImages(Request,  provider,  uploadPath);                      
+
+                        // Form data - Text part handling i.e. code to handle listing object
                         foreach (var key in provider.FormData.AllKeys)
                         {
                             foreach (var val in provider.FormData.GetValues(key))
                             {
                                 string jsonStr = provider.FormData.Get(key);
-                                JavaScriptSerializer j = new JavaScriptSerializer();
-                                //var a = j.Deserialize(jsonStr, typeof(object));
-                                //listing = LoadListingObject((Dictionary<string, object>)a, true);
+                                JavaScriptSerializer j = new JavaScriptSerializer();                                
                                 listing = j.Deserialize<Listing>(jsonStr);
                             }
                         }
                         if (listing == null)
                             throw new NullReferenceException("Listing object is null");
-
-                        //deleting existing images and adding new ones
-                        //DeletePhotosByListingId(listing._id, uploadPath);
-                        //listing.Photos = imageInfo.ToArray<ListingImages>();
+                        
                         if (listing.Photos == null || listing.Photos.Length == 0)
                         {
                             listing.Photos = imageInfo.ToArray<ListingImages>();
                         }
                         else
                         {
-                            //removing base address for existing photo[] field in json send from UI
-                            string imageServerPath = ConfigurationManager.AppSettings["ImageServer"].ToString();
+                            //removing base address for existing photo[] field in json which is send from UI i.e. client call
+                            string imageServerPath = ConfigurationManager.AppSettings["MinioImageServer"].ToString();
                             foreach (ListingImages photo in listing.Photos)
                             {                               
                                 photo.Image = photo.Image.Replace(imageServerPath, string.Empty); 
                             }
+                            // append newly uploaded image object to existing listing photos[] array
                             var images = imageInfo.ToArray<ListingImages>();
                             foreach (ListingImages img in images)
                             {
                                 listing.Photos = (listing.Photos ?? Enumerable.Empty<ListingImages>()).Concat(Enumerable.Repeat(img, 1)).ToArray();
                             }
                         }
-                        
 
                         if (listing.IsPublished)
                             listing.Status = Status.Active.ToString();
@@ -634,8 +632,7 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <summary>
         /// Update listing status for given Id
         /// </summary>
-        /// <param name="id">Listing Id</param>
-        /// <param name="listing">Listing Object</param>
+        /// <param name="id">Listing Id</param>        
         /// <returns></returns>
         public HttpResponseMessage PutPublishListing(string id)
         {
@@ -670,9 +667,9 @@ namespace Classifieds.ListingsAPI.Controllers
         /// <param name="listingImage">Listing Image Object</param>
         /// <returns></returns>
         [HttpPut]
-        public HttpResponseMessage DeleteListingImage(string id, ListingImages listingImage)
+        public async Task<HttpResponseMessage> DeleteListingImage(string id, ListingImages listingImage)
         {
-            HttpResponseMessage result;
+            HttpResponseMessage result = new HttpResponseMessage();
             try
             {                
                 string authResult = _commonRepository.IsAuthenticated(Request);
@@ -681,29 +678,20 @@ namespace Classifieds.ListingsAPI.Controllers
                 {
                     throw new Exception(authResult);
                 }
-
-                //Image handling               
-                string path = ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
-                string uploadPath = HttpContext.Current.Server.MapPath("~" + path);
-
-                string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
-
+               
+                string imageServerPath = ConfigurationManager.AppSettings["MinioImageServer"].ToString();
                 if (listingImage != null)
                 {
-                    var imagePath = uploadPath + listingImage.ImageName;
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(uploadPath + listingImage.ImageName);
-                    }
-
-                    listingImage.Image = dbPath + listingImage.ImageName;
+                    //Remove image from a minio bucket
+                    await RemoveImageFromMinioServer(listingImage.ImageName);
+                    //Remove image item from photo[] array
+                    listingImage.Image= listingImage.Image.Replace(imageServerPath, string.Empty);
                     var classified = _listingService.DeleteListingImage(id, listingImage);
-
                     result = Request.CreateResponse(HttpStatusCode.Accepted, classified);
                 }
                 else
                 {
-                    result = Request.CreateResponse(HttpStatusCode.OK,"Image not found");
+                    result = Request.CreateResponse(HttpStatusCode.OK, "Image not found");
                 }
             }
             catch (Exception ex)
@@ -714,11 +702,12 @@ namespace Classifieds.ListingsAPI.Controllers
             return result;
         }
 
-        #endregion PutImageListing
+        #endregion Put-DeleteListingImage
 
         #region PostListing
         /// <summary>
-        /// 
+        /// Save listing card including with uploading listing images on minio storage
+        /// request content is MimeMultipartContent format which includes text part and file part. text part is listing object(without _id) and file part is images to be uploaded
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -747,12 +736,14 @@ namespace Classifieds.ListingsAPI.Controllers
                     }
                     path = ConfigurationManager.AppSettings["BaseListingImagePath"].ToString();
                     string uploadPath = HttpContext.Current.Server.MapPath("~" + path);
-                    string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
-                    StreamProvider provider = new StreamProvider(uploadPath);
+                    //string dbPath = ConfigurationManager.AppSettings["DBListingImagePath"].ToString();
+                    StreamProvider provider = new StreamProvider(uploadPath);                   
                     try
                     {
-                        var imageInfo = await ProcessImages(Request, dbPath, provider);
-                        // Form data i.e. text handling 
+                        // Form data - File handling i.e. code to Upload Images to Minio storage server
+                        var imageInfo = await ProcessImages(Request, provider, uploadPath);
+
+                        // Form data - Text part handling i.e. code to handle listing object
                         foreach (var key in provider.FormData.AllKeys)
                         {
                             foreach (var val in provider.FormData.GetValues(key))
@@ -764,8 +755,9 @@ namespace Classifieds.ListingsAPI.Controllers
                             }
                         }
                         if (listing == null)
-                        { 
-                            throw new NullReferenceException();
+                        {
+                            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Request!");
+                            throw new HttpResponseException(response);                           
                         }
                         
                         if (listing.IsPublished)
@@ -778,8 +770,10 @@ namespace Classifieds.ListingsAPI.Controllers
                         result = Request.CreateResponse(HttpStatusCode.Created, classified);
                         return result;
                     }
-                    catch (System.Exception e)
+                    catch (Exception e)
                     {
+                        _logger.Log(e, _userEmail);
+                        //throw e;
                         return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
                     }
                 }
@@ -857,16 +851,163 @@ namespace Classifieds.ListingsAPI.Controllers
             message.Headers.TryGetValues("AccessToken", out headerValues);
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
+        }        
+        
+        private List<Listing> MapImageName(List<Listing> listArray)
+        {
+            if (listArray != null)
+            {
+                foreach (Listing lst in listArray)
+                {
+                    if (lst.Photos != null)
+                    {
+                        foreach (ListingImages img in lst.Photos)
+                        {
+                            if (img != null)
+                            {
+                                //img.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + img.Image;
+                                img.Image = ConfigurationManager.AppSettings["MinioImageServer"].ToString() + img.Image;
+                            }
+                        }
+                    }
+                }
+            }
+            return listArray;
+        }       
+
+        private Task<IEnumerable<ListingImages>> ProcessImages(HttpRequestMessage request,  StreamProvider provider,  string uploadPath)
+        {
+            return  request.Content.ReadAsMultipartAsync(provider)
+                            .ContinueWith(t =>
+                            {
+                                if (t.IsFaulted || t.IsCanceled)
+                                {
+                                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                                }
+                                var fileInfo = provider.FileData.Select(i =>
+                                {
+                                    var info = new FileInfo(i.LocalFileName);
+
+                                    return new ListingImages(info.Name, info.Name);// dbPath + info.Name : previously we store relative path of image in db but after minio impleentation we only strore image name
+                                });
+
+                                RunMinioFileUploader( fileInfo, uploadPath).Wait();
+                                return fileInfo;
+                            });
         }
+
+        private async static Task RunMinioFileUploader(IEnumerable<ListingImages> files, string uploadPath)
+        {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+            //| SecurityProtocolType.Tls12 //| SecurityProtocolType.Tls11 //| SecurityProtocolType.Tls12;
+            var endpoint = ConfigurationManager.AppSettings["MinioEndpoint"].ToString();
+            var accessKey = ConfigurationManager.AppSettings["MinioAccessKey"].ToString();
+            var secretKey = ConfigurationManager.AppSettings["MinioSecretKey"].ToString();
+
+            var minio = new MinioClient(endpoint, accessKey, secretKey);//.WithSSL();
+
+            // Minio bucket is already created
+            var bucketName = ConfigurationManager.AppSettings["MinioBucketName"].ToString(); 
+            var location = ConfigurationManager.AppSettings["MinioLocation"].ToString();          
+            var contentType = ConfigurationManager.AppSettings["MinioContentType"].ToString(); 
+            foreach (var f in files)
+            {
+                var objectName = f.ImageName;
+                var filePath = uploadPath + f.ImageName;
+                try
+                {
+                    bool found = await minio.Api.BucketExistsAsync(bucketName);
+                    if (!found)
+                    {
+                        throw new Exception("bucket-name was not found");                       
+                    }
+                    else
+                    {
+                        await minio.Api.PutObjectAsync(bucketName, objectName, filePath, contentType);
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            System.IO.File.Delete(filePath);
+                        }                      
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw (e);                   
+                }
+            }
+        }
+                
+        public async static Task RemoveImageFromMinioServer(string objectName)
+        {
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+                var endpoint = ConfigurationManager.AppSettings["MinioEndpoint"].ToString();
+                var accessKey = ConfigurationManager.AppSettings["MinioAccessKey"].ToString();
+                var secretKey = ConfigurationManager.AppSettings["MinioSecretKey"].ToString();
+                var bucketName = ConfigurationManager.AppSettings["MinioBucketName"].ToString();
+                var minio = new MinioClient(endpoint, accessKey, secretKey);//.WithSSL();   
+                await minio.Api.RemoveObjectAsync(bucketName, objectName);               
+            }
+            catch
+            {
+                throw;                
+            }
+        }
+
+        #region After code refactoring/ implementing Minio some methods are not more in use Not in use 
+        private void DeletePhotosByListingId(string id, string uploadPath)
+        {
+            ListingImages[] photos = _listingService.GetPhotosByListingId(id);
+            if (photos != null && photos.Length > 0)
+            {
+                DirectoryInfo di = new DirectoryInfo(uploadPath);
+                if (di.GetFiles().Length > 0)
+                {
+                    foreach (FileInfo f in di.GetFiles())
+                    {
+                        foreach (ListingImages img in photos)
+                        {
+                            if (img.ImageName == f.Name)
+                            {
+                                f.Delete();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private Task<IEnumerable<ListingImages>> ProcessImages_old(HttpRequestMessage request, string dbPath, StreamProvider provider)
+        {
+            return request.Content.ReadAsMultipartAsync(provider)
+                            .ContinueWith(t =>
+                            {
+                                if (t.IsFaulted || t.IsCanceled)
+                                {
+                                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                                }
+                                var fileInfo = provider.FileData.Select(i =>
+                                {
+                                    var info = new FileInfo(i.LocalFileName);
+
+                                    return new ListingImages(info.Name, dbPath + info.Name);
+                                });
+                                return fileInfo;
+                            });
+        }
+
         private List<ListingImages> CreateImagePath(Listing listing)
         {
             try
             {
-                
+
                 if (Request.Content.IsMimeMultipartContent())
                 {
                     string path = HttpContext.Current.Server.MapPath("~/");
-                    path = path + ConfigurationManager.AppSettings["ListingImagePath"].ToString()+listing.ListingCategory+"/"+listing.SubCategory;
+                    path = path + ConfigurationManager.AppSettings["ListingImagePath"].ToString() + listing.ListingCategory + "/" + listing.SubCategory;
                     if (!System.IO.Directory.Exists(path))
                     {
                         System.IO.Directory.CreateDirectory(path);
@@ -900,68 +1041,7 @@ namespace Classifieds.ListingsAPI.Controllers
                 throw ex;
             }
         }
-        
-        private List<Listing> MapImageName(List<Listing> listArray)
-        {
-            if (listArray != null)
-            {
-                foreach (Listing lst in listArray)
-                {
-                    if (lst.Photos != null)
-                    {
-                        foreach (ListingImages img in lst.Photos)
-                        {
-                            if (img != null)
-                            {
-                                img.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + img.Image;
-                            }
-                        }
-                    }
-                }
-            }
-            return listArray;
-        }
-
-        private Task<IEnumerable<ListingImages>> ProcessImages(HttpRequestMessage request, string dbPath, StreamProvider provider)
-        {
-            return request.Content.ReadAsMultipartAsync(provider)
-                            .ContinueWith(t =>
-                            {
-                                if (t.IsFaulted || t.IsCanceled)
-                                {
-                                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
-                                }
-                                var fileInfo = provider.FileData.Select(i =>
-                                {
-                                    var info = new FileInfo(i.LocalFileName);
-
-                                    return new ListingImages(info.Name, dbPath + info.Name);
-                                });
-                                return fileInfo;
-                            });
-        }
-
-        private void DeletePhotosByListingId(string id, string uploadPath)
-        {
-            ListingImages[] photos = _listingService.GetPhotosByListingId(id);
-            if (photos != null && photos.Length > 0)
-            {
-                DirectoryInfo di = new DirectoryInfo(uploadPath);
-                if (di.GetFiles().Length > 0)
-                {
-                    foreach (FileInfo f in di.GetFiles())
-                    {
-                        foreach (ListingImages img in photos)
-                        {
-                            if (img.ImageName == f.Name)
-                            {
-                                f.Delete();
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        #endregion
         #endregion
     }
 }

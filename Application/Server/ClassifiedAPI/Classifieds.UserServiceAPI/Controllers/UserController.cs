@@ -13,6 +13,7 @@ using System.Web;
 using System.Configuration;
 using System.IO;
 using System.Net.Http.Headers;
+using Minio;
 
 namespace Classifieds.UserServiceAPI.Controllers
 {
@@ -75,7 +76,8 @@ namespace Classifieds.UserServiceAPI.Controllers
                 objUser = _userService.GetUserProfile(userEmail);
                 if (!String.IsNullOrEmpty(objUser.Image))
                 {
-                    objUser.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + objUser.Image;
+                    //objUser.Image = ConfigurationManager.AppSettings["ImageServer"].ToString() + objUser.Image;
+                    objUser.Image = ConfigurationManager.AppSettings["MinioImageServer"].ToString() + objUser.Image;
                 }
                 return objUser;
             }
@@ -410,7 +412,7 @@ namespace Classifieds.UserServiceAPI.Controllers
                 foreach (string file in httpRequest.Files)
                 {
                     HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
-
+                   
                     var postedFile = httpRequest.Files[file];
                     if (postedFile != null && postedFile.ContentLength > 0)
                     {
@@ -456,12 +458,24 @@ namespace Classifieds.UserServiceAPI.Controllers
                             }
                             string uniqueUserName = userName + Guid.NewGuid().ToString();
                             postedFile.SaveAs(path + uniqueUserName + extension);
-                            resPath = ConfigurationManager.AppSettings["DBSaveProfileImage"].ToString() + userName + "/" + uniqueUserName + extension;
-                            _userService.UpdateImagePath(_userEmail, resPath);
+
+                            /* Minio file upload code*/
+                            ServicePointManager.Expect100Continue = true;
+                            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+                            var endpoint = ConfigurationManager.AppSettings["MinioEndpoint"].ToString();
+                            var accessKey = ConfigurationManager.AppSettings["MinioAccessKey"].ToString();
+                            var secretKey = ConfigurationManager.AppSettings["MinioSecretKey"].ToString();
+
+                            var minio = new MinioClient(endpoint, accessKey, secretKey);//.WithSSL();                           
+                            await UserController.Run(minio, path, uniqueUserName + extension);
+                            _userService.UpdateImagePath(_userEmail, uniqueUserName + extension);
+                            return Request.CreateErrorResponse(HttpStatusCode.Created, ConfigurationManager.AppSettings["MinioImageServer"].ToString() + uniqueUserName + extension);
+                            /*End Minio Code*/                            
                         }
                     }
                     //return image path in response
-                    return Request.CreateErrorResponse(HttpStatusCode.Created, ConfigurationManager.AppSettings["ImageServer"].ToString() + resPath); ;
+                    //return Request.CreateErrorResponse(HttpStatusCode.Created, ConfigurationManager.AppSettings["ImageServer"].ToString() + resPath);
+                    
                 }
                 var res = string.Format("Please Upload a image.");
                 dict.Add("error", res);
@@ -504,6 +518,39 @@ namespace Classifieds.UserServiceAPI.Controllers
             message.Headers.TryGetValues("UserEmail", out headerValues);
             string hearderVal = headerValues == null ? string.Empty : headerValues.FirstOrDefault();
             return hearderVal;
+        }
+
+        private async static Task Run(MinioClient minio, string path, string fileName)
+        {           
+            var bucketName = ConfigurationManager.AppSettings["MinioBucketName"].ToString(); //<==== change this
+            var location = ConfigurationManager.AppSettings["MinioLocation"].ToString();
+            var contentType = ConfigurationManager.AppSettings["MinioContentType"].ToString();
+            var objectName = fileName;
+            var filePath = path + fileName;
+            try
+            {
+                bool found = await minio.Api.BucketExistsAsync(bucketName);
+                if (!found)
+                {
+                    throw new Exception("bucket-name was not found");
+                }
+                else
+                {
+                    await minio.Api.PutObjectAsync(bucketName, objectName, filePath, contentType);
+                    DirectoryInfo di = new DirectoryInfo(path);
+                    if (di.GetFiles().Length > 0)
+                    {
+                        foreach (FileInfo f in di.GetFiles())
+                        {
+                            f.Delete();
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw (e);
+            }
         }
         #endregion
     }
