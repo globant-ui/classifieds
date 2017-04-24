@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
 
-let styles = require('../styles/page-not-found.component.scss').toString();
-let tpls = require('../tpls/page-not-found.component.html').toString();
-
 @Component({
   selector: 'page-not-found',
-  styles : [ styles ],
-  template : tpls
+  styles : [ require('../styles/page-not-found.component.scss').toString() ],
+  template : require('../tpls/page-not-found.component.html').toString()
 })
 
-export class PageNotFoundComponent   {
-
-  constructor(){}
-
+export class PageNotFoundComponent {
 }
-

@@ -1,65 +1,62 @@
-import { Component,OnInit, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, AfterViewInit  } from '@angular/core';
 import { AppState } from '../../app.service';
-import {SettingsService} from '../../services/setting.service';
+import { SettingsService } from '../../services/setting.service';
 import { Observable }     from 'rxjs/Observable';
-import { Http, Response,RequestOptions } from '@angular/http';
-import {CService} from  '../../services/http.service';
-import {CookieService} from 'angular2-cookie/core';
+import { Http, Response, RequestOptions } from '@angular/http';
+import { CService } from  '../../services/http.service';
+import { CookieService } from 'angular2-cookie/core';
 import 'rxjs/Rx';
-import {Session} from '../../authentication/entity/session.entity';
+import { Session } from '../../authentication/entity/session.entity';
 
-//using jquery syntax $
+// using jquery syntax $
 declare var $;
-
-let styles = require('../styles/select-interest.component.scss').toString();
-let tpls = require('../tpls/select-interest.component.html').toString();
 
 @Component({
   selector: 'select-interest',
-  styles : [ styles ],
-  providers:[SettingsService, CService],
-  template : tpls
+  styles : [ require('../styles/select-interest.component.scss').toString() ],
+  providers: [SettingsService, CService],
+  template : require('../tpls/select-interest.component.html').toString()
 })
 
 export class SelectInterestComponent implements OnInit, AfterViewInit  {
 
-private delayTimer  : any = null;
-private subCategoryUrl:string = '';
-private selectInterestUrl:string = '';
-private interestResult:any ;
+private delayTimer: any = null;
+private subCategoryUrl: string = '';
+private selectInterestUrl: string = '';
+private interestResult: any ;
 private obj = {
-  'SubCategory': [],
-  'Location': []
+  SubCategory: [],
+  Location: []
 };
-private emailId:string;
-private enabledDropdown : boolean = true;
-private selectInterestPopUpFlag : boolean = true;
-private isValid : boolean = true;
-private disabledCheckbox : boolean = false;
-private session : Session;
+private emailId: string;
+private enabledDropdown: boolean = true;
+private selectInterestPopUpFlag: boolean = true;
+private isValid: boolean = true;
+private disabledCheckbox: boolean = false;
+private session: Session;
 
   constructor(
                  private _settingsService: SettingsService,
-                 private _cservice:CService,
-                 private _cookieService:CookieService) {
+                 private _cservice: CService,
+                 private _cookieService: CookieService) {
                         this.subCategoryUrl = _settingsService.getPath('subCategoryUrl');
                         this.selectInterestUrl = _settingsService.getPath('searchUrl');
                  }
 
-  ngOnInit() {
-      this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
+  public ngOnInit() {
+      this.emailId = this._cookieService.getObject('SESSION_PORTAL')['useremail'];
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
       this.session = new Session(this._cookieService.getObject('SESSION_PORTAL'));
       if (this.session['isFirstTimeLogin']) {
-          $("#myModal").modal("show");
+          $('#myModal').modal('show');
       }
-  } 
+  }
 
-  fetchInterest(e: Event, val) {
+  private fetchInterest(e: Event, val) {
       if (val.length >= 3) {
-          //Delay of some time to slow down the results
+          // Delay of some time to slow down the results
           clearTimeout(this.delayTimer);
 
           this.delayTimer = setTimeout(() => {
@@ -67,28 +64,30 @@ private session : Session;
           }, 1000);
       }
   }
-      //get call to get the dropdowndown list
-  fetchInterestData(text: string) {
+      // get call to get the dropdowndown list
+  private fetchInterestData(text: string) {
       this._cservice.observableGetHttp(this.subCategoryUrl + text, null, false)
           .subscribe((res: Response) => {
               if (res['length'] > 0) {
                   this.interestResult = res;
                   this.enabledDropdown = true;
               } else {
-                  console.log("No result found!!!");
+                  console.log('No result found!!!');
               }
           },
-          error => {
-              console.log("error in response", error);
+          (error) => {
+              console.log('error in response', error);
           });
   }
 
-//to select an item from dropdown
-  selectInterest(val) {
+// to select an item from dropdown
+  private selectInterest(val) {
       this.obj.SubCategory.push(val);
-      //to duplicate element allowed in tag logic
-      this.obj.SubCategory = this.obj.SubCategory.reduce(function (a, b) {
-          if (a.indexOf(b) < 0) a.push(b);
+      // to duplicate element allowed in tag logic
+      this.obj.SubCategory = this.obj.SubCategory.reduce((a, b) => {
+          if (a.indexOf(b) < 0) {
+            a.push(b);
+          }
           return a;
       }, []);
       this.enabledDropdown = false;
@@ -96,53 +95,49 @@ private session : Session;
       this.interestResult = [];
   }
 
-    //to delete an item from tagList
-  deleteIntrest(index, val) {
+    // to delete an item from tagList
+  private deleteIntrest(index, val) {
       let delFlag = this.obj.SubCategory.splice(index, 1);
   }
 
-    //to close the pop-up window
-  skipInterest(val) {
-      $("#myModal").modal("hide");
+    // to close the pop-up window
+  private skipInterest(val) {
+      $('#myModal').modal('hide');
   }
 
-    //checkbox code
-  selectCheckbox(element: HTMLInputElement): void {
+    // checkbox code
+  private selectCheckbox(element: HTMLInputElement): void {
 
       let elemIndex = this.obj.Location.indexOf(element.value);
 
-      if (element.value != 'All' && element.checked) {
+      if (element.value !== 'All' && element.checked) {
           this.obj.Location.push(element.value);
 
-      }
-      else {
+      }else {
           this.obj.Location.splice(elemIndex, 1);
           this.disabledCheckbox = false;
       }
-      if (element.value == 'All') {
+      if (element.value === 'All') {
           this.obj.Location.length = 0;
 
           if (element.checked) {
-              this.obj.Location.push("Pune", "Banglore");
+              this.obj.Location.push('Pune', 'Banglore');
               this.disabledCheckbox = true;
           }
       }
-  } 
-
-    //post call
-  PostData(obj) {
+  }
+    // post call
+  private PostData(obj) {
       if (obj.Location.length === 0) {
-          obj.Location.push("Pune", "Banglore");
+          obj.Location.push('Pune', 'Banglore');
       }
       this._cservice.observablePostHttp(this.selectInterestUrl + this.emailId, obj, null, false)
           .subscribe((res: Response) => {
-              console.log("postcall response", res)
-            $("#myModal").modal("hide");
+            console.log('postcall response', res);
+            $('#myModal').modal('hide');
           },
-          error => {
-              console.log("error in response", error);
+          (error) => {
+              console.log('error in response', error);
           });
   }
-
-} 
-
+}

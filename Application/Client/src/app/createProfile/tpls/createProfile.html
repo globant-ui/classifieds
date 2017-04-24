@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <div class="breadcrumb-wraper">
     <ol class="breadcrumb col-lg-11">
-      <li><a>{{ 'Home' | translate }}</a></li>
-      <li><a>{{ 'my profile' | translate }}</a></li>
+      <li><a>{{ 'Home' | myTranslate }}</a></li>
+      <li><a>{{ 'my profile' | myTranslate }}</a></li>
       <li class="active"></li>
     </ol>
     <div class="edit-profile-link col-lg-1">
-    <a (click)="ShowEditProfile()">{{ 'Edit Profile' | translate }}</a>
+    <a (click)="ShowEditProfile()">{{ 'Edit Profile' | myTranslate }}</a>
   </div>
   </div>
 <div class="container-fluid" *ngIf="userProfileData && closeViewProfile">
@@ -28,20 +28,20 @@
 
       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
         <div class="col-lg-11 profile-text">
-          <h3>{{ 'My Interests' | translate }}</h3>
+          <h3>{{ 'My Interests' | myTranslate }}</h3>
           <div class="profile-interest">
             <ul class="blue-tag">
               <li *ngFor="let res of tagData;let i=index;"><a>{{res}}</a></li>
          <!--<li  *ngFor="let tag of userProfileData.Tags.SubCategory"><a>{{tag}}</a></li>-->
             </ul>
           </div>
-          <p>{{ 'View listing from' | translate }} : <span>{{preferedLocation}}</span></p>
+          <p>{{ 'View listing from' | myTranslate }} : <span>{{preferedLocation}}</span></p>
           </div>
           <div class="col-lg-1"></div>
     </div>
 
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-      <h3>{{ 'My subscription' | translate }}</h3>
+      <h3>{{ 'My subscription' | myTranslate }}</h3>
       <div class="my-sub-icon pull-right">
         <span class="">
           <img src="../../../../assets/img/unsubcribe-tag.png" />
@@ -51,9 +51,9 @@
 
       <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
         <p class="my-sub">
-         <span class="category">{{ 'category' | translate }}</span>
+         <span class="category">{{ 'category' | myTranslate }}</span>
          <span class="sub-category pad-right-20">{{res.Category}}</span>
-         <span class="category">{{ 'subcategory' | translate }}</span>
+         <span class="category">{{ 'subcategory' | myTranslate }}</span>
          <span class="sub-category">{{res.SubCategory}}</span>
           <span class="pull-right">
           <button class="green-circle-button" (click)="deleteSub(res)">
@@ -98,7 +98,7 @@
    
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
       <div class="col-lg-11 profile-text">
-        <h3>{{ 'My Interests' | translate }}</h3>
+        <h3>{{ 'My Interests' | myTranslate }}</h3>
           <div class="profile-interest">
             <ul class="blue-tag grey-tag">
               <li *ngFor="let res of tagData;let i=index;"><a>{{res}}<i class="fa fa-close" (click)="deleteTag(i)"></i></a></li>
@@ -121,7 +121,7 @@
     </div>
 
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-      <h3>{{ 'My Subscribtion' | translate }}</h3>
+      <h3>{{ 'My Subscribtion' | myTranslate }}</h3>
       <div class="my-sub-icon pull-right">
        <span class="">
         <img src="../../../../assets/img/unsubcribe-tag.png" />
@@ -130,10 +130,10 @@
 
       <div class="my-sub-main"  *ngFor="let res of subscribeCat; let i=index;">
       <p class="my-sub">
-        <span class="category">{{ 'category' | translate }}</span>
+        <span class="category">{{ 'category' | myTranslate }}</span>
         <span class="sub-category pad-right-20">
            {{res.Category}}</span>
-        <span class="category">{{ 'subcategory' | translate }}</span>
+        <span class="category">{{ 'subcategory' | myTranslate }}</span>
         <span class="sub-category">{{res.SubCategory}}</span>
         <span class="pull-right">
           <button class="green-circle-button"  (click)="deleteSub(res)">
@@ -148,7 +148,7 @@
   <div class="row">
     <div class="col-lg-4"></div>
     <div class="col-lg-8 edit-profile-text">
-        <p>{{ 'Preffered loaction' | translate }}:
+        <p>{{ 'Preffered loaction' | myTranslate }}:
           <span *ngFor="let location of availableLocation">
             <input type="checkbox" [checked]="isChecked(location)" [disabled]="isAllLocationChecked" (change)="onLocationChange($event)" name="{{location}}" value="{{location}}">
             <label class="radio-inline">{{location}}</label>
@@ -156,11 +156,11 @@
 
            <span>
              <input [checked]="isChecked('All loactions')" type="checkbox" (change)="onLocationChange($event)" name="All loactions" value="All loactions">
-             <label class="radio-inline">{{ 'All loactions' | translate }}</label>
+             <label class="radio-inline">{{ 'All loactions' | myTranslate }}</label>
            </span>
 
            <span class="pull-right">
-             <button class="green-button" (click)="UpdateProfileData($event);">{{ 'Save & close' | translate }}</button>
+             <button class="green-button" (click)="UpdateProfileData($event);">{{ 'Save & close' | myTranslate }}</button>
            </span>
       </p>
     </div>

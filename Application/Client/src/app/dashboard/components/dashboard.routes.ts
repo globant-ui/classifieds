@@ -8,12 +8,11 @@ import { DashboardComponent } from './dashboard.component';
 import { CREATE_CARD_ROUTERS } from '../../createCard/component/create.card.routes';
 import { ExploreComponent } from '../../_common/explore-list';
 
-
 export const DASHBOARD_ROUTERS: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    children:[
+    children: [
       {path: '', component: HomeComponent},
       {path: 'home', component: HomeComponent},
       {path: 'profile', component: ProfileComponent},
@@ -26,4 +25,3 @@ export const DASHBOARD_ROUTERS: Routes = [
   ]
 }
 ];
-

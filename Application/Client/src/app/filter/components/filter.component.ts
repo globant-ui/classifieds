@@ -1,89 +1,83 @@
-import { Component,Output,EventEmitter,Input,OnChanges,SimpleChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges, OnInit }
+from '@angular/core';
 import { AppState } from '../../app.service';
-import {SettingsService} from '../../_common/services/setting.service';
+import { SettingsService } from '../../_common/services/setting.service';
 import { Observable }     from 'rxjs/Observable';
-import { Http, Response,RequestOptions } from '@angular/http';
-import {CService} from  '../../_common/services/http.service';
+import { Http, Response, RequestOptions } from '@angular/http';
+import { CService } from  '../../_common/services/http.service';
 import 'rxjs/Rx';
-
-let styles = require('../styles/filter.component.scss').toString();
-let tpls = require('../tpls/filter.component.html').toString();
 
 @Component({
   selector: 'filter',
-  styles : [ styles ],
-  providers:[SettingsService, CService],
-  template : tpls
+  styles : [ require('../styles/filter.component.scss').toString() ],
+  providers: [SettingsService, CService],
+  template : require('../tpls/filter.component.html').toString()
 })
 
-export class FilterComponent {
-  private filterData : any;
-  private filterCategoryUrl = "";
-  private categoryUrl:any;
-  public filterCategoryData:any;
-  public isActive:boolean = false;
-
-  @Input() selectedFilter;
-  @Input() isSearchActive;
-  @Input() searchValue;
-  @Output() getSelectedFilterOption: EventEmitter<any> = new EventEmitter <any>();
+export class FilterComponent implements OnChanges, OnInit {
+  public filterCategoryData: any;
+  public isActive: boolean = false;
+  private filterData: any;
+  private filterCategoryUrl: string = '';
+  private categoryUrl: any;
+  @Input() private selectedFilter;
+  @Input() private isSearchActive;
+  @Input() private searchValue;
+  @Output() private getSelectedFilterOption: EventEmitter<any> = new EventEmitter <any>();
 
   constructor(public appState: AppState,
               private _settingsService: SettingsService,
-              private _cservice:CService) {
-
+              private _cservice: CService) {
                 this.filterCategoryUrl = _settingsService.getPath('filterCategoryUrl');
               }
-
-  ngOnInit()
-  {
+  public ngOnInit() {
     this.filterData = this._settingsService.getFilterListingData();
-     this.filterData = this.filterData;
+    this.filterData = this.filterData;
     for (let item of this.filterData) {
-      if(item.listName==='Top ten'){item.isActive = true;}
+      if (item.listName === 'Top ten') {
+        item.isActive = true;
+      }
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if( changes[ 'selectedFilter' ] ) {
+  public ngOnChanges(changes: SimpleChanges) {
+    if ( changes[ 'selectedFilter' ] ) {
       this.updateSelectedFilter();
     }
   }
 
-  updateSelectedFilter() {
-    if( this.filterData ) {
+  private updateSelectedFilter() {
+    if ( this.filterData ) {
       for (let item of this.filterData ) {
-        if( item.listName.toLowerCase() == this.selectedFilter.toLowerCase() ) {
+        if ( item.listName.toLowerCase() === this.selectedFilter.toLowerCase() ) {
           item.isActive = true;
-        } else {
+        }else {
           item.isActive = false;
         }
       }
     }
   }
 
-  selectedOption(category, index) {
-     this.filterData = this.filterData;
-
-    for (let item of  this.filterData) {
+  private selectedOption(category, index) {
+    this.filterData = this.filterData;
+    for (let item of this.filterData) {
       item.isActive = false;
     }
     this.filterData[index].isActive = true;
-    this.getSelectedFilterOption.emit( {'categoryName':category} );
+    this.getSelectedFilterOption.emit( {categoryName: category} );
   }
 
-  getCardsByCategory(category)
-  {
-    this.categoryUrl = this.filterCategoryUrl+category;
-    this._cservice.observableGetHttp(this.categoryUrl,null,false)
-      .subscribe((res:Response)=> {
-          //console.log('res = ',res);
-          //this.filterCategory.emit(res);
-        },   error => {
-          console.log("error in response");
+  private getCardsByCategory(category) {
+    this.categoryUrl = this.filterCategoryUrl + category;
+    this._cservice.observableGetHttp(this.categoryUrl, null, false)
+      .subscribe((res: Response) => {
+          // console.log('res = ',res);
+          // this.filterCategory.emit(res);
         },
-        ()=>{
-          console.log("Finally");
-        })
+        (error) => {
+          console.log('error in response');
+        },
+        () => {
+          console.log('Finally');
+        });
   }}
-

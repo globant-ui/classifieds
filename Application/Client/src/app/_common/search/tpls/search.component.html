@@ -1,6 +1,6 @@
 <div class="search-button">
     <div *ngIf = "isLoading" class = "popup-loader"></div>
-    <input type="text" placeholder="{{ 'search' | translate }}" #box  
+    <input type="text" placeholder="{{ 'search' | myTranslate }}" #box  
            [(ngModel)]="searchCategoryByStr">
     <button class="icon-search-icon" (click)="searchCategoryByString(searchCategoryByStr)"></button>
     <div class="autoSuggestion" *ngIf = "enabledDropdown">

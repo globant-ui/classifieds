@@ -1,16 +1,15 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
-import {CookieService} from 'angular2-cookie/core';
-import {CService} from "./_common/services/http.service";
+import { CookieService } from 'angular2-cookie/core';
+import { CService } from './_common/services/http.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
-
 import { ENV_PROVIDERS } from './environment';
 import { APP_ROUTERS } from './app.routes';
-import {DASHBOARD_ROUTERS } from './dashboard/components/dashboard.routes';
+import { DASHBOARD_ROUTERS } from './dashboard/components/dashboard.routes';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
@@ -18,28 +17,31 @@ import { HomeComponent } from './home/component/home.component';
 import { ProgressComponent } from './_common/progress/components/progress.component';
 
 import { HeaderComponent } from './_common/header/components/header.component';
-import { SimilarListingComponent } from './_common/similarListing/components/similarListing.component';
+import { SimilarListingComponent }
+from './_common/similarListing/components/similarListing.component';
 
 import { CardListComponent } from './card-list/components/card-list.component';
 import { BannerComponent } from './banner/components/banner.component';
 import { DashboardComponent } from './dashboard/components/dashboard.component';
 import { ProductInfoComponent } from './product-info/components/product-info.component';
-import {Base64Service} from "./_common/services/base64.service";
-import {Broadcaster} from "./_common/services/broadcast.service";
+import { Base64Service } from './_common/services/base64.service';
+import { Broadcaster } from './_common/services/broadcast.service';
 import { LoginComponent } from './_common/login/component/login.component';
 import { CreateCardComponent } from './createCard/component/createCard.component';
 import { ProfileComponent } from './createProfile/component/createProfile.component';
-import { MyListingsComponent } from './myListings/component/myListings.component';
-import { MapData} from  './mapData/mapData';
+import { MyListingsComponent }
+from './myListings/component/myListings.component';
+import { MapData } from  './mapData/mapData';
 
 import { FilterComponent } from './filter/components/filter.component';
 import { SearchComponent } from './_common/search/components/search.component';
 import { LoaderComponent } from './_common/loader/components/loader.component';
-import { SelectInterestComponent } from './_common/select-interest/components/select-interest.component';
+import { SelectInterestComponent }
+from './_common/select-interest/components/select-interest.component';
 import { WishListComponent } from './_common/wishlist/components/wishlist.component';
-import  {SettingsService} from  './_common/services/setting.service';
+import { SettingsService } from  './_common/services/setting.service';
 import { PopUpMessageComponent } from './_common/popup';
-import  {WishListService} from  './_common/wishlist/service/wishlist.service';
+import { WishListService } from  './_common/wishlist/service/wishlist.service';
 import { PageNotFoundComponent } from './_common/page-not-found';
 import { ExploreComponent } from './_common/explore-list';
 import { TRANSLATION_PROVIDERS, TranslatePipe, TranslateService }   from './translate';
@@ -47,7 +49,7 @@ import { TRANSLATION_PROVIDERS, TranslatePipe, TranslateService }   from './tran
 /*ng2-bootstrap*/
 import { ModalModule } from 'ng2-bootstrap';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
-import { DropdownModule } from 'ng2-bootstrap/dropdown';
+import { DropdownModule } from 'ngx-dropdown';
 import { AccordionModule } from 'ng2-bootstrap/accordion';
 import { CarouselModule } from 'ng2-bootstrap/carousel';
 
@@ -97,11 +99,13 @@ type StoreType = {
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    RouterModule.forRoot(APP_ROUTERS, { useHash: true, preloadingStrategy: PreloadAllModules }),
-    RouterModule.forRoot(DASHBOARD_ROUTERS, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    DropdownModule,
+    RouterModule.forRoot(APP_ROUTERS,
+    { useHash: true, preloadingStrategy: PreloadAllModules }),
+    RouterModule.forRoot(DASHBOARD_ROUTERS,
+    { useHash: true, preloadingStrategy: PreloadAllModules }),
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
-    DropdownModule.forRoot(),
     AccordionModule.forRoot(),
     CarouselModule.forRoot()
   ],
@@ -123,9 +127,10 @@ type StoreType = {
 export class AppModule {
   constructor(public appRef: ApplicationRef, public appState: AppState) {}
 
-  hmrOnInit(store: StoreType) {
-    if (!store || !store.state) return;
-    //console.log('HMR store', JSON.stringify(store, null, 2));
+  protected hmrOnInit(store: StoreType) {
+    if (!store || !store.state) {
+      return;
+    }
     // set state
     this.appState._state = store.state;
     // set input values
@@ -139,8 +144,8 @@ export class AppModule {
     delete store.restoreInputValues;
   }
 
-  hmrOnDestroy(store: StoreType) {
-    const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
+  protected hmrOnDestroy(store: StoreType) {
+    const cmpLocation = this.appRef.components.map((cmp) => cmp.location.nativeElement);
     // save state
     const state = this.appState._state;
     store.state = state;
@@ -152,7 +157,7 @@ export class AppModule {
     removeNgStyles();
   }
 
-  hmrAfterDestroy(store: StoreType) {
+  protected hmrAfterDestroy(store: StoreType) {
     // display new elements
     store.disposeOldHosts();
     delete store.disposeOldHosts;

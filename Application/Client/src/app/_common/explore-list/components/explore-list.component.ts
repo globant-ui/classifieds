@@ -1,15 +1,7 @@
 import { Component } from '@angular/core';
-
-let styles = require('../styles/explore-list.component.scss').toString();
-let tpls = require('../tpls/explore-list.component.html').toString();
-
 @Component({
   selector: 'explore-list',
-  styles : [ styles ],
-  template : tpls
+  styles : [ require('../styles/explore-list.component.scss').toString() ],
+  template : require('../tpls/explore-list.component.html').toString()
 })
-
-export class ExploreComponent  {
-
-} 
-
+export class ExploreComponent  { }

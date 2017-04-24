@@ -1,56 +1,50 @@
-import { Component,EventEmitter, Output,ViewChild, AfterViewInit  } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, AfterViewInit  } from '@angular/core';
 import { AppState } from '../../app.service';
-import {SettingsService} from '../../services/setting.service';
+import { SettingsService } from '../../services/setting.service';
 import { Observable }     from 'rxjs/Observable';
-import { Http, Response,RequestOptions } from '@angular/http';
-import {CService} from  '../../services/http.service';
-import {CookieService} from 'angular2-cookie/core';
+import { Http, Response, RequestOptions } from '@angular/http';
+import { CService } from  '../../services/http.service';
+import { CookieService } from 'angular2-cookie/core';
 import 'rxjs/Rx';
-import {Session} from '../../authentication/entity/session.entity';
+import { Session } from '../../authentication/entity/session.entity';
 import { ModalDirective } from 'ng2-bootstrap/modal';
-import { WishListService } from '../service/wishlist.service'
-import {Router} from '@angular/router';
-import {Broadcaster} from  '../../services/broadcast.service';
-
-let styles = require('../styles/wishlist.component.scss').toString();
-let tpls = require('../tpls/wishlist.component.html').toString();
+import { WishListService } from '../service/wishlist.service';
+import { Router } from '@angular/router';
+import { Broadcaster } from  '../../services/broadcast.service';
 
 @Component({
   selector: 'wishlist',
-  styles : [ styles ],
-  providers:[],
-  template : tpls
+  styles: [ require('../styles/wishlist.component.scss').toString() ],
+  providers: [],
+  template: require('../tpls/wishlist.component.html').toString()
 })
 
-export class WishListComponent implements AfterViewInit  {
+export class WishListComponent implements AfterViewInit {
+  public GetUserWishList: string = '';
+  public emailId: string = '';
+  public wishListSelectedUrl: string = '';
+  public DeleteUserWishListUrl: string = '';
+  public WishListSelectedData: any;
 
-private GetUserWishList:string = '';
-private emailId:string = '';
-private wishListSelectedUrl : string = '';
-private DeleteUserWishListUrl: string = '';
-private WishListSelectedData : any;
-
-
-
-@ViewChild('childModal') public childModal:ModalDirective;
+@ViewChild('childModal') public childModal: ModalDirective;
 
   constructor(
-                 private _settingsService: SettingsService,
-                 private _cservice:CService,
-                 private _router: Router,
-                 private broadcaster: Broadcaster,
-                 private _cookieService: CookieService,
-                 private wishListService : WishListService) {
+                 public _settingsService: SettingsService,
+                 public _cservice: CService,
+                 public _router: Router,
+                 public broadcaster: Broadcaster,
+                 public _cookieService: CookieService,
+                 public wishListService: WishListService) {
 
-    this.emailId = this._cookieService.getObject('SESSION_PORTAL')["useremail"];
+    this.emailId = this._cookieService.getObject('SESSION_PORTAL')['useremail'];
     this.GetUserWishList = _settingsService.getPath('GetUserWishList') + this.emailId;
     this.wishListSelectedUrl = _settingsService.getPath('wishListSelectedUrl');
     this.getUserWishListData();
-    this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl') + this.emailId + '&listingId=';;
-   
+    this.DeleteUserWishListUrl = _settingsService.getPath('DeleteUserWishListUrl')
+    + this.emailId + '&listingId=';
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     this.showChildModal();
   }
 
@@ -62,40 +56,39 @@ private WishListSelectedData : any;
     this.childModal.hide();
   }
 
-  //get my wishlist pop-up api call
-  getUserWishListData() {
+  // get my wishlist pop-up api call
+  public getUserWishListData() {
     this.wishListService.getUserWishList(this.wishListSelectedUrl)
-    .then(res=>{
+    .then((res) => {
       this.WishListSelectedData = res;
-      console.log("this.WishListSelectedData",res)
+      console.log('this.WishListSelectedData', res);
     },
-        error => {
-         console.log("error in response", error);
+        (error) => {
+         console.log('error in response', error);
        }
     );
   }
 
-  showProductInfo(id){
-    this.hideChildModal()
-    this._router.navigateByUrl('/dashboard/productInfo/'+id);
+  public showProductInfo(id) {
+    this.hideChildModal();
+    this._router.navigateByUrl('/dashboard/productInfo/' + id);
   }
 
-  //delete api call
-  deleteWishListData(event,obj) {
+  // delete api call
+  public deleteWishListData(event, obj) {
     event.stopPropagation();
     let self = this;
-    this.wishListService.deleteWishList(this.DeleteUserWishListUrl+ obj._id)
-    .then(res=>{
-        let delIndex = self.WishListSelectedData.findIndex(function(o){
+    this.wishListService.deleteWishList(this.DeleteUserWishListUrl + obj._id)
+    .then((res) => {
+        let delIndex = self.WishListSelectedData.findIndex((o) => {
             return o._id === obj._id;
-        })
+        });
         self.WishListSelectedData.splice(delIndex, 1);
-        self.broadcaster.broadcast('WISH_LIST_UPDATED', "success");
+        self.broadcaster.broadcast('WISH_LIST_UPDATED', 'success');
       },
-      error => {
-         console.log("error in response", error);
+      (error) => {
+         console.log('error in response', error);
       }
     );
   }
-} 
-
+}

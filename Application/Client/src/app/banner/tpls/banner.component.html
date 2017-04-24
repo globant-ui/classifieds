@@ -1,20 +1,20 @@
 <div class="container banner-container">
   <div class="row banner-row">
     <h1>
-      {{ 'Buy, sell or find anything' | translate }},<br />
-      {{ 'just for Globers' | translate }}!
+      {{ 'Buy, sell or find anything' | myTranslate }},<br />
+      {{ 'just for Globers' | myTranslate }}!
     </h1>
     <nav class="navbar">
       <div class="container-fluid">
         <div class="bannerwrapper">
           <ul class="nav navbar-nav visible-md visible-lg">
               <li *ngFor="let category of categories;let i = index;"  [class.active]="showSubCategory">
-                  <div class="categoryTitle">{{category.ListingCategory | translate}}</div>
+                  <div class="categoryTitle">{{category.ListingCategory | myTranslate}}</div>
                   <span class="spriteimage {{category.ListingCategory}}Icon"></span>
                   <ul class="hoverlistWrapper" *ngIf="showSubCategory">
-                      <li *ngFor="let sub of category.SubCategory" (click) = "exploreSubCategory(sub)" ><a>{{sub | translate}}</a></li>
+                      <li *ngFor="let sub of category.SubCategory" (click) = "exploreSubCategory(sub)" ><a>{{sub | myTranslate}}</a></li>
                   </ul>
-                  <button (click) = "exploreCategory(category.ListingCategory)">{{ 'EXPLORE' | translate }}</button>
+                  <button (click) = "exploreCategory(category.ListingCategory)">{{ 'EXPLORE' | myTranslate }}</button>
               </li>
           </ul>
           <accordion class="visible-xs visible-sm">
@@ -23,12 +23,12 @@
                 <div class="img-icon">
                       <span class="spriteimage {{category.ListingCategory}}Icon"></span>
                 </div>
-                <div class="categoryTitle">{{category.ListingCategory | translate}}</div>
+                <div class="categoryTitle">{{category.ListingCategory | myTranslate}}</div>
                 <i class="pull-right float-xs-right glyphicon"
                    [ngClass]="{'glyphicon-chevron-up': group?.isOpen, 'glyphicon-chevron-down': !group?.isOpen}"></i>
               </div>
               <ul class="accordionWrapper" *ngIf="showSubCategory">
-                  <li *ngFor="let sub of category.SubCategory"><a>{{sub | translate}}</a></li>
+                  <li *ngFor="let sub of category.SubCategory"><a>{{sub | myTranslate}}</a></li>
               </ul>
             </accordion-group>
           </accordion>

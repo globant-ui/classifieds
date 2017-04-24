@@ -1,36 +1,28 @@
-import { Component,OnInit,Input,OnChanges,SimpleChange } from '@angular/core';
-
-let styles = require('../styles/progress.component.scss').toString();
-let tpls = require('../tpls/progress.component.html').toString();
+import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 
 @Component({
-  selector:'progress-bar',
-  styles:[styles],
-  template: tpls
+  selector: 'progress-bar',
+  styles: [require('../styles/progress.component.scss').toString()],
+  template: require('../tpls/progress.component.html').toString()
 })
-export class ProgressComponent implements OnChanges{
+export class ProgressComponent {
 
   @Input()
-  endPoints;
+  private endPoints;
 
   @Input()
-  isCompleted;
+  private isCompleted;
 
   @Input()
-  isActive:string;
+  private isActive: string;
 
-  public showTick = '&#10003;';
+  private showTick = '&#10003;';
 
-  constructor(){
+  constructor() {
     console.log(this.endPoints);
     console.log(this.isCompleted);
     console.log(this.isActive);
 
   }
 
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}){
-  }
-
-
 }
-

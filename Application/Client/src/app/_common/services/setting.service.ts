@@ -1,53 +1,45 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable  } from 'rxjs/Observable';
-import { Http, Response,RequestOptions } from '@angular/http';
-import {CService} from './http.service';
+import { Http, Response, RequestOptions } from '@angular/http';
+import { CService } from './http.service';
 import 'rxjs/Rx';
 
-var settingsJson = require("app/settings.json");
-
-var bannerListingsJson = require("app/banner/json/banner.json");
-var cardListingsJson = require("app/card-list/json/card-list.json");
-var filterListingJson = require("app/filter/json/filter.json");
-
-
 @Injectable()
-export class SettingsService{
-  public  settings : any ;
+export class SettingsService {
+  public  settings: any;
   public  data: any;
   private cardUrl = 'http://in-it0289/ListingAPI/api/Listings/GetTopListings';
   private productInfoUrl = 'http://in-it0289/ListingAPI/api/Listings/GetListingById?id=';
-
-  constructor(private _cservice:CService) {
+  private settingsJson = require('app/settings.json');
+  private bannerListingsJson = require('app/banner/json/banner.json');
+  private cardListingsJson = require('app/card-list/json/card-list.json');
+  private filterListingJson = require('app/filter/json/filter.json');
+  constructor(private _cservice: CService) {
     this.getSettings();
   }
 
-  getSettings(){
-    this.settings = settingsJson;
-    return settingsJson;
+  public getSettings() {
+    this.settings = this.settingsJson;
+    return this.settingsJson;
   }
 
-  getBaseUrl(){
-    return settingsJson.services.main;
+  public getBaseUrl() {
+    return this.settingsJson.services.main;
   }
 
-  getBannerListingsData(){
-      return bannerListingsJson.details;
+  public getBannerListingsData() {
+      return this.bannerListingsJson.details;
   }
 
-  getCardListingsData() {
-      return cardListingsJson;
+  public getCardListingsData() {
+      return this.cardListingsJson;
   }
 
-  getFilterListingData(){
-    return filterListingJson.details;
+  public getFilterListingData() {
+    return this.filterListingJson.details;
   }
 
-  getPath(path){
-    return settingsJson.classifieds.services[path];
+  public getPath(path) {
+    return this.settingsJson.classifieds.services[path];
   }
-
 }
-
-
-

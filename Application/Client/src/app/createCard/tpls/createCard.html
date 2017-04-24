@@ -10,22 +10,22 @@
           <input hidden #submittedBy formControlName="submittedBy" value="{{submittedBy}}">
           <div class="row form-group ">
             <div class="col-lg-3 col-md-3 col-xs-12">
-              <label class="uppercaseText typeListinglabel">{{ 'i want to' | translate }}</label>
+              <label class="uppercaseText typeListinglabel">{{ 'i want to' | myTranslate }}</label>
             </div>
             <div class="col-lg-9 col-md-9 col-xs-12">
               <fieldset id="typeListing">
                 <label class="radio-inline">
-                  <input (change)="updatePublishStatus($event)" type="radio" name="cardType" formControlName="cardType" value="sale" checked="cardType=='sale'">{{ 'Sell' | translate }}
+                  <input (change)="updatePublishStatus($event)" type="radio" name="cardType" formControlName="cardType" value="sale" checked="cardType=='sale'">{{ 'Sell' | myTranslate }}
                 </label>
                 <label class="radio-inline">
-                  <input (change)="updatePublishStatus($event)" type="radio" name="cardType" formControlName="cardType" value="rent" checked="cardType=='rent'">{{ 'Rent' | translate }}
+                  <input (change)="updatePublishStatus($event)" type="radio" name="cardType" formControlName="cardType" value="rent" checked="cardType=='rent'">{{ 'Rent' | myTranslate }}
                 </label>
               </fieldset>
             </div>
           </div>
           <div class="row form-group">
             <div class="col-lg-12 col-md-12 col-xs-12">
-              <label class="uppercaseText">{{ 'Select the category' | translate }}</label>
+              <label class="uppercaseText">{{ 'Select the category' | myTranslate }}</label>
             </div>
           </div>
           <div class="row form-group">
@@ -41,12 +41,12 @@
           </div>
           <div class="row form-group">
             <div class="col-xs-12 col-md-4 col-lg-4">
-              <label class="uppercaseText subCategoryLabel">{{ 'select the sub-category' | translate }}</label>
+              <label class="uppercaseText subCategoryLabel">{{ 'select the sub-category' | myTranslate }}</label>
             </div>
             <div class="col-xs-12 col-md-8 col-lg-8">
               <fieldset id="sub-category">
                 <label class="radio-inline capitalText" *ngFor="let subCategory of subcategories">
-                  <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}" (change)="subCategoryUpdated()" [(ngModel)]="currentSubCategory" >{{subCategory | translate }}
+                  <input type="radio" name="subCategory" formControlName="subCategory" value="{{subCategory}}" (change)="subCategoryUpdated()" [(ngModel)]="currentSubCategory" >{{subCategory | myTranslate }}
                 </label>
               </fieldset>
             </div>
@@ -54,7 +54,7 @@
           <div class="form-group">
             <div class="row">
               <div class="col-lg-12 col-md-12 col-xs-12">
-                <label class="uppercaseText">{{ 'Add photos' | translate }}</label>
+                <label class="uppercaseText">{{ 'Add photos' | myTranslate }}</label>
               </div>
             </div>
             <div class="img-icon noPadding" *ngFor="let imgSrc of photos">
@@ -85,7 +85,7 @@
 
           <div class="row form-group">
             <div class="col-lg-4 col-md-4 col-xs-12 marginBottom">
-              <input (change)="updatePublishStatus()" #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="{{ 'Title' | translate }}" required />
+              <input (change)="updatePublishStatus()" #title formControlName="title" class="fullWidth" type="text" name="title" placeholder="{{ 'Title' | myTranslate }}" required />
               <div [hidden]="myForm.controls.title.valid || (myForm.controls.title.pristine && !submitted)" class="alert alert-danger">
                 Title is required
               </div>
@@ -97,12 +97,12 @@
                 <option selected="productInfo['Listing'].City === 'Pune'">Pune</option>
                 <option selected="productInfo['Listing'].City === 'Bangalore'">Banglore</option>
               </select> -->
-              <input (change)="updatePublishStatus()" #location formControlName="city" name="city" class="fullWidth" type="text" id="city" placeholder="{{ 'Location' | translate }}" required />
+              <input (change)="updatePublishStatus()" #location formControlName="city" name="city" class="fullWidth" type="text" id="city" placeholder="{{ 'Location' | myTranslate }}" required />
               <!-- <div class="glyphicon glyphicon-chevron-down downArrow"></div> -->
             </div>
 
             <div class="col-lg-4 col-md-4 col-xs-12">
-              <input (change)="updatePublishStatus()" #price formControlName="price" name="price" class="fullWidth" type="number" id="price" placeholder="{{ 'Price' | translate }}" required />
+              <input (change)="updatePublishStatus()" #price formControlName="price" name="price" class="fullWidth" type="number" id="price" placeholder="{{ 'Price' | myTranslate }}" required />
               <div [hidden]="myForm.controls.price.valid || (myForm.controls.price.pristine && !submitted)" class="alert alert-danger">
                 Price is required
               </div>
@@ -110,14 +110,14 @@
           </div>
           <div class="row form-group">
             <div class="col-lg-10 col-md-10 col-xs-12 marginBottom">
-              <input (change)="updatePublishStatus()" #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="{{ 'Short Description' | translate }}" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
+              <input (change)="updatePublishStatus()" #shortDesc class="fullWidth" type="text" name="shortDesc" placeholder="{{ 'Short Description' | myTranslate }}" formControlName="shortDesc" (keyup)="isAddInfoCompleted()" />
               <div [hidden]="myForm.controls.shortDesc.valid || (myForm.controls.shortDesc.pristine && !submitted)" class="alert alert-danger">
                 Short Description is required.
               </div>
             </div>
             <div class="col-lg-2 col-md-2 col-xs-12">
               <div class="checkbox">
-                <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> {{ 'Negotaible' | translate }}</label>
+                <label><input type="checkbox" formControlName="negotiable" name="negotiable" checked> {{ 'Negotaible' | myTranslate }}</label>
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@
                           name="{{filter.FilterName}}"
                           [(ngModel)]="objDynamicData[filter.FilterName]"
                           formControlName="{{filter.FilterName}}" >
-                    <option selected="{{(action === 'Create' && action !== 'Edit')?true:null}}" disabled>{{filter.FilterName | translate}}</option>
+                    <option selected="{{(action === 'Create' && action !== 'Edit')?true:null}}" disabled>{{filter.FilterName | myTranslate}}</option>
                     <option *ngFor="let FilterValues of filter.FilterValues" value="{{FilterValues}}">{{FilterValues}}</option>
                   </select>
                   <div class="glyphicon glyphicon-chevron-down downArrow"></div>
@@ -146,7 +146,7 @@
                          type="number"
                          name="{{filter.FilterName}}"
                          formControlName="{{filter.FilterName}}"
-                         placeholder="{{filter.FilterName | translate}}"
+                         placeholder="{{filter.FilterName | myTranslate}}"
                          [(ngModel)]="objDynamicData[filter.FilterName]" />
                 </div>
               </div>
@@ -154,13 +154,13 @@
           </div>
           <div class="row form-group buttonRow">
             <div class="col-lg-6 col-md-6 col-xs-12 marginBottom" *ngIf="action=='Create'">
-              <button class="tempSaveButton green-button" (click)="createCard('saveClose')">{{ 'Save and close' | translate }}</button>
+              <button class="tempSaveButton green-button" (click)="createCard('saveClose')">{{ 'Save and close' | myTranslate }}</button>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Create'">
-              <button class="green-button publishButton pull-right" [class.publish-disable]="!isPublishEnable" [disabled]="!isPublishEnable" (click)="createCard('create')"> {{ 'publish' | translate }} </button>
+              <button class="green-button publishButton pull-right" [class.publish-disable]="!isPublishEnable" [disabled]="!isPublishEnable" (click)="createCard('create')"> {{ 'publish' | myTranslate }} </button>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12" *ngIf="action=='Edit'">
-              <button class="green-button pull-right" [disabled]="updateStatus && !isPublishEnable" [class.publish-disable]="updateStatus && !isPublishEnable"  (click)="updateCard()"> {{ 'Update' | translate }} </button>
+              <button class="green-button pull-right" [disabled]="updateStatus && !isPublishEnable" [class.publish-disable]="updateStatus && !isPublishEnable"  (click)="updateCard()"> {{ 'Update' | myTranslate }} </button>
             </div>
           </div>
         </form>

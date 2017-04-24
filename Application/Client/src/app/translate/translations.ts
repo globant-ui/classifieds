@@ -11,11 +11,11 @@ export const TRANSLATIONS = new OpaqueToken('translations');
 
 // all traslations
 const dictionary = {
-	[LANG_EN_NAME]: LANG_EN_TRANS,
-	[LANG_ES_NAME]: LANG_ES_TRANS,
+  [LANG_EN_NAME]: LANG_EN_TRANS,
+  [LANG_ES_NAME]: LANG_ES_TRANS,
 };
 
 // providers
 export const TRANSLATION_PROVIDERS = [
-	{ provide: TRANSLATIONS, useValue: dictionary },
+  { provide: TRANSLATIONS, useValue: dictionary },
 ];

@@ -1,6 +1,6 @@
-import {Get, Set} from './entity';
-import {CEntity} from './entity';
-import {NavigationLink} from "./navigation.link.entity.ts";
+import { Get, Set } from './entity';
+import { CEntity } from './entity';
+import { NavigationLink } from './navigation.link.entity.ts';
 
 export class Session extends CEntity implements Get, Set {
 
@@ -12,19 +12,7 @@ export class Session extends CEntity implements Get, Set {
     super( _json );
   }
 
-  isValid(): boolean {
-    return this.authenticated;
-  }
-
-  isAuthenticated(): boolean {
-    return this.authenticated;
-  }
-
-  getSecondsLeft(): number {
-    return this.expires - new Date().getTime();
-  }
-
-  get( key: string ): any {
+  public get( key: string ): any {
     if ( key !== undefined ) {
       return this[ key ];
     } else {
@@ -32,7 +20,19 @@ export class Session extends CEntity implements Get, Set {
     }
   }
 
-  set( key: string, value: any ): void {
+  public set( key: string, value: any ): void {
     return this[ key ] = value;
+  }
+
+  public isValid(): boolean {
+    return this.authenticated;
+  }
+
+  public isAuthenticated(): boolean {
+    return this.authenticated;
+  }
+
+  public getSecondsLeft(): number {
+    return this.expires - new Date().getTime();
   }
 }

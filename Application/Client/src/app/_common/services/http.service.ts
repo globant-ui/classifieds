@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Response, Http, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
+import { Response, Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
-import {CookieService} from 'angular2-cookie/core';
+import { CookieService } from 'angular2-cookie/core';
 
 declare var $: any;
 
@@ -17,15 +17,13 @@ export class CService {
   }
 
   public getHeaders(): Headers {
-
     let headers = new Headers();
-      this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
-
-      headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
-      if(this.sessionObj!=undefined){
-        headers.append('AccessToken',this.sessionObj.token);
-        headers.append('UserEmail',this.sessionObj.useremail);
-      }
+    this.sessionObj = this._cookieService.getObject('SESSION_PORTAL');
+    headers.append( 'Content-Type', 'application/json; charset=UTF-8' );
+    if (this.sessionObj !== undefined)  {
+      headers.append('AccessToken', this.sessionObj.token);
+      headers.append('UserEmail', this.sessionObj.useremail);
+    }
     return headers;
   }
 
@@ -35,52 +33,88 @@ export class CService {
     return requestOptions;
   }
 
-  public observableGetHttp(url: string, options: RequestOptions, native: boolean): Observable<Response> {
+  public observableGetHttp(
+    url: string,
+    options: RequestOptions,
+    native: boolean
+    ): Observable<Response> {
     return this._http.get(url, (native ? options : this.getRequestOptions()))
       .map(this.extractData)
       .catch(this.handleErrorObservable);
   }
 
-  public observablePostHttp(url: string, data: any, options: RequestOptions, native: boolean): Observable<Response> {
+  public observablePostHttp(
+    url: string,
+    data: any,
+    options: RequestOptions,
+    native: boolean
+    ): Observable<Response> {
     return this._http.post(url, data, (native ? options : this.getRequestOptions()))
       .map(this.extractData)
       .catch(this.handleErrorObservable);
   }
 
-  public observablePutHttp(url: string, data: any, options: RequestOptions, native: boolean): Observable<Response> {
+  public observablePutHttp(
+    url: string,
+    data: any,
+    options: RequestOptions,
+    native: boolean
+    ): Observable<Response> {
     return this._http.put(url, data, (native ? options : this.getRequestOptions()))
       .map(this.extractData)
       .catch(this.handleErrorObservable);
   }
 
-  public observableDeleteHttp(url: string, options: RequestOptions, native: boolean): Observable<Response> {
+  public observableDeleteHttp(
+    url: string,
+    options: RequestOptions,
+    native: boolean
+    ): Observable<Response> {
     return this._http.delete(url, (native ? options : this.getRequestOptions()))
       .map(this.extractData)
       .catch(this.handleErrorObservable);
   }
 
-  public promiseGetHttp(url: string, options: RequestOptions, native: boolean): Promise<any> {
+  public promiseGetHttp(
+    url: string,
+    options: RequestOptions,
+    native: boolean
+    ): Promise<any> {
     return this._http.get(url, (native ? options : this.getRequestOptions()))
       .toPromise()
       .then(this.extractData)
       .catch(this.handlePromise);
   }
 
-  public promisePostHttp(url: string, data: any, options: RequestOptions, native: boolean): Promise<any> {
+  public promisePostHttp(
+    url: string,
+    data: any,
+    options: RequestOptions,
+    native: boolean
+    ): Promise<any> {
     return this._http.post(url, data, (native ? options : this.getRequestOptions()))
       .toPromise()
       .then(this.extractData)
       .catch(this.handlePromise);
   }
 
-  public promisePutHttp(url: string, data: any, options: RequestOptions, native: boolean): Promise<any> {
+  public promisePutHttp(
+    url: string,
+    data: any,
+    options: RequestOptions,
+    native: boolean
+    ): Promise<any> {
     return this._http.put(url, data, (native ? options : this.getRequestOptions()))
       .toPromise()
       .then(this.extractData)
       .catch(this.handlePromise);
   }
 
-  public promiseDeleteHttp(url: string, options: RequestOptions, native: boolean): Promise<any> {
+  public promiseDeleteHttp(
+    url: string,
+    options: RequestOptions,
+    native: boolean
+    ): Promise<any> {
     return this._http.delete(url, (native ? options : this.getRequestOptions()))
       .toPromise()
       .then(this.extractData)
@@ -88,30 +122,33 @@ export class CService {
   }
 
   public extractData(response: Response) {
-    let body = (response.status == 200);
+    let body = (response.status === 200);
     try {
       let json = response.json();
       body = json;
-    } catch (e) {
+    }catch (e) {
+      console.log('Error...');
     }
     return body || null;
   }
 
   public handleErrorObservable(error: any) {
     return Observable.throw({
-      'status': error.status,
-      'message': (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error'
+      status: error.status,
+      message: (error.message) ? error.message : error.status
+      ? `${error.status} - ${error.statusText}` : 'Server error'
     });
   }
 
   public handlePromise(error: any) {
     return Promise.reject({
-      'status': error.status,
-      'message': (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error'
+      status: error.status,
+      message: (error.message) ? error.message : error.status
+      ? `${error.status} - ${error.statusText}` : 'Server error'
     });
   }
 
-  public objectToArray(_json: any, _type: any): Array<any> {
+  public objectToArray(_json: any, _type: any): any[] {
     return Object.keys(_json).map((key) => {
       if (_type) {
         return new _type(_json[key]);
@@ -121,8 +158,8 @@ export class CService {
     });
   }
 
-  public arrayToArrayType(_array: any, _type: any): Array<any> {
-    let array: Array<any> = [];
+  public arrayToArrayType(_array: any, _type: any): any[] {
+    let array: any[] = [];
     _array.forEach((val, key) => {
       array.push(new _type(_array[key]));
     });
@@ -130,7 +167,7 @@ export class CService {
   }
 
   public cleanArray(_array: any) {
-    let array: Array<any> = [];
+    let array: any[] = [];
     _array.forEach((val, key) => {
       if (_array[key] && val) {
         array.push(_array[key]);
@@ -138,5 +175,4 @@ export class CService {
     });
     return array;
   };
-
 }

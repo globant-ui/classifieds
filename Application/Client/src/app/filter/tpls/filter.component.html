@@ -3,6 +3,6 @@
   <li class="active" 
       *ngFor="let item of filterData; let i = index" 
       (click)="selectedOption(item.listName,i)">
-      <a [class.active]="item.isActive && !isSearchActive">{{item.listName | translate}}</a>
+      <a [class.active]="item.isActive && !isSearchActive">{{item.listName | myTranslate}}</a>
   </li>
 </ul>

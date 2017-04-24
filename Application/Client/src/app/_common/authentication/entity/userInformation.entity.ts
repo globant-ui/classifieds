@@ -1,5 +1,5 @@
 
-export class UserInformation{
+export class UserInformation {
 
   public id: string;
   public position: string;
@@ -10,5 +10,4 @@ export class UserInformation{
     Object.assign( this, _json );
 
   }
-
 }

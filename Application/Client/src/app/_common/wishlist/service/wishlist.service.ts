@@ -16,20 +16,19 @@ export class WishListService extends CService {
     super(_http, _cookieService);
   }
 
-  //get my wishlist pop-up api call
-  getUserWishList(url) {
+  // get my wishlist pop-up api call
+  public getUserWishList(url) {
     return this.promiseGetHttp(url, null, false);
   }
 
-  //get wishlist ids.
-  GetWishList(url) {
+  // get wishlist ids.
+  public GetWishList(url) {
     return this.promiseGetHttp(url, null, false);
   }
 
-  //delete api call
-  deleteWishList(url) {
+  // delete api call
+  public deleteWishList(url) {
     // this.onWishlistUpdate.emit(true);
     return this.promiseDeleteHttp(url, null, false);
   }
-
 }
